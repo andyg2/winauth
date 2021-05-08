@@ -80,7 +80,7 @@ namespace WinAuth
         public override void Sync()
         {
             // check if data is protected
-            if (this.SecretKey == null && this.EncryptedData != null)
+            if (SecretKey == null && EncryptedData != null)
             {
                 throw new EncryptedSecretDataException();
             }

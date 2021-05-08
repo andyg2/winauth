@@ -49,7 +49,7 @@ namespace WinAuth
 
             public override string ToString()
             {
-                return this.Text;
+                return Text;
             }
         }
 
@@ -78,7 +78,7 @@ namespace WinAuth
         {
             get
             {
-                return this.Authenticator != null ? this.Authenticator.AuthenticatorData as SteamAuthenticator : null;
+                return Authenticator != null ? Authenticator.AuthenticatorData as SteamAuthenticator : null;
             }
         }
 
@@ -121,23 +121,23 @@ namespace WinAuth
         /// <param name="e"></param>
         private void ShowSteamTradesForm_Load(object sender, EventArgs e)
         {
-            this.MinimumSize = this.Size;
+            MinimumSize = Size;
 
             m_browserHeight = browserContainer.Height;
             browserContainer.Height = 0;
             tradesContainer.Height += m_browserHeight;
 
-            this.pollAction.Items.Clear();
+            pollAction.Items.Clear();
 
             BindingList<object> items = new BindingList<object>();
             items.Add(new PollerActionItem { Text = "Show Notification", Value = SteamClient.PollerAction.Notify });
             items.Add(new PollerActionItem { Text = "Auto-Confirm", Value = SteamClient.PollerAction.AutoConfirm });
             items.Add(new PollerActionItem { Text = "Auto-Confirm (silently)", Value = SteamClient.PollerAction.SilentAutoConfirm });
 
-            this.pollAction.DataSource = items;
-            this.pollAction.DisplayMember = "Text";
+            pollAction.DataSource = items;
+            pollAction.DisplayMember = "Text";
             //this.pollAction.ValueMember = "Value";
-            this.pollAction.SelectedIndex = 0;
+            pollAction.SelectedIndex = 0;
 
             m_tabPages.Clear();
             for (var i = 0; i < tabs.TabPages.Count; i++)
@@ -157,7 +157,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void ShowSteamTradesForm_Shown(object sender, EventArgs e)
         {
-            this.usernameField.Focus();
+            usernameField.Focus();
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace WinAuth
             // update poller
             SetPolling();
 
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = System.Windows.Forms.DialogResult.OK;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            DialogResult = System.Windows.Forms.DialogResult.Cancel;
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace WinAuth
             Rectangle paddedBounds = e.Bounds;
             int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
-            TextRenderer.DrawText(e.Graphics, page.Text, this.Font, paddedBounds, page.ForeColor);
+            TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
 
             captchaGroup.BackColor = page.BackColor;
         }
@@ -214,7 +214,7 @@ namespace WinAuth
                 return;
             }
 
-            Process(usernameField.Text.Trim(), passwordField.Text.Trim(), this.AuthenticatorData.GetClient().CaptchaId, captchacodeField.Text.Trim());
+            Process(usernameField.Text.Trim(), passwordField.Text.Trim(), AuthenticatorData.GetClient().CaptchaId, captchacodeField.Text.Trim());
         }
 
         /// <summary>
@@ -240,8 +240,8 @@ namespace WinAuth
         /// <param name="e"></param>
         private void closeButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
+            DialogResult = System.Windows.Forms.DialogResult.OK;
+            Close();
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace WinAuth
                     case "loginTab":
                         e.Handled = true;
 
-                        if (this.AuthenticatorData.GetClient().RequiresCaptcha == true)
+                        if (AuthenticatorData.GetClient().RequiresCaptcha == true)
                         {
                             captchaButton_Click(sender, new EventArgs());
                         }
@@ -323,7 +323,7 @@ namespace WinAuth
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
 
-                browser.Text = this.AuthenticatorData.GetClient().GetConfirmationDetails(trade);
+                browser.Text = AuthenticatorData.GetClient().GetConfirmationDetails(trade);
             }
             catch (Exception ex)
             {
@@ -398,14 +398,14 @@ namespace WinAuth
         /// <param name="e"></param>
         private void logoutButton_Click(object sender, EventArgs e)
         {
-            var steam = this.AuthenticatorData.GetClient();
+            var steam = AuthenticatorData.GetClient();
             steam.Logout();
 
             if (String.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
             {
                 AuthenticatorData.SessionData = null;
                 //AuthenticatorData.PermSession = false;
-                this.Authenticator.MarkChanged();
+                Authenticator.MarkChanged();
             }
 
             Init();
@@ -482,7 +482,7 @@ namespace WinAuth
                 cancelAllButton.Enabled = true;
                 closeButton.Enabled = true;
 
-                this.Authenticator.MarkChanged();
+                Authenticator.MarkChanged();
 
                 Cursor.Current = cursor;
             }
@@ -559,7 +559,7 @@ namespace WinAuth
                 confirmAllButton.Enabled = true;
                 closeButton.Enabled = true;
 
-                this.Authenticator.MarkChanged();
+                Authenticator.MarkChanged();
 
                 Cursor.Current = cursor;
             }
@@ -602,7 +602,7 @@ namespace WinAuth
         /// </summary>
         private void Init()
         {
-            if (this.AuthenticatorData.GetClient().IsLoggedIn() == true)
+            if (AuthenticatorData.GetClient().IsLoggedIn() == true)
             {
                 Process();
             }
@@ -610,13 +610,13 @@ namespace WinAuth
             {
                 ShowTab("loginTab");
 
-                this.closeButton.Visible = false;
-                this.cancelButton.Visible = true;
-                this.refreshButton.Visible = false;
-                this.logoutButton.Visible = false;
-                this.pollPanel.Visible = false;
-                this.confirmAllButton.Visible = false;
-                this.cancelAllButton.Visible = false;
+                closeButton.Visible = false;
+                cancelButton.Visible = true;
+                refreshButton.Visible = false;
+                logoutButton.Visible = false;
+                pollPanel.Visible = false;
+                confirmAllButton.Visible = false;
+                cancelAllButton.Visible = false;
             }
         }
 
@@ -634,7 +634,7 @@ namespace WinAuth
                     Cursor.Current = Cursors.WaitCursor;
                     Application.DoEvents();
 
-                    var steam = this.AuthenticatorData.GetClient();
+                    var steam = AuthenticatorData.GetClient();
 
                     if (steam.IsLoggedIn() == false)
                     {
@@ -693,7 +693,7 @@ namespace WinAuth
 
                         AuthenticatorData.SessionData = (rememberBox.Checked == true ? steam.Session.ToString() : null);
                         //AuthenticatorData.PermSession = (rememberBox.Checked == true && rememberPermBox.Checked == true);
-                        this.Authenticator.MarkChanged();
+                        Authenticator.MarkChanged();
                     }
 
                     try
@@ -703,7 +703,7 @@ namespace WinAuth
                         // save after get new trades
                         if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
                         {
-                            this.Authenticator.MarkChanged();
+                            Authenticator.MarkChanged();
                         }
                     }
                     catch (SteamClient.UnauthorisedSteamRequestException)
@@ -734,7 +734,7 @@ namespace WinAuth
                     var tab = ShowTab("tradesTab");
 
                     tab.SuspendLayout();
-                    tradesContainer.Controls.Remove(this.tradePanelMaster);
+                    tradesContainer.Controls.Remove(tradePanelMaster);
                     foreach (var control in tradesContainer.Controls.Cast<Control>().ToArray())
                     {
                         if (control is Panel)
@@ -748,7 +748,7 @@ namespace WinAuth
                         var trade = m_trades[row];
 
                         // clone the panel
-                        Panel tradePanel = Clone(this.tradePanelMaster, "_" + trade.Id) as Panel;
+                        Panel tradePanel = Clone(tradePanelMaster, "_" + trade.Id) as Panel;
                         tradePanel.SuspendLayout();
 
                         using (WebClient wc = new WebClient())
@@ -803,18 +803,18 @@ namespace WinAuth
 
                     tab.ResumeLayout();
 
-                    this.closeButton.Location = this.cancelButton.Location;
-                    this.closeButton.Visible = true;
-                    this.cancelButton.Visible = false;
-                    this.refreshButton.Visible = true;
+                    closeButton.Location = cancelButton.Location;
+                    closeButton.Visible = true;
+                    cancelButton.Visible = false;
+                    refreshButton.Visible = true;
                     if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
                     {
-                        this.logoutButton.Visible = true;
+                        logoutButton.Visible = true;
 
                         if (steam.Session.Confirmations != null)
                         {
-                            this.pollCheckbox.Checked = true;
-                            this.pollNumeric.Value = Convert.ToDecimal(steam.Session.Confirmations.Duration);
+                            pollCheckbox.Checked = true;
+                            pollNumeric.Value = Convert.ToDecimal(steam.Session.Confirmations.Duration);
                             int selected = 0;
                             for (var i = 0; i < pollAction.Items.Count; i++)
                             {
@@ -830,17 +830,17 @@ namespace WinAuth
                                     break;
                                 }
                             }
-                            this.pollAction.SelectedIndex = selected;
+                            pollAction.SelectedIndex = selected;
                         }
                         else
                         {
-                            this.pollCheckbox.Checked = false;
-                            this.pollAction.SelectedIndex = 0;
+                            pollCheckbox.Checked = false;
+                            pollAction.SelectedIndex = 0;
                         }
 
-                        this.pollPanel.Visible = true;
-                        this.confirmAllButton.Visible = true;
-                        this.cancelAllButton.Visible = true;
+                        pollPanel.Visible = true;
+                        confirmAllButton.Visible = true;
+                        cancelAllButton.Visible = true;
                     }
 
                     break;
@@ -876,7 +876,7 @@ namespace WinAuth
 
                 var result = await Task.Factory.StartNew<bool>((t) =>
                 {
-                    return this.AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true);
+                    return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true);
                 }, trade);
                 if (result == false)
                 {
@@ -923,7 +923,7 @@ namespace WinAuth
 
                 var result = await Task.Factory.StartNew<bool>((t) =>
                 {
-                    return this.AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false);
+                    return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false);
                 }, trade);
                 if (result == false)
                 {
@@ -1068,8 +1068,8 @@ namespace WinAuth
             if (name == "loginTab")
             {
                 // oddity with MetroFrame controls in have to set focus away and back to field to make it stick
-                this.Invoke((MethodInvoker)delegate
-                { this.passwordField.Focus(); this.usernameField.Focus(); });
+                Invoke((MethodInvoker)delegate
+                { passwordField.Focus(); usernameField.Focus(); });
             }
 
             return tabs.SelectedTab;
@@ -1086,7 +1086,7 @@ namespace WinAuth
                 return;
             }
 
-            var steam = this.AuthenticatorData.GetClient();
+            var steam = AuthenticatorData.GetClient();
             int timeInMins = (pollCheckbox.Checked == true && steam.IsLoggedIn() == true ? (int)pollNumeric.Value : 0);
 
             var p = new SteamClient.ConfirmationPoller
@@ -1100,7 +1100,7 @@ namespace WinAuth
                 {
                     steam.PollConfirmations(p);
                     AuthenticatorData.SessionData = steam.Session.ToString();
-                    this.Authenticator.MarkChanged();
+                    Authenticator.MarkChanged();
                 }
             }
             else
@@ -1109,7 +1109,7 @@ namespace WinAuth
                 {
                     steam.PollConfirmations(null);
                     AuthenticatorData.SessionData = steam.Session.ToString();
-                    this.Authenticator.MarkChanged();
+                    Authenticator.MarkChanged();
                 }
             }
         }

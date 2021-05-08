@@ -51,7 +51,7 @@ namespace WinAuth
 
             public override string ToString()
             {
-                return Username + " (" + this.SteamId + ")";
+                return Username + " (" + SteamId + ")";
             }
         }
 
@@ -92,7 +92,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void AddSteamAuthenticator_Load(object sender, EventArgs e)
         {
-            nameField.Text = this.Authenticator.Name;
+            nameField.Text = Authenticator.Name;
 
             for (var i = 0; i < tabs.TabPages.Count; i++)
             {
@@ -106,7 +106,7 @@ namespace WinAuth
             revocationcodeField.SecretMode = true;
             revocationcode2Field.SecretMode = true;
 
-            importSDAList.Font = this.Font;
+            importSDAList.Font = Font;
 
             nameField.Focus();
         }
@@ -120,8 +120,8 @@ namespace WinAuth
         {
             if (m_enroll.Success == true)
             {
-                this.Authenticator.Name = nameField.Text;
-                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                Authenticator.Name = nameField.Text;
+                DialogResult = System.Windows.Forms.DialogResult.OK;
             }
         }
 
@@ -135,7 +135,7 @@ namespace WinAuth
             // if we press ESC after adding, make sure we save it
             if (m_enroll.Success == true)
             {
-                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                DialogResult = System.Windows.Forms.DialogResult.OK;
             }
         }
 
@@ -149,7 +149,7 @@ namespace WinAuth
             if (activationcodeField.Text.Trim().Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the activation code from your email");
-                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
 
@@ -187,7 +187,7 @@ namespace WinAuth
         {
             if (((RadioButton)sender).Checked == true)
             {
-                this.Authenticator.Skin = (string)((RadioButton)sender).Tag;
+                Authenticator.Skin = (string)((RadioButton)sender).Tag;
             }
         }
 
@@ -204,7 +204,7 @@ namespace WinAuth
             Rectangle paddedBounds = e.Bounds;
             int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
-            TextRenderer.DrawText(e.Graphics, page.Text, this.Font, paddedBounds, page.ForeColor);
+            TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
 
             captchaGroup.BackColor = page.BackColor;
         }
@@ -273,13 +273,13 @@ namespace WinAuth
         /// <param name="e"></param>
         private void closeButton_Click(object sender, EventArgs e)
         {
-            this.Authenticator.Name = nameField.Text;
+            Authenticator.Name = nameField.Text;
 
             if (tabs.SelectedTab.Name == "importAndroidTab")
             {
                 if (ImportSteamGuard() == false)
                 {
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
                 }
             }
@@ -287,13 +287,13 @@ namespace WinAuth
             {
                 if (ImportSDA() == false)
                 {
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
                 }
             }
 
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
+            DialogResult = System.Windows.Forms.DialogResult.OK;
+            Close();
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace WinAuth
             ofd.Title = "SteamDesktopAuthenticator";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                this.importSDAPath.Text = ofd.FileName;
+                importSDAPath.Text = ofd.FileName;
             }
         }
 
@@ -443,7 +443,7 @@ namespace WinAuth
                 WinAuthForm.ErrorDialog(this, "Please enter the contents of the steam.uuid.xml file or your DeviceId");
                 return false;
             }
-            string steamguard = this.importSteamguard.Text.Trim();
+            string steamguard = importSteamguard.Text.Trim();
             if (steamguard.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the contents of your SteamGuard file");
@@ -516,7 +516,7 @@ namespace WinAuth
             auth.SteamData = steamguard;
             auth.DeviceId = deviceId;
 
-            this.Authenticator.AuthenticatorData = auth;
+            Authenticator.AuthenticatorData = auth;
 
             return true;
         }
@@ -527,7 +527,7 @@ namespace WinAuth
         /// <returns>true if successful</returns>
         private bool ImportSDA()
         {
-            var entry = this.importSDAList.SelectedItem as ImportedSDAEntry;
+            var entry = importSDAList.SelectedItem as ImportedSDAEntry;
             if (entry == null)
             {
                 WinAuthForm.ErrorDialog(this, "Please load and select a Steam account");
@@ -556,9 +556,9 @@ namespace WinAuth
                 }
                 else if (lkey == "account_name")
                 {
-                    if (this.nameField.Text.Length == 0)
+                    if (nameField.Text.Length == 0)
                     {
-                        this.nameField.Text = "Steam (" + child.Value<string>() + ")";
+                        nameField.Text = "Steam (" + child.Value<string>() + ")";
                     }
                 }
                 else if (lkey == "shared_secret")
@@ -568,7 +568,7 @@ namespace WinAuth
             }
             auth.SteamData = token.ToString(Newtonsoft.Json.Formatting.None);
 
-            this.Authenticator.AuthenticatorData = auth;
+            Authenticator.AuthenticatorData = auth;
 
             return true;
         }
@@ -578,14 +578,14 @@ namespace WinAuth
         /// </summary>
         private void LoadSDA()
         {
-            string manifestfile = this.importSDAPath.Text.Trim();
+            string manifestfile = importSDAPath.Text.Trim();
             if (string.IsNullOrEmpty(manifestfile) == true || File.Exists(manifestfile) == false)
             {
                 WinAuthForm.ErrorDialog(this, "Enter a path for SteamDesktopAuthenticator");
                 return;
             }
 
-            string password = this.importSDAPassword.Text.Trim();
+            string password = importSDAPassword.Text.Trim();
 
             importSDAList.Items.Clear();
             try
@@ -807,7 +807,7 @@ namespace WinAuth
                         {
                             m_enroll.Error = null;
 
-                            this.Authenticator.AuthenticatorData = m_steamAuthenticator;
+                            Authenticator.AuthenticatorData = m_steamAuthenticator;
                             revocationcodeField.Text = m_enroll.RevocationCode;
 
                             ShowTab("confirmTab");
@@ -831,9 +831,9 @@ namespace WinAuth
                     revocationcode2Field.Text = m_enroll.RevocationCode;
                     tabs.SelectedTab = tabs.TabPages["addedTab"];
 
-                    this.closeButton.Location = this.cancelButton.Location;
-                    this.closeButton.Visible = true;
-                    this.cancelButton.Visible = false;
+                    closeButton.Location = cancelButton.Location;
+                    closeButton.Visible = true;
+                    cancelButton.Visible = false;
 
                     break;
                 }

@@ -487,12 +487,12 @@ namespace WinAuth
         /// <param name="modifier"></param>
         public KeyboardHookEventArgs(Keys key, WinAPI.KeyModifiers modifier)
         {
-            this.Key = key;
-            this.Modifiers = modifier;
+            Key = key;
+            Modifiers = modifier;
 
-            this.Alt = (modifier & WinAPI.KeyModifiers.Alt) != 0;
-            this.Control = (modifier & WinAPI.KeyModifiers.Control) != 0;
-            this.Shift = (modifier & WinAPI.KeyModifiers.Shift) != 0;
+            Alt = (modifier & WinAPI.KeyModifiers.Alt) != 0;
+            Control = (modifier & WinAPI.KeyModifiers.Control) != 0;
+            Shift = (modifier & WinAPI.KeyModifiers.Shift) != 0;
         }
 
         /// <summary>
@@ -501,25 +501,25 @@ namespace WinAuth
         /// <param name="keyCode"></param>
         public KeyboardHookEventArgs(Keys keyCode)
         {
-            this.Key = (Keys)keyCode;
+            Key = (Keys)keyCode;
             try
             {
                 // we have to use Windows Form to get the modifiers as won't work if no focus 
-                this.Alt = (System.Windows.Forms.Control.ModifierKeys & Keys.Alt) != 0;
-                this.Control = (System.Windows.Forms.Control.ModifierKeys & Keys.Control) != 0;
-                this.Shift = (System.Windows.Forms.Control.ModifierKeys & Keys.Shift) != 0;
+                Alt = (System.Windows.Forms.Control.ModifierKeys & Keys.Alt) != 0;
+                Control = (System.Windows.Forms.Control.ModifierKeys & Keys.Control) != 0;
+                Shift = (System.Windows.Forms.Control.ModifierKeys & Keys.Shift) != 0;
 
                 // combine the modifiers
                 Modifiers = WinAPI.KeyModifiers.None;
-                if (this.Alt)
+                if (Alt)
                 {
                     Modifiers |= WinAPI.KeyModifiers.Alt;
                 }
-                if (this.Control)
+                if (Control)
                 {
                     Modifiers |= WinAPI.KeyModifiers.Control;
                 }
-                if (this.Shift)
+                if (Shift)
                 {
                     Modifiers |= WinAPI.KeyModifiers.Shift;
                 }

@@ -53,7 +53,7 @@ namespace WinAuth
 #if DEBUG
             debug += " (DEBUG)";
 #endif
-            this.aboutLabel.Text = string.Format(this.aboutLabel.Text, version.ToString(3) + debug, DateTime.Today.Year);
+            aboutLabel.Text = string.Format(aboutLabel.Text, version.ToString(3) + debug, DateTime.Today.Year);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void closeButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>

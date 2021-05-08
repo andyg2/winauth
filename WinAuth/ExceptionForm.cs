@@ -58,13 +58,13 @@ namespace WinAuth
         private void ExceptionForm_Load(object sender, EventArgs e)
         {
             errorIcon.Image = SystemIcons.Error.ToBitmap();
-            this.Height = detailsButton.Top + detailsButton.Height + 45;
+            Height = detailsButton.Top + detailsButton.Height + 45;
 
-            this.errorLabel.Text = string.Format(this.errorLabel.Text, (ErrorException != null ? ErrorException.Message : strings.UnknownError));
+            errorLabel.Text = string.Format(errorLabel.Text, (ErrorException != null ? ErrorException.Message : strings.UnknownError));
 
             // build data
 #if DEBUG
-            dataText.Text = string.Format("{0}\n\n{1}", this.ErrorException.Message, new System.Diagnostics.StackTrace(this.ErrorException).ToString());
+            dataText.Text = string.Format("{0}\n\n{1}", ErrorException.Message, new System.Diagnostics.StackTrace(ErrorException).ToString());
 #else
 			try
 			{
@@ -115,7 +115,7 @@ namespace WinAuth
             catch (Exception) { }
 
             // add the current config
-            if (this.Config != null)
+            if (Config != null)
             {
                 using (var ms = new MemoryStream())
                 {
@@ -123,7 +123,7 @@ namespace WinAuth
                     settings.Indent = true;
                     using (var xml = XmlWriter.Create(ms, settings))
                     {
-                        this.Config.WriteXmlString(xml);
+                        Config.WriteXmlString(xml);
                     }
 
                     ms.Position = 0;
@@ -172,7 +172,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void quitButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void continueButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -195,13 +195,13 @@ namespace WinAuth
             dataText.Visible = !dataText.Visible;
             if (dataText.Visible == true)
             {
-                this.detailsButton.Text = strings.HideDetails;
-                this.Height += 160;
+                detailsButton.Text = strings.HideDetails;
+                Height += 160;
             }
             else
             {
-                this.detailsButton.Text = strings._ExceptionForm_detailsButton_;
-                this.Height -= 160;
+                detailsButton.Text = strings._ExceptionForm_detailsButton_;
+                Height -= 160;
             }
         }
 

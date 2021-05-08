@@ -161,7 +161,7 @@ namespace WinAuth
             get
             {
                 // this is the secretkey
-                return Authenticator.ByteArrayToString(SecretKey) + "\t" + this.CodeDigits.ToString() + "\t" + this.HMACType.ToString() + "\t" + this.Period.ToString();
+                return Authenticator.ByteArrayToString(SecretKey) + "\t" + CodeDigits.ToString() + "\t" + HMACType.ToString() + "\t" + Period.ToString();
             }
             set
             {
@@ -221,7 +221,7 @@ namespace WinAuth
             get
             {
                 // calculate the code interval; the server's time div 30,000
-                return (CurrentTime + ServerTimeDiff) / ((long)this.Period * 1000L);
+                return (CurrentTime + ServerTimeDiff) / ((long)Period * 1000L);
             }
         }
 
@@ -233,7 +233,7 @@ namespace WinAuth
         {
             get
             {
-                if (this.SecretKey == null && this.EncryptedData != null)
+                if (SecretKey == null && EncryptedData != null)
                 {
                     throw new EncryptedSecretDataException();
                 }
@@ -275,7 +275,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * ((long)this.Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * ((long)Period * 1000L)) - CurrentTime;
                 }
                 else
                 {
@@ -477,7 +477,7 @@ namespace WinAuth
         public void SetEncryption(PasswordTypes passwordType, string password = null)
         {
             // check if still encrpyted
-            if (this.RequiresPassword == true)
+            if (RequiresPassword == true)
             {
                 // have to decrypt to be able to re-encrypt
                 throw new EncryptedSecretDataException();
@@ -485,9 +485,9 @@ namespace WinAuth
 
             if (passwordType == PasswordTypes.None)
             {
-                this.RequiresPassword = false;
-                this.EncryptedData = null;
-                this.PasswordType = passwordType;
+                RequiresPassword = false;
+                EncryptedData = null;
+                PasswordType = passwordType;
             }
             else
             {
@@ -499,7 +499,7 @@ namespace WinAuth
                     settings.Encoding = Encoding.UTF8;
                     using (XmlWriter encryptedwriter = XmlWriter.Create(ms, settings))
                     {
-                        string encrpytedData = this.EncryptedData;
+                        string encrpytedData = EncryptedData;
                         Authenticator.PasswordTypes savedpasswordType = PasswordType;
                         try
                         {
@@ -509,8 +509,8 @@ namespace WinAuth
                         }
                         finally
                         {
-                            this.PasswordType = savedpasswordType;
-                            this.EncryptedData = encrpytedData;
+                            PasswordType = savedpasswordType;
+                            EncryptedData = encrpytedData;
                         }
                     }
                     string data = Authenticator.ByteArrayToString(ms.ToArray());
@@ -518,16 +518,16 @@ namespace WinAuth
                     // update secret hash
                     using (SHA1 sha1 = SHA1.Create())
                     {
-                        this.SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(this.SecretData));
+                        SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(SecretData));
                     }
 
                     // encrypt
-                    this.EncryptedData = Authenticator.EncryptSequence(data, passwordType, password);
-                    this.PasswordType = passwordType;
-                    if (this.PasswordType == PasswordTypes.Explicit)
+                    EncryptedData = Authenticator.EncryptSequence(data, passwordType, password);
+                    PasswordType = passwordType;
+                    if (PasswordType == PasswordTypes.Explicit)
                     {
-                        this.SecretData = null;
-                        this.RequiresPassword = true;
+                        SecretData = null;
+                        RequiresPassword = true;
                     }
                 }
             }
@@ -535,7 +535,7 @@ namespace WinAuth
 
         public void Protect()
         {
-            if (this.PasswordType != PasswordTypes.None)
+            if (PasswordType != PasswordTypes.None)
             {
                 // check if the data has changed
                 //if (this.SecretData != null)
@@ -551,15 +551,15 @@ namespace WinAuth
                 //	}
                 //}
 
-                this.SecretData = null;
-                this.RequiresPassword = true;
-                this.Password = null;
+                SecretData = null;
+                RequiresPassword = true;
+                Password = null;
             }
         }
 
         public bool Unprotect(string password)
         {
-            PasswordTypes passwordType = this.PasswordType;
+            PasswordTypes passwordType = PasswordType;
             if (passwordType == PasswordTypes.None)
             {
                 throw new InvalidOperationException("Cannot Unprotect a non-encrypted authenticator");
@@ -569,20 +569,20 @@ namespace WinAuth
             bool changed = false;
             try
             {
-                string data = Authenticator.DecryptSequence(this.EncryptedData, this.PasswordType, password);
+                string data = Authenticator.DecryptSequence(EncryptedData, PasswordType, password);
                 using (MemoryStream ms = new MemoryStream(Authenticator.StringToByteArray(data)))
                 {
                     XmlReader reader = XmlReader.Create(ms);
-                    changed = this.ReadXml(reader, password) || changed;
+                    changed = ReadXml(reader, password) || changed;
                 }
-                this.RequiresPassword = false;
+                RequiresPassword = false;
                 // calculate hash of current secretdata
                 using (SHA1 sha1 = SHA1.Create())
                 {
-                    this.SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(this.SecretData));
+                    SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(SecretData));
                 }
                 // keep the password until we reprotect in case data changes
-                this.Password = password;
+                Password = password;
 
                 if (changed == true)
                 {
@@ -602,11 +602,11 @@ namespace WinAuth
                         // update secret hash
                         using (SHA1 sha1 = SHA1.Create())
                         {
-                            this.SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(this.SecretData));
+                            SecretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(SecretData));
                         }
 
                         // encrypt
-                        this.EncryptedData = Authenticator.EncryptSequence(encrypteddata, passwordType, password);
+                        EncryptedData = Authenticator.EncryptSequence(encrypteddata, passwordType, password);
                     }
                 }
 
@@ -614,12 +614,12 @@ namespace WinAuth
             }
             catch (EncryptedSecretDataException)
             {
-                this.RequiresPassword = true;
+                RequiresPassword = true;
                 throw;
             }
             finally
             {
-                this.PasswordType = passwordType;
+                PasswordType = passwordType;
             }
         }
 
@@ -628,12 +628,12 @@ namespace WinAuth
             // decode the password type
             string encrypted = reader.GetAttribute("encrypted");
             PasswordTypes passwordType = DecodePasswordTypes(encrypted);
-            this.PasswordType = passwordType;
+            PasswordType = passwordType;
 
             if (passwordType != PasswordTypes.None)
             {
                 // read the encrypted text from the node
-                this.EncryptedData = reader.ReadElementContentAsString();
+                EncryptedData = reader.ReadElementContentAsString();
                 return Unprotect(password);
 
                 //// decrypt
@@ -723,15 +723,15 @@ namespace WinAuth
         {
             writer.WriteStartElement("authenticatordata");
             //writer.WriteAttributeString("type", this.GetType().FullName);
-            string encrypted = EncodePasswordTypes(this.PasswordType);
+            string encrypted = EncodePasswordTypes(PasswordType);
             if (string.IsNullOrEmpty(encrypted) == false)
             {
                 writer.WriteAttributeString("encrypted", encrypted);
             }
 
-            if (this.PasswordType != PasswordTypes.None)
+            if (PasswordType != PasswordTypes.None)
             {
-                writer.WriteRaw(this.EncryptedData);
+                writer.WriteRaw(EncryptedData);
             }
             else
             {
@@ -1265,7 +1265,7 @@ namespace WinAuth
         public object Clone()
         {
             // we only need to do shallow copy
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         #endregion

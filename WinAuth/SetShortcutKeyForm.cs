@@ -103,27 +103,27 @@ namespace WinAuth
             }
 
             // set the modifiers
-            if (this.Hotkey != null)
+            if (Hotkey != null)
             {
-                shiftToggle.Checked = ((this.Hotkey.Modifiers & WinAPI.KeyModifiers.Shift) != 0);
-                ctrlToggle.Checked = ((this.Hotkey.Modifiers & WinAPI.KeyModifiers.Control) != 0);
-                altToggle.Checked = ((this.Hotkey.Modifiers & WinAPI.KeyModifiers.Alt) != 0);
+                shiftToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Shift) != 0);
+                ctrlToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Control) != 0);
+                altToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Alt) != 0);
 
-                this.notifyRadioButton.Enabled = true;
-                this.notifyRadioButton.Checked = (this.Hotkey.Action == HotKey.HotKeyActions.Notify);
+                notifyRadioButton.Enabled = true;
+                notifyRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Notify);
                 //
-                this.injectRadioButton.Enabled = true;
-                this.injectRadioButton.Checked = (this.Hotkey.Action == HotKey.HotKeyActions.Inject);
-                this.injectTextbox.Enabled = this.injectRadioButton.Checked;
-                this.injectTextbox.Text = (this.injectRadioButton.Checked == true ? this.Hotkey.Window : string.Empty);
+                injectRadioButton.Enabled = true;
+                injectRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Inject);
+                injectTextbox.Enabled = injectRadioButton.Checked;
+                injectTextbox.Text = (injectRadioButton.Checked == true ? Hotkey.Window : string.Empty);
                 //
-                this.pasteRadioButton.Enabled = true;
-                this.pasteRadioButton.Checked = (this.Hotkey.Action == HotKey.HotKeyActions.Copy);
+                pasteRadioButton.Enabled = true;
+                pasteRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Copy);
                 //
-                this.advancedRadioButton.Enabled = true;
-                this.advancedRadioButton.Checked = (this.Hotkey.Action == HotKey.HotKeyActions.Advanced);
-                this.advancedTextbox.Enabled = this.advancedRadioButton.Checked;
-                this.advancedTextbox.Text = (this.advancedRadioButton.Checked == true ? this.Hotkey.Advanced : string.Empty);
+                advancedRadioButton.Enabled = true;
+                advancedRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Advanced);
+                advancedTextbox.Enabled = advancedRadioButton.Checked;
+                advancedTextbox.Text = (advancedRadioButton.Checked == true ? Hotkey.Advanced : string.Empty);
             }
 
         }
@@ -138,14 +138,14 @@ namespace WinAuth
             WinAPI.VirtualKeyCode key = (keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode));
             if (key == 0)
             {
-                this.Hotkey = null;
+                Hotkey = null;
             }
-            else if (this.Hotkey == null)
+            else if (Hotkey == null)
             {
-                this.Hotkey = new HotKey();
+                Hotkey = new HotKey();
             }
 
-            if (this.Hotkey != null)
+            if (Hotkey != null)
             {
                 WinAPI.KeyModifiers modifiers = WinAPI.KeyModifiers.None;
                 if (shiftToggle.Checked)
@@ -162,39 +162,39 @@ namespace WinAuth
                 }
 
                 // check it is available if this is a different hotkey
-                if ((key != this.Hotkey.Key || modifiers != this.Hotkey.Modifiers) && KeyboardHook.IsHotkeyAvailable(this, (Keys)key, modifiers) == false)
+                if ((key != Hotkey.Key || modifiers != Hotkey.Modifiers) && KeyboardHook.IsHotkeyAvailable(this, (Keys)key, modifiers) == false)
                 {
                     WinAuthForm.ErrorDialog(this, strings.HotKeyNotAvailable);
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
                 }
 
-                this.Hotkey.Key = key;
-                this.Hotkey.Modifiers = modifiers;
+                Hotkey.Key = key;
+                Hotkey.Modifiers = modifiers;
 
                 if (notifyRadioButton.Checked == true)
                 {
-                    this.Hotkey.Action = HotKey.HotKeyActions.Notify;
-                    this.Hotkey.Window = null;
-                    this.Hotkey.Advanced = null;
+                    Hotkey.Action = HotKey.HotKeyActions.Notify;
+                    Hotkey.Window = null;
+                    Hotkey.Advanced = null;
                 }
                 else if (injectRadioButton.Checked == true)
                 {
-                    this.Hotkey.Action = HotKey.HotKeyActions.Inject;
-                    this.Hotkey.Window = this.injectTextbox.Text;
-                    this.Hotkey.Advanced = null;
+                    Hotkey.Action = HotKey.HotKeyActions.Inject;
+                    Hotkey.Window = injectTextbox.Text;
+                    Hotkey.Advanced = null;
                 }
                 else if (pasteRadioButton.Checked == true)
                 {
-                    this.Hotkey.Action = HotKey.HotKeyActions.Copy;
-                    this.Hotkey.Window = null;
-                    this.Hotkey.Advanced = null;
+                    Hotkey.Action = HotKey.HotKeyActions.Copy;
+                    Hotkey.Window = null;
+                    Hotkey.Advanced = null;
                 }
                 else if (advancedRadioButton.Checked == true)
                 {
-                    this.Hotkey.Action = HotKey.HotKeyActions.Advanced;
-                    this.Hotkey.Window = null;
-                    this.Hotkey.Advanced = this.advancedTextbox.Text;
+                    Hotkey.Action = HotKey.HotKeyActions.Advanced;
+                    Hotkey.Window = null;
+                    Hotkey.Advanced = advancedTextbox.Text;
                 }
             }
         }
@@ -214,17 +214,17 @@ namespace WinAuth
                 ctrlToggle.Checked = false;
                 altToggle.Checked = false;
 
-                this.notifyRadioButton.Enabled = false;
-                this.injectRadioButton.Enabled = false;
-                this.pasteRadioButton.Enabled = false;
-                this.advancedRadioButton.Enabled = false;
+                notifyRadioButton.Enabled = false;
+                injectRadioButton.Enabled = false;
+                pasteRadioButton.Enabled = false;
+                advancedRadioButton.Enabled = false;
             }
             else
             {
-                this.notifyRadioButton.Enabled = true;
-                this.injectRadioButton.Enabled = true;
-                this.pasteRadioButton.Enabled = true;
-                this.advancedRadioButton.Enabled = true;
+                notifyRadioButton.Enabled = true;
+                injectRadioButton.Enabled = true;
+                pasteRadioButton.Enabled = true;
+                advancedRadioButton.Enabled = true;
             }
         }
 
@@ -235,7 +235,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void injectRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.injectTextbox.Enabled = this.injectRadioButton.Checked;
+            injectTextbox.Enabled = injectRadioButton.Checked;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void advancedRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.advancedTextbox.Enabled = this.advancedRadioButton.Checked;
+            advancedTextbox.Enabled = advancedRadioButton.Checked;
         }
 
         /// <summary>

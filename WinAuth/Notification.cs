@@ -441,9 +441,9 @@ namespace WinAuth
             else
             {
                 buttonPanel.Visible = true;
-                this.Height += buttonPanel.Height;
-                this.labelBody.Height -= buttonPanel.Height;
-                this.htmlBody.Height -= buttonPanel.Height;
+                Height += buttonPanel.Height;
+                labelBody.Height -= buttonPanel.Height;
+                htmlBody.Height -= buttonPanel.Height;
 
                 if (_buttons.Count >= 1)
                 {
@@ -490,8 +490,8 @@ namespace WinAuth
 
             if (OnNotificationClicked != null)
             {
-                this.labelBody.Cursor = Cursors.Hand;
-                this.htmlBody.Cursor = Cursors.Hand;
+                labelBody.Cursor = Cursors.Hand;
+                htmlBody.Cursor = Cursors.Hand;
             }
 
             _animator = new FormAnimator(this, animation.Method, animation.Direction, 500);

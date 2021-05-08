@@ -50,7 +50,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void AddBattleNetAuthenticator_Load(object sender, EventArgs e)
         {
-            nameField.Text = this.Authenticator.Name;
+            nameField.Text = Authenticator.Name;
 
             newSerialNumberField.SecretMode = true;
             newLoginCodeField.SecretMode = true;
@@ -66,16 +66,16 @@ namespace WinAuth
         {
             newSerialNumberField.SecretMode = !allowCopyNewButton.Checked;
 
-            if (this.Authenticator != null && this.Authenticator.AuthenticatorData != null)
+            if (Authenticator != null && Authenticator.AuthenticatorData != null)
             {
                 // Issue#122: remove dashes if copyable so can be pasted into Battle.net form
                 if (allowCopyNewButton.Checked == true)
                 {
-                    newSerialNumberField.Text = ((BattleNetAuthenticator)this.Authenticator.AuthenticatorData).Serial.Replace("-", "");
+                    newSerialNumberField.Text = ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial.Replace("-", "");
                 }
                 else
                 {
-                    newSerialNumberField.Text = ((BattleNetAuthenticator)this.Authenticator.AuthenticatorData).Serial;
+                    newSerialNumberField.Text = ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial;
                 }
             }
             newLoginCodeField.SecretMode = !allowCopyNewButton.Checked;
@@ -89,13 +89,13 @@ namespace WinAuth
         /// <param name="e"></param>
         private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
-            if (this.Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
+            if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
             {
-                int time = (int)(this.Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
+                int time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
                 newAuthenticatorProgress.Value = time + 1;
                 if (time == 0)
                 {
-                    newLoginCodeField.Text = this.Authenticator.AuthenticatorData.CurrentCode;
+                    newLoginCodeField.Text = Authenticator.AuthenticatorData.CurrentCode;
                 }
             }
         }
@@ -107,20 +107,20 @@ namespace WinAuth
         /// <param name="e"></param>
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            if (this.Authenticator.AuthenticatorData != null)
+            if (Authenticator.AuthenticatorData != null)
             {
-                DialogResult result = WinAuthForm.ConfirmDialog(this.Owner,
+                DialogResult result = WinAuthForm.ConfirmDialog(Owner,
                     "You have created a new authenticator. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                    DialogResult = System.Windows.Forms.DialogResult.OK;
                     return;
                 }
                 else if (result == System.Windows.Forms.DialogResult.Cancel)
                 {
-                    this.DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
                 }
             }
@@ -135,7 +135,7 @@ namespace WinAuth
         {
             if (verifyAuthenticator() == false)
             {
-                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
         }
@@ -153,7 +153,7 @@ namespace WinAuth
             Rectangle paddedBounds = e.Bounds;
             int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
-            TextRenderer.DrawText(e.Graphics, page.Text, this.Font, paddedBounds, page.ForeColor);
+            TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void icon1_Click(object sender, EventArgs e)
         {
-            this.icon1RadioButton.Checked = true;
+            icon1RadioButton.Checked = true;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void icon2_Click(object sender, EventArgs e)
         {
-            this.icon2RadioButton.Checked = true;
+            icon2RadioButton.Checked = true;
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void icon3_Click(object sender, EventArgs e)
         {
-            this.icon3RadioButton.Checked = true;
+            icon3RadioButton.Checked = true;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace WinAuth
         {
             if (((RadioButton)sender).Checked == true)
             {
-                this.Authenticator.Skin = (string)((RadioButton)sender).Tag;
+                Authenticator.Skin = (string)((RadioButton)sender).Tag;
             }
         }
 
@@ -209,23 +209,23 @@ namespace WinAuth
         /// <returns>true is successful</returns>
         private bool verifyAuthenticator()
         {
-            this.Authenticator.Name = nameField.Text;
+            Authenticator.Name = nameField.Text;
 
-            if (this.tabControl1.SelectedIndex == 0)
+            if (tabControl1.SelectedIndex == 0)
             {
-                if (this.Authenticator.AuthenticatorData == null)
+                if (Authenticator.AuthenticatorData == null)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "You need to create an authenticator and attach it to your account");
+                    WinAuthForm.ErrorDialog(Owner, "You need to create an authenticator and attach it to your account");
                     return false;
                 }
             }
-            else if (this.tabControl1.SelectedIndex == 1)
+            else if (tabControl1.SelectedIndex == 1)
             {
-                string serial = this.restoreSerialNumberField.Text.Trim();
-                string restore = this.restoreRestoreCodeField.Text.Trim();
+                string serial = restoreSerialNumberField.Text.Trim();
+                string restore = restoreRestoreCodeField.Text.Trim();
                 if (serial.Length == 0 || restore.Length == 0)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "Please enter the Serial number and Restore code");
+                    WinAuthForm.ErrorDialog(Owner, "Please enter the Serial number and Restore code");
                     return false;
                 }
 
@@ -233,20 +233,20 @@ namespace WinAuth
                 {
                     BattleNetAuthenticator authenticator = new BattleNetAuthenticator();
                     authenticator.Restore(serial, restore);
-                    this.Authenticator.AuthenticatorData = authenticator;
+                    Authenticator.AuthenticatorData = authenticator;
                 }
                 catch (InvalidRestoreResponseException irre)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "Unable to restore the authenticator: " + irre.Message, irre);
+                    WinAuthForm.ErrorDialog(Owner, "Unable to restore the authenticator: " + irre.Message, irre);
                     return false;
                 }
             }
-            else if (this.tabControl1.SelectedIndex == 2)
+            else if (tabControl1.SelectedIndex == 2)
             {
-                string privatekey = this.importPrivateKeyField.Text.Trim();
+                string privatekey = importPrivateKeyField.Text.Trim();
                 if (privatekey.Length == 0)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "Please enter the Private key");
+                    WinAuthForm.ErrorDialog(Owner, "Please enter the Private key");
                     return false;
                 }
                 // just get the hex chars
@@ -254,7 +254,7 @@ namespace WinAuth
                 privatekey = Regex.Replace(privatekey, @"[^0-9abcdef]", "", RegexOptions.IgnoreCase);
                 if (privatekey.Length == 0 || privatekey.Length < 40)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "The private key must be a sequence of at least 40 hexadecimal characters, e.g. 7B0BFA82... or 0x7B, 0x0B, 0xFA, 0x82, ...");
+                    WinAuthForm.ErrorDialog(Owner, "The private key must be a sequence of at least 40 hexadecimal characters, e.g. 7B0BFA82... or 0x7B, 0x0B, 0xFA, 0x82, ...");
                     return false;
                 }
                 try
@@ -274,11 +274,11 @@ namespace WinAuth
                         }
                     }
                     authenticator.Sync();
-                    this.Authenticator.AuthenticatorData = authenticator;
+                    Authenticator.AuthenticatorData = authenticator;
                 }
                 catch (Exception irre)
                 {
-                    WinAuthForm.ErrorDialog(this.Owner, "Unable to import the authenticator. The private key is probably invalid.", irre);
+                    WinAuthForm.ErrorDialog(Owner, "Unable to import the authenticator. The private key is probably invalid.", irre);
                     return false;
                 }
             }
@@ -292,9 +292,9 @@ namespace WinAuth
         /// <param name="showWarning"></param>
         private void clearAuthenticator(bool showWarning = true)
         {
-            if (this.Authenticator.AuthenticatorData != null && showWarning == true)
+            if (Authenticator.AuthenticatorData != null && showWarning == true)
             {
-                DialogResult result = WinAuthForm.ConfirmDialog(this.Owner,
+                DialogResult result = WinAuthForm.ConfirmDialog(Owner,
                     "This will clear the authenticator you have just created. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Are you sure you want to continue?");
@@ -303,7 +303,7 @@ namespace WinAuth
                     return;
                 }
 
-                this.Authenticator.AuthenticatorData = null;
+                Authenticator.AuthenticatorData = null;
             }
 
             newAuthenticatorProgress.Visible = false;
@@ -341,7 +341,7 @@ namespace WinAuth
 #else
 					authenticator.Enroll();
 #endif
-                    this.Authenticator.AuthenticatorData = authenticator;
+                    Authenticator.AuthenticatorData = authenticator;
                     newSerialNumberField.Text = authenticator.Serial;
                     newLoginCodeField.Text = authenticator.CurrentCode;
                     newRestoreCodeField.Text = authenticator.RestoreCode;
@@ -353,7 +353,7 @@ namespace WinAuth
                 }
                 catch (InvalidEnrollResponseException iere)
                 {
-                    if (WinAuthForm.ErrorDialog(this.Owner, "An error occured while registering a new authenticator", iere, MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
+                    if (WinAuthForm.ErrorDialog(Owner, "An error occured while registering a new authenticator", iere, MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
                     {
                         break;
                     }

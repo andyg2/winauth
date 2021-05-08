@@ -77,11 +77,11 @@ namespace WinAuth
             //var controls = GetControls(this, new Type[] { typeof(MetroFramework.Controls.MetroLabel), typeof(MetroFramework.Controls.MetroCheckBox) });
             var controls = GetControls(this);
 
-            string formname = "_" + this.Name + "_";
+            string formname = "_" + Name + "_";
             string text = WinAuthMain.StringResources.GetString(formname, System.Threading.Thread.CurrentThread.CurrentCulture);
             if (text != null)
             {
-                this.Text = text;
+                Text = text;
             }
             foreach (Control c in controls)
             {

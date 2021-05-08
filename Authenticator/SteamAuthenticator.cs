@@ -180,9 +180,9 @@ namespace WinAuth
         {
             get
             {
-                if (this.Client != null && this.Client.Session != null)
+                if (Client != null && Client.Session != null)
                 {
-                    this.SessionData = this.Client.Session.ToString();
+                    SessionData = Client.Session.ToString();
                 }
 
                 //if (Logger != null)
@@ -244,12 +244,12 @@ namespace WinAuth
         {
             lock (this)
             {
-                if (this.Client == null)
+                if (Client == null)
                 {
-                    this.Client = new SteamClient(this, this.SessionData);
+                    Client = new SteamClient(this, SessionData);
                 }
 
-                return this.Client;
+                return Client;
             }
         }
 
@@ -543,9 +543,9 @@ namespace WinAuth
 
                     // save data into this authenticator
                     var secret = tfaresponse.SelectToken("response.shared_secret").Value<string>();
-                    this.SecretKey = Convert.FromBase64String(secret);
-                    this.Serial = tfaresponse.SelectToken("response.serial_number").Value<string>();
-                    this.DeviceId = deviceId;
+                    SecretKey = Convert.FromBase64String(secret);
+                    Serial = tfaresponse.SelectToken("response.serial_number").Value<string>();
+                    DeviceId = deviceId;
                     state.RevocationCode = tfaresponse.SelectToken("response.revocation_code").Value<string>();
 
                     // add the steamid into the data
@@ -558,7 +558,7 @@ namespace WinAuth
                     {
                         steamdata.Add("steamguard_scheme", "2");
                     }
-                    this.SteamData = steamdata.ToString(Newtonsoft.Json.Formatting.None);
+                    SteamData = steamdata.ToString(Newtonsoft.Json.Formatting.None);
 
                     // calculate server drift
                     long servertime = tfaresponse.SelectToken("response.server_time").Value<long>() * 1000;
@@ -580,8 +580,8 @@ namespace WinAuth
                 var retries = 0;
                 while (state.RequiresActivation == true && retries < ENROLL_ACTIVATE_RETRIES)
                 {
-                    data.Add("authenticator_code", this.CalculateCode(false));
-                    data.Add("authenticator_time", this.ServerTime.ToString());
+                    data.Add("authenticator_code", CalculateCode(false));
+                    data.Add("authenticator_time", ServerTime.ToString());
                     response = Request(WEBAPI_BASE + "/ITwoFactorService/FinalizeAddAuthenticator/v0001", "POST", data);
                     var finalizeresponse = JObject.Parse(response);
                     if (response.IndexOf("status") != -1 && finalizeresponse.SelectToken("response.status").Value<int>() == INVALID_ACTIVATION_CODE)
@@ -603,7 +603,7 @@ namespace WinAuth
                     {
                         if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>() == true)
                         {
-                            ServerTimeDiff += ((long)this.Period * 1000L);
+                            ServerTimeDiff += ((long)Period * 1000L);
                             retries++;
                             continue;
                         }
@@ -611,7 +611,7 @@ namespace WinAuth
                         break;
                     }
 
-                    ServerTimeDiff += ((long)this.Period * 1000L);
+                    ServerTimeDiff += ((long)Period * 1000L);
                     retries++;
                 }
                 if (state.RequiresActivation == true)
@@ -622,7 +622,7 @@ namespace WinAuth
 
                 // mark and successful and return key
                 state.Success = true;
-                state.SecretKey = Authenticator.ByteArrayToString(this.SecretKey);
+                state.SecretKey = Authenticator.ByteArrayToString(SecretKey);
 
                 // send confirmation email
                 data.Clear();
@@ -649,7 +649,7 @@ namespace WinAuth
         public override void Sync()
         {
             // check if data is protected
-            if (this.SecretKey == null && this.EncryptedData != null)
+            if (SecretKey == null && EncryptedData != null)
             {
                 throw new EncryptedSecretDataException();
             }
@@ -697,7 +697,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * ((long)this.Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * ((long)Period * 1000L)) - CurrentTime;
                 }
                 else
                 {

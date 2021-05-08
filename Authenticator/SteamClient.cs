@@ -131,11 +131,11 @@ namespace WinAuth
                 {
                     List<string> props = new List<string>();
 
-                    props.Add("\"duration\":" + this.Duration);
-                    props.Add("\"action\":" + (int)this.Action);
-                    if (this.Ids != null)
+                    props.Add("\"duration\":" + Duration);
+                    props.Add("\"action\":" + (int)Action);
+                    if (Ids != null)
                     {
-                        props.Add("\"ids\":[" + (this.Ids.Count != 0 ? "\"" + string.Join("\",\"", this.Ids.ToArray()) + "\"" : string.Empty) + "]");
+                        props.Add("\"ids\":[" + (Ids.Count != 0 ? "\"" + string.Join("\",\"", Ids.ToArray()) + "\"" : string.Empty) + "]");
                     }
 
                     return "{" + string.Join(",", props.ToArray()) + "}";
@@ -259,7 +259,7 @@ namespace WinAuth
                 {
                     try
                     {
-                        this.FromJson(json);
+                        FromJson(json);
                     }
                     catch (Exception)
                     {
@@ -273,10 +273,10 @@ namespace WinAuth
             /// </summary>
             public void Clear()
             {
-                this.OAuthToken = null;
-                this.UmqId = null;
-                this.Cookies = new CookieContainer();
-                this.Confirmations = null;
+                OAuthToken = null;
+                UmqId = null;
+                Cookies = new CookieContainer();
+                Confirmations = null;
             }
 
             /// <summary>
@@ -285,11 +285,11 @@ namespace WinAuth
             /// <returns></returns>
             public override string ToString()
             {
-                return "{\"steamid\":\"" + (this.SteamId ?? string.Empty) + "\","
-                    + "\"cookies\":\"" + this.Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
-                    + "\"oauthtoken\":\"" + (this.OAuthToken ?? string.Empty) + "\","
+                return "{\"steamid\":\"" + (SteamId ?? string.Empty) + "\","
+                    + "\"cookies\":\"" + Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
+                    + "\"oauthtoken\":\"" + (OAuthToken ?? string.Empty) + "\","
                     // + "\"umqid\":\"" + (this.UmqId ?? string.Empty) + "\","
-                    + "\"confs\":" + (this.Confirmations != null ? this.Confirmations.ToString() : "null")
+                    + "\"confs\":" + (Confirmations != null ? Confirmations.ToString() : "null")
                     + "}";
             }
 
@@ -303,26 +303,26 @@ namespace WinAuth
                 var token = tokens.SelectToken("steamid");
                 if (token != null)
                 {
-                    this.SteamId = token.Value<string>();
+                    SteamId = token.Value<string>();
                 }
                 token = tokens.SelectToken("cookies");
                 if (token != null)
                 {
-                    this.Cookies = new CookieContainer();
+                    Cookies = new CookieContainer();
 
                     // Net3.5 has a bug that prepends "." to domain, e.g. ".steamcommunity.com"
                     var uri = new Uri(COMMUNITY_BASE + "/");
                     var match = Regex.Match(token.Value<string>(), @"([^=]+)=([^;]*);?", RegexOptions.Singleline);
                     while (match.Success == true)
                     {
-                        this.Cookies.Add(uri, new Cookie(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+                        Cookies.Add(uri, new Cookie(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
                         match = match.NextMatch();
                     }
                 }
                 token = tokens.SelectToken("oauthtoken");
                 if (token != null)
                 {
-                    this.OAuthToken = token.Value<string>();
+                    OAuthToken = token.Value<string>();
                 }
                 //token = tokens.SelectToken("umqid");
                 //if (token != null)
@@ -332,7 +332,7 @@ namespace WinAuth
                 token = tokens.SelectToken("confs");
                 if (token != null)
                 {
-                    this.Confirmations = ConfirmationPoller.FromJSON(token);
+                    Confirmations = ConfirmationPoller.FromJSON(token);
                 }
             }
         }
@@ -384,21 +384,21 @@ namespace WinAuth
         /// </summary>
         public SteamClient(SteamAuthenticator auth, string session = null)
         {
-            this.Authenticator = auth;
-            this.Session = new SteamSession(session);
+            Authenticator = auth;
+            Session = new SteamSession(session);
 
-            if (this.Session.Confirmations != null)
+            if (Session.Confirmations != null)
             {
-                if (this.IsLoggedIn() == false)
+                if (IsLoggedIn() == false)
                 {
-                    this.Session.Confirmations = null;
+                    Session.Confirmations = null;
                 }
                 else
                 {
                     Task.Factory.StartNew(() =>
                     {
                         Refresh();
-                        PollConfirmations(this.Session.Confirmations);
+                        PollConfirmations(Session.Confirmations);
                     });
                 }
             }
@@ -444,16 +444,16 @@ namespace WinAuth
         /// </summary>
         public void Clear()
         {
-            this.InvalidLogin = false;
-            this.RequiresCaptcha = false;
-            this.CaptchaId = null;
-            this.CaptchaUrl = null;
-            this.RequiresEmailAuth = false;
-            this.EmailDomain = null;
-            this.Requires2FA = false;
-            this.Error = null;
+            InvalidLogin = false;
+            RequiresCaptcha = false;
+            CaptchaId = null;
+            CaptchaUrl = null;
+            RequiresEmailAuth = false;
+            EmailDomain = null;
+            Requires2FA = false;
+            Error = null;
 
-            this.Session.Clear();
+            Session.Clear();
         }
 
         /// <summary>
@@ -462,7 +462,7 @@ namespace WinAuth
         /// <returns></returns>
         public bool IsLoggedIn()
         {
-            return (this.Session != null && string.IsNullOrEmpty(this.Session.OAuthToken) == false);
+            return (Session != null && string.IsNullOrEmpty(Session.OAuthToken) == false);
         }
 
         /// <summary>
@@ -476,24 +476,24 @@ namespace WinAuth
         public bool Login(string username, string password, string captchaId = null, string captchaText = null)
         {
             // clear error
-            this.Error = null;
+            Error = null;
 
             var data = new NameValueCollection();
             string response;
 
-            if (this.IsLoggedIn() == false)
+            if (IsLoggedIn() == false)
             {
                 // get session
-                if (this.Session.Cookies.Count == 0)
+                if (Session.Cookies.Count == 0)
                 {
                     // .Net3.5 has a bug in CookieContainer that prepends a "." to the domain, i.e. ".steamcommunity.com"
                     var cookieuri = new Uri(COMMUNITY_BASE + "/");
-                    this.Session.Cookies.Add(cookieuri, new Cookie("mobileClientVersion", "3067969+%282.1.3%29"));
-                    this.Session.Cookies.Add(cookieuri, new Cookie("mobileClient", "android"));
-                    this.Session.Cookies.Add(cookieuri, new Cookie("steamid", ""));
-                    this.Session.Cookies.Add(cookieuri, new Cookie("steamLogin", ""));
-                    this.Session.Cookies.Add(cookieuri, new Cookie("Steam_Language", "english"));
-                    this.Session.Cookies.Add(cookieuri, new Cookie("dob", ""));
+                    Session.Cookies.Add(cookieuri, new Cookie("mobileClientVersion", "3067969+%282.1.3%29"));
+                    Session.Cookies.Add(cookieuri, new Cookie("mobileClient", "android"));
+                    Session.Cookies.Add(cookieuri, new Cookie("steamid", ""));
+                    Session.Cookies.Add(cookieuri, new Cookie("steamLogin", ""));
+                    Session.Cookies.Add(cookieuri, new Cookie("Steam_Language", "english"));
+                    Session.Cookies.Add(cookieuri, new Cookie("dob", ""));
 
                     NameValueCollection headers = new NameValueCollection();
                     headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
@@ -511,8 +511,8 @@ namespace WinAuth
                 var rsaresponse = JObject.Parse(response);
                 if (rsaresponse.SelectToken("success").Value<bool>() != true)
                 {
-                    this.InvalidLogin = true;
-                    this.Error = "Unknown username";
+                    InvalidLogin = true;
+                    Error = "Unknown username";
                     return false;
                 }
 
@@ -534,7 +534,7 @@ namespace WinAuth
                 data = new NameValueCollection();
                 data.Add("password", encryptedPassword64);
                 data.Add("username", username);
-                data.Add("twofactorcode", this.Authenticator.CurrentCode);
+                data.Add("twofactorcode", Authenticator.CurrentCode);
                 //data.Add("emailauth", string.Empty);
                 data.Add("loginfriendlyname", "#login_emailauth_friendlyname_mobile");
                 data.Add("captchagid", (string.IsNullOrEmpty(captchaId) == false ? captchaId : "-1"));
@@ -550,27 +550,27 @@ namespace WinAuth
 
                 if (loginresponse.ContainsKey("emailsteamid") == true)
                 {
-                    this.Session.SteamId = loginresponse["emailsteamid"] as string;
+                    Session.SteamId = loginresponse["emailsteamid"] as string;
                 }
 
-                this.InvalidLogin = false;
-                this.RequiresCaptcha = false;
-                this.CaptchaId = null;
-                this.CaptchaUrl = null;
-                this.RequiresEmailAuth = false;
-                this.EmailDomain = null;
-                this.Requires2FA = false;
+                InvalidLogin = false;
+                RequiresCaptcha = false;
+                CaptchaId = null;
+                CaptchaUrl = null;
+                RequiresEmailAuth = false;
+                EmailDomain = null;
+                Requires2FA = false;
 
                 if (loginresponse.ContainsKey("login_complete") == false || (bool)loginresponse["login_complete"] == false || loginresponse.ContainsKey("oauth") == false)
                 {
-                    this.InvalidLogin = true;
+                    InvalidLogin = true;
 
                     // require captcha
                     if (loginresponse.ContainsKey("captcha_needed") == true && (bool)loginresponse["captcha_needed"] == true)
                     {
-                        this.RequiresCaptcha = true;
-                        this.CaptchaId = (string)loginresponse["captcha_gid"];
-                        this.CaptchaUrl = COMMUNITY_BASE + "/public/captcha.php?gid=" + this.CaptchaId;
+                        RequiresCaptcha = true;
+                        CaptchaId = (string)loginresponse["captcha_gid"];
+                        CaptchaUrl = COMMUNITY_BASE + "/public/captcha.php?gid=" + CaptchaId;
                     }
 
                     // require email auth
@@ -581,21 +581,21 @@ namespace WinAuth
                             var emaildomain = (string)loginresponse["emaildomain"];
                             if (string.IsNullOrEmpty(emaildomain) == false)
                             {
-                                this.EmailDomain = emaildomain;
+                                EmailDomain = emaildomain;
                             }
                         }
-                        this.RequiresEmailAuth = true;
+                        RequiresEmailAuth = true;
                     }
 
                     // require email auth
                     if (loginresponse.ContainsKey("requires_twofactor") == true && (bool)loginresponse["requires_twofactor"] == true)
                     {
-                        this.Requires2FA = true;
+                        Requires2FA = true;
                     }
 
                     if (loginresponse.ContainsKey("message") == true)
                     {
-                        this.Error = (string)loginresponse["message"];
+                        Error = (string)loginresponse["message"];
                     }
 
                     return false;
@@ -604,10 +604,10 @@ namespace WinAuth
                 // get the OAuth token
                 string oauth = (string)loginresponse["oauth"];
                 var oauthjson = JObject.Parse(oauth);
-                this.Session.OAuthToken = oauthjson.SelectToken("oauth_token").Value<string>();
+                Session.OAuthToken = oauthjson.SelectToken("oauth_token").Value<string>();
                 if (oauthjson.SelectToken("steamid") != null)
                 {
-                    this.Session.SteamId = oauthjson.SelectToken("steamid").Value<string>();
+                    Session.SteamId = oauthjson.SelectToken("steamid").Value<string>();
                 }
 
                 //// perform UMQ login
@@ -633,15 +633,15 @@ namespace WinAuth
         /// </summary>
         public void Logout()
         {
-            if (string.IsNullOrEmpty(this.Session.OAuthToken) == false)
+            if (string.IsNullOrEmpty(Session.OAuthToken) == false)
             {
                 PollConfirmationsStop();
 
-                if (string.IsNullOrEmpty(this.Session.UmqId) == false)
+                if (string.IsNullOrEmpty(Session.UmqId) == false)
                 {
                     var data = new NameValueCollection();
-                    data.Add("access_token", this.Session.OAuthToken);
-                    data.Add("umqid", this.Session.UmqId);
+                    data.Add("access_token", Session.OAuthToken);
+                    data.Add("umqid", Session.UmqId);
                     GetString(API_LOGOFF, "POST", data);
                 }
             }
@@ -658,7 +658,7 @@ namespace WinAuth
             try
             {
                 var data = new NameValueCollection();
-                data.Add("access_token", this.Session.OAuthToken);
+                data.Add("access_token", Session.OAuthToken);
                 string response = GetString(API_GETWGTOKEN, "POST", data);
                 if (string.IsNullOrEmpty(response) == true)
                 {
@@ -673,14 +673,14 @@ namespace WinAuth
                 }
 
                 var cookieuri = new Uri(COMMUNITY_BASE + "/");
-                this.Session.Cookies.Add(cookieuri, new Cookie("steamLogin", this.Session.SteamId + "||" + token.Value<string>()));
+                Session.Cookies.Add(cookieuri, new Cookie("steamLogin", Session.SteamId + "||" + token.Value<string>()));
 
                 token = json.SelectToken("response.token_secure");
                 if (token == null)
                 {
                     return false;
                 }
-                this.Session.Cookies.Add(cookieuri, new Cookie("steamLoginSecure", this.Session.SteamId + "||" + token.Value<string>()));
+                Session.Cookies.Add(cookieuri, new Cookie("steamLoginSecure", Session.SteamId + "||" + token.Value<string>()));
 
                 // perform UMQ login
                 //response = GetString(API_LOGON, "POST", data);
@@ -714,15 +714,15 @@ namespace WinAuth
             }
 
             var data = new NameValueCollection();
-            data.Add("access_token", this.Session.OAuthToken);
+            data.Add("access_token", Session.OAuthToken);
             var response = GetString(API_LOGON, "POST", data);
             var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
             if (loginresponse.ContainsKey("umqid") == true)
             {
-                this.Session.UmqId = (string)loginresponse["umqid"];
+                Session.UmqId = (string)loginresponse["umqid"];
                 if (loginresponse.ContainsKey("message") == true)
                 {
-                    this.Session.MessageId = Convert.ToInt32(loginresponse["message"]);
+                    Session.MessageId = Convert.ToInt32(loginresponse["message"]);
                 }
 
                 return true;
@@ -768,7 +768,7 @@ namespace WinAuth
                 _pollerCancellation.Cancel();
                 _pollerCancellation = null;
             }
-            this.Session.Confirmations = null;
+            Session.Confirmations = null;
         }
 
         /// <summary>
@@ -784,11 +784,11 @@ namespace WinAuth
                 return;
             }
 
-            if (this.Session.Confirmations == null)
+            if (Session.Confirmations == null)
             {
-                this.Session.Confirmations = new ConfirmationPoller();
+                Session.Confirmations = new ConfirmationPoller();
             }
-            this.Session.Confirmations = poller;
+            Session.Confirmations = poller;
 
             _pollerCancellation = new CancellationTokenSource();
             var token = _pollerCancellation.Token;
@@ -820,7 +820,7 @@ namespace WinAuth
             try
             {
                 int retryCount = 0;
-                while (!cancel.IsCancellationRequested && this.Session.Confirmations != null)
+                while (!cancel.IsCancellationRequested && Session.Confirmations != null)
                 {
                     try
                     {
@@ -856,7 +856,7 @@ namespace WinAuth
 
                                 DateTime start = DateTime.Now;
 
-                                ConfirmationEvent(this, conf, this.Session.Confirmations.Action);
+                                ConfirmationEvent(this, conf, Session.Confirmations.Action);
 
                                 // Issue#339: add a delay for any autoconfs or notifications
                                 var delay = CONFIRMATION_EVENT_DELAY + rand.Next(CONFIRMATION_EVENT_DELAY / 2); // delay is 100%-150% of CONFIRMATION_EVENT_DELAY
@@ -879,22 +879,22 @@ namespace WinAuth
                         retryCount++;
                         if (retryCount >= ConfirmationPollerRetries)
                         {
-                            ConfirmationErrorEvent(this, "Failed to read confirmations", this.Session.Confirmations.Action, ex);
+                            ConfirmationErrorEvent(this, "Failed to read confirmations", Session.Confirmations.Action, ex);
                         }
                         else
                         {
                             // try and reset the session
                             try
                             {
-                                this.Refresh();
+                                Refresh();
                             }
                             catch (Exception) { }
                         }
                     }
 
-                    if (this.Session.Confirmations != null)
+                    if (Session.Confirmations != null)
                     {
-                        await Task.Delay(this.Session.Confirmations.Duration * 60 * 1000, cancel);
+                        await Task.Delay(Session.Confirmations.Duration * 60 * 1000, cancel);
                     }
                 }
             }
@@ -909,16 +909,16 @@ namespace WinAuth
         /// <returns>list of Confirmation objects</returns>
         public List<Confirmation> GetConfirmations()
         {
-            long servertime = (SteamAuthenticator.CurrentTime + this.Authenticator.ServerTimeDiff) / 1000L;
+            long servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
-            var jids = JObject.Parse(this.Authenticator.SteamData).SelectToken("identity_secret");
+            var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
             string ids = (jids != null ? jids.Value<string>() : string.Empty);
 
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
             var data = new NameValueCollection();
-            data.Add("p", this.Authenticator.DeviceId);
-            data.Add("a", this.Session.SteamId);
+            data.Add("p", Authenticator.DeviceId);
+            data.Add("a", Session.SteamId);
             data.Add("k", timehash);
             data.Add("t", servertime.ToString());
             data.Add("m", "android");
@@ -976,28 +976,28 @@ namespace WinAuth
                 match = match.NextMatch();
             }
 
-            if (this.Session.Confirmations != null)
+            if (Session.Confirmations != null)
             {
-                lock (this.Session.Confirmations)
+                lock (Session.Confirmations)
                 {
-                    if (this.Session.Confirmations.Ids == null)
+                    if (Session.Confirmations.Ids == null)
                     {
-                        this.Session.Confirmations.Ids = new List<string>();
+                        Session.Confirmations.Ids = new List<string>();
                     }
                     foreach (var conf in trades)
                     {
-                        conf.IsNew = (this.Session.Confirmations.Ids.Contains(conf.Id) == false);
+                        conf.IsNew = (Session.Confirmations.Ids.Contains(conf.Id) == false);
                         if (conf.IsNew == true)
                         {
-                            this.Session.Confirmations.Ids.Add(conf.Id);
+                            Session.Confirmations.Ids.Add(conf.Id);
                         }
                     }
                     var newIds = trades.Select(t => t.Id).ToList();
-                    foreach (var confId in this.Session.Confirmations.Ids.ToList())
+                    foreach (var confId in Session.Confirmations.Ids.ToList())
                     {
                         if (newIds.Contains(confId) == false)
                         {
-                            this.Session.Confirmations.Ids.Remove(confId);
+                            Session.Confirmations.Ids.Remove(confId);
                         }
                     }
                 }
@@ -1016,7 +1016,7 @@ namespace WinAuth
             // build details URL
             string url = COMMUNITY_BASE + "/mobileconf/details/" + trade.Id + "?" + ConfirmationsQuery;
 
-            string response = this.GetString(url);
+            string response = GetString(url);
             if (response.IndexOf("success") == -1)
             {
                 throw new InvalidSteamRequestException("Invalid request from steam: " + response);
@@ -1026,7 +1026,7 @@ namespace WinAuth
                 string html = JObject.Parse(response).SelectToken("html").Value<string>();
 
                 Regex detailsRegex = new Regex(@"(.*<body[^>]*>\s*<div\s+class=""[^""]+"">).*(</div>.*?</body>\s*</html>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                var match = detailsRegex.Match(this.ConfirmationsHtml);
+                var match = detailsRegex.Match(ConfirmationsHtml);
                 if (match.Success == true)
                 {
                     return match.Groups[1].Value + html + match.Groups[2].Value;
@@ -1045,21 +1045,21 @@ namespace WinAuth
         /// <returns>true if successful</returns>
         public bool ConfirmTrade(string id, string key, bool accept)
         {
-            if (string.IsNullOrEmpty(this.Session.OAuthToken) == true)
+            if (string.IsNullOrEmpty(Session.OAuthToken) == true)
             {
                 return false;
             }
 
-            long servertime = (SteamAuthenticator.CurrentTime + this.Authenticator.ServerTimeDiff) / 1000L;
+            long servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
-            var jids = JObject.Parse(this.Authenticator.SteamData).SelectToken("identity_secret");
+            var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
             string ids = (jids != null ? jids.Value<string>() : string.Empty);
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
             var data = new NameValueCollection();
             data.Add("op", accept ? "allow" : "cancel");
-            data.Add("p", this.Authenticator.DeviceId);
-            data.Add("a", this.Session.SteamId);
+            data.Add("p", Authenticator.DeviceId);
+            data.Add("a", Session.SteamId);
             data.Add("k", timehash);
             data.Add("t", servertime.ToString());
             data.Add("m", "android");
@@ -1073,24 +1073,24 @@ namespace WinAuth
                 string response = GetString(COMMUNITY_BASE + "/mobileconf/ajaxop", "GET", data);
                 if (string.IsNullOrEmpty(response) == true)
                 {
-                    this.Error = "Blank response";
+                    Error = "Blank response";
                     return false;
                 }
 
                 var success = JObject.Parse(response).SelectToken("success");
                 if (success == null || success.Value<bool>() == false)
                 {
-                    this.Error = "Failed";
+                    Error = "Failed";
                     return false;
                 }
 
-                if (this.Session.Confirmations != null)
+                if (Session.Confirmations != null)
                 {
-                    lock (this.Session.Confirmations)
+                    lock (Session.Confirmations)
                     {
-                        if (this.Session.Confirmations.Ids.Contains(id) == true)
+                        if (Session.Confirmations.Ids.Contains(id) == true)
                         {
-                            this.Session.Confirmations.Ids.Remove(id);
+                            Session.Confirmations.Ids.Remove(id);
                         }
                     }
                 }
@@ -1100,7 +1100,7 @@ namespace WinAuth
             catch (InvalidSteamRequestException ex)
             {
 #if DEBUG
-                this.Error = ex.Message + Environment.NewLine + ex.StackTrace;
+                Error = ex.Message + Environment.NewLine + ex.StackTrace;
 #else
 				this.Error = ex.Message;
 #endif
@@ -1212,7 +1212,7 @@ namespace WinAuth
                     request.Headers.Add(headers);
                 }
 
-                request.CookieContainer = this.Session.Cookies;
+                request.CookieContainer = Session.Cookies;
 
                 if (string.Compare(method, "POST", true) == 0)
                 {

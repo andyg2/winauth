@@ -224,9 +224,9 @@ namespace WinAuth
             do
             {
                 // only if autochecking is on, and is due, and we don't already have a later version
-                if (this.IsAutoCheck == true
+                if (IsAutoCheck == true
                     && _autocheckInterval.HasValue && _lastCheck.Add(_autocheckInterval.Value) < DateTime.Now
-                    && (LastKnownLatestVersion == null || LastKnownLatestVersion <= this.CurrentVersion))
+                    && (LastKnownLatestVersion == null || LastKnownLatestVersion <= CurrentVersion))
                 {
                     // update the last check time
                     _lastCheck = DateTime.Now;
@@ -236,7 +236,7 @@ namespace WinAuth
                     try
                     {
                         var latest = GetLatestVersion();
-                        if (latest != null && latest.Version > this.CurrentVersion)
+                        if (latest != null && latest.Version > CurrentVersion)
                         {
                             callback(latest.Version);
                         }
@@ -272,7 +272,7 @@ namespace WinAuth
             {
                 using (WebClient web = new WebClient())
                 {
-                    web.Headers.Add("User-Agent", "WinAuth-" + this.CurrentVersion.ToString());
+                    web.Headers.Add("User-Agent", "WinAuth-" + CurrentVersion.ToString());
                     if (callback == null)
                     {
                         // immediate request

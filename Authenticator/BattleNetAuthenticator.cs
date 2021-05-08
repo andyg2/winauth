@@ -447,7 +447,7 @@ namespace WinAuth
         public override void Sync()
         {
             // check if data is protected
-            if (this.SecretKey == null && this.EncryptedData != null)
+            if (SecretKey == null && EncryptedData != null)
             {
                 throw new EncryptedSecretDataException();
             }
@@ -461,7 +461,7 @@ namespace WinAuth
             try
             {
                 // create a connection to time sync server
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(this.Region) + SYNC_PATH);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(Region) + SYNC_PATH);
                 request.Method = "GET";
                 request.Timeout = 5000;
 

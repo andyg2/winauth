@@ -138,20 +138,20 @@ namespace WinAuth
             writer.WriteEndElement();
             //
             writer.WriteStartElement("action");
-            writer.WriteString(Enum.GetName(typeof(HotKeyActions), this.Action));
+            writer.WriteString(Enum.GetName(typeof(HotKeyActions), Action));
             writer.WriteEndElement();
             //
-            if (String.IsNullOrEmpty(this.Window) == false)
+            if (String.IsNullOrEmpty(Window) == false)
             {
                 writer.WriteStartElement("window");
-                writer.WriteString(this.Window);
+                writer.WriteString(Window);
                 writer.WriteEndElement();
             }
             //
-            if (String.IsNullOrEmpty(this.Advanced) == false)
+            if (String.IsNullOrEmpty(Advanced) == false)
             {
                 writer.WriteStartElement("advanced");
-                writer.WriteString(this.Advanced);
+                writer.WriteString(Advanced);
                 writer.WriteEndElement();
             }
 
@@ -164,16 +164,16 @@ namespace WinAuth
         /// <returns></returns>
         public override string ToString()
         {
-            string shortcut = this.Key.ToString().Substring(3);
-            if ((this.Modifiers & WinAPI.KeyModifiers.Alt) != 0)
+            string shortcut = Key.ToString().Substring(3);
+            if ((Modifiers & WinAPI.KeyModifiers.Alt) != 0)
             {
                 shortcut = "Alt-" + shortcut;
             }
-            if ((this.Modifiers & WinAPI.KeyModifiers.Control) != 0)
+            if ((Modifiers & WinAPI.KeyModifiers.Control) != 0)
             {
                 shortcut = "Ctrl-" + shortcut;
             }
-            if ((this.Modifiers & WinAPI.KeyModifiers.Shift) != 0)
+            if ((Modifiers & WinAPI.KeyModifiers.Shift) != 0)
             {
                 shortcut = "Shift-" + shortcut;
             }

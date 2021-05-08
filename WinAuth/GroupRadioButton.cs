@@ -41,13 +41,13 @@ namespace WinAuth
         {
             base.OnCheckedChanged(e);
 
-            string group = this.Group;
+            string group = Group;
             if (string.IsNullOrEmpty(group))
             {
                 return;
             }
 
-            bool check = this.Checked;
+            bool check = Checked;
             Form form = FindParentControl<Form>();
             GroupMetroRadioButton[] radios = FindAllControls<GroupMetroRadioButton>(form);
             foreach (GroupMetroRadioButton grb in radios)
@@ -61,7 +61,7 @@ namespace WinAuth
 
         private T FindParentControl<T>() where T : Control
         {
-            Control parent = this.Parent;
+            Control parent = Parent;
             while (parent != null && !(parent is T))
             {
                 parent = parent.Parent;
@@ -107,13 +107,13 @@ namespace WinAuth
         {
             base.OnCheckedChanged(e);
 
-            string group = this.Group;
+            string group = Group;
             if (string.IsNullOrEmpty(group))
             {
                 return;
             }
 
-            bool check = this.Checked;
+            bool check = Checked;
             Form form = FindParentControl<Form>();
             GroupRadioButton[] radios = FindAllControls<GroupRadioButton>(form);
             foreach (GroupRadioButton grb in radios)
@@ -127,7 +127,7 @@ namespace WinAuth
 
         private T FindParentControl<T>() where T : Control
         {
-            Control parent = this.Parent;
+            Control parent = Parent;
             while (parent != null && !(parent is T))
             {
                 parent = parent.Parent;

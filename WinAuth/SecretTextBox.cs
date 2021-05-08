@@ -69,22 +69,22 @@ namespace WinAuth
             set
             {
                 m_secretMode = value;
-                this.Enabled = !value; // we disable so cannot select/copy 
-                this.SetStyle(ControlStyles.UserPaint, value);
+                Enabled = !value; // we disable so cannot select/copy 
+                SetStyle(ControlStyles.UserPaint, value);
                 Text = m_text;
                 //
                 // when we disable secret mode we need to reset the font else sometimes it doesn't show corretly
                 if (m_fontFamily == null)
                 {
-                    m_fontFamily = this.Font.FontFamily.Name;
-                    m_fontSize = this.Font.Size;
+                    m_fontFamily = Font.FontFamily.Name;
+                    m_fontSize = Font.Size;
                 }
                 if (value == false)
                 {
-                    this.Font = new Font(m_fontFamily, m_fontSize);
+                    Font = new Font(m_fontFamily, m_fontSize);
                 }
                 //
-                this.Invalidate(); // force it to redraw
+                Invalidate(); // force it to redraw
             }
         }
 
@@ -113,7 +113,7 @@ namespace WinAuth
             {
                 m_text = value;
                 base.Text = (SecretMode == true ? (string.IsNullOrEmpty(value) == false ? new string('*', value.Length) : value) : value);
-                this.Invalidate();
+                Invalidate();
             }
         }
 

@@ -73,7 +73,7 @@ namespace WinAuth
 
             // set the font for the HtmlLabel to match the form
             Font font = MetroFonts.Label(MetroLabelSize.Small, MetroLabelWeight.Regular);
-            this.versionInfoLabel.Font = new Font(font.FontFamily, 10);
+            versionInfoLabel.Font = new Font(font.FontFamily, 10);
         }
 
         #region Form events
@@ -94,7 +94,7 @@ namespace WinAuth
 
             if (Updater == null)
             {
-                Updater = new WinAuthUpdater(this.Config);
+                Updater = new WinAuthUpdater(Config);
             }
 
             autoCheckbox.Checked = Updater.IsAutoCheck;
@@ -201,7 +201,7 @@ namespace WinAuth
         /// <param name="error">any error exception</param>
         void Updater_GetLatestVersionCompleted(WinAuthVersionInfo latestInfo, bool cancelled, Exception error)
         {
-            if (this.IsDisposed == true || IsHandleCreated == false)
+            if (IsDisposed == true || IsHandleCreated == false)
             {
                 return;
             }
@@ -232,7 +232,7 @@ namespace WinAuth
             }
 
             // update the textbox in a delegate
-            this.Invoke((MethodInvoker)delegate
+            Invoke((MethodInvoker)delegate
             { versionInfoLabel.Text = text; });
         }
 

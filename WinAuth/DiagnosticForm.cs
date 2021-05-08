@@ -77,10 +77,10 @@ namespace WinAuth
         {
             StringBuilder diag = new StringBuilder();
 
-            if (this.Config != null)
+            if (Config != null)
             {
                 // clone the current config so we can extract key in case machine/user encrypted
-                WinAuthConfig clone = this.Config.Clone() as WinAuthConfig;
+                WinAuthConfig clone = Config.Clone() as WinAuthConfig;
                 clone.PasswordType = Authenticator.PasswordTypes.None;
 
                 // add the config and authenticator
@@ -103,10 +103,10 @@ namespace WinAuth
             }
 
             // add each of the entries from the registry
-            if (this.Config != null)
+            if (Config != null)
             {
                 diag.Append("--REGISTRY--").Append(Environment.NewLine);
-                diag.Append(WinAuthHelper.ReadBackupFromRegistry(this.Config)).Append(Environment.NewLine).Append(Environment.NewLine);
+                diag.Append(WinAuthHelper.ReadBackupFromRegistry(Config)).Append(Environment.NewLine).Append(Environment.NewLine);
             }
 
             // add current config file
