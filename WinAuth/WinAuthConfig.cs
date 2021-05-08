@@ -406,7 +406,7 @@ namespace WinAuth
         /// <summary>
         /// Return if we are in portable mode, which is when the config filename is in teh same directory as the exe
         /// </summary>
-        public bool IsPortable => (string.IsNullOrEmpty(Filename) == false
+        public bool IsPortable => (!string.IsNullOrEmpty(Filename)
                     && string.Compare(Path.GetDirectoryName(Filename), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), true) == 0);
 
         /// <summary>
@@ -417,10 +417,10 @@ namespace WinAuth
         /// <returns>setting value or default value</returns>
         public string ReadSetting(string name, string defaultValue = null)
         {
-            if (IsPortable == true)
+            if (IsPortable)
             {
                 // read setting from _settings
-                if (_settings.TryGetValue(name, out var value) == true)
+                if (_settings.TryGetValue(name, out var value))
                 {
                     return value;
                 }
@@ -442,12 +442,12 @@ namespace WinAuth
         /// <returns>string array of all child (recursively) setting names. Empty is none.</returns>
         public string[] ReadSettingKeys(string name)
         {
-            if (IsPortable == true)
+            if (IsPortable)
             {
                 var keys = new List<string>();
                 foreach (var entry in _settings)
                 {
-                    if (entry.Key.StartsWith(name) == true)
+                    if (entry.Key.StartsWith(name))
                     {
                         keys.Add(entry.Key);
                     }
@@ -467,11 +467,11 @@ namespace WinAuth
         /// <param name="value">setting value. If null, the setting is deleted.</param>
         public void WriteSetting(string name, string value)
         {
-            if (IsPortable == true)
+            if (IsPortable)
             {
                 if (value == null)
                 {
-                    if (_settings.ContainsKey(name) == true)
+                    if (_settings.ContainsKey(name))
                     {
                         _settings.Remove(name);
                     }
@@ -707,12 +707,12 @@ namespace WinAuth
             var changed = false;
 
             reader.Read();
-            while (reader.EOF == false && reader.IsEmptyElement == true)
+            while (!reader.EOF && reader.IsEmptyElement)
             {
                 reader.Read();
             }
             reader.MoveToContent();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -742,7 +742,7 @@ namespace WinAuth
         {
             var changed = false;
 
-            if (decimal.TryParse(reader.GetAttribute("version"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var version) == true)
+            if (decimal.TryParse(reader.GetAttribute("version"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var version))
             {
                 Version = version;
 
@@ -788,7 +788,7 @@ namespace WinAuth
             string defaultSkin = null;
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -807,7 +807,7 @@ namespace WinAuth
                             {
                                 HashAlgorithm hasher;
                                 var hash = reader.GetAttribute("sha1");
-                                if (string.IsNullOrEmpty(hash) == false)
+                                if (!string.IsNullOrEmpty(hash))
                                 {
                                     hasher = Authenticator.SafeHasher("SHA1");
                                 }
@@ -849,7 +849,7 @@ namespace WinAuth
 
                         case "notifyaction":
                             var s = reader.ReadElementContentAsString();
-                            if (string.IsNullOrEmpty(s) == false)
+                            if (!string.IsNullOrEmpty(s))
                             {
                                 try
                                 {
@@ -963,19 +963,19 @@ namespace WinAuth
                                 hotkey.Action = HotKey.HotKeyActions.Inject;
                                 hotkey.Key = hks.HotKey;
                                 hotkey.Modifiers = hks.Modifiers;
-                                if (hks.WindowTitleRegex == true && string.IsNullOrEmpty(hks.WindowTitle) == false)
+                                if (hks.WindowTitleRegex && !string.IsNullOrEmpty(hks.WindowTitle))
                                 {
                                     hotkey.Window = "/" + Regex.Escape(hks.WindowTitle);
                                 }
-                                else if (string.IsNullOrEmpty(hks.WindowTitle) == false)
+                                else if (!string.IsNullOrEmpty(hks.WindowTitle))
                                 {
                                     hotkey.Window = hks.WindowTitle;
                                 }
-                                else if (string.IsNullOrEmpty(hks.ProcessName) == false)
+                                else if (!string.IsNullOrEmpty(hks.ProcessName))
                                 {
                                     hotkey.Window = hks.ProcessName;
                                 }
-                                if (hks.Advanced == true)
+                                if (hks.Advanced)
                                 {
                                     hotkey.Action = HotKey.HotKeyActions.Advanced;
                                     hotkey.Advanced = hks.AdvancedScript;
@@ -1006,7 +1006,7 @@ namespace WinAuth
         {
             writer.WriteStartDocument(true);
             //
-            if (includeFilename == true && string.IsNullOrEmpty(Filename) == false)
+            if (includeFilename && !string.IsNullOrEmpty(Filename))
             {
                 writer.WriteComment(Filename);
             }
@@ -1042,7 +1042,7 @@ namespace WinAuth
             writer.WriteValue(AutoSize);
             writer.WriteEndElement();
             //
-            if (Position.IsEmpty == false)
+            if (!Position.IsEmpty)
             {
                 writer.WriteStartElement("left");
                 writer.WriteValue(Position.X);
@@ -1060,14 +1060,14 @@ namespace WinAuth
             writer.WriteValue(Height);
             writer.WriteEndElement();
             //
-            if (string.IsNullOrEmpty(ShadowType) == false)
+            if (!string.IsNullOrEmpty(ShadowType))
             {
                 writer.WriteStartElement("shadowtype");
                 writer.WriteValue(ShadowType);
                 writer.WriteEndElement();
             }
             //
-            if (string.IsNullOrEmpty(PGPKey) == false)
+            if (!string.IsNullOrEmpty(PGPKey))
             {
                 writer.WriteStartElement("pgpkey");
                 writer.WriteCData(PGPKey);
@@ -1132,7 +1132,7 @@ namespace WinAuth
                 }
             }
 
-            if (includeSettings == true && _settings.Count != 0)
+            if (includeSettings && _settings.Count != 0)
             {
                 var ns = new XmlSerializerNamespaces();
                 ns.Add(string.Empty, string.Empty);

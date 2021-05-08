@@ -195,12 +195,12 @@ namespace WinAuth
                     + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(Serial))
                     + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(DeviceId))
                     + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(SteamData))
-                    + "|" + (string.IsNullOrEmpty(SessionData) == false ? Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(SessionData)) : string.Empty);
+                    + "|" + (string.IsNullOrEmpty(SessionData) ? string.Empty : Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(SessionData)));
             }
             set
             {
                 // extract key + serial + deviceid
-                if (string.IsNullOrEmpty(value) == false)
+                if (!string.IsNullOrEmpty(value))
                 {
                     var parts = value.Split('|');
                     base.SecretData = value;
@@ -208,7 +208,7 @@ namespace WinAuth
                     DeviceId = (parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null);
                     SteamData = (parts.Length > 3 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[3])) : string.Empty);
 
-                    if (string.IsNullOrEmpty(SteamData) == false && SteamData[0] != '{')
+                    if (!string.IsNullOrEmpty(SteamData) && SteamData[0] != '{')
                     {
                         // convert old recovation code into SteamData json
                         SteamData = "{\"revocation_code\":\"" + SteamData + "\"}";
@@ -220,7 +220,7 @@ namespace WinAuth
                     //	Logger.Debug("Set Steam data: {0}, Session:{1}", (SteamData ?? string.Empty).Replace("\n", " ").Replace("\r", ""), (SessionData ?? string.Empty).Replace("\n", " ").Replace("\r", ""));
                     //}
 
-                    if (string.IsNullOrEmpty(session) == false)
+                    if (!string.IsNullOrEmpty(session))
                     {
                         SessionData = session;
                     }
@@ -349,7 +349,7 @@ namespace WinAuth
                 var cookies = state.Cookies = state.Cookies ?? new CookieContainer();
                 string response;
 
-                if (string.IsNullOrEmpty(state.OAuthToken) == true)
+                if (string.IsNullOrEmpty(state.OAuthToken))
                 {
                     // get session
                     if (cookies.Count == 0)
@@ -377,7 +377,7 @@ namespace WinAuth
                     data.Add("username", state.Username);
                     response = Request(COMMUNITY_BASE + "/mobilelogin/getrsakey", "POST", data, cookies);
                     var rsaresponse = JObject.Parse(response);
-                    if (rsaresponse.SelectToken("success").Value<bool>() != true)
+                    if (!rsaresponse.SelectToken("success").Value<bool>())
                     {
                         throw new InvalidEnrollResponseException("Cannot get steam information for user: " + state.Username);
                     }
@@ -415,13 +415,13 @@ namespace WinAuth
                     response = Request(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data, cookies);
                     var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 
-                    if (loginresponse.ContainsKey("emailsteamid") == true)
+                    if (loginresponse.ContainsKey("emailsteamid"))
                     {
                         state.SteamId = loginresponse["emailsteamid"] as string;
                     }
 
                     // require captcha
-                    if (loginresponse.ContainsKey("captcha_needed") == true && (bool)loginresponse["captcha_needed"] == true)
+                    if (loginresponse.ContainsKey("captcha_needed") && (bool)loginresponse["captcha_needed"])
                     {
                         state.RequiresCaptcha = true;
                         state.CaptchaId = (string)loginresponse["captcha_gid"];
@@ -436,12 +436,12 @@ namespace WinAuth
                     }
 
                     // require email auth
-                    if (loginresponse.ContainsKey("emailauth_needed") == true && (bool)loginresponse["emailauth_needed"] == true)
+                    if (loginresponse.ContainsKey("emailauth_needed") && (bool)loginresponse["emailauth_needed"])
                     {
-                        if (loginresponse.ContainsKey("emaildomain") == true)
+                        if (loginresponse.ContainsKey("emaildomain"))
                         {
                             var emaildomain = (string)loginresponse["emaildomain"];
-                            if (string.IsNullOrEmpty(emaildomain) == false)
+                            if (!string.IsNullOrEmpty(emaildomain))
                             {
                                 state.EmailDomain = emaildomain;
                             }
@@ -455,7 +455,7 @@ namespace WinAuth
                     }
 
                     // require email auth
-                    if (loginresponse.ContainsKey("requires_twofactor") == true && (bool)loginresponse["requires_twofactor"] == true)
+                    if (loginresponse.ContainsKey("requires_twofactor") && (bool)loginresponse["requires_twofactor"])
                     {
                         state.Requires2FA = true;
                     }
@@ -465,13 +465,13 @@ namespace WinAuth
                     }
 
                     // if we didn't login, return the result
-                    if (loginresponse.ContainsKey("login_complete") == false || (bool)loginresponse["login_complete"] == false || loginresponse.ContainsKey("oauth") == false)
+                    if (!loginresponse.ContainsKey("login_complete") || !(bool)loginresponse["login_complete"] || !loginresponse.ContainsKey("oauth"))
                     {
-                        if (loginresponse.ContainsKey("oauth") == false)
+                        if (!loginresponse.ContainsKey("oauth"))
                         {
                             state.Error = "Invalid response from Steam (No OAuth token)";
                         }
-                        if (loginresponse.ContainsKey("message") == true)
+                        if (loginresponse.ContainsKey("message"))
                         {
                             state.Error = (string)loginresponse["message"];
                         }
@@ -495,7 +495,7 @@ namespace WinAuth
 
                 var sessionid = cookies.GetCookies(new Uri(COMMUNITY_BASE + "/"))["sessionid"].Value;
 
-                if (state.RequiresActivation == false)
+                if (!state.RequiresActivation)
                 {
                     data.Clear();
                     data.Add("op", "has_phone");
@@ -505,7 +505,7 @@ namespace WinAuth
                     response = Request(COMMUNITY_BASE + "/steamguard/phoneajax", "POST", data, cookies);
                     var jsonresponse = JObject.Parse(response);
                     var hasPhone = jsonresponse.SelectToken("has_phone").Value<bool>();
-                    if (hasPhone == false)
+                    if (!hasPhone)
                     {
                         state.OAuthToken = null; // force new login
                         state.RequiresLogin = true;
@@ -582,7 +582,7 @@ namespace WinAuth
 
                 // try and authorise
                 var retries = 0;
-                while (state.RequiresActivation == true && retries < ENROLL_ACTIVATE_RETRIES)
+                while (state.RequiresActivation && retries < ENROLL_ACTIVATE_RETRIES)
                 {
                     data.Add("authenticator_code", CalculateCode(false));
                     data.Add("authenticator_time", ServerTime.ToString());
@@ -603,9 +603,9 @@ namespace WinAuth
                     }
 
                     // check success
-                    if (finalizeresponse.SelectToken("response.success").Value<bool>() == true)
+                    if (finalizeresponse.SelectToken("response.success").Value<bool>())
                     {
-                        if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>() == true)
+                        if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>())
                         {
                             ServerTimeDiff += (Period * 1000L);
                             retries++;
@@ -618,7 +618,7 @@ namespace WinAuth
                     ServerTimeDiff += (Period * 1000L);
                     retries++;
                 }
-                if (state.RequiresActivation == true)
+                if (state.RequiresActivation)
                 {
                     state.Error = "There was a problem activating. There might be an issue with the Steam servers. Please try again later.";
                     return false;
@@ -697,7 +697,7 @@ namespace WinAuth
         protected override string CalculateCode(bool resyncTime = false, long interval = -1)
         {
             // sync time if required
-            if (resyncTime == true || ServerTimeDiff == 0)
+            if (resyncTime || ServerTimeDiff == 0)
             {
                 if (interval > 0)
                 {

@@ -65,7 +65,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
-            if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
+            if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible)
             {
                 var time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
                 newAuthenticatorProgress.Value = time + 1;
@@ -85,7 +85,7 @@ namespace WinAuth
         private void verifyAuthenticatorButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
-            if (string.IsNullOrEmpty(privatekey) == true)
+            if (string.IsNullOrEmpty(privatekey))
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the secret code");
                 return;
@@ -136,12 +136,12 @@ namespace WinAuth
             }
 
             var first = !newAuthenticatorProgress.Visible;
-            if (verifyAuthenticator(privatekey) == false)
+            if (!verifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
-            if (first == true)
+            if (first)
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -162,7 +162,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (((RadioButton)sender).Checked == true)
+            if (((RadioButton)sender).Checked)
             {
                 Authenticator.Skin = (string)((RadioButton)sender).Tag;
             }
@@ -198,7 +198,7 @@ namespace WinAuth
         /// <returns>true is successful</returns>
         private bool verifyAuthenticator(string privatekey)
         {
-            if (string.IsNullOrEmpty(privatekey) == true)
+            if (string.IsNullOrEmpty(privatekey))
             {
                 return false;
             }
@@ -209,7 +209,7 @@ namespace WinAuth
 
             // if this is a URL, pull it down
             Match match;
-            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri) == true)
+            if (Regex.IsMatch(privatekey, "https?://.*") && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri))
             {
                 try
                 {
@@ -219,7 +219,7 @@ namespace WinAuth
                     request.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)";
                     using (var response = (HttpWebResponse)request.GetResponse())
                     {
-                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) == true)
+                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
                             using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
                             {
@@ -239,7 +239,7 @@ namespace WinAuth
                     return false;
                 }
             }
-            else if ((match = Regex.Match(privatekey, @"data:image/([^;]+);base64,(.*)", RegexOptions.IgnoreCase)).Success == true)
+            else if ((match = Regex.Match(privatekey, @"data:image/([^;]+);base64,(.*)", RegexOptions.IgnoreCase)).Success)
             {
                 var imagedata = Convert.FromBase64String(match.Groups[2].Value);
                 using (var ms = new MemoryStream(imagedata))
@@ -255,7 +255,7 @@ namespace WinAuth
                     }
                 }
             }
-            else if (IsValidFile(privatekey) == true)
+            else if (IsValidFile(privatekey))
             {
                 // assume this is the image file
                 using (var bitmap = (Bitmap)Bitmap.FromFile(privatekey))
@@ -271,7 +271,7 @@ namespace WinAuth
 
             // check for otpauth://, e.g. "otpauth://totp/dc3bf64c-2fd4-40fe-a8cf-83315945f08b@blockchain.info?secret=IHZJDKAEEC774BMUK3GX6SA"
             match = Regex.Match(privatekey, @"otpauth://([^/]+)/([^?]+)\?(.*)", RegexOptions.IgnoreCase);
-            if (match.Success == true)
+            if (match.Success)
             {
                 authtype = match.Groups[1].Value; // @todo we only handle totp (not hotp)
                 if (string.Compare(authtype, "totp", true) != 0)
@@ -281,7 +281,7 @@ namespace WinAuth
                 }
 
                 var label = match.Groups[2].Value;
-                if (string.IsNullOrEmpty(label) == false)
+                if (!string.IsNullOrEmpty(label))
                 {
                     Authenticator.Name = nameField.Text = label;
                 }

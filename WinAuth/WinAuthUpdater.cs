@@ -113,17 +113,17 @@ namespace WinAuth
             Config = config;
 
             // read the update interval and last known latest version from the registry
-            if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out var interval) == true)
+            if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out var interval))
             {
                 _autocheckInterval = interval;
             }
 
-            if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out var lastCheck) == true)
+            if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out var lastCheck))
             {
                 _lastCheck = new DateTime(lastCheck);
             }
 
-            if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out var version) == true)
+            if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out var version))
             {
                 _latestVersion = version;
             }
@@ -152,7 +152,7 @@ namespace WinAuth
         {
             get
             {
-                if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version) == false)
+                if (!Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version))
                 {
                     throw new InvalidOperationException("Cannot get Assembly version information");
                 }
@@ -198,7 +198,7 @@ namespace WinAuth
             do
             {
                 // only if autochecking is on, and is due, and we don't already have a later version
-                if (IsAutoCheck == true
+                if (IsAutoCheck
                     && _autocheckInterval.HasValue && _lastCheck.Add(_autocheckInterval.Value) < DateTime.Now
                     && (LastKnownLatestVersion == null || LastKnownLatestVersion <= CurrentVersion))
                 {
@@ -236,7 +236,7 @@ namespace WinAuth
             {
                 var settings = new System.Configuration.AppSettingsReader();
                 var appvalue = settings.GetValue("UpdateCheckUrl", typeof(string)) as string;
-                if (string.IsNullOrEmpty(appvalue) == false)
+                if (!string.IsNullOrEmpty(appvalue))
                 {
                     updateUrl = appvalue;
                 }
@@ -291,7 +291,7 @@ namespace WinAuth
             }
 
             // report cancelled or error
-            if (args.Cancelled == true || args.Error != null)
+            if (args.Cancelled || args.Error != null)
             {
                 callback(null, args.Cancelled, args.Error);
                 return;
@@ -335,17 +335,17 @@ namespace WinAuth
                 var latestversion = new WinAuthVersionInfo(version);
 
                 node = xml.SelectSingleNode("//released");
-                if (node != null && DateTime.TryParse(node.InnerText, out var released) == true)
+                if (node != null && DateTime.TryParse(node.InnerText, out var released))
                 {
                     latestversion.Released = released;
                 }
                 node = xml.SelectSingleNode("//url");
-                if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
+                if (node != null && !string.IsNullOrEmpty(node.InnerText))
                 {
                     latestversion.Url = node.InnerText;
                 }
                 node = xml.SelectSingleNode("//changes");
-                if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
+                if (node != null && !string.IsNullOrEmpty(node.InnerText))
                 {
                     latestversion.Changes = node.InnerText;
                 }

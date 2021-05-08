@@ -163,13 +163,13 @@ namespace WinAuth
                 Authenticator.ByteArrayToString(SecretKey) + "\t" + CodeDigits.ToString() + "\t" + HMACType.ToString() + "\t" + Period.ToString();
             set
             {
-                if (string.IsNullOrEmpty(value) == false)
+                if (!string.IsNullOrEmpty(value))
                 {
                     var parts = value.Split('|')[0].Split('\t');
                     SecretKey = Authenticator.StringToByteArray(parts[0]);
                     if (parts.Length > 1)
                     {
-                        if (int.TryParse(parts[1], out var digits) == true)
+                        if (int.TryParse(parts[1], out var digits))
                         {
                             CodeDigits = digits;
                         }
@@ -180,7 +180,7 @@ namespace WinAuth
                     }
                     if (parts.Length > 3)
                     {
-                        if (int.TryParse(parts[3], out var period) == true)
+                        if (int.TryParse(parts[3], out var period))
                         {
                             Period = period;
                         }
@@ -256,7 +256,7 @@ namespace WinAuth
         protected virtual string CalculateCode(bool resync = false, long interval = -1)
         {
             // sync time if required
-            if (resync == true || ServerTimeDiff == 0)
+            if (resync || ServerTimeDiff == 0)
             {
                 if (interval > 0)
                 {
@@ -326,7 +326,7 @@ namespace WinAuth
         {
             Authenticator authenticator = null;
             var authenticatorType = reader.GetAttribute("type");
-            if (string.IsNullOrEmpty(authenticatorType) == false)
+            if (!string.IsNullOrEmpty(authenticatorType))
             {
                 authenticatorType = authenticatorType.Replace("WindowsAuthenticator.", "WinAuth.");
                 var type = System.Reflection.Assembly.GetExecutingAssembly().GetType(authenticatorType, false, true);
@@ -345,7 +345,7 @@ namespace WinAuth
             }
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -377,7 +377,7 @@ namespace WinAuth
                             break;
 
                         default:
-                            if (authenticator.ReadExtraXml(reader, reader.Name) == false)
+                            if (!authenticator.ReadExtraXml(reader, reader.Name))
                             {
                                 reader.Skip();
                             }
@@ -404,7 +404,7 @@ namespace WinAuth
         public static PasswordTypes DecodePasswordTypes(string passwordTypes)
         {
             var passwordType = PasswordTypes.None;
-            if (string.IsNullOrEmpty(passwordTypes) == true)
+            if (string.IsNullOrEmpty(passwordTypes))
             {
                 return passwordType;
             }
@@ -459,7 +459,7 @@ namespace WinAuth
         public void SetEncryption(PasswordTypes passwordType, string password = null)
         {
             // check if still encrpyted
-            if (RequiresPassword == true)
+            if (RequiresPassword)
             {
                 // have to decrypt to be able to re-encrypt
                 throw new EncryptedSecretDataException();
@@ -527,7 +527,7 @@ namespace WinAuth
                 //	using (SHA1 sha1 = SHA1.Create())
                 //	{
                 //		byte[] secretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(this.SecretData));
-                //		if (this.SecretHash == null || secretHash.SequenceEqual(this.SecretHash) == false)
+                //		if (this.SecretHash == null || !secretHash.SequenceEqual(this.SecretHash))
                 //		{
                 //			// we need to encrypt changed secret data
                 //			SetEncryption(this.PasswordType, this.Password);
@@ -568,7 +568,7 @@ namespace WinAuth
                 // keep the password until we reprotect in case data changes
                 Password = password;
 
-                if (changed == true)
+                if (changed)
                 {
                     // we need to encrypt changed secret data
                     using (var ms = new MemoryStream())
@@ -651,7 +651,7 @@ namespace WinAuth
             }
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -670,7 +670,7 @@ namespace WinAuth
                             break;
 
                         default:
-                            if (ReadExtraXml(reader, reader.Name) == false)
+                            if (!ReadExtraXml(reader, reader.Name))
                             {
                                 reader.Skip();
                             }
@@ -710,7 +710,7 @@ namespace WinAuth
             writer.WriteStartElement("authenticatordata");
             //writer.WriteAttributeString("type", this.GetType().FullName);
             var encrypted = EncodePasswordTypes(PasswordType);
-            if (string.IsNullOrEmpty(encrypted) == false)
+            if (!string.IsNullOrEmpty(encrypted))
             {
                 writer.WriteAttributeString("encrypted", encrypted);
             }
@@ -948,7 +948,7 @@ namespace WinAuth
                     // we are going to decrypt with the Windows local machine key
                     var cipher = Authenticator.StringToByteArray(data);
                     var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
-                    if (decode == true)
+                    if (decode)
                     {
                         data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                     }
@@ -962,7 +962,7 @@ namespace WinAuth
                     // we are going to decrypt with the Windows User account key
                     var cipher = StringToByteArray(data);
                     var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
-                    if (decode == true)
+                    if (decode)
                     {
                         data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                     }
@@ -974,12 +974,12 @@ namespace WinAuth
                 if ((encryptedTypes & PasswordTypes.Explicit) != 0)
                 {
                     // we use an explicit password to encrypt data
-                    if (string.IsNullOrEmpty(password) == true)
+                    if (string.IsNullOrEmpty(password))
                     {
                         throw new EncryptedSecretDataException();
                     }
                     data = Authenticator.Decrypt(data, password, true);
-                    if (decode == true)
+                    if (decode)
                     {
                         var plain = Authenticator.StringToByteArray(data);
                         data = Encoding.UTF8.GetString(plain, 0, plain.Length);
@@ -1141,7 +1141,7 @@ namespace WinAuth
             byte[] key;
             var saltBytes = Authenticator.StringToByteArray(data.Substring(0, SALT_LENGTH * 2));
 
-            if (PBKDF2 == true)
+            if (PBKDF2)
             {
                 // extract the salt from the data
                 var passwordBytes = Encoding.UTF8.GetBytes(password);

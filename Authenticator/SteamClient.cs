@@ -150,7 +150,7 @@ namespace WinAuth
             /// <returns>new ConfirmationPoller or null</returns>
             public static ConfirmationPoller FromJSON(string json)
             {
-                if (string.IsNullOrEmpty(json) == true || json == "null")
+                if (string.IsNullOrEmpty(json) || json == "null")
                 {
                     return null;
                 }
@@ -256,7 +256,7 @@ namespace WinAuth
             /// <param name="json">json session data</param>
             public SteamSession(string json) : this()
             {
-                if (string.IsNullOrEmpty(json) == false)
+                if (!string.IsNullOrEmpty(json))
                 {
                     try
                     {
@@ -311,7 +311,7 @@ namespace WinAuth
                     // Net3.5 has a bug that prepends "." to domain, e.g. ".steamcommunity.com"
                     var uri = new Uri(COMMUNITY_BASE + "/");
                     var match = Regex.Match(token.Value<string>(), @"([^=]+)=([^;]*);?", RegexOptions.Singleline);
-                    while (match.Success == true)
+                    while (match.Success)
                     {
                         Cookies.Add(uri, new Cookie(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
                         match = match.NextMatch();
@@ -387,7 +387,7 @@ namespace WinAuth
 
             if (Session.Confirmations != null)
             {
-                if (IsLoggedIn() == false)
+                if (!IsLoggedIn())
                 {
                     Session.Confirmations = null;
                 }
@@ -458,7 +458,7 @@ namespace WinAuth
         /// Check if user is logged in
         /// </summary>
         /// <returns></returns>
-        public bool IsLoggedIn() => (Session != null && string.IsNullOrEmpty(Session.OAuthToken) == false);
+        public bool IsLoggedIn() => (Session != null && !string.IsNullOrEmpty(Session.OAuthToken));
 
         /// <summary>
         /// Login to Steam using credentials and optional captcha
@@ -476,7 +476,7 @@ namespace WinAuth
             var data = new NameValueCollection();
             string response;
 
-            if (IsLoggedIn() == false)
+            if (!IsLoggedIn())
             {
                 // get session
                 if (Session.Cookies.Count == 0)
@@ -506,7 +506,7 @@ namespace WinAuth
                 data.Add("username", username);
                 response = GetString(COMMUNITY_BASE + "/mobilelogin/getrsakey", "POST", data);
                 var rsaresponse = JObject.Parse(response);
-                if (rsaresponse.SelectToken("success").Value<bool>() != true)
+                if (!rsaresponse.SelectToken("success").Value<bool>())
                 {
                     InvalidLogin = true;
                     Error = "Unknown username";
@@ -535,9 +535,9 @@ namespace WinAuth
                     { "twofactorcode", Authenticator.CurrentCode },
                     //data.Add("emailauth", string.Empty);
                     { "loginfriendlyname", "#login_emailauth_friendlyname_mobile" },
-                    { "captchagid", (string.IsNullOrEmpty(captchaId) == false ? captchaId : "-1") },
-                    { "captcha_text", (string.IsNullOrEmpty(captchaText) == false ? captchaText : "enter above characters") },
-                    //data.Add("emailsteamid", (string.IsNullOrEmpty(emailcode) == false ? this.SteamId ?? string.Empty : string.Empty));
+                    { "captchagid", string.IsNullOrEmpty(captchaId) ? "-1" : captchaId },
+                    { "captcha_text", string.IsNullOrEmpty(captchaText) ? "enter above characters" : captchaText },
+                    //data.Add("emailsteamid", string.IsNullOrEmpty(emailcode) ? string.Empty : this.SteamId ?? string.Empty);
                     { "rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>() },
                     { "remember_login", "false" },
                     { "oauth_client_id", "DE45CD61" },
@@ -547,7 +547,7 @@ namespace WinAuth
                 response = GetString(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data);
                 var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 
-                if (loginresponse.ContainsKey("emailsteamid") == true)
+                if (loginresponse.ContainsKey("emailsteamid"))
                 {
                     Session.SteamId = loginresponse["emailsteamid"] as string;
                 }
@@ -560,12 +560,12 @@ namespace WinAuth
                 EmailDomain = null;
                 Requires2FA = false;
 
-                if (loginresponse.ContainsKey("login_complete") == false || (bool)loginresponse["login_complete"] == false || loginresponse.ContainsKey("oauth") == false)
+                if (!loginresponse.ContainsKey("login_complete") || !(bool)loginresponse["login_complete"] || loginresponse.ContainsKey("oauth"))
                 {
                     InvalidLogin = true;
 
                     // require captcha
-                    if (loginresponse.ContainsKey("captcha_needed") == true && (bool)loginresponse["captcha_needed"] == true)
+                    if (loginresponse.ContainsKey("captcha_needed") && (bool)loginresponse["captcha_needed"])
                     {
                         RequiresCaptcha = true;
                         CaptchaId = (string)loginresponse["captcha_gid"];
@@ -573,12 +573,12 @@ namespace WinAuth
                     }
 
                     // require email auth
-                    if (loginresponse.ContainsKey("emailauth_needed") == true && (bool)loginresponse["emailauth_needed"] == true)
+                    if (loginresponse.ContainsKey("emailauth_needed") && (bool)loginresponse["emailauth_needed"])
                     {
-                        if (loginresponse.ContainsKey("emaildomain") == true)
+                        if (loginresponse.ContainsKey("emaildomain"))
                         {
                             var emaildomain = (string)loginresponse["emaildomain"];
-                            if (string.IsNullOrEmpty(emaildomain) == false)
+                            if (!string.IsNullOrEmpty(emaildomain))
                             {
                                 EmailDomain = emaildomain;
                             }
@@ -587,12 +587,12 @@ namespace WinAuth
                     }
 
                     // require email auth
-                    if (loginresponse.ContainsKey("requires_twofactor") == true && (bool)loginresponse["requires_twofactor"] == true)
+                    if (loginresponse.ContainsKey("requires_twofactor") && (bool)loginresponse["requires_twofactor"])
                     {
                         Requires2FA = true;
                     }
 
-                    if (loginresponse.ContainsKey("message") == true)
+                    if (loginresponse.ContainsKey("message"))
                     {
                         Error = (string)loginresponse["message"];
                     }
@@ -614,10 +614,10 @@ namespace WinAuth
                 //data.Add("access_token", this.Session.OAuthToken);
                 //response = GetString(API_LOGON, "POST", data);
                 //loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                //if (loginresponse.ContainsKey("umqid") == true)
+                //if (loginresponse.ContainsKey("umqid"))
                 //{
                 //	this.Session.UmqId = (string)loginresponse["umqid"];
-                //	if (loginresponse.ContainsKey("message") == true)
+                //	if (loginresponse.ContainsKey("message"))
                 //	{
                 //		this.Session.MessageId = Convert.ToInt32(loginresponse["message"]);
                 //	}
@@ -632,11 +632,11 @@ namespace WinAuth
         /// </summary>
         public void Logout()
         {
-            if (string.IsNullOrEmpty(Session.OAuthToken) == false)
+            if (!string.IsNullOrEmpty(Session.OAuthToken))
             {
                 PollConfirmationsStop();
 
-                if (string.IsNullOrEmpty(Session.UmqId) == false)
+                if (!string.IsNullOrEmpty(Session.UmqId))
                 {
                     var data = new NameValueCollection
                     {
@@ -663,7 +663,7 @@ namespace WinAuth
                     { "access_token", Session.OAuthToken }
                 };
                 var response = GetString(API_GETWGTOKEN, "POST", data);
-                if (string.IsNullOrEmpty(response) == true)
+                if (string.IsNullOrEmpty(response))
                 {
                     return false;
                 }
@@ -688,10 +688,10 @@ namespace WinAuth
                 // perform UMQ login
                 //response = GetString(API_LOGON, "POST", data);
                 //var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                //if (loginresponse.ContainsKey("umqid") == true)
+                //if (loginresponse.ContainsKey("umqid"))
                 //{
                 //	this.Session.UmqId = (string)loginresponse["umqid"];
-                //	if (loginresponse.ContainsKey("message") == true)
+                //	if (loginresponse.ContainsKey("message"))
                 //	{
                 //		this.Session.MessageId = Convert.ToInt32(loginresponse["message"]);
                 //	}
@@ -711,7 +711,7 @@ namespace WinAuth
         /// <returns></returns>
         private bool UmqLogin()
         {
-            if (IsLoggedIn() == false)
+            if (!IsLoggedIn())
             {
                 return false;
             }
@@ -722,10 +722,10 @@ namespace WinAuth
             };
             var response = GetString(API_LOGON, "POST", data);
             var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-            if (loginresponse.ContainsKey("umqid") == true)
+            if (loginresponse.ContainsKey("umqid"))
             {
                 Session.UmqId = (string)loginresponse["umqid"];
-                if (loginresponse.ContainsKey("message") == true)
+                if (loginresponse.ContainsKey("message"))
                 {
                     Session.MessageId = Convert.ToInt32(loginresponse["message"]);
                 }
@@ -993,8 +993,8 @@ namespace WinAuth
                     }
                     foreach (var conf in trades)
                     {
-                        conf.IsNew = (Session.Confirmations.Ids.Contains(conf.Id) == false);
-                        if (conf.IsNew == true)
+                        conf.IsNew = !Session.Confirmations.Ids.Contains(conf.Id);
+                        if (conf.IsNew)
                         {
                             Session.Confirmations.Ids.Add(conf.Id);
                         }
@@ -1002,7 +1002,7 @@ namespace WinAuth
                     var newIds = trades.Select(t => t.Id).ToList();
                     foreach (var confId in Session.Confirmations.Ids.ToList())
                     {
-                        if (newIds.Contains(confId) == false)
+                        if (!newIds.Contains(confId))
                         {
                             Session.Confirmations.Ids.Remove(confId);
                         }
@@ -1028,13 +1028,13 @@ namespace WinAuth
             {
                 throw new InvalidSteamRequestException("Invalid request from steam: " + response);
             }
-            if (JObject.Parse(response).SelectToken("success").Value<bool>() == true)
+            if (JObject.Parse(response).SelectToken("success").Value<bool>())
             {
                 var html = JObject.Parse(response).SelectToken("html").Value<string>();
 
                 var detailsRegex = new Regex(@"(.*<body[^>]*>\s*<div\s+class=""[^""]+"">).*(</div>.*?</body>\s*</html>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 var match = detailsRegex.Match(ConfirmationsHtml);
-                if (match.Success == true)
+                if (match.Success)
                 {
                     return match.Groups[1].Value + html + match.Groups[2].Value;
                 }
@@ -1052,7 +1052,7 @@ namespace WinAuth
         /// <returns>true if successful</returns>
         public bool ConfirmTrade(string id, string key, bool accept)
         {
-            if (string.IsNullOrEmpty(Session.OAuthToken) == true)
+            if (string.IsNullOrEmpty(Session.OAuthToken))
             {
                 return false;
             }
@@ -1080,14 +1080,14 @@ namespace WinAuth
             try
             {
                 var response = GetString(COMMUNITY_BASE + "/mobileconf/ajaxop", "GET", data);
-                if (string.IsNullOrEmpty(response) == true)
+                if (string.IsNullOrEmpty(response))
                 {
                     Error = "Blank response";
                     return false;
                 }
 
                 var success = JObject.Parse(response).SelectToken("success");
-                if (success == null || success.Value<bool>() == false)
+                if (success == null || !success.Value<bool>())
                 {
                     Error = "Failed";
                     return false;
@@ -1097,7 +1097,7 @@ namespace WinAuth
                 {
                     lock (Session.Confirmations)
                     {
-                        if (Session.Confirmations.Ids.Contains(id) == true)
+                        if (Session.Confirmations.Ids.Contains(id))
                         {
                             Session.Confirmations.Ids.Remove(id);
                         }
@@ -1129,7 +1129,7 @@ namespace WinAuth
             var b64secret = Convert.FromBase64String(secret);
 
             var bufferSize = 8;
-            if (string.IsNullOrEmpty(tag) == false)
+            if (!string.IsNullOrEmpty(tag))
             {
                 bufferSize += Math.Min(32, tag.Length);
             }
@@ -1141,7 +1141,7 @@ namespace WinAuth
                 Array.Reverse(timeArray);
             }
             Array.Copy(timeArray, buffer, 8);
-            if (string.IsNullOrEmpty(tag) == false)
+            if (!string.IsNullOrEmpty(tag))
             {
                 Array.Copy(Encoding.UTF8.GetBytes(tag), 0, buffer, 8, bufferSize - 8);
             }

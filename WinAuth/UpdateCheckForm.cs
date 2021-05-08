@@ -95,7 +95,7 @@ namespace WinAuth
             }
 
             autoCheckbox.Checked = Updater.IsAutoCheck;
-            if (autoCheckbox.Checked == false)
+            if (!autoCheckbox.Checked)
             {
                 autoDropdown.SelectedIndex = -1;
             }
@@ -126,7 +126,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            if (autoCheckbox.Checked == true)
+            if (autoCheckbox.Checked)
             {
                 // get the interval and set in the updater
                 var interval = autoDropdown.SelectedItem as UpdateIntervalItem;
@@ -145,7 +145,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void autoCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (autoCheckbox.Checked == true && autoDropdown.SelectedIndex < 0)
+            if (autoCheckbox.Checked && autoDropdown.SelectedIndex < 0)
             {
                 autoDropdown.SelectedIndex = 0;
             }
@@ -195,13 +195,13 @@ namespace WinAuth
         /// <param name="error">any error exception</param>
         void Updater_GetLatestVersionCompleted(WinAuthVersionInfo latestInfo, bool cancelled, Exception error)
         {
-            if (IsDisposed == true || IsHandleCreated == false)
+            if (IsDisposed || !IsHandleCreated)
             {
                 return;
             }
 
             var text = string.Empty;
-            if (cancelled == true)
+            if (cancelled)
             {
                 text = "Update was cancelled";
             }

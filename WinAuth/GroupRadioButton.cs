@@ -74,7 +74,7 @@ namespace WinAuth
             var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
-                if (c is T == true)
+                if (c is T)
                 {
                     controls.Add((T)c);
                     if (c.Controls != null && c.Controls.Count != 0)
@@ -140,7 +140,7 @@ namespace WinAuth
             var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
-                if (c is T == true)
+                if (c is T)
                 {
                     controls.Add((T)c);
                     if (c.Controls != null && c.Controls.Count != 0)

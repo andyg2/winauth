@@ -113,7 +113,7 @@ namespace WinAuth
             var baseComparer = new BasedOnComparer();
             foreach (Control c in control.Controls)
             {
-                if (controlTypes == null || controlTypes.Contains(c.GetType(), baseComparer) == true)
+                if (controlTypes == null || controlTypes.Contains(c.GetType(), baseComparer))
                 {
                     controls.Add(c);
                 }

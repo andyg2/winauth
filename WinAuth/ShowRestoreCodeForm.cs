@@ -63,7 +63,7 @@ namespace WinAuth
             restoreCodeField.Text = authenticator.RestoreCode;
 
             // if needed start a background thread to verify the restore code
-            if (authenticator.RestoreCodeVerified == false)
+            if (!authenticator.RestoreCodeVerified)
             {
                 var verify = new BackgroundWorker();
                 verify.DoWork += new DoWorkEventHandler(VerifyRestoreCode);
@@ -80,7 +80,7 @@ namespace WinAuth
         void VerifyRestoreCodeCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var message = e.Result as string;
-            if (string.IsNullOrEmpty(message) == false)
+            if (!string.IsNullOrEmpty(message))
             {
                 MessageBox.Show(this, message, WinAuthMain.APPLICATION_NAME, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }

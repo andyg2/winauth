@@ -125,7 +125,7 @@ namespace WinAuth
             var bitsLeft = 0;
             foreach (var c in encoded.ToCharArray())
             {
-                if (_map.ContainsKey(c) == false)
+                if (!_map.ContainsKey(c))
                 {
                     throw new Base32DecodingException("Illegal character: " + c);
                 }

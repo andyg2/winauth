@@ -47,7 +47,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void showCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (showCheckbox.Checked == true)
+            if (showCheckbox.Checked)
             {
                 passwordField.UseSystemPasswordChar = false;
                 passwordField.PasswordChar = (char)0;

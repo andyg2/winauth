@@ -357,7 +357,7 @@ namespace WinAuth
                 var auth = item.Authenticator;
 
                 var y = (ItemHeight * index) - (TopIndex * ItemHeight);
-                if (auth.AutoRefresh == true)
+                if (auth.AutoRefresh)
                 {
                     // for autorefresh we repaint the pie or the code too
                     //int tillUpdate = (int)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L);
@@ -429,7 +429,7 @@ namespace WinAuth
                     var x = 0;
                     var y = (ItemHeight * index) - (ItemHeight * TopIndex);
                     var hasvscroll = (Height < (Items.Count * ItemHeight));
-                    if (item.Authenticator.AutoRefresh == false && item.DisplayUntil < DateTime.Now
+                    if (!item.Authenticator.AutoRefresh && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(e.Location))
                     {
                         if (UnprotectAuthenticator(item) == DialogResult.Cancel)
@@ -441,7 +441,7 @@ namespace WinAuth
                         item.LastUpdate = DateTime.Now;
                         item.DisplayUntil = DateTime.Now.AddSeconds(10);
 
-                        if (item.Authenticator.CopyOnCode == true)
+                        if (item.Authenticator.CopyOnCode)
                         {
                             // copy to clipboard
                             item.Authenticator.CopyCodeToClipboard(Parent as Form);
@@ -524,7 +524,7 @@ namespace WinAuth
         {
             var screen = Parent.RectangleToScreen(new Rectangle(Location.X, Location.Y, Width, Height));
             var mousePoint = new Point(e.X, e.Y);
-            if (screen.Contains(mousePoint) == false)
+            if (!screen.Contains(mousePoint))
             {
                 e.Effect = DragDropEffects.None;
             }
@@ -563,7 +563,7 @@ namespace WinAuth
             var mousePoint = Cursor.Position;
 
             // if ESC is pressed, always stop
-            if (e.EscapePressed == true || ((e.KeyState & 1) == 0 && screen.Contains(mousePoint) == false))
+            if (e.EscapePressed || ((e.KeyState & 1) == 0 && !screen.Contains(mousePoint)))
             {
                 e.Action = DragAction.Cancel;
 
@@ -715,7 +715,7 @@ namespace WinAuth
         /// </summary>
         private void setRenameTextboxLocation()
         {
-            if (_renameTextbox != null && _renameTextbox.Visible == true)
+            if (_renameTextbox != null && _renameTextbox.Visible)
             {
                 var item = _renameTextbox.Tag as AuthenticatorListitem;
                 if (item != null)
@@ -771,7 +771,7 @@ namespace WinAuth
         /// <summary>
         /// Get flag is we are renaming
         /// </summary>
-        public bool IsRenaming => (RenameTextbox.Visible == true);
+        public bool IsRenaming => (RenameTextbox.Visible);
 
         /// <summary>
         /// End the renaming and decide to save
@@ -779,7 +779,7 @@ namespace WinAuth
         /// <param name="save"></param>
         public void EndRenaming(bool save = true)
         {
-            if (save == false)
+            if (!save)
             {
                 RenameTextbox.Tag = null;
             }
@@ -900,7 +900,7 @@ namespace WinAuth
                     var x = 0;
                     var y = (ItemHeight * index) - (TopIndex * ItemHeight);
                     var hasvscroll = (Height < (Items.Count * ItemHeight));
-                    if (item.Authenticator.AutoRefresh == false && item.DisplayUntil < DateTime.Now
+                    if (!item.Authenticator.AutoRefresh && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(mouseLocation))
                     {
                         cursor = Cursors.Hand;
@@ -934,7 +934,7 @@ namespace WinAuth
 
             // if there is no protection return None
             var auth = item.Authenticator;
-            if (auth.AuthenticatorData == null || auth.AuthenticatorData.RequiresPassword == false)
+            if (auth.AuthenticatorData == null || !auth.AuthenticatorData.RequiresPassword)
             {
                 return DialogResult.None;
             }
@@ -1118,7 +1118,7 @@ namespace WinAuth
                 {
                     parentItem.DropDownItems.Add(new ToolStripSeparator());
                 }
-                else if (icon.StartsWith("+") == true)
+                else if (icon.StartsWith("+"))
                 {
                     if (parentItem.Tag is ToolStripMenuItem)
                     {
@@ -1222,22 +1222,22 @@ namespace WinAuth
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
-            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData) == false);
+            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData));
             //
             sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault();
             sepitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamTradesMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
-            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData) == false);
+            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData));
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "autoRefreshMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
-            menuitem.CheckState = (auth.AutoRefresh == true ? CheckState.Checked : CheckState.Unchecked);
-            menuitem.Enabled = (auth.AuthenticatorData.RequiresPassword == false && auth.AuthenticatorData.PasswordType != Authenticator.PasswordTypes.Explicit);
+            menuitem.CheckState = (auth.AutoRefresh ? CheckState.Checked : CheckState.Unchecked);
+            menuitem.Enabled = (!auth.AuthenticatorData.RequiresPassword && auth.AuthenticatorData.PasswordType != Authenticator.PasswordTypes.Explicit);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "copyOnCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.CheckState = (auth.CopyOnCode == true ? CheckState.Checked : CheckState.Unchecked);
+            menuitem.CheckState = (auth.CopyOnCode ? CheckState.Checked : CheckState.Unchecked);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem").FirstOrDefault() as ToolStripMenuItem;
             var subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem_default").FirstOrDefault() as ToolStripMenuItem;
@@ -1247,7 +1247,7 @@ namespace WinAuth
                 if (iconitem is ToolStripMenuItem && iconitem.Tag is string)
                 {
                     var iconmenuitem = (ToolStripMenuItem)iconitem;
-                    if (string.IsNullOrEmpty((string)iconmenuitem.Tag) && string.IsNullOrEmpty(auth.Skin) == true)
+                    if (string.IsNullOrEmpty((string)iconmenuitem.Tag) && string.IsNullOrEmpty(auth.Skin))
                     {
                         iconmenuitem.CheckState = CheckState.Checked;
                     }
@@ -1297,7 +1297,7 @@ namespace WinAuth
 
                     // set the encrpytion
                     var password = form.Password;
-                    if (string.IsNullOrEmpty(password) == false)
+                    if (!string.IsNullOrEmpty(password))
                     {
                         auth.AuthenticatorData.SetEncryption(Authenticator.PasswordTypes.Explicit, password);
                         // can't have autorefresh on
@@ -1429,7 +1429,7 @@ namespace WinAuth
                                 {
                                     return;
                                 }
-                                if (mainform.Config.IsPassword(checkform.Password) == true)
+                                if (mainform.Config.IsPassword(checkform.Password))
                                 {
                                     break;
                                 }
@@ -1481,7 +1481,7 @@ namespace WinAuth
                                 {
                                     return;
                                 }
-                                if (mainform.Config.IsPassword(checkform.Password) == true)
+                                if (mainform.Config.IsPassword(checkform.Password))
                                 {
                                     break;
                                 }
@@ -1534,7 +1534,7 @@ namespace WinAuth
                                 {
                                     return;
                                 }
-                                if (mainform.Config.IsPassword(checkform.Password) == true)
+                                if (mainform.Config.IsPassword(checkform.Password))
                                 {
                                     break;
                                 }
@@ -1636,7 +1636,7 @@ namespace WinAuth
                     }
                 }
             }
-            else if (menuitem.Name.StartsWith("iconMenuItem_") == true)
+            else if (menuitem.Name.StartsWith("iconMenuItem_"))
             {
                 if (menuitem.Tag is string && string.Compare((string)menuitem.Tag, "OTHER") == 0)
                 {
@@ -1847,7 +1847,7 @@ namespace WinAuth
         /// <param name="m"></param>
         protected override void DefWndProc(ref Message m)
         {
-            if (ReadOnly == false || ((m.Msg <= 0x0200 || m.Msg >= 0x020E)
+            if (!ReadOnly || ((m.Msg <= 0x0200 || m.Msg >= 0x020E)
                 && (m.Msg <= 0x0100 || m.Msg >= 0x0109)
                 && m.Msg != 0x2111
                 && m.Msg != 0x87))
@@ -1873,9 +1873,9 @@ namespace WinAuth
             var auth = item.Authenticator;
 
             // if the item is being dragged, we draw a blank placeholder
-            if (item.Dragging == true)
+            if (item.Dragging)
             {
-                if (cliprect.IntersectsWith(e.Bounds) == true)
+                if (cliprect.IntersectsWith(e.Bounds))
                 {
                     using (var brush = new SolidBrush(SystemColors.ControlLightLight))
                     {
@@ -1892,12 +1892,12 @@ namespace WinAuth
             // draw the requested item
             using (var brush = new SolidBrush(e.ForeColor))
             {
-                var showCode = (auth.AutoRefresh == true || item.DisplayUntil > DateTime.Now);
+                var showCode = (auth.AutoRefresh || item.DisplayUntil > DateTime.Now);
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                 var rect = new Rectangle(e.Bounds.X + MARGIN_LEFT, e.Bounds.Y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT);
-                if (cliprect.IntersectsWith(rect) == true)
+                if (cliprect.IntersectsWith(rect))
                 {
                     using (var icon = auth.Icon)
                     {
@@ -1923,18 +1923,18 @@ namespace WinAuth
                         label = newlabel.ToString();
                     }
                     rect = new Rectangle(e.Bounds.X + 64, e.Bounds.Y + MARGIN_TOP, (int)labelsize.Height, (int)labelsize.Width);
-                    if (cliprect.IntersectsWith(rect) == true)
+                    if (cliprect.IntersectsWith(rect))
                     {
                         e.Graphics.DrawString(label, font, brush, new RectangleF(e.Bounds.X + MARGIN_LEFT + ICON_WIDTH + ICON_MARGIN_RIGHT, e.Bounds.Y + MARGIN_TOP, labelMaxWidth, labelsize.Height));
                     }
 
                     string code;
-                    if (showCode == true)
+                    if (showCode)
                     {
                         try
                         {
                             // we we aren't autorefresh we just keep the same code up for the 10 seconds so it doesn't change even crossing the 30s boundary
-                            if (auth.AutoRefresh == false)
+                            if (!auth.AutoRefresh)
                             {
                                 if (item.LastCode == null)
                                 {
@@ -1948,7 +1948,7 @@ namespace WinAuth
                             else
                             {
                                 code = auth.CurrentCode;
-                                if (code != item.LastCode && auth.CopyOnCode == true)
+                                if (code != item.LastCode && auth.CopyOnCode)
                                 {
                                     // code has changed - copy to clipboard
                                     auth.CopyCodeToClipboard(Parent as Form, code);
@@ -1971,7 +1971,7 @@ namespace WinAuth
                     }
                     var codesize = e.Graphics.MeasureString(code, e.Font);
                     rect = new Rectangle(e.Bounds.X + MARGIN_LEFT + ICON_WIDTH + ICON_MARGIN_RIGHT, e.Bounds.Y + MARGIN_TOP + (int)labelsize.Height + LABEL_MARGIN_BOTTOM, (int)codesize.Width, (int)codesize.Height);
-                    if (cliprect.IntersectsWith(rect) == true)
+                    if (cliprect.IntersectsWith(rect))
                     {
                         e.Graphics.DrawString(code, e.Font, brush, new PointF(e.Bounds.X + MARGIN_LEFT + ICON_WIDTH + ICON_MARGIN_RIGHT, e.Bounds.Y + MARGIN_TOP + labelsize.Height + LABEL_MARGIN_BOTTOM));
                     }
@@ -1979,9 +1979,9 @@ namespace WinAuth
 
                 // draw the refresh image or pie
                 rect = new Rectangle(e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT);
-                if (cliprect.IntersectsWith(rect) == true)
+                if (cliprect.IntersectsWith(rect))
                 {
-                    if (auth.AutoRefresh == true)
+                    if (auth.AutoRefresh)
                     {
                         using (var piebrush = new SolidBrush(SystemColors.ActiveCaption))
                         {
@@ -1997,7 +1997,7 @@ namespace WinAuth
                     }
                     else
                     {
-                        if (showCode == true)
+                        if (showCode)
                         {
                             using (var piebrush = new SolidBrush(SystemColors.ActiveCaption))
                             {
@@ -2009,7 +2009,7 @@ namespace WinAuth
                                 }
                             }
                         }
-                        else if (auth.AuthenticatorData != null && auth.AuthenticatorData.RequiresPassword == true)
+                        else if (auth.AuthenticatorData != null && auth.AuthenticatorData.RequiresPassword)
                         {
                             e.Graphics.DrawImage(WinAuth.Properties.Resources.RefreshIconWithLock, rect);
                         }
@@ -2022,7 +2022,7 @@ namespace WinAuth
 
                 // draw the separating line
                 rect = new Rectangle(e.Bounds.X, e.Bounds.Y + ItemHeight - 1, 1, 1);
-                if (cliprect.IntersectsWith(rect) == true)
+                if (cliprect.IntersectsWith(rect))
                 {
                     using (var pen = new Pen(SystemColors.Control))
                     {

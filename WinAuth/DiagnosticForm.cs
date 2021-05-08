@@ -112,7 +112,7 @@ namespace WinAuth
             }
 
             // add current config file
-            if (string.IsNullOrEmpty(ConfigFileContents) == false)
+            if (!string.IsNullOrEmpty(ConfigFileContents))
             {
                 diag.Append("--CONFIGFILE--").Append(Environment.NewLine);
                 diag.Append(ConfigFileContents).Append(Environment.NewLine).Append(Environment.NewLine);
@@ -121,7 +121,7 @@ namespace WinAuth
             // add winauth log
             var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
             var winauthlog = Path.Combine(dir, "winauth.log");
-            if (File.Exists(winauthlog) == true)
+            if (File.Exists(winauthlog))
             {
                 diag.Append("--WINAUTH.LOG--").Append(Environment.NewLine);
                 diag.Append(File.ReadAllText(winauthlog)).Append(Environment.NewLine).Append(Environment.NewLine);

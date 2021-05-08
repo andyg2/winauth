@@ -79,7 +79,7 @@ namespace WinAuth
             // try to unprotect
             try
             {
-                if (Authenticator.AuthenticatorData.Unprotect(password) == true)
+                if (Authenticator.AuthenticatorData.Unprotect(password))
                 {
                     Authenticator.MarkChanged();
                 }

@@ -245,7 +245,7 @@ namespace WinAuth
                     case "loginTab":
                         e.Handled = true;
 
-                        if (AuthenticatorData.GetClient().RequiresCaptcha == true)
+                        if (AuthenticatorData.GetClient().RequiresCaptcha)
                         {
                             captchaButton_Click(sender, new EventArgs());
                         }
@@ -387,7 +387,7 @@ namespace WinAuth
             var steam = AuthenticatorData.GetClient();
             steam.Logout();
 
-            if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
+            if (!string.IsNullOrEmpty(AuthenticatorData.SessionData))
             {
                 AuthenticatorData.SessionData = null;
                 //AuthenticatorData.PermSession = false;
@@ -443,7 +443,7 @@ namespace WinAuth
                     var start = DateTime.Now;
 
                     var result = await AcceptTrade(tradeIds[i]);
-                    if (result == false || cancelComfirmAll.IsCancellationRequested == true)
+                    if (!result || cancelComfirmAll.IsCancellationRequested)
                     {
                         break;
                     }
@@ -520,7 +520,7 @@ namespace WinAuth
                     var start = DateTime.Now;
 
                     var result = await RejectTrade(tradeIds[i]);
-                    if (result == false || cancelCancelAll.IsCancellationRequested == true)
+                    if (!result || cancelCancelAll.IsCancellationRequested)
                     {
                         break;
                     }
@@ -559,11 +559,11 @@ namespace WinAuth
         private void pollAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             // display autoconfirm warning
-            if (m_loaded == true
+            if (m_loaded
                 && pollAction.SelectedValue != null
                 && pollAction.SelectedValue is SteamClient.PollerAction
                 && ((SteamClient.PollerAction)pollAction.SelectedValue == SteamClient.PollerAction.AutoConfirm || (SteamClient.PollerAction)pollAction.SelectedValue == SteamClient.PollerAction.SilentAutoConfirm)
-                && AutoWarned == false)
+                && !AutoWarned)
             {
                 if (WinAuthForm.ConfirmDialog(this, "WARNING: Using auto-confirm will automatically confirm all new Confirmations on your "
                     + "account. Do not use this unless you want to ignore trade confirmations." + Environment.NewLine + Environment.NewLine
@@ -588,7 +588,7 @@ namespace WinAuth
         /// </summary>
         private void Init()
         {
-            if (AuthenticatorData.GetClient().IsLoggedIn() == true)
+            if (AuthenticatorData.GetClient().IsLoggedIn())
             {
                 Process();
             }
@@ -622,24 +622,24 @@ namespace WinAuth
 
                     var steam = AuthenticatorData.GetClient();
 
-                    if (steam.IsLoggedIn() == false)
+                    if (!steam.IsLoggedIn())
                     {
-                        if (steam.Login(username, password, captchaId, captchaText) == false)
+                        if (!steam.Login(username, password, captchaId, captchaText))
                         {
                             if (steam.Error == "Incorrect Login")
                             {
                                 WinAuthForm.ErrorDialog(this, "Invalid username or password", null, MessageBoxButtons.OK);
                                 return;
                             }
-                            if (steam.Requires2FA == true)
+                            if (steam.Requires2FA)
                             {
                                 WinAuthForm.ErrorDialog(this, "Invalid authenticator code: are you sure this is the current authenticator for your account?", null, MessageBoxButtons.OK);
                                 return;
                             }
 
-                            if (steam.RequiresCaptcha == true)
+                            if (steam.RequiresCaptcha)
                             {
-                                WinAuthForm.ErrorDialog(this, (string.IsNullOrEmpty(steam.Error) == false ? steam.Error : "Please enter the captcha"), null, MessageBoxButtons.OK);
+                                WinAuthForm.ErrorDialog(this, (string.IsNullOrEmpty(steam.Error) ? "Please enter the captcha" : steam.Error), null, MessageBoxButtons.OK);
 
                                 using (var web = new WebClient())
                                 {
@@ -660,13 +660,13 @@ namespace WinAuth
                             loginButton.Enabled = true;
                             captchaGroup.Visible = false;
 
-                            if (string.IsNullOrEmpty(steam.Error) == false)
+                            if (!string.IsNullOrEmpty(steam.Error))
                             {
                                 WinAuthForm.ErrorDialog(this, steam.Error, null, MessageBoxButtons.OK);
                                 return;
                             }
 
-                            if (tabs.TabPages.ContainsKey("authTab") == true)
+                            if (tabs.TabPages.ContainsKey("authTab"))
                             {
                                 tabs.TabPages.RemoveByKey("authTab");
                             }
@@ -677,8 +677,8 @@ namespace WinAuth
                             return;
                         }
 
-                        AuthenticatorData.SessionData = (rememberBox.Checked == true ? steam.Session.ToString() : null);
-                        //AuthenticatorData.PermSession = (rememberBox.Checked == true && rememberPermBox.Checked == true);
+                        AuthenticatorData.SessionData = (rememberBox.Checked ? steam.Session.ToString() : null);
+                        //AuthenticatorData.PermSession = (rememberBox.Checked && rememberPermBox.Checked);
                         Authenticator.MarkChanged();
                     }
 
@@ -687,7 +687,7 @@ namespace WinAuth
                         m_trades = steam.GetConfirmations();
 
                         // save after get new trades
-                        if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
+                        if (!string.IsNullOrEmpty(AuthenticatorData.SessionData))
                         {
                             Authenticator.MarkChanged();
                         }
@@ -793,7 +793,7 @@ namespace WinAuth
                     closeButton.Visible = true;
                     cancelButton.Visible = false;
                     refreshButton.Visible = true;
-                    if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
+                    if (!string.IsNullOrEmpty(AuthenticatorData.SessionData))
                     {
                         logoutButton.Visible = true;
 
@@ -864,7 +864,7 @@ namespace WinAuth
                 {
                     return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true);
                 }, trade);
-                if (result == false)
+                if (!result)
                 {
                     throw new ApplicationException("Trade cannot be confirmed");
                 }
@@ -911,7 +911,7 @@ namespace WinAuth
                 {
                     return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false);
                 }, trade);
-                if (result == false)
+                if (!result)
                 {
                     throw new ApplicationException("Trade cannot be cancelled");
                 }
@@ -949,7 +949,7 @@ namespace WinAuth
         /// <returns>Control or null</returns>
         private T FindControl<T>(Control control, string name) where T : Control
         {
-            if (control.Name.StartsWith(name) == true && control is T)
+            if (control.Name.StartsWith(name) && control is T)
             {
                 return (T)control;
             }
@@ -976,7 +976,7 @@ namespace WinAuth
         {
             var type = control.GetType();
             var clone = Activator.CreateInstance(type) as Control;
-            clone.Name = control.Name + (string.IsNullOrEmpty(suffix) == false ? suffix : string.Empty);
+            clone.Name = control.Name + (string.IsNullOrEmpty(suffix) ? string.Empty : suffix);
 
             clone.SuspendLayout();
             if (clone is ISupportInitialize)
@@ -987,7 +987,7 @@ namespace WinAuth
             // copy public properties
             foreach (var pi in type.GetProperties(System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
             {
-                if (pi.CanWrite == false || pi.CanRead == false)
+                if (!pi.CanWrite || !pi.CanRead)
                 {
                     continue;
                 }
@@ -997,7 +997,7 @@ namespace WinAuth
                 }
 
                 var value = pi.GetValue(control, null);
-                if (value != null && value.GetType().IsValueType == false)
+                if (value != null && !value.GetType().IsValueType)
                 {
                     if (value is ICloneable)
                     {
@@ -1040,12 +1040,12 @@ namespace WinAuth
         /// <param name="only">hide all others, or append if false</param>
         private TabPage ShowTab(string name, bool only = true)
         {
-            if (only == true)
+            if (only)
             {
                 tabs.TabPages.Clear();
             }
 
-            if (tabs.TabPages.ContainsKey(name) == false)
+            if (!tabs.TabPages.ContainsKey(name))
             {
                 tabs.TabPages.Add(m_tabPages[name]);
             }
@@ -1067,17 +1067,17 @@ namespace WinAuth
         private void SetPolling()
         {
             // ignore setup changes
-            if (m_loaded == false || pollAction.SelectedValue == null)
+            if (!m_loaded || pollAction.SelectedValue == null)
             {
                 return;
             }
 
             var steam = AuthenticatorData.GetClient();
-            var timeInMins = (pollCheckbox.Checked == true && steam.IsLoggedIn() == true ? (int)pollNumeric.Value : 0);
+            var timeInMins = (pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0);
 
             var p = new SteamClient.ConfirmationPoller
             {
-                Duration = (pollCheckbox.Checked == true && steam.IsLoggedIn() == true ? (int)pollNumeric.Value : 0),
+                Duration = (pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0),
                 Action = ((PollerActionItem)pollAction.SelectedValue).Value
             };
             if (p.Duration != 0)

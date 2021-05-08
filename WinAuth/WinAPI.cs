@@ -487,7 +487,7 @@ namespace WinAuth
                 }
             }
 
-            if (onlyDirect == true)
+            if (onlyDirect)
             {
                 foreach (var h in result.ToArray())
                 {

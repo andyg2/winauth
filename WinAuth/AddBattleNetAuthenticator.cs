@@ -69,7 +69,7 @@ namespace WinAuth
             if (Authenticator != null && Authenticator.AuthenticatorData != null)
             {
                 // Issue#122: remove dashes if copyable so can be pasted into Battle.net form
-                if (allowCopyNewButton.Checked == true)
+                if (allowCopyNewButton.Checked)
                 {
                     newSerialNumberField.Text = ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial.Replace("-", "");
                 }
@@ -89,7 +89,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
-            if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
+            if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible)
             {
                 var time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
                 newAuthenticatorProgress.Value = time + 1;
@@ -133,7 +133,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            if (verifyAuthenticator() == false)
+            if (!verifyAuthenticator())
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -184,7 +184,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (((RadioButton)sender).Checked == true)
+            if (((RadioButton)sender).Checked)
             {
                 Authenticator.Skin = (string)((RadioButton)sender).Tag;
             }
@@ -259,7 +259,7 @@ namespace WinAuth
                     else
                     {
                         authenticator.SecretData = privatekey;
-                        if (string.IsNullOrEmpty(authenticator.Serial) == true)
+                        if (string.IsNullOrEmpty(authenticator.Serial))
                         {
                             authenticator.Serial = "US-Imported";
                         }
@@ -283,7 +283,7 @@ namespace WinAuth
         /// <param name="showWarning"></param>
         private void clearAuthenticator(bool showWarning = true)
         {
-            if (Authenticator.AuthenticatorData != null && showWarning == true)
+            if (Authenticator.AuthenticatorData != null && showWarning)
             {
                 var result = WinAuthForm.ConfirmDialog(Owner,
                     "This will clear the authenticator you have just created. "

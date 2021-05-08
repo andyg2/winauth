@@ -123,44 +123,44 @@ namespace WinAuth
         public static WinAuthConfig LoadConfig(Form form, string configFile, string password = null)
         {
             var config = new WinAuthConfig();
-            if (string.IsNullOrEmpty(password) == false)
+            if (!string.IsNullOrEmpty(password))
             {
                 config.Password = password;
             }
 
-            if (string.IsNullOrEmpty(configFile) == true)
+            if (string.IsNullOrEmpty(configFile))
             {
                 // check for file in current directory
                 configFile = Path.Combine(Environment.CurrentDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
-                if (File.Exists(configFile) == false)
+                if (!File.Exists(configFile))
                 {
                     configFile = null;
                 }
             }
-            if (string.IsNullOrEmpty(configFile) == true)
+            if (string.IsNullOrEmpty(configFile))
             {
                 // check for file in exe directory
                 configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), DEFAULT_AUTHENTICATOR_FILE_NAME);
-                if (File.Exists(configFile) == false)
+                if (!File.Exists(configFile))
                 {
                     configFile = null;
                 }
             }
-            if (string.IsNullOrEmpty(configFile) == true)
+            if (string.IsNullOrEmpty(configFile))
             {
                 // do we have a file specific in the registry?
                 var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 // check for default authenticator
                 configFile = Path.Combine(configDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
                 // if no config file, just return a blank config
-                if (File.Exists(configFile) == false)
+                if (!File.Exists(configFile))
                 {
                     return config;
                 }
             }
 
             // if no config file when one was specified; report an error
-            if (File.Exists(configFile) == false)
+            if (!File.Exists(configFile))
             {
                 //MessageBox.Show(form,
                 // strings.CannotFindConfigurationFile + ": " + configFile,
@@ -183,7 +183,7 @@ namespace WinAuth
                 if (data.Length == 0 || data[0] == 0)
                 {
                     // switch to backup
-                    if (File.Exists(configFile + ".bak") == true)
+                    if (File.Exists(configFile + ".bak"))
                     {
                         data = File.ReadAllBytes(configFile + ".bak");
                         if (data.Length != 0 && data[0] != 0)
@@ -212,7 +212,7 @@ namespace WinAuth
                     config.Upgraded = true;
                 }
 
-                if (changed == true && config.IsReadOnly == false)
+                if (changed && !config.IsReadOnly)
                 {
                     SaveConfig(config);
                 }
@@ -251,7 +251,7 @@ namespace WinAuth
                     string lastfile;
                     if (key != null
                         && (lastfile = key.GetValue(string.Format(CultureInfo.InvariantCulture, WINAUTHREGKEY_LASTFILE, 1), null) as string) != null
-                        && File.Exists(lastfile) == true)
+                        && File.Exists(lastfile))
                     {
                         return lastfile;
                     }
@@ -286,7 +286,7 @@ namespace WinAuth
                 }
 
                 // if no config file yet, use default
-                if (string.IsNullOrEmpty(config.Filename) == true)
+                if (string.IsNullOrEmpty(config.Filename))
                 {
                     var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                     Directory.CreateDirectory(configDirectory);
@@ -313,14 +313,14 @@ namespace WinAuth
 
                         // read it back
                         var verify = File.ReadAllBytes(tempfile);
-                        if (verify.Length != data.Length || verify.SequenceEqual(data) == false)
+                        if (verify.Length != data.Length || !verify.SequenceEqual(data))
                         {
                             throw new ApplicationException("Save config doesn't compare with memory: " + Convert.ToBase64String(data));
                         }
 
                         // move it to old file
                         File.Delete(config.Filename + ".bak");
-                        if (File.Exists(config.Filename) == true)
+                        if (File.Exists(config.Filename))
                         {
                             File.Move(config.Filename, config.Filename + ".bak");
                         }
@@ -381,7 +381,7 @@ namespace WinAuth
                         xw.WriteEndElement();
                     }
 
-                    var pgpkey = string.IsNullOrEmpty(config.PGPKey) == false ? config.PGPKey : WinAuthHelper.WINAUTH_PGP_PUBLICKEY;
+                    var pgpkey = string.IsNullOrEmpty(config.PGPKey) ? WinAuthHelper.WINAUTH_PGP_PUBLICKEY : config.PGPKey;
                     config.WriteSetting(WINAUTHREGKEY_BACKUP + "\\" + authkey, PGPEncrypt(sw.ToString(), pgpkey));
                 }
             }
@@ -411,7 +411,7 @@ namespace WinAuth
         /// <param name="enabled">enable or disable start with windows</param>
         public static void SetStartWithWindows(bool enabled)
         {
-            if (enabled == true)
+            if (enabled)
             {
                 // get path of exe and minimize flag
                 WriteRegistryValue(RUNKEY + "\\" + WinAuthMain.APPLICATION_NAME, Application.ExecutablePath + " -min");
@@ -451,7 +451,7 @@ namespace WinAuth
                         try
                         {
                             zip = new ZipFile(fs);
-                            if (string.IsNullOrEmpty(password) == false)
+                            if (!string.IsNullOrEmpty(password))
                             {
                                 zip.Password = password;
                             }
@@ -459,7 +459,7 @@ namespace WinAuth
                             var buffer = new byte[4096];
                             foreach (ZipEntry entry in zip)
                             {
-                                if (entry.IsFile == false || string.Compare(Path.GetExtension(entry.Name), ".txt", true) != 0)
+                                if (!entry.IsFile || string.Compare(Path.GetExtension(entry.Name), ".txt", true) != 0)
                                 {
                                     continue;
                                 }
@@ -484,7 +484,7 @@ namespace WinAuth
                             if (ex.Message.IndexOf("password") != -1)
                             {
                                 // already have a password
-                                if (string.IsNullOrEmpty(password) == false)
+                                if (!string.IsNullOrEmpty(password))
                                 {
                                     WinAuthForm.ErrorDialog(parent, strings.InvalidPassword, ex.InnerException, MessageBoxButtons.OK);
                                 }
@@ -515,7 +515,7 @@ namespace WinAuth
                 else if (string.Compare(Path.GetExtension(file), ".pgp", true) == 0)
                 {
                     var encoded = File.ReadAllText(file);
-                    if (string.IsNullOrEmpty(pgpKey) == true)
+                    if (string.IsNullOrEmpty(pgpKey))
                     {
                         // need password
                         var form = new GetPGPKeyForm();
@@ -590,7 +590,7 @@ namespace WinAuth
 
                         // get the label and optional issuer
                         var issuer = string.Empty;
-                        var label = (string.IsNullOrEmpty(uri.LocalPath) == false ? uri.LocalPath.Substring(1) : string.Empty); // skip past initial /
+                        var label = (string.IsNullOrEmpty(uri.LocalPath) ? string.Empty : uri.LocalPath.Substring(1)); // skip past initial /
                         var p = label.IndexOf(":");
                         if (p != -1)
                         {
@@ -602,13 +602,13 @@ namespace WinAuth
 
                         var query = HttpUtility.ParseQueryString(uri.Query);
                         var secret = query["secret"];
-                        if (string.IsNullOrEmpty(secret) == true)
+                        if (string.IsNullOrEmpty(secret))
                         {
                             throw new ApplicationException("Authenticator does not contain secret");
                         }
 
                         var counter = query["counter"];
-                        if (uri.Host == "hotp" && string.IsNullOrEmpty(counter) == true)
+                        if (uri.Host == "hotp" && string.IsNullOrEmpty(counter))
                         {
                             throw new ApplicationException("HOTP authenticator should have a counter");
                         }
@@ -622,12 +622,12 @@ namespace WinAuth
                         if (string.Compare(issuer, "BattleNet", true) == 0)
                         {
                             var serial = query["serial"];
-                            if (string.IsNullOrEmpty(serial) == true)
+                            if (string.IsNullOrEmpty(serial))
                             {
                                 throw new ApplicationException("Battle.net Authenticator does not have a serial");
                             }
                             serial = serial.ToUpper();
-                            if (Regex.IsMatch(serial, @"^[A-Z]{2}-?[\d]{4}-?[\d]{4}-?[\d]{4}$") == false)
+                            if (!Regex.IsMatch(serial, @"^[A-Z]{2}-?[\d]{4}-?[\d]{4}-?[\d]{4}$"))
                             {
                                 throw new ApplicationException("Invalid serial for Battle.net Authenticator");
                             }
@@ -657,7 +657,7 @@ namespace WinAuth
                             ((HOTPAuthenticator)auth).SecretKey = Base32.getInstance().Decode(secret);
                             ((HOTPAuthenticator)auth).Counter = int.Parse(counter);
 
-                            if (string.IsNullOrEmpty(issuer) == false)
+                            if (!string.IsNullOrEmpty(issuer))
                             {
                                 auth.Issuer = issuer;
                             }
@@ -671,7 +671,7 @@ namespace WinAuth
                             {
                                 issuer = string.Empty;
                             }
-                            else if (string.IsNullOrEmpty(issuer) == false)
+                            else if (!string.IsNullOrEmpty(issuer))
                             {
                                 auth.Issuer = issuer;
                             }
@@ -689,7 +689,7 @@ namespace WinAuth
                             auth.CodeDigits = digits;
                         }
 
-                        if (Enum.TryParse<Authenticator.HMACTypes>(query["algorithm"], true, out var hmactype) == true)
+                        if (Enum.TryParse<Authenticator.HMACTypes>(query["algorithm"], true, out var hmactype))
                         {
                             auth.HMACType = hmactype;
                         }
@@ -711,9 +711,9 @@ namespace WinAuth
 
                         // set the icon
                         var icon = query["icon"];
-                        if (string.IsNullOrEmpty(icon) == false)
+                        if (!string.IsNullOrEmpty(icon))
                         {
-                            if (icon.StartsWith("base64:") == true)
+                            if (icon.StartsWith("base64:"))
                             {
                                 var b64 = Convert.ToBase64String(Base32.getInstance().Decode(icon.Substring(7)));
                                 importedAuthenticator.Skin = "base64:" + b64;
@@ -754,7 +754,7 @@ namespace WinAuth
                     foreach (var auth in authenticators)
                     {
                         // unprotect if necessary
-                        if (auth.AuthenticatorData.RequiresPassword == true)
+                        if (auth.AuthenticatorData.RequiresPassword)
                         {
                             // request the password
                             var getPassForm = new UnprotectPasswordForm
@@ -791,7 +791,7 @@ namespace WinAuth
                     {
                         using (var zip = new ZipOutputStream(new FileStream(file, FileMode.Create, FileAccess.Write)))
                         {
-                            if (string.IsNullOrEmpty(password) == false)
+                            if (!string.IsNullOrEmpty(password))
                             {
                                 zip.Password = password;
                             }
@@ -812,7 +812,7 @@ namespace WinAuth
                             zip.CloseEntry();
                         }
                     }
-                    else if (string.IsNullOrEmpty(pgpKey) == false)
+                    else if (!string.IsNullOrEmpty(pgpKey))
                     {
                         using (var sr = new StreamReader(ms))
                         {
@@ -844,7 +844,7 @@ namespace WinAuth
         /// <returns>encoded string</returns>
         public static string HtmlEncode(string text)
         {
-            if (string.IsNullOrEmpty(text) == true)
+            if (string.IsNullOrEmpty(text))
             {
                 return text;
             }
@@ -899,11 +899,11 @@ namespace WinAuth
             var pairs = new NameValueCollection();
 
             // ignore blanks and remove initial "?"
-            if (string.IsNullOrEmpty(qs) == true)
+            if (string.IsNullOrEmpty(qs))
             {
                 return pairs;
             }
-            if (qs.StartsWith("?") == true)
+            if (qs.StartsWith("?"))
             {
                 qs = qs.Substring(1);
             }
@@ -914,7 +914,7 @@ namespace WinAuth
                 var keypair = p.Split('=');
                 var key = keypair[0];
                 var v = (keypair.Length >= 2 ? keypair[1] : null);
-                if (string.IsNullOrEmpty(v) == false)
+                if (!string.IsNullOrEmpty(v))
                 {
                     // decode (without using System.Web)
                     string newv;
@@ -1155,11 +1155,11 @@ namespace WinAuth
                 {
                     if (key != null)
                     {
-                        if (key.GetValueNames().Contains(valuekey) == true)
+                        if (key.GetValueNames().Contains(valuekey))
                         {
                             key.DeleteValue(valuekey, false);
                         }
-                        if (key.GetSubKeyNames().Contains(valuekey) == true)
+                        if (key.GetSubKeyNames().Contains(valuekey))
                         {
                             key.DeleteSubKeyTree(valuekey, false);
                         }
@@ -1261,7 +1261,7 @@ namespace WinAuth
                     {
                         foreach (PgpPublicKey key in keyring.GetPublicKeys())
                         {
-                            if (key.IsEncryptionKey == true && key.IsRevoked() == false)
+                            if (key.IsEncryptionKey && !key.IsRevoked())
                             {
                                 publicKey = key;
                                 break;

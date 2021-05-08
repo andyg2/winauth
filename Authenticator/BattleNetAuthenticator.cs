@@ -152,7 +152,7 @@ namespace WinAuth
         /// <summary>
         /// Region for authenticator taken from first 2 chars of serial
         /// </summary>
-        public string Region => (string.IsNullOrEmpty(Serial) == false ? Serial.Substring(0, 2) : string.Empty);
+        public string Region => string.IsNullOrEmpty(Serial) ? string.Empty : Serial.Substring(0, 2);
 
         public string Serial { get; set; }
 
@@ -167,7 +167,7 @@ namespace WinAuth
             set
             {
                 // for Battle.net, extract key + serial
-                if (string.IsNullOrEmpty(value) == false)
+                if (!string.IsNullOrEmpty(value))
                 {
                     var parts = value.Split('|');
                     if (parts.Length <= 1)
@@ -260,20 +260,20 @@ namespace WinAuth
                 }
             }
             catch (Exception) { }
-            if (string.IsNullOrEmpty(responseString) == false)
+            if (!string.IsNullOrEmpty(responseString))
             {
                 // not worth a full json parser, just regex it
                 var match = Regex.Match(responseString, ".*\"country\":\"([^\"]*)\".*", RegexOptions.IgnoreCase);
-                if (match.Success == true)
+                if (match.Success)
                 {
                     // match the correct region
                     country = match.Groups[1].Value.ToUpper();
 
-                    if (EU_COUNTRIES.Contains(country) == true)
+                    if (EU_COUNTRIES.Contains(country))
                     {
                         region = REGION_EU;
                     }
-                    else if (KR_COUNTRIES.Contains(country) == true)
+                    else if (KR_COUNTRIES.Contains(country))
                     {
                         region = REGION_KR;
                     }
@@ -293,7 +293,7 @@ namespace WinAuth
             try
             {
                 var configcountry = config.GetValue("BattleNetAuthenticator.Country", typeof(string)) as string;
-                if (string.IsNullOrEmpty(configcountry) == false)
+                if (!string.IsNullOrEmpty(configcountry))
                 {
                     country = configcountry;
                 }
@@ -302,7 +302,7 @@ namespace WinAuth
             try
             {
                 var configregion = config.GetValue("BattleNetAuthenticator.Region", typeof(string)) as string;
-                if (string.IsNullOrEmpty(configregion) == false)
+                if (!string.IsNullOrEmpty(configregion))
                 {
                     region = configregion;
                 }
@@ -385,7 +385,7 @@ namespace WinAuth
             // extract the server time
             var serverTime = new byte[8];
             Array.Copy(responseData, serverTime, 8);
-            if (BitConverter.IsLittleEndian == true)
+            if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(serverTime);
             }
@@ -488,7 +488,7 @@ namespace WinAuth
                 // 00-07 server time (Big Endian)
 
                 // extract the server time
-                if (BitConverter.IsLittleEndian == true)
+                if (BitConverter.IsLittleEndian)
                 {
                     Array.Reverse(responseData);
                 }
@@ -717,7 +717,7 @@ namespace WinAuth
         /// <param name="writer">XmlWriter to write data</param>
         protected override void WriteExtraXml(XmlWriter writer)
         {
-            if (RestoreCodeVerified == true)
+            if (RestoreCodeVerified)
             {
                 writer.WriteStartElement("restorecodeverified");
                 writer.WriteString(bool.TrueString.ToLower());
@@ -737,7 +737,7 @@ namespace WinAuth
             {
                 upperregion = upperregion.Substring(0, 2);
             }
-            if (MOBILE_URLS.ContainsKey(upperregion) == true)
+            if (MOBILE_URLS.ContainsKey(upperregion))
             {
                 return MOBILE_URLS[upperregion];
             }
@@ -755,7 +755,7 @@ namespace WinAuth
         protected string BuildRestoreCode()
         {
             // return if not set
-            if (string.IsNullOrEmpty(Serial) == true || SecretKey == null)
+            if (string.IsNullOrEmpty(Serial) || SecretKey == null)
             {
                 return string.Empty;
             }

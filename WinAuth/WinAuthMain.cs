@@ -187,7 +187,7 @@ namespace WinAuth
                 //
                 var fileTarget = new FileTarget();
                 var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
-                if (Directory.Exists(dir) == false)
+                if (!Directory.Exists(dir))
                 {
                     dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 }
@@ -279,7 +279,7 @@ namespace WinAuth
             {
                 Logger.Error(ex);
 
-                if (silently == false)
+                if (!silently)
                 {
                     var report = new ExceptionForm
                     {
@@ -305,7 +305,7 @@ namespace WinAuth
         /// <param name="msg">messagae to be logged</param>
         public static void LogMessage(string msg)
         {
-            if (string.IsNullOrEmpty(msg) == true)
+            if (string.IsNullOrEmpty(msg))
             {
                 return;
             }

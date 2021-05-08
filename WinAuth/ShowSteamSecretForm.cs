@@ -61,7 +61,7 @@ namespace WinAuth
             var authenticator = CurrentAuthenticator.AuthenticatorData as SteamAuthenticator;
 
             deviceidField.Text = authenticator.DeviceId;
-            if (string.IsNullOrEmpty(authenticator.SteamData) == false && authenticator.SteamData[0] == '{')
+            if (!string.IsNullOrEmpty(authenticator.SteamData) && authenticator.SteamData[0] == '{')
             {
                 revocationcodeField.Text = JObject.Parse(authenticator.SteamData).SelectToken("revocation_code").Value<string>();
                 if (authenticator.SteamData.IndexOf("shared_secret") != -1)

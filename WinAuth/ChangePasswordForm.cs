@@ -84,7 +84,7 @@ namespace WinAuth
             if ((PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
             {
                 passwordCheckbox.Checked = true;
-                if (HasPassword == true)
+                if (HasPassword)
                 {
                     passwordField.Text = EXISTING_PASSWORD;
                     verifyField.Text = EXISTING_PASSWORD;
@@ -100,7 +100,7 @@ namespace WinAuth
         private void ChangePasswordForm_Shown(object sender, EventArgs e)
         {
             // Buf in MetroFrame where focus is not set correcty during Load, so we do it here
-            if (passwordField.Enabled == true)
+            if (passwordField.Enabled)
             {
                 passwordField.Focus();
             }
@@ -113,7 +113,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void machineCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (machineCheckbox.Checked == false)
+            if (!machineCheckbox.Checked)
             {
                 userCheckbox.Checked = false;
             }
@@ -129,7 +129,7 @@ namespace WinAuth
         {
             passwordField.Enabled = (passwordCheckbox.Checked);
             verifyField.Enabled = (passwordCheckbox.Checked);
-            if (passwordCheckbox.Checked == true)
+            if (passwordCheckbox.Checked)
             {
                 passwordField.Focus();
             }
@@ -143,13 +143,13 @@ namespace WinAuth
         private void okButton_Click(object sender, EventArgs e)
         {
             // check password is set if requried
-            if (passwordCheckbox.Checked == true && passwordField.Text.Trim().Length == 0)
+            if (passwordCheckbox.Checked && passwordField.Text.Trim().Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.EnterPassword);
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
-            if (passwordCheckbox.Checked == true && string.Compare(passwordField.Text.Trim(), verifyField.Text.Trim()) != 0)
+            if (passwordCheckbox.Checked && string.Compare(passwordField.Text.Trim(), verifyField.Text.Trim()) != 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.PasswordsDontMatch);
                 DialogResult = System.Windows.Forms.DialogResult.None;
@@ -159,15 +159,15 @@ namespace WinAuth
             // set the valid password type property
             PasswordType = Authenticator.PasswordTypes.None;
             Password = null;
-            if (userCheckbox.Checked == true)
+            if (userCheckbox.Checked)
             {
                 PasswordType |= Authenticator.PasswordTypes.User;
             }
-            else if (machineCheckbox.Checked == true)
+            else if (machineCheckbox.Checked)
             {
                 PasswordType |= Authenticator.PasswordTypes.Machine;
             }
-            if (passwordCheckbox.Checked == true)
+            if (passwordCheckbox.Checked)
             {
                 PasswordType |= Authenticator.PasswordTypes.Explicit;
                 if (passwordField.Text != EXISTING_PASSWORD)

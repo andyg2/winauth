@@ -59,7 +59,7 @@ namespace WinAuth
             try
             {
                 HasHandle = _mutex.WaitOne(timeOut, false);
-                if (HasHandle == false)
+                if (!HasHandle)
                 {
                     throw new TimeoutException("Timeout waiting for exclusive access on SingleInstance");
                 }

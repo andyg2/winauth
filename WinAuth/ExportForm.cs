@@ -76,14 +76,14 @@ namespace WinAuth
         /// <param name="e"></param>
         private void passwordCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (passwordCheckbox.Checked == true)
+            if (passwordCheckbox.Checked)
             {
                 pgpCheckbox.Checked = false;
             }
 
             passwordField.Enabled = (passwordCheckbox.Checked);
             verifyField.Enabled = (passwordCheckbox.Checked);
-            if (passwordCheckbox.Checked == true)
+            if (passwordCheckbox.Checked)
             {
                 passwordField.Focus();
             }
@@ -96,13 +96,13 @@ namespace WinAuth
         /// <param name="e"></param>
         private void pgpCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (pgpCheckbox.Checked == true)
+            if (pgpCheckbox.Checked)
             {
                 passwordCheckbox.Checked = false;
             }
 
             pgpField.Enabled = pgpCheckbox.Checked;
-            if (pgpCheckbox.Checked == true)
+            if (pgpCheckbox.Checked)
             {
                 pgpField.Focus();
             }
@@ -140,12 +140,12 @@ namespace WinAuth
                 AddExtension = true,
                 CheckPathExists = true
             };
-            if (passwordCheckbox.Checked == true)
+            if (passwordCheckbox.Checked)
             {
                 sfd.Filter = "Zip File (*.zip)|*.zip";
                 sfd.FileName = "winauth-" + DateTime.Today.ToString("yyyy-MM-dd") + ".zip";
             }
-            else if (pgpCheckbox.Checked == true)
+            else if (pgpCheckbox.Checked)
             {
                 sfd.Filter = "PGP File (*.pgp)|*.pgp";
                 sfd.FileName = "winauth-" + DateTime.Today.ToString("yyyy-MM-dd") + ".pgp";
@@ -172,20 +172,20 @@ namespace WinAuth
         private void okButton_Click(object sender, EventArgs e)
         {
             // check password is set if required
-            if (passwordCheckbox.Checked == true && passwordField.Text.Trim().Length == 0)
+            if (passwordCheckbox.Checked && passwordField.Text.Trim().Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.EnterPassword);
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
-            if (passwordCheckbox.Checked == true && string.Compare(passwordField.Text, verifyField.Text) != 0)
+            if (passwordCheckbox.Checked && string.Compare(passwordField.Text, verifyField.Text) != 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.PasswordsDontMatch);
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
 
-            if (pgpCheckbox.Checked == true && pgpField.Text.Length == 0)
+            if (pgpCheckbox.Checked && pgpField.Text.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.MissingPGPKey);
                 DialogResult = System.Windows.Forms.DialogResult.None;

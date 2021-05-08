@@ -57,7 +57,7 @@ namespace WinAuth
             TopMost = oldtopmost;
             Activate();
 
-            if (InvalidPassword == true)
+            if (InvalidPassword)
             {
                 invalidPasswordLabel.Text = strings.InvalidPassword;
                 invalidPasswordLabel.Visible = true;

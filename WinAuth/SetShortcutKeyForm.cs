@@ -112,7 +112,7 @@ namespace WinAuth
                 injectRadioButton.Enabled = true;
                 injectRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Inject);
                 injectTextbox.Enabled = injectRadioButton.Checked;
-                injectTextbox.Text = (injectRadioButton.Checked == true ? Hotkey.Window : string.Empty);
+                injectTextbox.Text = (injectRadioButton.Checked ? Hotkey.Window : string.Empty);
                 //
                 pasteRadioButton.Enabled = true;
                 pasteRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Copy);
@@ -120,7 +120,7 @@ namespace WinAuth
                 advancedRadioButton.Enabled = true;
                 advancedRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Advanced);
                 advancedTextbox.Enabled = advancedRadioButton.Checked;
-                advancedTextbox.Text = (advancedRadioButton.Checked == true ? Hotkey.Advanced : string.Empty);
+                advancedTextbox.Text = (advancedRadioButton.Checked ? Hotkey.Advanced : string.Empty);
             }
 
         }
@@ -159,7 +159,7 @@ namespace WinAuth
                 }
 
                 // check it is available if this is a different hotkey
-                if ((key != Hotkey.Key || modifiers != Hotkey.Modifiers) && KeyboardHook.IsHotkeyAvailable(this, (Keys)key, modifiers) == false)
+                if ((key != Hotkey.Key || modifiers != Hotkey.Modifiers) && !KeyboardHook.IsHotkeyAvailable(this, (Keys)key, modifiers))
                 {
                     WinAuthForm.ErrorDialog(this, strings.HotKeyNotAvailable);
                     DialogResult = System.Windows.Forms.DialogResult.None;
@@ -169,25 +169,25 @@ namespace WinAuth
                 Hotkey.Key = key;
                 Hotkey.Modifiers = modifiers;
 
-                if (notifyRadioButton.Checked == true)
+                if (notifyRadioButton.Checked)
                 {
                     Hotkey.Action = HotKey.HotKeyActions.Notify;
                     Hotkey.Window = null;
                     Hotkey.Advanced = null;
                 }
-                else if (injectRadioButton.Checked == true)
+                else if (injectRadioButton.Checked)
                 {
                     Hotkey.Action = HotKey.HotKeyActions.Inject;
                     Hotkey.Window = injectTextbox.Text;
                     Hotkey.Advanced = null;
                 }
-                else if (pasteRadioButton.Checked == true)
+                else if (pasteRadioButton.Checked)
                 {
                     Hotkey.Action = HotKey.HotKeyActions.Copy;
                     Hotkey.Window = null;
                     Hotkey.Advanced = null;
                 }
-                else if (advancedRadioButton.Checked == true)
+                else if (advancedRadioButton.Checked)
                 {
                     Hotkey.Action = HotKey.HotKeyActions.Advanced;
                     Hotkey.Window = null;

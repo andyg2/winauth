@@ -76,7 +76,7 @@ namespace WinAuth
                     m_fontFamily = Font.FontFamily.Name;
                     m_fontSize = Font.Size;
                 }
-                if (value == false)
+                if (!value)
                 {
                     Font = new Font(m_fontFamily, m_fontSize);
                 }
@@ -96,11 +96,11 @@ namespace WinAuth
         /// </summary>
         public override string Text
         {
-            get => (SecretMode == true ? m_text : base.Text);
+            get => (SecretMode ? m_text : base.Text);
             set
             {
                 m_text = value;
-                base.Text = (SecretMode == true ? (string.IsNullOrEmpty(value) == false ? new string('*', value.Length) : value) : value);
+                base.Text = (SecretMode ? (string.IsNullOrEmpty(value) ? value : new string('*', value.Length)) : value);
                 Invalidate();
             }
         }

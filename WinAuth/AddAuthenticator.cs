@@ -88,7 +88,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (Authenticator.AuthenticatorData != null && !(Authenticator.AuthenticatorData is HOTPAuthenticator) && codeProgress.Visible == true)
+            if (Authenticator.AuthenticatorData != null && !(Authenticator.AuthenticatorData is HOTPAuthenticator) && codeProgress.Visible)
             {
                 var time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % Authenticator.AuthenticatorData.Period;
                 codeProgress.Value = time + 1;
@@ -140,12 +140,12 @@ namespace WinAuth
                 return;
             }
             var first = (Authenticator.AuthenticatorData == null);
-            if (verifyAuthenticator(privatekey) == false)
+            if (!verifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
-            if (first == true)
+            if (first)
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -182,7 +182,7 @@ namespace WinAuth
         private void timeBasedRadio_CheckedChanged(object sender, EventArgs e)
         {
             counterBasedRadio.Checked = !timeBasedRadio.Checked;
-            if (timeBasedRadio.Checked == true)
+            if (timeBasedRadio.Checked)
             {
                 timeBasedPanel.Visible = true;
                 counterBasedPanel.Visible = false;
@@ -197,7 +197,7 @@ namespace WinAuth
         private void counterBasedRadio_CheckedChanged(object sender, EventArgs e)
         {
             timeBasedRadio.Checked = !counterBasedRadio.Checked;
-            if (counterBasedRadio.Checked == true)
+            if (counterBasedRadio.Checked)
             {
                 counterBasedPanel.Visible = true;
                 timeBasedPanel.Visible = false;
@@ -222,7 +222,7 @@ namespace WinAuth
         {
             Match match;
 
-            if (Regex.IsMatch(secretCodeField.Text, "https?://.*") == true && Uri.TryCreate(secretCodeField.Text, UriKind.Absolute, out var uri) == true)
+            if (Regex.IsMatch(secretCodeField.Text, "https?://.*") && Uri.TryCreate(secretCodeField.Text, UriKind.Absolute, out var uri))
             {
                 try
                 {
@@ -232,13 +232,13 @@ namespace WinAuth
                     request.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)";
                     using (var response = (HttpWebResponse)request.GetResponse())
                     {
-                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) == true)
+                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
                             using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
                             {
                                 IBarcodeReader reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
-                                if (result != null && string.IsNullOrEmpty(result.Text) == false)
+                                if (result != null && !string.IsNullOrEmpty(result.Text))
                                 {
                                     secretCodeField.Text = HttpUtility.UrlDecode(result.Text);
                                 }
@@ -254,7 +254,7 @@ namespace WinAuth
             }
 
             match = Regex.Match(secretCodeField.Text, @"otpauth://([^/]+)/([^?]+)\?(.*)", RegexOptions.IgnoreCase);
-            if (match.Success == true)
+            if (match.Success)
             {
                 var authtype = match.Groups[1].Value.ToLower();
                 var label = match.Groups[2].Value;
@@ -272,30 +272,30 @@ namespace WinAuth
                 var qs = WinAuthHelper.ParseQueryString(match.Groups[3].Value);
                 if (qs["counter"] != null)
                 {
-                    if (long.TryParse(qs["counter"], out var counter) == true)
+                    if (long.TryParse(qs["counter"], out var counter))
                     {
                         counterField.Text = counter.ToString();
                     }
                 }
 
                 var issuer = qs["issuer"];
-                if (string.IsNullOrEmpty(issuer) == false)
+                if (!string.IsNullOrEmpty(issuer))
                 {
-                    label = issuer + (string.IsNullOrEmpty(label) == false ? " (" + label + ")" : string.Empty);
+                    label = issuer + (string.IsNullOrEmpty(label) ? string.Empty : " (" + label + ")");
                 }
                 nameField.Text = label;
 
-                if (int.TryParse(qs["period"], out var period) == true && period > 0)
+                if (int.TryParse(qs["period"], out var period) && period > 0)
                 {
                     intervalField.Text = period.ToString();
                 }
 
-                if (int.TryParse(qs["digits"], out var digits) == true && digits > 0)
+                if (int.TryParse(qs["digits"], out var digits) && digits > 0)
                 {
                     digitsField.Text = digits.ToString();
                 }
 
-                if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out var hmac) == true)
+                if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out var hmac))
                 {
                     hashField.SelectedItem = hmac.ToString();
                 }
@@ -327,7 +327,7 @@ namespace WinAuth
         /// <returns>true is successful</returns>
         private bool verifyAuthenticator(string privatekey)
         {
-            if (string.IsNullOrEmpty(privatekey) == true)
+            if (string.IsNullOrEmpty(privatekey))
             {
                 return false;
             }
@@ -335,7 +335,7 @@ namespace WinAuth
             Authenticator.Name = nameField.Text;
 
             var digits = (Authenticator.AuthenticatorData != null ? Authenticator.AuthenticatorData.CodeDigits : GoogleAuthenticator.DEFAULT_CODE_DIGITS);
-            if (string.IsNullOrEmpty(digitsField.Text) == true || int.TryParse(digitsField.Text, out digits) == false || digits <= 0)
+            if (string.IsNullOrEmpty(digitsField.Text) || !int.TryParse(digitsField.Text, out digits) || digits <= 0)
             {
                 return false;
             }
@@ -343,9 +343,9 @@ namespace WinAuth
             var hmac = WinAuth.Authenticator.HMACTypes.SHA1;
             Enum.TryParse<WinAuth.Authenticator.HMACTypes>((string)hashField.SelectedItem, out hmac);
 
-            var authtype = timeBasedRadio.Checked == true ? TOTP : HOTP;
+            var authtype = timeBasedRadio.Checked ? TOTP : HOTP;
 
-            if (string.IsNullOrEmpty(intervalField.Text) == true || int.TryParse(intervalField.Text, out var period) == false || period <= 0)
+            if (string.IsNullOrEmpty(intervalField.Text) || !int.TryParse(intervalField.Text, out var period) || period <= 0)
             {
                 return false;
             }
@@ -354,7 +354,7 @@ namespace WinAuth
 
             // if this is a URL, pull it down
             Match match;
-            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri) == true)
+            if (Regex.IsMatch(privatekey, "https?://.*") && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri))
             {
                 try
                 {
@@ -364,7 +364,7 @@ namespace WinAuth
                     request.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)";
                     using (var response = (HttpWebResponse)request.GetResponse())
                     {
-                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) == true)
+                        if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
                             using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
                             {
@@ -384,7 +384,7 @@ namespace WinAuth
                     return false;
                 }
             }
-            else if ((match = Regex.Match(privatekey, @"data:image/([^;]+);base64,(.*)", RegexOptions.IgnoreCase)).Success == true)
+            else if ((match = Regex.Match(privatekey, @"data:image/([^;]+);base64,(.*)", RegexOptions.IgnoreCase)).Success)
             {
                 var imageB64Content = match.Groups[2].Value;
                 var imagedata = Convert.FromBase64String(imageB64Content);
@@ -401,7 +401,7 @@ namespace WinAuth
                     }
                 }
             }
-            else if (IsValidFile(privatekey) == true)
+            else if (IsValidFile(privatekey))
             {
                 // assume this is the image file
                 using (var bitmap = (Bitmap)Bitmap.FromFile(privatekey))
@@ -420,7 +420,7 @@ namespace WinAuth
 
             // check for otpauth://, e.g. "otpauth://totp/dc3bf64c-2fd4-40fe-a8cf-83315945f08b@blockchain.info?secret=IHZJDKAEEC774BMUK3GX6SA"
             match = Regex.Match(privatekey, @"otpauth://([^/]+)/([^?]+)\?(.*)", RegexOptions.IgnoreCase);
-            if (match.Success == true)
+            if (match.Success)
             {
                 authtype = match.Groups[1].Value.ToLower();
                 var label = match.Groups[2].Value;
@@ -442,23 +442,23 @@ namespace WinAuth
                     long.TryParse(qs["counter"], out counter);
                 }
                 issuer = qs["issuer"];
-                if (string.IsNullOrEmpty(issuer) == false)
+                if (!string.IsNullOrEmpty(issuer))
                 {
-                    label = issuer + (string.IsNullOrEmpty(label) == false ? " (" + label + ")" : string.Empty);
+                    label = issuer + (string.IsNullOrEmpty(label) ? string.Empty : " (" + label + ")");
                 }
                 serial = qs["serial"];
-                if (string.IsNullOrEmpty(label) == false)
+                if (!string.IsNullOrEmpty(label))
                 {
                     Authenticator.Name = nameField.Text = label;
                 }
                 var periods = qs["period"];
-                if (string.IsNullOrEmpty(periods) == false)
+                if (!string.IsNullOrEmpty(periods))
                 {
                     int.TryParse(periods, out period);
                 }
                 if (qs["algorithm"] != null)
                 {
-                    if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out hmac) == true)
+                    if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out hmac))
                     {
                         hashField.SelectedItem = hmac.ToString();
                     }
@@ -480,12 +480,12 @@ namespace WinAuth
                 {
                     if (string.Compare(issuer, "BattleNet", true) == 0)
                     {
-                        if (string.IsNullOrEmpty(serial) == true)
+                        if (string.IsNullOrEmpty(serial))
                         {
                             throw new ApplicationException("Battle.net Authenticator does not have a serial");
                         }
                         serial = serial.ToUpper();
-                        if (Regex.IsMatch(serial, @"^[A-Z]{2}-?[\d]{4}-?[\d]{4}-?[\d]{4}$") == false)
+                        if (!Regex.IsMatch(serial, @"^[A-Z]{2}-?[\d]{4}-?[\d]{4}-?[\d]{4}$"))
                         {
                             throw new ApplicationException("Invalid serial for Battle.net Authenticator");
                         }
@@ -553,7 +553,7 @@ namespace WinAuth
 
                 codeProgress.Maximum = period;
 
-                if (!(auth is HOTPAuthenticator) && auth.ServerTimeDiff == 0L && SyncErrorWarned == false)
+                if (!(auth is HOTPAuthenticator) && auth.ServerTimeDiff == 0L && !SyncErrorWarned)
                 {
                     SyncErrorWarned = true;
                     MessageBox.Show(this, string.Format(strings.AuthenticatorSyncError, "Google"), WinAuthMain.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);

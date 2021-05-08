@@ -82,7 +82,7 @@ namespace WinAuth
             }
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -141,14 +141,14 @@ namespace WinAuth
             writer.WriteString(Enum.GetName(typeof(HotKeyActions), Action));
             writer.WriteEndElement();
             //
-            if (string.IsNullOrEmpty(Window) == false)
+            if (!string.IsNullOrEmpty(Window))
             {
                 writer.WriteStartElement("window");
                 writer.WriteString(Window);
                 writer.WriteEndElement();
             }
             //
-            if (string.IsNullOrEmpty(Advanced) == false)
+            if (!string.IsNullOrEmpty(Advanced))
             {
                 writer.WriteStartElement("advanced");
                 writer.WriteString(Advanced);

@@ -75,7 +75,7 @@ namespace WinAuth
             {
                 Config = Config
             };
-            if (string.IsNullOrEmpty(errorreport.Config.Filename) == false)
+            if (!string.IsNullOrEmpty(errorreport.Config.Filename))
             {
                 errorreport.ConfigFileContents = File.ReadAllText(errorreport.Config.Filename);
             }

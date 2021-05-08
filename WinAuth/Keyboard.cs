@@ -101,7 +101,7 @@ namespace WinAuth
                 var key = (Keys)auth.HotKey.Key;
                 var modifier = auth.HotKey.Modifiers;
 
-                if (WinAPI.RegisterHotKey(m_form.Handle, i + 1, modifier | WinAPI.KeyModifiers.NoRepeat, key) == false)
+                if (!WinAPI.RegisterHotKey(m_form.Handle, i + 1, modifier | WinAPI.KeyModifiers.NoRepeat, key))
                 {
                     // the MOD_NOREPEAT flag is not support in XP or 2003 and we should get a fail, so we call again without it
                     WinAPI.RegisterHotKey(m_form.Handle, i + 1, modifier, key);
@@ -131,7 +131,7 @@ namespace WinAuth
         public static bool IsHotkeyAvailable(Form form, Keys key, WinAPI.KeyModifiers modifier)
         {
             var available = WinAPI.RegisterHotKey(form.Handle, 0, modifier, key);
-            if (available == true)
+            if (available)
             {
                 WinAPI.UnregisterHotKey(form.Handle, 0);
             }
@@ -212,7 +212,7 @@ namespace WinAuth
                 foreach (Match match in Regex.Matches(keys, @"\{.*?\}|[^\{]*", RegexOptions.Singleline))
                 {
                     // split into either {CMD d w} or just plain text
-                    if (match.Success == true)
+                    if (match.Success)
                     {
                         var single = match.Value;
                         if (single.Length == 0)
@@ -224,17 +224,17 @@ namespace WinAuth
                         {
                             // send command {COMMAND delay repeat}
                             var cmdMatch = Regex.Match(single.Trim(), @"\{([^\s]+)\s*(\d*)\s*(\d*)\}");
-                            if (cmdMatch.Success == true)
+                            if (cmdMatch.Success)
                             {
                                 // extract the command and any optional delay and repeat
                                 var cmd = cmdMatch.Groups[1].Value.ToUpper();
                                 var delay = 0;
-                                if (cmdMatch.Groups[2].Success == true && cmdMatch.Groups[2].Value.Length != 0)
+                                if (cmdMatch.Groups[2].Success && cmdMatch.Groups[2].Value.Length != 0)
                                 {
                                     int.TryParse(cmdMatch.Groups[2].Value, out delay);
                                 }
                                 var repeat = 1;
-                                if (cmdMatch.Groups[3].Success == true && cmdMatch.Groups[3].Value.Length != 0)
+                                if (cmdMatch.Groups[3].Success && cmdMatch.Groups[3].Value.Length != 0)
                                 {
                                     int.TryParse(cmdMatch.Groups[3].Value, out repeat);
                                 }
@@ -261,7 +261,7 @@ namespace WinAuth
                                         break;
                                     case "PASTE":
                                         var clipboard = form.Invoke(new WinAuthForm.GetClipboardDataDelegate(form.GetClipboardData), new object[] { typeof(string) }) as string;
-                                        if (string.IsNullOrEmpty(clipboard) == false)
+                                        if (!string.IsNullOrEmpty(clipboard))
                                         {
                                             foreach (var key in clipboard)
                                             {
@@ -287,7 +287,7 @@ namespace WinAuth
             finally
             {
                 // resume input
-                if (blocked == true)
+                if (blocked)
                 {
                     WinAPI.BlockInput(false);
                 }
@@ -340,7 +340,7 @@ namespace WinAuth
         private static IntPtr FindWindow(string window)
         {
             // default to return current window
-            if (string.IsNullOrEmpty(window) == true)
+            if (string.IsNullOrEmpty(window))
             {
                 return WinAPI.GetForegroundWindow();
             }
@@ -348,10 +348,10 @@ namespace WinAuth
             // build regex
             Regex reg;
             var match = Regex.Match(window, @"/(.*)/([a-z]*)", RegexOptions.IgnoreCase);
-            if (match.Success == true)
+            if (match.Success)
             {
                 var regoptions = RegexOptions.None;
-                if (match.Groups[2].Value.Contains("i") == true)
+                if (match.Groups[2].Value.Contains("i"))
                 {
                     regoptions |= RegexOptions.IgnoreCase;
                 }
@@ -378,14 +378,14 @@ namespace WinAuth
 
             /*
                         // if we have a title match it in the window titles
-                        if (string.IsNullOrEmpty(windowTitle) == false)
+                        if (!string.IsNullOrEmpty(windowTitle))
                         {
-                            if (useregex == true)
+                            if (useregex)
                             {
                                 Regex regex = new Regex(windowTitle, RegexOptions.Singleline);
                                 foreach (Process process in processes)
                                 {
-                                    if (regex.IsMatch(process.MainWindowTitle) == true)
+                                    if (regex.IsMatch(process.MainWindowTitle))
                                     {
                                         return process.MainWindowHandle;
                                     }
@@ -403,7 +403,7 @@ namespace WinAuth
                                 }
                             }
                         }
-                        else if (string.IsNullOrEmpty(processName) == false)
+                        else if (!string.IsNullOrEmpty(processName))
                         {
                             foreach (Process process in processes)
                             {
@@ -413,7 +413,7 @@ namespace WinAuth
                                 }
                             }
                         }
-                        else if (string.IsNullOrEmpty(processName) == true)
+                        else if (string.IsNullOrEmpty(processName))
                         {
                             return WinAPI.GetForegroundWindow();
                         }

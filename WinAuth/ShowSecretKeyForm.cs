@@ -68,7 +68,7 @@ namespace WinAuth
             //	+ "?secret=" + key
             //	+ "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
             //	+ (counter != 0 ? "&counter=" + counter : string.Empty)
-            //	+ (string.IsNullOrEmpty(issuer) == false ? "&issuer=" + WinAuthHelper.HtmlEncode(issuer) : string.Empty);
+            //	+ (string.IsNullOrEmpty(issuer) ? string.Empty : "&issuer=" + WinAuthHelper.HtmlEncode(issuer));
             var url = CurrentAuthenticator.ToUrl(true);
 
             var writer = new BarcodeWriter
@@ -89,7 +89,7 @@ namespace WinAuth
             secretKeyField.SecretMode = !allowCopyCheckBox.Checked;
 
             var key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
-            if (secretKeyField.SecretMode == true)
+            if (secretKeyField.SecretMode)
             {
                 secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
             }

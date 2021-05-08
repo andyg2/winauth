@@ -85,7 +85,7 @@ namespace WinAuth
         {
             var diag = new StringBuilder();
 
-            if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version) == true)
+            if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version))
             {
                 diag.Append("Version:" + version.ToString(4));
             }
@@ -94,10 +94,10 @@ namespace WinAuth
             try
             {
                 var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
-                if (Directory.Exists(dir) == true)
+                if (Directory.Exists(dir))
                 {
                     var winauthlog = Path.Combine(dir, "winauth.log");
-                    if (File.Exists(winauthlog) == true)
+                    if (File.Exists(winauthlog))
                     {
                         diag.Append("--WINAUTH.LOG--").Append(Environment.NewLine);
                         diag.Append(File.ReadAllText(winauthlog)).Append(Environment.NewLine).Append(Environment.NewLine);
@@ -188,7 +188,7 @@ namespace WinAuth
         private void detailsButton_Click(object sender, EventArgs e)
         {
             dataText.Visible = !dataText.Visible;
-            if (dataText.Visible == true)
+            if (dataText.Visible)
             {
                 detailsButton.Text = strings.HideDetails;
                 Height += 160;

@@ -77,16 +77,16 @@ namespace WinAuth
         /// <param name="data"></param>
         public HoyKeySequence(string data)
         {
-            if (string.IsNullOrEmpty(data) == false)
+            if (!string.IsNullOrEmpty(data))
             {
                 var match = Regex.Match(data, @"([0-9a-fA-F]{8})([0-9a-fA-F]{4})\t([^\t]*)\t(Y|N)(.*)", RegexOptions.Multiline);
-                if (match.Success == true)
+                if (match.Success)
                 {
                     Modifiers = (WinAPI.KeyModifiers)BitConverter.ToInt32(Authenticator.StringToByteArray(match.Groups[1].Value), 0);
                     HotKey = (WinAPI.VirtualKeyCode)BitConverter.ToUInt16(Authenticator.StringToByteArray(match.Groups[2].Value), 0);
                     WindowTitle = match.Groups[3].Value;
                     Advanced = (match.Groups[4].Value == "Y");
-                    if (Advanced == true)
+                    if (Advanced)
                     {
                         AdvancedScript = match.Groups[5].Value;
                     }
@@ -116,7 +116,7 @@ namespace WinAuth
                 WindowTitle = node.InnerText;
             }
             node = autoLoginNode.SelectSingleNode("windowtitleregex");
-            if (node != null && bool.TryParse(node.InnerText, out var boolVal) == true)
+            if (node != null && bool.TryParse(node.InnerText, out var boolVal))
             {
                 WindowTitleRegex = boolVal;
             }
@@ -126,7 +126,7 @@ namespace WinAuth
                 ProcessName = node.InnerText;
             }
             node = autoLoginNode.SelectSingleNode("advanced");
-            if (node != null && bool.TryParse(node.InnerText, out boolVal) == true)
+            if (node != null && bool.TryParse(node.InnerText, out boolVal))
             {
                 Advanced = boolVal;
             }
@@ -164,7 +164,7 @@ namespace WinAuth
                             case 'y':
                             {
                                 // we use an explicit password to encrypt data
-                                if (string.IsNullOrEmpty(password) == true)
+                                if (string.IsNullOrEmpty(password))
                                 {
                                     throw new EncryptedSecretDataException();
                                 }
@@ -193,7 +193,7 @@ namespace WinAuth
             }
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -227,7 +227,7 @@ namespace WinAuth
                             var encrypted = reader.GetAttribute("encrypted");
                             var data = reader.ReadElementContentAsString();
 
-                            if (string.IsNullOrEmpty(encrypted) == false)
+                            if (!string.IsNullOrEmpty(encrypted))
                             {
                                 var passwordType = Authenticator.DecodePasswordTypes(encrypted);
                                 data = Authenticator.DecryptSequence(data, passwordType, password, true);
@@ -261,7 +261,7 @@ namespace WinAuth
                                                     case 'y':
                                                       {
                                                         // we use an explicit password to encrypt data
-                                                        if (string.IsNullOrEmpty(password) == true)
+                                                        if (string.IsNullOrEmpty(password))
                                                         {
                                                           throw new EncryptedSecretDataException();
                                                         }

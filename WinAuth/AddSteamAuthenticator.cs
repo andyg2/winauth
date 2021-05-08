@@ -115,7 +115,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void AddSteamAuthenticator_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_enroll.Success == true)
+            if (m_enroll.Success)
             {
                 Authenticator.Name = nameField.Text;
                 DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -130,7 +130,7 @@ namespace WinAuth
         private void cancelButton_Click(object sender, EventArgs e)
         {
             // if we press ESC after adding, make sure we save it
-            if (m_enroll.Success == true)
+            if (m_enroll.Success)
             {
                 DialogResult = System.Windows.Forms.DialogResult.OK;
             }
@@ -176,7 +176,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (((RadioButton)sender).Checked == true)
+            if (((RadioButton)sender).Checked)
             {
                 Authenticator.Skin = (string)((RadioButton)sender).Tag;
             }
@@ -268,7 +268,7 @@ namespace WinAuth
 
             if (tabs.SelectedTab.Name == "importAndroidTab")
             {
-                if (ImportSteamGuard() == false)
+                if (!ImportSteamGuard())
                 {
                     DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
@@ -276,7 +276,7 @@ namespace WinAuth
             }
             if (tabs.SelectedTab.Name == "importSDATab")
             {
-                if (ImportSDA() == false)
+                if (!ImportSDA())
                 {
                     DialogResult = System.Windows.Forms.DialogResult.None;
                     return;
@@ -300,7 +300,7 @@ namespace WinAuth
                 {
                     case "loginTab":
                         e.Handled = true;
-                        if (m_enroll.RequiresCaptcha == true)
+                        if (m_enroll.RequiresCaptcha)
                         {
                             captchaButton_Click(sender, new EventArgs());
                         }
@@ -458,7 +458,7 @@ namespace WinAuth
             {
                 deviceId = uuid;
             }
-            if (string.IsNullOrEmpty(deviceId) || Regex.IsMatch(deviceId, @"android:[0-9abcdef-]+", RegexOptions.Singleline | RegexOptions.IgnoreCase) == false)
+            if (string.IsNullOrEmpty(deviceId) || !Regex.IsMatch(deviceId, @"android:[0-9abcdef-]+", RegexOptions.Singleline | RegexOptions.IgnoreCase))
             {
                 WinAuthForm.ErrorDialog(this, "Invalid deviceid, expecting \"android:NNNN...\"");
                 return false;
@@ -562,7 +562,7 @@ namespace WinAuth
         private void LoadSDA()
         {
             var manifestfile = importSDAPath.Text.Trim();
-            if (string.IsNullOrEmpty(manifestfile) == true || File.Exists(manifestfile) == false)
+            if (string.IsNullOrEmpty(manifestfile) || !File.Exists(manifestfile))
             {
                 WinAuthForm.ErrorDialog(this, "Enter a path for SteamDesktopAuthenticator");
                 return;
@@ -580,7 +580,7 @@ namespace WinAuth
                     var manifest = JObject.Parse(File.ReadAllText(manifestfile));
                     var token = manifest.SelectToken("encrypted");
                     var encrypted = token != null ? token.Value<bool>() : false;
-                    if (encrypted == true && password.Length == 0)
+                    if (encrypted && password.Length == 0)
                     {
                         throw new ApplicationException("Please enter your password");
                     }
@@ -621,7 +621,7 @@ namespace WinAuth
                         }
                     }
                 }
-                else if (string.IsNullOrEmpty(password) == false)
+                else if (!string.IsNullOrEmpty(password))
                 {
                     throw new ApplicationException("Cannot load an single maFile that has been encrypted");
                 }
@@ -651,13 +651,13 @@ namespace WinAuth
         private void LoadSDAFile(string mafile, string password = null, string steamid = null, string iv = null, string salt = null)
         {
             string data;
-            if (File.Exists(mafile) == false || (data = File.ReadAllText(mafile)) == null)
+            if (!File.Exists(mafile) || (data = File.ReadAllText(mafile)) == null)
             {
                 throw new ApplicationException("Cannot read file " + mafile);
             }
 
             // decrypt
-            if (string.IsNullOrEmpty(password) == false)
+            if (!string.IsNullOrEmpty(password))
             {
                 var ciphertext = Convert.FromBase64String(data);
 
@@ -702,11 +702,11 @@ namespace WinAuth
                 Username = token.SelectToken("account_name") != null ? token.SelectToken("account_name").Value<string>() : null,
                 SteamId = steamid
             };
-            if (string.IsNullOrEmpty(sdaentry.SteamId) == true)
+            if (string.IsNullOrEmpty(sdaentry.SteamId))
             {
                 sdaentry.SteamId = token.SelectToken("Session.SteamID") != null ? token.SelectToken("Session.SteamID").Value<string>() : null;
             }
-            if (string.IsNullOrEmpty(sdaentry.SteamId) == true)
+            if (string.IsNullOrEmpty(sdaentry.SteamId))
             {
                 sdaentry.SteamId = mafile.Split('.')[0];
             }
@@ -730,20 +730,20 @@ namespace WinAuth
 
                     var result = m_steamAuthenticator.Enroll(m_enroll);
                     Cursor.Current = cursor;
-                    if (result == false)
+                    if (!result)
                     {
-                        if (string.IsNullOrEmpty(m_enroll.Error) == false)
+                        if (!string.IsNullOrEmpty(m_enroll.Error))
                         {
                             WinAuthForm.ErrorDialog(this, m_enroll.Error, null, MessageBoxButtons.OK);
                         }
 
-                        if (m_enroll.Requires2FA == true)
+                        if (m_enroll.Requires2FA)
                         {
                             WinAuthForm.ErrorDialog(this, "It looks like you already have an authenticator added to you account", null, MessageBoxButtons.OK);
                             return;
                         }
 
-                        if (m_enroll.RequiresCaptcha == true)
+                        if (m_enroll.RequiresCaptcha)
                         {
                             using (var web = new WebClient())
                             {
@@ -763,32 +763,32 @@ namespace WinAuth
                         loginButton.Enabled = true;
                         captchaGroup.Visible = false;
 
-                        if (m_enroll.RequiresEmailAuth == true)
+                        if (m_enroll.RequiresEmailAuth)
                         {
-                            if (authoriseTabLabel.Tag == null || string.IsNullOrEmpty((string)authoriseTabLabel.Tag) == true)
+                            if (authoriseTabLabel.Tag == null || string.IsNullOrEmpty((string)authoriseTabLabel.Tag))
                             {
                                 authoriseTabLabel.Tag = authoriseTabLabel.Text;
                             }
-                            var email = string.IsNullOrEmpty(m_enroll.EmailDomain) == false ? "***@" + m_enroll.EmailDomain : string.Empty;
+                            var email = string.IsNullOrEmpty(m_enroll.EmailDomain) ? string.Empty : "***@" + m_enroll.EmailDomain;
                             authoriseTabLabel.Text = string.Format((string)authoriseTabLabel.Tag, email);
                             authcodeField.Text = "";
                             ShowTab("authTab");
                             authcodeField.Focus();
                             return;
                         }
-                        if (tabs.TabPages.ContainsKey("authTab") == true)
+                        if (tabs.TabPages.ContainsKey("authTab"))
                         {
                             tabs.TabPages.RemoveByKey("authTab");
                         }
 
-                        if (m_enroll.RequiresLogin == true)
+                        if (m_enroll.RequiresLogin)
                         {
                             ShowTab("loginTab");
                             usernameField.Focus();
                             return;
                         }
 
-                        if (m_enroll.RequiresActivation == true)
+                        if (m_enroll.RequiresActivation)
                         {
                             m_enroll.Error = null;
 
@@ -802,7 +802,7 @@ namespace WinAuth
                         }
 
                         var error = m_enroll.Error;
-                        if (string.IsNullOrEmpty(error) == true)
+                        if (string.IsNullOrEmpty(error))
                         {
                             error = "Unable to add the add the authenticator to your account. Please try again later.";
                         }
@@ -839,12 +839,12 @@ namespace WinAuth
         /// <param name="only">hide all others, or append if false</param>
         private void ShowTab(string name, bool only = true)
         {
-            if (only == true)
+            if (only)
             {
                 tabs.TabPages.Clear();
             }
 
-            if (tabs.TabPages.ContainsKey(name) == false)
+            if (!tabs.TabPages.ContainsKey(name))
             {
                 tabs.TabPages.Add(m_tabPages[name]);
             }

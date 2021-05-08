@@ -65,7 +65,7 @@ namespace WinAuth
             set
             {
                 // extract key + counter
-                if (string.IsNullOrEmpty(value) == false)
+                if (!string.IsNullOrEmpty(value))
                 {
                     var parts = value.Split('|');
                     base.SecretData = value;
@@ -101,7 +101,7 @@ namespace WinAuth
         /// <returns>authenticator code</returns>
         protected override string CalculateCode(bool sync = false, long counter = -1)
         {
-            if (sync == true)
+            if (sync)
             {
                 if (counter == -1)
                 {

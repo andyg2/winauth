@@ -253,7 +253,7 @@ namespace WinAuth
         //	get
         //	{
         //		string script = this.AuthenticatorData.Script;
-        //		if (string.IsNullOrEmpty(script) == true)
+        //		if (string.IsNullOrEmpty(script))
         //		{
         //			return null;
         //		}
@@ -288,10 +288,10 @@ namespace WinAuth
         {
             get
             {
-                if (string.IsNullOrEmpty(Skin) == false)
+                if (!string.IsNullOrEmpty(Skin))
                 {
                     Stream stream;
-                    if (Skin.StartsWith("base64:") == true)
+                    if (Skin.StartsWith("base64:"))
                     {
                         var bytes = Convert.FromBase64String(Skin.Substring(7));
                         stream = new MemoryStream(bytes, 0, bytes.Length);
@@ -419,7 +419,7 @@ namespace WinAuth
                     }
                 }
 
-                if (failed == true && showError == true)
+                if (failed && showError)
                 {
                     // only show an error the first time
                     clipRetry = (MessageBox.Show(form, strings.ClipboardInUse,
@@ -427,26 +427,26 @@ namespace WinAuth
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes);
                 }
             }
-            while (clipRetry == true);
+            while (clipRetry);
         }
 
         public bool ReadXml(XmlReader reader, string password)
         {
             var changed = false;
 
-            if (Guid.TryParse(reader.GetAttribute("id"), out var id) == true)
+            if (Guid.TryParse(reader.GetAttribute("id"), out var id))
             {
                 Id = id;
             }
             var authenticatorType = reader.GetAttribute("type");
-            if (string.IsNullOrEmpty(authenticatorType) == false)
+            if (!string.IsNullOrEmpty(authenticatorType))
             {
                 var type = typeof(Authenticator).Assembly.GetType(authenticatorType, false, true);
                 AuthenticatorData = Activator.CreateInstance(type) as Authenticator;
             }
 
             //string encrypted = reader.GetAttribute("encrypted");
-            //if (string.IsNullOrEmpty(encrypted) == false)
+            //if (!string.IsNullOrEmpty(encrypted))
             //{
             //	// read the encrypted text from the node
             //	string data = reader.ReadElementContentAsString();
@@ -474,7 +474,7 @@ namespace WinAuth
             }
 
             reader.Read();
-            while (reader.EOF == false)
+            while (!reader.EOF)
             {
                 if (reader.IsStartElement())
                 {
@@ -665,16 +665,16 @@ namespace WinAuth
             Match match;
             var issuer = AuthenticatorData.Issuer;
             var label = Name;
-            if (string.IsNullOrEmpty(issuer) == true && (match = Regex.Match(label, @"^([^\(]+)\s+\((.*?)\)(.*)")).Success == true)
+            if (string.IsNullOrEmpty(issuer) && (match = Regex.Match(label, @"^([^\(]+)\s+\((.*?)\)(.*)")).Success)
             {
                 issuer = match.Groups[1].Value;
                 label = match.Groups[2].Value + match.Groups[3].Value;
             }
-            if (string.IsNullOrEmpty(issuer) == false && (match = Regex.Match(label, @"^" + issuer + @"\s+\((.*?)\)(.*)")).Success == true)
+            if (!string.IsNullOrEmpty(issuer) && (match = Regex.Match(label, @"^" + issuer + @"\s+\((.*?)\)(.*)")).Success)
             {
                 label = match.Groups[1].Value + match.Groups[2].Value;
             }
-            if (string.IsNullOrEmpty(issuer) == false)
+            if (!string.IsNullOrEmpty(issuer))
             {
                 extraparams += "&issuer=" + HttpUtility.UrlEncode(issuer);
             }
@@ -690,7 +690,7 @@ namespace WinAuth
             }
             else if (AuthenticatorData is SteamAuthenticator)
             {
-                if (compat == false)
+                if (!compat)
                 {
                     extraparams += "&deviceid=" + HttpUtility.UrlEncode(((SteamAuthenticator)AuthenticatorData).DeviceId);
                     extraparams += "&data=" + HttpUtility.UrlEncode(((SteamAuthenticator)AuthenticatorData).SteamData);
@@ -705,9 +705,9 @@ namespace WinAuth
             var secret = HttpUtility.UrlEncode(Base32.getInstance().Encode(AuthenticatorData.SecretKey));
 
             // add the skin
-            if (string.IsNullOrEmpty(Skin) == false && compat == false)
+            if (!string.IsNullOrEmpty(Skin) && !compat)
             {
-                if (Skin.StartsWith("base64:") == true)
+                if (Skin.StartsWith("base64:"))
                 {
                     var bytes = Convert.FromBase64String(Skin.Substring(7));
                     var icon32 = Base32.getInstance().Encode(bytes);
@@ -725,7 +725,7 @@ namespace WinAuth
             }
 
             var url = string.Format("otpauth://" + type + "/{0}?secret={1}&digits={2}{3}",
-              (string.IsNullOrEmpty(issuer) == false ? HttpUtility.UrlPathEncode(issuer) + ":" + HttpUtility.UrlPathEncode(label) : HttpUtility.UrlPathEncode(label)),
+              (!string.IsNullOrEmpty(issuer) ? HttpUtility.UrlPathEncode(issuer) + ":" + HttpUtility.UrlPathEncode(label) : HttpUtility.UrlPathEncode(label)),
               secret,
               AuthenticatorData.CodeDigits,
               extraparams);

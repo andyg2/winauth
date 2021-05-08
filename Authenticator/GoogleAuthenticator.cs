@@ -102,9 +102,9 @@ namespace WinAuth
                     }
 
                     var headerdate = response.Headers["Date"];
-                    if (string.IsNullOrEmpty(headerdate) == false)
+                    if (!string.IsNullOrEmpty(headerdate))
                     {
-                        if (DateTime.TryParse(headerdate, out var dt) == true)
+                        if (DateTime.TryParse(headerdate, out var dt))
                         {
                             // get as ms since epoch
                             var dtms = Convert.ToInt64((dt.ToUniversalTime() - new DateTime(1970, 1, 1)).TotalMilliseconds);
