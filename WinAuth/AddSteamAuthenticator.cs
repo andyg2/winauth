@@ -71,17 +71,17 @@ namespace WinAuth
         /// <summary>
         /// Enrolling state
         /// </summary>
-        private SteamAuthenticator.EnrollState m_enroll = new SteamAuthenticator.EnrollState();
+        private readonly SteamAuthenticator.EnrollState m_enroll = new SteamAuthenticator.EnrollState();
 
         /// <summary>
         /// Current enrolling authenticator
         /// </summary>
-        private SteamAuthenticator m_steamAuthenticator = new SteamAuthenticator();
+        private readonly SteamAuthenticator m_steamAuthenticator = new SteamAuthenticator();
 
         /// <summary>
         /// Set of tab pages taken from the tab control so we can hide and show them
         /// </summary>
-        private Dictionary<string, TabPage> m_tabPages = new Dictionary<string, TabPage>();
+        private readonly Dictionary<string, TabPage> m_tabPages = new Dictionary<string, TabPage>();
 
         #region Form Events
 

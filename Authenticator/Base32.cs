@@ -32,7 +32,7 @@ namespace WinAuth
         /// <summary>
         /// Default base32 character set as per RFC 4648/3548
         /// </summary>
-        private static string DefaultAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        private static readonly string DefaultAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
         /// <summary>
         /// Lookup for the number of zero bits on the right (e.g. 0100 = 2)
@@ -61,22 +61,22 @@ namespace WinAuth
         /// <summary>
         /// array of alaphabet chars
         /// </summary>
-        private char[] _digits;
+        private readonly char[] _digits;
 
         /// <summary>
         /// bit mask used
         /// </summary>
-        private int _mask;
+        private readonly int _mask;
 
         /// <summary>
         /// shifting value
         /// </summary>
-        private int _shift;
+        private readonly int _shift;
 
         /// <summary>
         /// map of chars to position
         /// </summary>
-        private Dictionary<char, int> _map;
+        private readonly Dictionary<char, int> _map;
 
         /// <summary>
         /// Create a new Base32 object with a specified alphabet

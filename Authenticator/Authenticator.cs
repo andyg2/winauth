@@ -54,7 +54,7 @@ namespace WinAuth
         /// <summary>
         /// Version for encrpytion changes
         /// </summary>
-        private static string ENCRYPTION_HEADER = Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes("WINAUTH3"));
+        private static readonly string ENCRYPTION_HEADER = Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes("WINAUTH3"));
 
         /// <summary>
         /// Default number of digits in code

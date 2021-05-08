@@ -102,10 +102,10 @@ namespace WinAuth
         /// <summary>
         /// URLs for all mobile services
         /// </summary>
-        private static string REGION_US = "US";
-        private static string REGION_EU = "EU";
-        private static string REGION_KR = "KR";
-        private static string REGION_CN = "CN";
+        private static readonly string REGION_US = "US";
+        private static readonly string REGION_EU = "EU";
+        private static readonly string REGION_KR = "KR";
+        private static readonly string REGION_CN = "CN";
         public static Dictionary<string, string> MOBILE_URLS = new Dictionary<string, string>
         {
             {REGION_US, "http://mobile-service.blizzard.com"},
@@ -113,15 +113,15 @@ namespace WinAuth
             {REGION_KR, "http://mobile-service.blizzard.com"},
             {REGION_CN, "http://mobile-service.battlenet.com.cn"}
         };
-        private static string ENROLL_PATH = "/enrollment/enroll2.htm";
-        private static string SYNC_PATH = "/enrollment/time.htm";
-        private static string RESTORE_PATH = "/enrollment/initiatePaperRestore.htm";
-        private static string RESTOREVALIDATE_PATH = "/enrollment/validatePaperRestore.htm";
+        private static readonly string ENROLL_PATH = "/enrollment/enroll2.htm";
+        private static readonly string SYNC_PATH = "/enrollment/time.htm";
+        private static readonly string RESTORE_PATH = "/enrollment/initiatePaperRestore.htm";
+        private static readonly string RESTOREVALIDATE_PATH = "/enrollment/validatePaperRestore.htm";
 
         /// <summary>
         /// Set of ISO3166 EU countries
         /// </summary>
-        private static List<string> EU_COUNTRIES = new List<string> {
+        private static readonly List<string> EU_COUNTRIES = new List<string> {
             "AL", "AD", "AM", "AT", "AZ", "BY", "BE", "BA", "BG", "HR",
             "CY", "CZ", "DK", "EE", "FI", "FR", "GE", "DE", "GR", "HU",
             "IS", "IE", "IT", "KV", "XK", "LV", "LI", "LT", "LU", "MK",
@@ -133,14 +133,14 @@ namespace WinAuth
         /// <summary>
         /// Set of ISO3166 KR countries
         /// </summary>
-        private static List<string> KR_COUNTRIES = new List<string> {
+        private static readonly List<string> KR_COUNTRIES = new List<string> {
             "KR", "KP", "TW", "HK", "MO"
         };
 
         /// <summary>
         /// URL for GEO IP lookup to determine region
         /// </summary>
-        private static string GEOIPURL = "http://geoiplookup.wikimedia.org";
+        private static readonly string GEOIPURL = "http://geoiplookup.wikimedia.org";
 
         /// <summary>
         /// Time of last Sync error

@@ -44,11 +44,11 @@ namespace WinAuth
         /// </summary>
         private const string COMMUNITY_DOMAIN = "steamcommunity.com";
         private const string COMMUNITY_BASE = "https://" + COMMUNITY_DOMAIN;
-        private static string WEBAPI_BASE = "https://api.steampowered.com";
-        private static string API_GETWGTOKEN = WEBAPI_BASE + "/IMobileAuthService/GetWGToken/v0001";
-        private static string API_LOGOFF = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logoff/v0001";
-        private static string API_LOGON = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logon/v0001";
-        private static string API_POLLSTATUS = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/PollStatus/v0001";
+        private static readonly string WEBAPI_BASE = "https://api.steampowered.com";
+        private static readonly string API_GETWGTOKEN = WEBAPI_BASE + "/IMobileAuthService/GetWGToken/v0001";
+        private static readonly string API_LOGOFF = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logoff/v0001";
+        private static readonly string API_LOGON = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logon/v0001";
+        private static readonly string API_POLLSTATUS = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/PollStatus/v0001";
 
         /// <summary>
         /// Default mobile user agent
@@ -58,11 +58,11 @@ namespace WinAuth
         /// <summary>
         /// Regular expressions for trade confirmations
         /// </summary>
-        private static Regex _tradesRegex = new Regex("\"mobileconf_list_entry\"(.*?)>(.*?)\"mobileconf_list_entry_sep\"", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-        private static Regex _tradeConfidRegex = new Regex(@"data-confid\s*=\s*""([^""]+)""", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-        private static Regex _tradeKeyRegex = new Regex(@"data-key\s*=\s*""([^""]+)""", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-        private static Regex _tradePlayerRegex = new Regex("\"mobileconf_list_entry_icon\"(.*?)src=\"([^\"]+)\"", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-        private static Regex _tradeDetailsRegex = new Regex("\"mobileconf_list_entry_description\".*?<div>([^<]*)</div>[^<]*<div>([^<]*)</div>[^<]*<div>([^<]*)</div>[^<]*</div>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private static readonly Regex _tradesRegex = new Regex("\"mobileconf_list_entry\"(.*?)>(.*?)\"mobileconf_list_entry_sep\"", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private static readonly Regex _tradeConfidRegex = new Regex(@"data-confid\s*=\s*""([^""]+)""", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private static readonly Regex _tradeKeyRegex = new Regex(@"data-key\s*=\s*""([^""]+)""", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private static readonly Regex _tradePlayerRegex = new Regex("\"mobileconf_list_entry_icon\"(.*?)src=\"([^\"]+)\"", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private static readonly Regex _tradeDetailsRegex = new Regex("\"mobileconf_list_entry_description\".*?<div>([^<]*)</div>[^<]*<div>([^<]*)</div>[^<]*<div>([^<]*)</div>[^<]*</div>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Number of Confirmation retries
@@ -88,7 +88,7 @@ namespace WinAuth
         /// <summary>
         /// Create logger
         /// </summary>
-        private static ILogger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Hold the Confirmation polling data

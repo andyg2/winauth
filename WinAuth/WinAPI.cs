@@ -530,9 +530,9 @@ namespace WinAuth
         /// </summary>
         public class MessageForwarder : IMessageFilter
         {
-            private Control _control;
+            private readonly Control _control;
             private Control _previousParent;
-            private HashSet<int> _messages;
+            private readonly HashSet<int> _messages;
             private bool _isMouseOverControl;
 
             public MessageForwarder(Control control, int message) : this(control, new int[] { message }) { }

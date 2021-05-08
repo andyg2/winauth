@@ -156,7 +156,7 @@ namespace WinAuth
             /// <summary>
             /// The form to be animated
             /// </summary>
-            private Form _form;
+            private readonly Form _form;
             /// <summary>
             /// The animation method used to show and hide the form
             /// </summary>
@@ -377,7 +377,7 @@ namespace WinAuth
         /// <summary>
         /// List of open Notifications
         /// </summary>
-        private static List<Notification> openNotifications = new List<Notification>();
+        private static readonly List<Notification> openNotifications = new List<Notification>();
         private bool _allowFocus;
         private readonly FormAnimator _animator;
         private IntPtr _currentForegroundWindow;
@@ -385,7 +385,7 @@ namespace WinAuth
         /// <summary>
         /// List of buttons in Notification
         /// </summary>
-        private List<NotificationButton> _buttons;
+        private readonly List<NotificationButton> _buttons;
 
         /// <summary>
         /// Button at bottom of notification window

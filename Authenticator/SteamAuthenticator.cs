@@ -72,14 +72,14 @@ namespace WinAuth
         /// <summary>
         /// URLs for all mobile services
         /// </summary>
-        private static string COMMUNITY_BASE = "https://steamcommunity.com";
-        private static string WEBAPI_BASE = "https://api.steampowered.com";
-        private static string SYNC_URL = "https://api.steampowered.com:443/ITwoFactorService/QueryTime/v0001";
+        private static readonly string COMMUNITY_BASE = "https://steamcommunity.com";
+        private static readonly string WEBAPI_BASE = "https://api.steampowered.com";
+        private static readonly string SYNC_URL = "https://api.steampowered.com:443/ITwoFactorService/QueryTime/v0001";
 
         /// <summary>
         /// Character set for authenticator code
         /// </summary>
-        private static char[] STEAMCHARS = new char[] {
+        private static readonly char[] STEAMCHARS = new char[] {
                 '2', '3', '4', '5', '6', '7', '8', '9', 'B', 'C',
                 'D', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'Q',
                 'R', 'T', 'V', 'W', 'X', 'Y'};
@@ -87,7 +87,7 @@ namespace WinAuth
         /// <summary>
         /// Create logger
         /// </summary>
-        private static ILogger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Enrolling state
@@ -162,7 +162,7 @@ namespace WinAuth
         /// <summary>
         /// Expanding offsets to retry when creating first code
         /// </summary>
-        private int[] ENROLL_OFFSETS = new int[] { 0, -30, 30, -60, 60, -90, 90, -120, 120 };
+        private readonly int[] ENROLL_OFFSETS = new int[] { 0, -30, 30, -60, 60, -90, 90, -120, 120 };
 
         /// <summary>
         /// Create a new Authenticator object

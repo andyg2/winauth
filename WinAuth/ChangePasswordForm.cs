@@ -62,7 +62,7 @@ namespace WinAuth
         /// <summary>
         /// List of seedwords
         /// </summary>
-        private List<string> _seedWords = new List<string>();
+        private readonly List<string> _seedWords = new List<string>();
 
         /// <summary>
         /// Load the form and pretick checkboxes

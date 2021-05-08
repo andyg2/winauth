@@ -78,7 +78,7 @@ namespace WinAuth
         /// <summary>
         /// Flag to say we are processing sending message to other window
         /// </summary>
-        private object m_sendingKeys = new object();
+        private readonly object m_sendingKeys = new object();
 
         /// <summary>
         /// Delegates for clipbaord manipulation
@@ -122,7 +122,7 @@ namespace WinAuth
         /// <summary>
         /// Locker for WM_DEVICECHANGE
         /// </summary>
-        private object m_deviceArrivalMutex = new object();
+        private readonly object m_deviceArrivalMutex = new object();
 
         #endregion
 

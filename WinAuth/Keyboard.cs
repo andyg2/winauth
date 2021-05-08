@@ -35,12 +35,12 @@ namespace WinAuth
         /// <summary>
         /// Owning form for hotkey
         /// </summary>
-        private Form m_form;
+        private readonly Form m_form;
 
         /// <summary>
         /// Our keyboard hook handle
         /// </summary>
-        private IntPtr m_hook = IntPtr.Zero;
+        private readonly IntPtr m_hook = IntPtr.Zero;
 
         /// <summary>
         /// Async hook delegate
@@ -64,7 +64,7 @@ namespace WinAuth
         /// <summary>
         /// Our keys to watch for. If none in this list send nothing. We hold a key and associated Modifier
         /// </summary>
-        private List<WinAuthAuthenticator> m_hooked = new List<WinAuthAuthenticator>();
+        private readonly List<WinAuthAuthenticator> m_hooked = new List<WinAuthAuthenticator>();
 
         /// <summary>
         /// Create out new KeyBoard hook for these keys
@@ -179,7 +179,7 @@ namespace WinAuth
         /// <summary>
         /// Hold the handle to the destination window
         /// </summary>
-        private IntPtr m_hWnd;
+        private readonly IntPtr m_hWnd;
 
         /// <summary>
         /// Create a new sender and get the window handle
