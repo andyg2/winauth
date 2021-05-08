@@ -4,10 +4,6 @@
 *.opensdf
 *.csproj.user
 *.vcxproj.user
-WinAuth.YubiKey/Debug
-WinAuth.YubiKey/Release
-WinAuth.YubiKey/x64/Debug
-WinAuth.YubiKey/x64/Release
 Authenticator/Resources
 Net*/.vs
 Net*/bin
