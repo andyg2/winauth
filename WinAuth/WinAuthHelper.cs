@@ -1173,9 +1173,7 @@ namespace WinAuth
 						}
 						if (key.GetSubKeyNames().Contains(valuekey) == true)
 						{
-#if NETFX_4
 							key.DeleteSubKeyTree(valuekey, false);
-#endif
 						}
 
 						// if the parent now has no values, we can remove it too

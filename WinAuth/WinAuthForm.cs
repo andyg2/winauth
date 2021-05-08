@@ -29,9 +29,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-#if NETFX_4
 using System.Threading.Tasks;
-#endif
 using System.Xml;
 using System.Web;
 using System.Windows.Forms;
@@ -49,13 +47,6 @@ namespace WinAuth
 {
 	public partial class WinAuthForm : ResourceForm
   {
-#if BETA
-		/// <summary>
-		/// Registry data name for beta key
-		/// </summary>
-		private const string WINAUTHREGKEY_BETAWARNING = @"Software\WinAuth3\BetaWarning";
-#endif
-		
 		public WinAuthForm()
     {
       InitializeComponent();
@@ -243,7 +234,6 @@ namespace WinAuth
 
 			loadingPanel.Visible = true;
 			passwordPanel.Visible = false;
-#if NETFX_4
 			Task.Factory.StartNew<Tuple<WinAuthConfig, Exception>>(() =>
 			{
 				try
@@ -322,7 +312,6 @@ namespace WinAuth
 
 				InitializeForm();
 			}, TaskScheduler.FromCurrentSynchronizationContext());
-#endif
     }
 
     /// <summary>
@@ -535,21 +524,6 @@ namespace WinAuth
 		{
 			if (m_initOnce == false)
 			{
-#if BETA
-				string betaversion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-				string betaConfirmed = WinAuthHelper.ReadRegistryValue(WINAUTHREGKEY_BETAWARNING, string.Empty) as string; // this.Config.ReadSetting(WINAUTHREGKEY_BETAWARNING, null) as string;
-				if (string.Compare(betaConfirmed, betaversion) != 0)
-				{
-					if (new BetaForm().ShowDialog(this) != DialogResult.OK)
-					{
-						this.Close();
-						return;
-					}
-
-					WinAuthHelper.WriteRegistryValue(WINAUTHREGKEY_BETAWARNING, betaversion);
-				}
-#endif
-
 				// hook into System time change event
 				Microsoft.Win32.SystemEvents.TimeChanged += new EventHandler(SystemEvents_TimeChanged);
 
@@ -920,7 +894,6 @@ namespace WinAuth
 				return;
 			}
 
-#if NETFX_4
 			// do async as setting up clients can take time (Task.Factory.StartNew wait for UI so need to use new Thread(...))
 			new Thread(new ThreadStart(() =>
 			{
@@ -934,7 +907,6 @@ namespace WinAuth
 					}
 				}
 			})).Start();
-#endif
 		}
 
 		/// <summary>

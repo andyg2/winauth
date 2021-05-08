@@ -29,9 +29,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-#if NETFX_4
 using System.Threading.Tasks;
-#endif
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using Newtonsoft.Json;
@@ -102,7 +100,6 @@ namespace WinAuth
 		/// </summary>
 		private bool m_loaded;
 
-#if NETFX_4
 		/// <summary>
 		/// Cancellation token for confirm all
 		/// </summary>
@@ -112,7 +109,6 @@ namespace WinAuth
 		/// Cancellation token for cancel all
 		/// </summary>
 		private CancellationTokenSource cancelCancelAll;
-#endif
 
 		/// <summary>
 		/// Set of tab pages taken from the tab control so we can hide and show them
@@ -347,9 +343,7 @@ namespace WinAuth
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-#if NETFX_4
 		private async void tradeAccept_Click(object sender, EventArgs e)
-#endif
 		{
 			var cursor = Cursor.Current;
 			try
@@ -359,9 +353,7 @@ namespace WinAuth
 
 				MetroButton button = sender as MetroButton;
 				string tradeId = button.Tag as string;
-#if NETFX_4
 				await AcceptTrade(tradeId);
-#endif
 			}
 			finally
 			{
@@ -374,9 +366,7 @@ namespace WinAuth
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-#if NETFX_4
 		private async void tradeReject_Click(object sender, EventArgs e)
-#endif
 		{
 			var cursor = Cursor.Current;
 			try
@@ -386,9 +376,7 @@ namespace WinAuth
 
 				MetroButton button = sender as MetroButton;
 				string tradeId = button.Tag as string;
-#if NETFX_4
 				await RejectTrade(tradeId);
-#endif
 			}
 			finally
 			{
@@ -426,7 +414,6 @@ namespace WinAuth
 			Init();
 		}
 
-#if NETFX_4
 		/// <summary>
 		/// Click the button to confirm all confirmations
 		/// </summary>
@@ -503,9 +490,7 @@ namespace WinAuth
 				Cursor.Current = cursor;
 			}
 		}
-#endif
 
-#if NETFX_4
 		/// <summary>
 		/// Click the button to cancel all confirmations
 		/// </summary>
@@ -582,7 +567,6 @@ namespace WinAuth
 				Cursor.Current = cursor;
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Change the poller action
@@ -883,9 +867,7 @@ namespace WinAuth
 		/// Accept the trade Confirmation
 		/// </summary>
 		/// <param name="tradeId">Id of Confirmation</param>
-#if NETFX_4
 		private async Task<bool> AcceptTrade(string tradeId)
-#endif
 		{
 			try
 			{
@@ -895,12 +877,10 @@ namespace WinAuth
 					throw new ApplicationException("Invalid trade");
 				}
 
-#if NETFX_4
 				var result = await Task.Factory.StartNew<bool>((t) =>
 				{
 					return this.AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true);
 				}, trade);
-#endif
 				if (result == false)
 				{
 					throw new ApplicationException("Trade cannot be confirmed");
@@ -934,9 +914,7 @@ namespace WinAuth
 		/// Reject the trade Confirmation
 		/// </summary>
 		/// <param name="tradeId">ID of Confirmation</param>
-#if NETFX_4
 		private async Task<bool> RejectTrade(string tradeId)
-#endif
 		{
 			try
 			{
@@ -946,12 +924,10 @@ namespace WinAuth
 					throw new ApplicationException("Invalid trade");
 				}
 
-#if NETFX_4
 				var result = await Task.Factory.StartNew<bool>((t) =>
 				{
 					return this.AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false);
 				}, trade);
-#endif
 				if (result == false)
 				{
 					throw new ApplicationException("Trade cannot be cancelled");

@@ -26,9 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-#if NETFX_4
 using System.Threading.Tasks;
-#endif
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using WinAuth.Resources;

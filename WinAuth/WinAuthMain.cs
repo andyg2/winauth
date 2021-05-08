@@ -59,11 +59,7 @@ namespace WinAuth
     /// <summary>
     /// URL to get latest information
     /// </summary>
-#if BETA
-		public const string WINAUTH_UPDATE_URL = "https://raw.githubusercontent.com/winauth/winauth/master/docs/current-beta-version.xml";
-#else
     public const string WINAUTH_UPDATE_URL = "https://raw.githubusercontent.com/winauth/winauth/master/docs/current-version.xml";
-#endif
 
 		/// <summary>
 		/// Set of inbuilt icons and authenticator types
@@ -329,7 +325,6 @@ namespace WinAuth
 
 		private static void main()
 		{
-#if NETFX_45
 			// Fix #226: set to use TLS1.2
 			try
 			{
@@ -339,7 +334,6 @@ namespace WinAuth
 			{
 				// not 4.5 installed - we could prompt, but not for now
 			}
-#endif
 
 			// Issue #53: set a default culture
 			if (System.Threading.Thread.CurrentThread.CurrentCulture == null || System.Threading.Thread.CurrentThread.CurrentUICulture == null)

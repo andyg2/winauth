@@ -39,14 +39,6 @@ using Org.BouncyCastle.Crypto.Generators;
 using System.Collections;
 using System.Security;
 
-#if NUNIT
-using NUnit.Framework;
-#endif
-
-#if NETCF
-using OpenNETCF.Security.Cryptography;
-#endif
-
 namespace WinAuth
 {
   /// <summary>
@@ -1133,11 +1125,7 @@ namespace WinAuth
       string salt = Authenticator.ByteArrayToString(saltbytes);
 
       // build our PBKDF2 key
-#if NETCF
-			PBKDF2 kg = new PBKDF2(passwordBytes, saltbytes, PBKDF2_ITERATIONS);
-#else
       Rfc2898DeriveBytes kg = new Rfc2898DeriveBytes(passwordBytes, saltbytes, PBKDF2_ITERATIONS);
-#endif
       byte[] key = kg.GetBytes(PBKDF2_KEYSIZE);
 
       return salt + Encrypt(plain, key);
@@ -1191,11 +1179,7 @@ namespace WinAuth
         byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
 
         // build our PBKDF2 key
-#if NETCF
-			PBKDF2 kg = new PBKDF2(passwordBytes, saltbytes, 2000);
-#else
         Rfc2898DeriveBytes kg = new Rfc2898DeriveBytes(passwordBytes, saltBytes, PBKDF2_ITERATIONS);
-#endif
         key = kg.GetBytes(PBKDF2_KEYSIZE);
       }
       else
@@ -1280,30 +1264,6 @@ namespace WinAuth
       return Authenticator.ByteArrayToString(outBytes);
     }
 
-    /// <summary>
-    /// Wrapped TryParse for compatibility with NETCF35 to simulate long.TryParse
-    /// </summary>
-    /// <param name="s">string of value to parse</param>
-    /// <param name="val">out long value</param>
-    /// <returns>true if value was parsed</returns>
-    protected internal static bool LongTryParse(string s, out long val)
-    {
-#if NETCF
-			try
-			{
-				val = long.Parse(s);
-				return true;
-			}
-			catch (Exception )
-			{
-				val = 0;
-				return false;
-			}
-#else
-      return long.TryParse(s, out val);
-#endif
-    }
-
     #endregion
 
     #region ICloneable
@@ -1319,152 +1279,6 @@ namespace WinAuth
     }
 
     #endregion
-
-#if NETCF
-		/// <summary>
-		/// Private class that implements PBKDF2 needed for older NETCF. Implemented from http://en.wikipedia.org/wiki/PBKDF2.
-		/// </summary>
-		private class PBKDF2
-		{
-			/// <summary>
-			/// Our digest
-			/// </summary>
-			private HMac m_mac;
-
-			/// <summary>
-			/// Digest length
-			/// </summary>
-			private int m_hlen;
-
-			/// <summary>
-			/// Base password
-			/// </summary>
-			private byte[] m_password;
-
-			/// <summary>
-			/// Salt
-			/// </summary>
-			private byte[] m_salt;
-
-			/// <summary>
-			/// Number of iterations
-			/// </summary>
-			private int m_iterations;
-
-			/// <summary>
-			/// Create a new PBKDF2 object
-			/// </summary>
-			public PBKDF2(byte[] password, byte[] salt, int iterations)
-			{
-				m_password = password;
-				m_salt = salt;
-				m_iterations = iterations;
-
-				m_mac = new HMac(new Sha1Digest());
-				m_hlen = m_mac.GetMacSize();
-			}
-
-			/// <summary>
-			/// Calculate F.
-			/// F(P,S,c,i) = U1 ^ U2 ^ ... ^ Uc
-			/// Where F is an xor of c iterations of chained PRF. First iteration of PRF uses master password P as PRF key and salt concatenated to i. Second and greater PRF uses P and output of previous PRF computation:
-			/// </summary>
-			/// <param name="P"></param>
-			/// <param name="S"></param>
-			/// <param name="c"></param>
-			/// <param name="i"></param>
-			/// <param name="DK"></param>
-			/// <param name="DKoffset"></param>
-			private void F(byte[] P, byte[] S, int c, byte[] i, byte[] DK, int DKoffset)
-			{
-				// first iteration (ses master password P as PRF key and salt concatenated to i)
-				byte[] buf = new byte[m_hlen];
-				ICipherParameters param = new KeyParameter(P);
-				m_mac.Init(param);
-				m_mac.BlockUpdate(S, 0, S.Length);
-				m_mac.BlockUpdate(i, 0, i.Length);
-				m_mac.DoFinal(buf, 0);
-				Array.Copy(buf, 0, DK, DKoffset, buf.Length);
-
-				// remaining iterations (uses P and output of previous PRF computation)
-				for (int iter = 1; iter < c; iter++)
-				{
-					m_mac.Init(param);
-					m_mac.BlockUpdate(buf, 0, buf.Length);
-					m_mac.DoFinal(buf, 0);
-
-					for (int j=buf.Length-1; j >= 0; j--)
-					{
-						DK[DKoffset + j] ^= buf[j];
-					}
-				}
-			}
-
-			/// <summary>
-			/// Calculate a derived key of dkLen bytes long from our initial password and salt
-			/// </summary>
-			/// <param name="dkLen">Length of desired key to be returned</param>
-			/// <returns>derived key of dkLen bytes</returns>
-			public byte[] GetBytes(int dkLen)
-			{
-				// For each hLen-bit block Ti of derived key DK, computing is as follows:
-				//  DK = T1 || T2 || ... || Tdklen/hlen
-				//  Ti = F(P,S,c,i)
-				int chunks = (dkLen + m_hlen - 1) / m_hlen;
-				byte[] DK = new byte[chunks * m_hlen];
-				byte[] idata = new byte[4];
-				for (int i = 1; i <= chunks; i++)
-				{
-					idata[0] = (byte)((uint)i >> 24);
-					idata[1] = (byte)((uint)i >> 16);
-					idata[2] = (byte)((uint)i >> 8);
-					idata[3] = (byte)i; 
-
-					F(m_password, m_salt, m_iterations, idata, DK, (i-1) * m_hlen);
-				}
-				if (DK.Length > dkLen)
-				{
-					byte[] reduced = new byte[dkLen];
-					Array.Copy(DK, 0, reduced, 0, dkLen);
-					DK = reduced;
-				}
-
-				return DK;
-			}
-		}
-
-#if NUNIT
-		/// Test against standard test vectors and one of our own of the correct iterations.
-		/// http://tools.ietf.org/html/draft-josefsson-pbkdf2-test-vectors-00
-		[Test]
-		public static void TestPBKDF2()
-		{
-			PBKDF2 kg;
-			byte[] DK;
-
-			byte[] tv1 = new byte[] { 0x0c, 0x60, 0xc8, 0x0f, 0x96, 0x1f, 0x0e, 0x71, 0xf3, 0xa9, 0xb5, 0x24, 0xaf, 0x60, 0x12, 0x06, 0x2f, 0xe0, 0x37, 0xa6 };
-			kg = new PBKDF2(Encoding.Default.GetBytes("password"), Encoding.Default.GetBytes("salt"), 1);
-			DK = kg.GetBytes(20);
-			Assert.AreEqual(DK, tv1);
-
-			byte[] tv2 = new byte[] { 0xea, 0x6c, 0x01, 0x4d, 0xc7, 0x2d, 0x6f, 0x8c, 0xcd, 0x1e, 0xd9, 0x2a, 0xce, 0x1d, 0x41, 0xf0, 0xd8, 0xde, 0x89, 0x57 };
-			kg = new PBKDF2(Encoding.Default.GetBytes("password"), Encoding.Default.GetBytes("salt"), 2);
-			DK = kg.GetBytes(20);
-			Assert.AreEqual(DK, tv2);
-
-			byte[] tv3 = new byte[] { 0x4b, 0x00, 0x79, 0x01, 0xb7, 0x65, 0x48, 0x9a, 0xbe, 0xad, 0x49, 0xd9, 0x26, 0xf7, 0x21, 0xd0, 0x65, 0xa4, 0x29, 0xc1 };
-			kg = new PBKDF2(Encoding.Default.GetBytes("password"), Encoding.Default.GetBytes("salt"), 4096);
-			DK = kg.GetBytes(20);
-			Assert.AreEqual(DK, tv3);
-
-			byte[] tv4 = new byte[] { 0x2f, 0x25, 0x5b, 0x3a, 0x95, 0x46, 0x3c, 0x76, 0x62, 0x1f, 0x06, 0x80, 0xa2, 0xb3, 0x35, 0xad, 0x90, 0x3b, 0x85, 0xde };
-			kg = new PBKDF2(Encoding.Default.GetBytes("VXFr[24c=6(D8He"), Encoding.Default.GetBytes("salt"), 1000);
-			DK = kg.GetBytes(20);
-			Assert.AreEqual(DK, tv4);
-		}
-#endif
-
-#endif
 
   }
 }

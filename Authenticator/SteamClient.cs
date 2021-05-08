@@ -32,10 +32,8 @@ using NLog;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-#if NETFX_4
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-#endif
 
 namespace WinAuth
 {
@@ -374,12 +372,10 @@ namespace WinAuth
 		/// </summary>
 		private string ConfirmationsQuery;
 
-#if NETFX_4
 		/// <summary>
 		/// Cancellation token for poller
 		/// </summary>
 		private CancellationTokenSource _pollerCancellation;
-#endif
 
 		/// <summary>
 		/// Number of Confirmation retries
@@ -394,7 +390,6 @@ namespace WinAuth
 			this.Authenticator = auth;
 			this.Session = new SteamSession(session);
 
-#if NETFX_4
 			if (this.Session.Confirmations != null)
 			{
 				if (this.IsLoggedIn() == false)
@@ -410,7 +405,6 @@ namespace WinAuth
 					});
 				}
 			}
-#endif
 		}
 
 		/// <summary>
@@ -441,13 +435,11 @@ namespace WinAuth
 				// clear resources
 			}
 
-#if NETFX_4
 			if (_pollerCancellation != null)
 			{
 				_pollerCancellation.Cancel();
 				_pollerCancellation = null;
 			}
-#endif
 		}
 
 		/// <summary>
@@ -768,18 +760,6 @@ namespace WinAuth
 		/// </summary>
 		public event ConfirmationErrorDelegate ConfirmationErrorEvent;
 
-#if NETFX_40
-		public static Task Delay(int milliseconds, CancellationToken cancel)
-		{
-			var tcs = new TaskCompletionSource<object>();
-			cancel.Register(() => tcs.TrySetCanceled());
-			Timer timer = new Timer(_ => tcs.TrySetResult(null));
-			timer.Change(milliseconds, -1);
-			return tcs.Task;
-		}
-#endif
-
-#if NETFX_4
 		/// <summary>
 		/// Stop the current poller
 		/// </summary>
@@ -917,11 +897,7 @@ namespace WinAuth
 
 					if (this.Session.Confirmations != null)
 					{
-#if NETFX_40
-						await Delay(this.Session.Confirmations.Duration * 60 * 1000, cancel);
-#else
 						await Task.Delay(this.Session.Confirmations.Duration * 60 * 1000, cancel);
-#endif
 					}
 				}
 			}
@@ -929,7 +905,6 @@ namespace WinAuth
 			{
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Get the current trade Confirmations

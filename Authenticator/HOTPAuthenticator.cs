@@ -42,14 +42,6 @@ using Org.BouncyCastle.Crypto.Generators;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-#if NUNIT
-using NUnit.Framework;
-#endif
-
-#if NETCF
-using OpenNETCF.Security.Cryptography;
-#endif
-
 namespace WinAuth
 {
 	/// <summary>
