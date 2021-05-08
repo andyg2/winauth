@@ -27,138 +27,138 @@ namespace WinAuth
     /// draw it ourselves, so that window spys cannot get the contents
     /// </summary>
     public class SecretTextBox : TextBox, ISecretTextBox
-	{
-		/// <summary>
-		/// Our hidden txet value
-		/// </summary>
-		private string m_text;
+    {
+        /// <summary>
+        /// Our hidden txet value
+        /// </summary>
+        private string m_text;
 
-		/// <summary>
-		/// Number of chars to space out when in secret mode
-		/// </summary>
-		private int m_spaceOut;
+        /// <summary>
+        /// Number of chars to space out when in secret mode
+        /// </summary>
+        private int m_spaceOut;
 
-		/// <summary>
-		/// Flag to draw ourselves
-		/// </summary>
-		private bool m_secretMode;
+        /// <summary>
+        /// Flag to draw ourselves
+        /// </summary>
+        private bool m_secretMode;
 
-		/// <summary>
-		/// Save the font as when we switch secret mode the old font needs resetting
-		/// </summary>
-		private string m_fontFamily;
-		private float m_fontSize;
+        /// <summary>
+        /// Save the font as when we switch secret mode the old font needs resetting
+        /// </summary>
+        private string m_fontFamily;
+        private float m_fontSize;
 
-		/// <summary>
-		/// Create a new SecretTextBox
-		/// </summary>
-		public SecretTextBox()
-			: base()
-		{
-		}
+        /// <summary>
+        /// Create a new SecretTextBox
+        /// </summary>
+        public SecretTextBox()
+            : base()
+        {
+        }
 
-		/// <summary>
-		/// Get/set the flag to draw as a bitmap
-		/// </summary>
-		public bool SecretMode
-		{
-			get
-			{
-				return m_secretMode;
-			}
-			set
-			{
-				m_secretMode = value;
-				this.Enabled = !value; // we disable so cannot select/copy 
-				this.SetStyle(ControlStyles.UserPaint, value);
-				Text = m_text;
-				//
-				// when we disable secret mode we need to reset the font else sometimes it doesn't show corretly
-				if (m_fontFamily == null)
-				{
-					m_fontFamily = this.Font.FontFamily.Name;
-					m_fontSize = this.Font.Size;
-				}
-				if (value == false)
-				{
-					this.Font = new Font(m_fontFamily, m_fontSize);
-				}
-				//
-				this.Invalidate(); // force it to redraw
-			}
-		}
-
-		public int SpaceOut
-		{
-			get
-			{
-				return m_spaceOut;
-			}
-			set
-			{
-				m_spaceOut = value;
-			}
-		}
-
-		/// <summary>
-		/// Value of the textbox, but if in secret mode then will return ***** as value
-		/// </summary>
-		public override string Text
-		{
-			get
-			{
-				return (SecretMode == true ? m_text : base.Text);
-			}
-			set
-			{
-				m_text = value;
-				base.Text = (SecretMode == true ? (string.IsNullOrEmpty(value) == false ? new string('*', value.Length) : value) : value);
-				this.Invalidate();
-			}
-		}
-
-		/// <summary>
-		/// Overriden Paint method to draw the text based on our secret value rather than Text, which might be ****'s
-		/// </summary>
-		/// <param name="e"></param>
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			Graphics g = e.Graphics;
-			using (Brush brush = new SolidBrush(base.ForeColor))
-			{
-				StringFormat sf = StringFormat.GenericTypographic;
-				sf.Alignment = StringAlignment.Center;
-				sf.LineAlignment = StringAlignment.Center;
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-
-				string text = m_text;
-
-				// if we have spacing, we add a space in between each set of chars
-				if (m_spaceOut != 0 && m_text != null)
-				{
-					StringBuilder sb = new StringBuilder();
-					for (int i = 0; i < m_text.Length; i += m_spaceOut)
-					{
-						if (i >= m_text.Length)
-						{
-							break;
-						}
-            if (i + m_spaceOut >= m_text.Length)
+        /// <summary>
+        /// Get/set the flag to draw as a bitmap
+        /// </summary>
+        public bool SecretMode
+        {
+            get
             {
-              sb.Append(m_text.Substring(i));
+                return m_secretMode;
             }
-            else
+            set
             {
-              sb.Append(m_text.Substring(i, m_spaceOut)).Append(" ");
+                m_secretMode = value;
+                this.Enabled = !value; // we disable so cannot select/copy 
+                this.SetStyle(ControlStyles.UserPaint, value);
+                Text = m_text;
+                //
+                // when we disable secret mode we need to reset the font else sometimes it doesn't show corretly
+                if (m_fontFamily == null)
+                {
+                    m_fontFamily = this.Font.FontFamily.Name;
+                    m_fontSize = this.Font.Size;
+                }
+                if (value == false)
+                {
+                    this.Font = new Font(m_fontFamily, m_fontSize);
+                }
+                //
+                this.Invalidate(); // force it to redraw
             }
-					}
-					text = sb.ToString().Trim();
-				}
+        }
 
-				// draw the whole string
-				g.DrawString((text != null ? text : string.Empty), base.Font, brush, new RectangleF(0, 0, base.Width, base.Height), sf);
-			}
-		}
+        public int SpaceOut
+        {
+            get
+            {
+                return m_spaceOut;
+            }
+            set
+            {
+                m_spaceOut = value;
+            }
+        }
 
-	}
+        /// <summary>
+        /// Value of the textbox, but if in secret mode then will return ***** as value
+        /// </summary>
+        public override string Text
+        {
+            get
+            {
+                return (SecretMode == true ? m_text : base.Text);
+            }
+            set
+            {
+                m_text = value;
+                base.Text = (SecretMode == true ? (string.IsNullOrEmpty(value) == false ? new string('*', value.Length) : value) : value);
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Overriden Paint method to draw the text based on our secret value rather than Text, which might be ****'s
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            using (Brush brush = new SolidBrush(base.ForeColor))
+            {
+                StringFormat sf = StringFormat.GenericTypographic;
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+                string text = m_text;
+
+                // if we have spacing, we add a space in between each set of chars
+                if (m_spaceOut != 0 && m_text != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < m_text.Length; i += m_spaceOut)
+                    {
+                        if (i >= m_text.Length)
+                        {
+                            break;
+                        }
+                        if (i + m_spaceOut >= m_text.Length)
+                        {
+                            sb.Append(m_text.Substring(i));
+                        }
+                        else
+                        {
+                            sb.Append(m_text.Substring(i, m_spaceOut)).Append(" ");
+                        }
+                    }
+                    text = sb.ToString().Trim();
+                }
+
+                // draw the whole string
+                g.DrawString((text != null ? text : string.Empty), base.Font, brush, new RectangleF(0, 0, base.Width, base.Height), sf);
+            }
+        }
+
+    }
 }

@@ -24,9 +24,9 @@ namespace WinAuth
     /// Interface for secret textbox that cannot be copied
     /// </summary>
     public interface ISecretTextBox
-	{
-		bool SecretMode { get; set; }
-		int SpaceOut { get; set; }
-		HorizontalAlignment TextAlign { get; set; }
-	}
+    {
+        bool SecretMode { get; set; }
+        int SpaceOut { get; set; }
+        HorizontalAlignment TextAlign { get; set; }
+    }
 }

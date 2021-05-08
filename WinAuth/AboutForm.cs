@@ -26,75 +26,75 @@ namespace WinAuth
     /// Show the About form
     /// </summary>
     public partial class AboutForm : ResourceForm
-	{
-		/// <summary>
-		/// Current config object
-		/// </summary>
-		public WinAuthConfig Config { get; set; }
+    {
+        /// <summary>
+        /// Current config object
+        /// </summary>
+        public WinAuthConfig Config { get; set; }
 
-		/// <summary>
-		/// Create the form
-		/// </summary>
-		public AboutForm()
-		{
-			InitializeComponent();
-		}
+        /// <summary>
+        /// Create the form
+        /// </summary>
+        public AboutForm()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Load the about form
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void AboutForm_Load(object sender, EventArgs e)
-		{
-			// get the version of the application
-			Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-			string debug = string.Empty;
+        /// <summary>
+        /// Load the about form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
+            // get the version of the application
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            string debug = string.Empty;
 #if DEBUG
-			debug += " (DEBUG)";
+            debug += " (DEBUG)";
 #endif
-			this.aboutLabel.Text = string.Format(this.aboutLabel.Text, version.ToString(3) + debug, DateTime.Today.Year);
-		}
+            this.aboutLabel.Text = string.Format(this.aboutLabel.Text, version.ToString(3) + debug, DateTime.Today.Year);
+        }
 
-		/// <summary>
-		/// Click the close button
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void closeButton_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
+        /// <summary>
+        /// Click the close button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-		/// <summary>
-		/// Click the report button
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void reportButton_Click(object sender, EventArgs e)
-		{
-			// display the error form, loading it with current authenticator data
-			DiagnosticForm errorreport = new DiagnosticForm();
-			errorreport.Config = Config;
-			if (string.IsNullOrEmpty(errorreport.Config.Filename) == false)
-			{
-				errorreport.ConfigFileContents = File.ReadAllText(errorreport.Config.Filename);
-			}
-			else
-			{
-				using (MemoryStream ms = new MemoryStream())
-				{
-					XmlWriterSettings settings = new XmlWriterSettings();
-					settings.Indent = true;
-					using (XmlWriter writer = XmlWriter.Create(ms, settings))
-					{
-						Config.WriteXmlString(writer);
-					}
-					ms.Position = 0;
-					errorreport.ConfigFileContents = new StreamReader(ms).ReadToEnd();
-				}
-			}
-			errorreport.ShowDialog(this);
-		}
-	}
+        /// <summary>
+        /// Click the report button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void reportButton_Click(object sender, EventArgs e)
+        {
+            // display the error form, loading it with current authenticator data
+            DiagnosticForm errorreport = new DiagnosticForm();
+            errorreport.Config = Config;
+            if (string.IsNullOrEmpty(errorreport.Config.Filename) == false)
+            {
+                errorreport.ConfigFileContents = File.ReadAllText(errorreport.Config.Filename);
+            }
+            else
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    settings.Indent = true;
+                    using (XmlWriter writer = XmlWriter.Create(ms, settings))
+                    {
+                        Config.WriteXmlString(writer);
+                    }
+                    ms.Position = 0;
+                    errorreport.ConfigFileContents = new StreamReader(ms).ReadToEnd();
+                }
+            }
+            errorreport.ShowDialog(this);
+        }
+    }
 }

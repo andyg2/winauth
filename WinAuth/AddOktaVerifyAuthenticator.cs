@@ -32,7 +32,7 @@ namespace WinAuth
     /// Okta Verify Authenticator Form
     /// </summary>
     public partial class AddOktaVerifyAuthenticator : ResourceForm
-    {    
+    {
         /// <summary>
         /// Form instantiation
         /// </summary>
@@ -77,7 +77,7 @@ namespace WinAuth
             }
         }
 
-     
+
         /// <summary>
         /// Click to add the code
         /// </summary>

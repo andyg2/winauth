@@ -29,389 +29,389 @@ namespace WinAuth
     /// Class holding the latest version information
     /// </summary>
     public class WinAuthVersionInfo
-	{
-		/// <summary>
-		/// Version number
-		/// </summary>
-		public Version Version;
+    {
+        /// <summary>
+        /// Version number
+        /// </summary>
+        public Version Version;
 
-		/// <summary>
-		/// Date of release
-		/// </summary>
-		public DateTime Released;
+        /// <summary>
+        /// Date of release
+        /// </summary>
+        public DateTime Released;
 
-		/// <summary>
-		/// URL for download
-		/// </summary>
-		public string Url;
+        /// <summary>
+        /// URL for download
+        /// </summary>
+        public string Url;
 
-		/// <summary>
-		/// Optional changes
-		/// </summary>
-		public string Changes;
+        /// <summary>
+        /// Optional changes
+        /// </summary>
+        public string Changes;
 
-		/// <summary>
-		/// Create the new version instance
-		/// </summary>
-		/// <param name="version"></param>
-		public WinAuthVersionInfo(Version version)
-		{
-			Version = version;
-		}
-	}
+        /// <summary>
+        /// Create the new version instance
+        /// </summary>
+        /// <param name="version"></param>
+        public WinAuthVersionInfo(Version version)
+        {
+            Version = version;
+        }
+    }
 
-	/// <summary>
-	/// Class to check for newer version of WinAuth
-	/// </summary>
-	public class WinAuthUpdater
-	{
-		/// <summary>
-		/// Period when the poller thread will check if it needs to check for a new version
-		/// </summary>
-		protected const int UPDATECHECKTHREAD_SLEEP = 6 * 60 * 60 * 1000; // 6 hrs to check if we need to check
+    /// <summary>
+    /// Class to check for newer version of WinAuth
+    /// </summary>
+    public class WinAuthUpdater
+    {
+        /// <summary>
+        /// Period when the poller thread will check if it needs to check for a new version
+        /// </summary>
+        protected const int UPDATECHECKTHREAD_SLEEP = 6 * 60 * 60 * 1000; // 6 hrs to check if we need to check
 
-		/// <summary>
-		/// Registry key value name for when we last checked for a new version
-		/// </summary>
-		protected const string WINAUTHREGKEY_LASTCHECK = WinAuthHelper.WINAUTHREGKEY + "\\LastUpdateCheck";
+        /// <summary>
+        /// Registry key value name for when we last checked for a new version
+        /// </summary>
+        protected const string WINAUTHREGKEY_LASTCHECK = WinAuthHelper.WINAUTHREGKEY + "\\LastUpdateCheck";
 
-		/// <summary>
-		/// Registry key value name for how often we check for a new version
-		/// </summary>
-		protected const string WINAUTHREGKEY_CHECKFREQUENCY = WinAuthHelper.WINAUTHREGKEY + "\\UpdateCheckFrequency";
+        /// <summary>
+        /// Registry key value name for how often we check for a new version
+        /// </summary>
+        protected const string WINAUTHREGKEY_CHECKFREQUENCY = WinAuthHelper.WINAUTHREGKEY + "\\UpdateCheckFrequency";
 
-		/// <summary>
-		/// Registry key value name for the last version we found when we checked
-		/// </summary>
-		protected const string WINAUTHREGKEY_LATESTVERSION = WinAuthHelper.WINAUTHREGKEY + "\\LatestVersion";
+        /// <summary>
+        /// Registry key value name for the last version we found when we checked
+        /// </summary>
+        protected const string WINAUTHREGKEY_LATESTVERSION = WinAuthHelper.WINAUTHREGKEY + "\\LatestVersion";
 
-		/// <summary>
-		/// The interval for checking new versions. Null is never, Zero is each time, else a period.
-		/// </summary>
-		private TimeSpan? _autocheckInterval;
+        /// <summary>
+        /// The interval for checking new versions. Null is never, Zero is each time, else a period.
+        /// </summary>
+        private TimeSpan? _autocheckInterval;
 
-		/// <summary>
-		/// The last known new version
-		/// </summary>
-		private Version _latestVersion;
+        /// <summary>
+        /// The last known new version
+        /// </summary>
+        private Version _latestVersion;
 
-		/// <summary>
-		/// When we last checked for a new version
-		/// </summary>
-		private DateTime _lastCheck;
+        /// <summary>
+        /// When we last checked for a new version
+        /// </summary>
+        private DateTime _lastCheck;
 
-		/// <summary>
-		/// Current Config
-		/// </summary>
-		protected WinAuthConfig Config { get; set; }
+        /// <summary>
+        /// Current Config
+        /// </summary>
+        protected WinAuthConfig Config { get; set; }
 
-		/// <summary>
-		/// Create the version checker instance
-		/// </summary>
-		public WinAuthUpdater(WinAuthConfig config)
-		{
-			Config = config;
+        /// <summary>
+        /// Create the version checker instance
+        /// </summary>
+        public WinAuthUpdater(WinAuthConfig config)
+        {
+            Config = config;
 
-			// read the update interval and last known latest version from the registry
-			TimeSpan interval;
-			if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out interval) == true)
-			{
-				_autocheckInterval = interval;
-			}
+            // read the update interval and last known latest version from the registry
+            TimeSpan interval;
+            if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out interval) == true)
+            {
+                _autocheckInterval = interval;
+            }
 
-			long lastCheck = 0;
-			if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out lastCheck) == true)
-			{
-				_lastCheck = new DateTime(lastCheck);
-			}
+            long lastCheck = 0;
+            if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out lastCheck) == true)
+            {
+                _lastCheck = new DateTime(lastCheck);
+            }
 
-			Version version;
-			if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out version) == true)
-			{
-				_latestVersion = version;
-			}
-		}
+            Version version;
+            if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out version) == true)
+            {
+                _latestVersion = version;
+            }
+        }
 
-		#region Properties
+        #region Properties
 
-		/// <summary>
-		/// Get when the last check was done
-		/// </summary>
-		public DateTime LastCheck
-		{
-			get
-			{
-				return _lastCheck;
-			}
-		}
+        /// <summary>
+        /// Get when the last check was done
+        /// </summary>
+        public DateTime LastCheck
+        {
+            get
+            {
+                return _lastCheck;
+            }
+        }
 
-		/// <summary>
-		/// Get the last known latest version or null
-		/// </summary>
-		public Version LastKnownLatestVersion
-		{
-			get
-			{
-				return _latestVersion;
-			}
-			protected set
-			{
-				_latestVersion = value;
-			}
-		}
+        /// <summary>
+        /// Get the last known latest version or null
+        /// </summary>
+        public Version LastKnownLatestVersion
+        {
+            get
+            {
+                return _latestVersion;
+            }
+            protected set
+            {
+                _latestVersion = value;
+            }
+        }
 
-		/// <summary>
-		/// Get the current version
-		/// </summary>
-		public Version CurrentVersion
-		{
-			get
-			{
-				Version version;
-				if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out version) == false)
-				{
-					throw new InvalidOperationException("Cannot get Assembly version information");
-				}
-				return version;
-			}
-		}
+        /// <summary>
+        /// Get the current version
+        /// </summary>
+        public Version CurrentVersion
+        {
+            get
+            {
+                Version version;
+                if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out version) == false)
+                {
+                    throw new InvalidOperationException("Cannot get Assembly version information");
+                }
+                return version;
+            }
+        }
 
-		/// <summary>
-		/// Get flag if we have autochecking enabled
-		/// </summary>
-		public bool IsAutoCheck
-		{
-			get
-			{
-				return (_autocheckInterval != null);
-			}
-		}
+        /// <summary>
+        /// Get flag if we have autochecking enabled
+        /// </summary>
+        public bool IsAutoCheck
+        {
+            get
+            {
+                return (_autocheckInterval != null);
+            }
+        }
 
-		/// <summary>
-		/// Get the interval between checks
-		/// </summary>
-		public TimeSpan? UpdateInterval
-		{
-			get
-			{
-				return _autocheckInterval;
-			}
-		}
+        /// <summary>
+        /// Get the interval between checks
+        /// </summary>
+        public TimeSpan? UpdateInterval
+        {
+            get
+            {
+                return _autocheckInterval;
+            }
+        }
 
-#endregion
+        #endregion
 
-		/// <summary>
-		/// Start an AutoCheck thread that will periodically check for a new version and make a callback
-		/// </summary>
-		/// <param name="callback">Callback when a new version is found</param>
-		public void AutoCheck(Action<Version> callback)
-		{
-			// create a thread to check for latest version
-			Thread thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller));
-			thread.IsBackground = true;
-			thread.Priority = ThreadPriority.BelowNormal;
-			thread.Start(callback);
-		}
+        /// <summary>
+        /// Start an AutoCheck thread that will periodically check for a new version and make a callback
+        /// </summary>
+        /// <param name="callback">Callback when a new version is found</param>
+        public void AutoCheck(Action<Version> callback)
+        {
+            // create a thread to check for latest version
+            Thread thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller));
+            thread.IsBackground = true;
+            thread.Priority = ThreadPriority.BelowNormal;
+            thread.Start(callback);
+        }
 
-		/// <summary>
-		/// AutoCheck thread method to poll for new version
-		/// </summary>
-		/// <param name="p">our callback</param>
-		protected virtual void AutoCheckPoller(object p)
-		{
-			Action<Version> callback = p as Action<Version>;
+        /// <summary>
+        /// AutoCheck thread method to poll for new version
+        /// </summary>
+        /// <param name="p">our callback</param>
+        protected virtual void AutoCheckPoller(object p)
+        {
+            Action<Version> callback = p as Action<Version>;
 
-			do
-			{
-				// only if autochecking is on, and is due, and we don't already have a later version
-				if (this.IsAutoCheck == true
-					&& _autocheckInterval.HasValue && _lastCheck.Add(_autocheckInterval.Value) < DateTime.Now
-					&& (LastKnownLatestVersion == null || LastKnownLatestVersion <= this.CurrentVersion))
-				{
-					// update the last check time
-					_lastCheck = DateTime.Now;
-					Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, _lastCheck.Ticks.ToString());
+            do
+            {
+                // only if autochecking is on, and is due, and we don't already have a later version
+                if (this.IsAutoCheck == true
+                    && _autocheckInterval.HasValue && _lastCheck.Add(_autocheckInterval.Value) < DateTime.Now
+                    && (LastKnownLatestVersion == null || LastKnownLatestVersion <= this.CurrentVersion))
+                {
+                    // update the last check time
+                    _lastCheck = DateTime.Now;
+                    Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, _lastCheck.Ticks.ToString());
 
-					// check for latest version
-					try
-					{
-						var latest = GetLatestVersion();
-						if (latest != null && latest.Version > this.CurrentVersion)
-						{
-							callback(latest.Version);
-						}
-					}
-					catch (Exception) { }
-				}
+                    // check for latest version
+                    try
+                    {
+                        var latest = GetLatestVersion();
+                        if (latest != null && latest.Version > this.CurrentVersion)
+                        {
+                            callback(latest.Version);
+                        }
+                    }
+                    catch (Exception) { }
+                }
 
-				Thread.Sleep(UPDATECHECKTHREAD_SLEEP);
+                Thread.Sleep(UPDATECHECKTHREAD_SLEEP);
 
-			} while (true);
-		}
+            } while (true);
+        }
 
-		/// <summary>
-		/// Explicitly get the latest version information. Will be asynchronous if a callback is provided.
-		/// </summary>
-		/// <param name="callback">optional callback for async operation</param>
-		/// <returns>latest WinAuthVersionInfo or null if async</returns>
-		public virtual WinAuthVersionInfo GetLatestVersion(Action<WinAuthVersionInfo, bool, Exception> callback = null)
-		{
-			// get the update URL from the config else use the default
-			string updateUrl = WinAuthMain.WINAUTH_UPDATE_URL;
-			try
-			{
-				var settings = new System.Configuration.AppSettingsReader();
-				string appvalue = settings.GetValue("UpdateCheckUrl", typeof(string)) as string;
-				if (string.IsNullOrEmpty(appvalue) == false)
-				{
-					updateUrl = appvalue;
-				}
-			}
-			catch (Exception) { }
-			try
-			{
-				using (WebClient web = new WebClient())
-				{
-					web.Headers.Add("User-Agent", "WinAuth-" + this.CurrentVersion.ToString());
-					if (callback == null)
-					{
-						// immediate request
-						string result = web.DownloadString(updateUrl);
-						WinAuthVersionInfo latestVersion = ParseGetLatestVersion(result);
-						if (latestVersion != null)
-						{
-							// update local values
-							LastKnownLatestVersion = latestVersion.Version;
-							Config.WriteSetting(WINAUTHREGKEY_LATESTVERSION, latestVersion.Version.ToString(3));
-						}
-						return latestVersion;
-					}
-					else
-					{
-						// initiate async operation
-						web.DownloadStringCompleted += new DownloadStringCompletedEventHandler(GetLatestVersionDownloadCompleted);
-						web.DownloadStringAsync(new Uri(updateUrl), callback);
-						return null;
-					}
-				}
-			}
-			catch (Exception )
-			{
-				// don't fail if we can't get latest version
-				return null;
-			}
-		}
+        /// <summary>
+        /// Explicitly get the latest version information. Will be asynchronous if a callback is provided.
+        /// </summary>
+        /// <param name="callback">optional callback for async operation</param>
+        /// <returns>latest WinAuthVersionInfo or null if async</returns>
+        public virtual WinAuthVersionInfo GetLatestVersion(Action<WinAuthVersionInfo, bool, Exception> callback = null)
+        {
+            // get the update URL from the config else use the default
+            string updateUrl = WinAuthMain.WINAUTH_UPDATE_URL;
+            try
+            {
+                var settings = new System.Configuration.AppSettingsReader();
+                string appvalue = settings.GetValue("UpdateCheckUrl", typeof(string)) as string;
+                if (string.IsNullOrEmpty(appvalue) == false)
+                {
+                    updateUrl = appvalue;
+                }
+            }
+            catch (Exception) { }
+            try
+            {
+                using (WebClient web = new WebClient())
+                {
+                    web.Headers.Add("User-Agent", "WinAuth-" + this.CurrentVersion.ToString());
+                    if (callback == null)
+                    {
+                        // immediate request
+                        string result = web.DownloadString(updateUrl);
+                        WinAuthVersionInfo latestVersion = ParseGetLatestVersion(result);
+                        if (latestVersion != null)
+                        {
+                            // update local values
+                            LastKnownLatestVersion = latestVersion.Version;
+                            Config.WriteSetting(WINAUTHREGKEY_LATESTVERSION, latestVersion.Version.ToString(3));
+                        }
+                        return latestVersion;
+                    }
+                    else
+                    {
+                        // initiate async operation
+                        web.DownloadStringCompleted += new DownloadStringCompletedEventHandler(GetLatestVersionDownloadCompleted);
+                        web.DownloadStringAsync(new Uri(updateUrl), callback);
+                        return null;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // don't fail if we can't get latest version
+                return null;
+            }
+        }
 
-		/// <summary>
-		/// Callback for async operation for latest version web request
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="args"></param>
-		private void GetLatestVersionDownloadCompleted(object sender, DownloadStringCompletedEventArgs args)
-		{
-			// no point if e have no callback
-			Action<WinAuthVersionInfo, bool, Exception> callback = args.UserState as Action<WinAuthVersionInfo, bool, Exception>;
-			if (callback == null)
-			{
-				return;
-			}
+        /// <summary>
+        /// Callback for async operation for latest version web request
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void GetLatestVersionDownloadCompleted(object sender, DownloadStringCompletedEventArgs args)
+        {
+            // no point if e have no callback
+            Action<WinAuthVersionInfo, bool, Exception> callback = args.UserState as Action<WinAuthVersionInfo, bool, Exception>;
+            if (callback == null)
+            {
+                return;
+            }
 
-			// report cancelled or error
-			if (args.Cancelled == true || args.Error != null)
-			{
-				callback(null, args.Cancelled, args.Error);
-				return;
-			}
+            // report cancelled or error
+            if (args.Cancelled == true || args.Error != null)
+            {
+                callback(null, args.Cancelled, args.Error);
+                return;
+            }
 
-			try
-			{
-				// extract the latest version
-				WinAuthVersionInfo latestVersion = ParseGetLatestVersion(args.Result);
-				if (latestVersion != null)
-				{
-					// update local values
-					LastKnownLatestVersion = latestVersion.Version;
-					Config.WriteSetting(WINAUTHREGKEY_LATESTVERSION, latestVersion.Version.ToString(3));
-				}
-				// perform callback
-				callback(latestVersion, false, null);
-			}
-			catch (Exception ex)
-			{
-				// report any other error
-				callback(null, false, ex);
-			}
-		}
+            try
+            {
+                // extract the latest version
+                WinAuthVersionInfo latestVersion = ParseGetLatestVersion(args.Result);
+                if (latestVersion != null)
+                {
+                    // update local values
+                    LastKnownLatestVersion = latestVersion.Version;
+                    Config.WriteSetting(WINAUTHREGKEY_LATESTVERSION, latestVersion.Version.ToString(3));
+                }
+                // perform callback
+                callback(latestVersion, false, null);
+            }
+            catch (Exception ex)
+            {
+                // report any other error
+                callback(null, false, ex);
+            }
+        }
 
-		/// <summary>
-		/// Parse the returned xml from the website request to extract version information
-		/// </summary>
-		/// <param name="result">version xml information</param>
-		/// <returns>new WinAuthVersionInfo object</returns>
-		private WinAuthVersionInfo ParseGetLatestVersion(string result)
-		{
-			// load xml document and pull out nodes
-			XmlDocument xml = new XmlDocument();
-			xml.LoadXml(result);
-			var node = xml.SelectSingleNode("//version");
+        /// <summary>
+        /// Parse the returned xml from the website request to extract version information
+        /// </summary>
+        /// <param name="result">version xml information</param>
+        /// <returns>new WinAuthVersionInfo object</returns>
+        private WinAuthVersionInfo ParseGetLatestVersion(string result)
+        {
+            // load xml document and pull out nodes
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(result);
+            var node = xml.SelectSingleNode("//version");
 
-			Version version = null;
-			Version.TryParse(node.InnerText, out version);
-			if (node != null && version != null)
-			{
-				WinAuthVersionInfo latestversion = new WinAuthVersionInfo(version);
+            Version version = null;
+            Version.TryParse(node.InnerText, out version);
+            if (node != null && version != null)
+            {
+                WinAuthVersionInfo latestversion = new WinAuthVersionInfo(version);
 
-				DateTime released;
-				node = xml.SelectSingleNode("//released");
-				if (node != null && DateTime.TryParse(node.InnerText, out released) == true)
-				{
-					latestversion.Released = released;
-				}
-				node = xml.SelectSingleNode("//url");
-				if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
-				{
-					latestversion.Url = node.InnerText;
-				}
-				node = xml.SelectSingleNode("//changes");
-				if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
-				{
-					latestversion.Changes = node.InnerText;
-				}
+                DateTime released;
+                node = xml.SelectSingleNode("//released");
+                if (node != null && DateTime.TryParse(node.InnerText, out released) == true)
+                {
+                    latestversion.Released = released;
+                }
+                node = xml.SelectSingleNode("//url");
+                if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
+                {
+                    latestversion.Url = node.InnerText;
+                }
+                node = xml.SelectSingleNode("//changes");
+                if (node != null && string.IsNullOrEmpty(node.InnerText) == false)
+                {
+                    latestversion.Changes = node.InnerText;
+                }
 
-				return latestversion;
-			}
-			else
-			{
-				throw new InvalidOperationException("Invalid return data");
-			}
-		}
+                return latestversion;
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid return data");
+            }
+        }
 
-		/// <summary>
-		/// Set the interval for automatic update checks. Null is disabled. Zero is every time.
-		/// </summary>
-		/// <param name="interval">new interval or null to disable</param>
-		public void SetUpdateInterval(TimeSpan? interval)
-		{
-			// get the next check time
-			if (interval != null)
-			{
-				// write into regisry
-				
-				Config.WriteSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Format("{0:00}.{1:00}:{2:00}:{3:00}", (int)interval.Value.TotalDays, interval.Value.Hours, interval.Value.Minutes, interval.Value.Seconds) ); // toString("c") is Net4
+        /// <summary>
+        /// Set the interval for automatic update checks. Null is disabled. Zero is every time.
+        /// </summary>
+        /// <param name="interval">new interval or null to disable</param>
+        public void SetUpdateInterval(TimeSpan? interval)
+        {
+            // get the next check time
+            if (interval != null)
+            {
+                // write into regisry
 
-				// if last update not set, set to now
-				if (Config.ReadSetting(WINAUTHREGKEY_LASTCHECK) == null)
-				{
-					Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, DateTime.Now.Ticks.ToString());
-				}
-			}
-			else
-			{
-				// remove from registry
-				Config.WriteSetting(WINAUTHREGKEY_CHECKFREQUENCY, null);
-			}
-			// update local values
-			_autocheckInterval = interval;
-		}
-	}
+                Config.WriteSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Format("{0:00}.{1:00}:{2:00}:{3:00}", (int)interval.Value.TotalDays, interval.Value.Hours, interval.Value.Minutes, interval.Value.Seconds)); // toString("c") is Net4
+
+                // if last update not set, set to now
+                if (Config.ReadSetting(WINAUTHREGKEY_LASTCHECK) == null)
+                {
+                    Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, DateTime.Now.Ticks.ToString());
+                }
+            }
+            else
+            {
+                // remove from registry
+                Config.WriteSetting(WINAUTHREGKEY_CHECKFREQUENCY, null);
+            }
+            // update local values
+            _autocheckInterval = interval;
+        }
+    }
 }

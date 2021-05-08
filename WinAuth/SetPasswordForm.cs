@@ -26,75 +26,75 @@ namespace WinAuth
     /// Form used to get a password used to protect an authenticator
     /// </summary>
     public partial class SetPasswordForm : ResourceForm
-	{
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public SetPasswordForm()
-		{
-			InitializeComponent();
-		}
+    {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public SetPasswordForm()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Current password
-		/// </summary>
-		public string Password { get; protected set; }
+        /// <summary>
+        /// Current password
+        /// </summary>
+        public string Password { get; protected set; }
 
-		/// <summary>
-		/// Click the Show checkbox to unmask the password fields
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void showCheckbox_CheckedChanged(object sender, EventArgs e)
-		{
-			if (this.showCheckbox.Checked == true)
-			{
-				this.passwordField.UseSystemPasswordChar = false;
-				this.passwordField.PasswordChar = (char)0;
-				this.verifyField.UseSystemPasswordChar = false;
-				this.verifyField.PasswordChar = (char)0;
-			}
-			else
-			{
-				this.passwordField.UseSystemPasswordChar = true;
-				this.passwordField.PasswordChar = '*';
-				this.verifyField.UseSystemPasswordChar = true;
-				this.verifyField.PasswordChar = '*';
-			}
-		}
+        /// <summary>
+        /// Click the Show checkbox to unmask the password fields
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void showCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.showCheckbox.Checked == true)
+            {
+                this.passwordField.UseSystemPasswordChar = false;
+                this.passwordField.PasswordChar = (char)0;
+                this.verifyField.UseSystemPasswordChar = false;
+                this.verifyField.PasswordChar = (char)0;
+            }
+            else
+            {
+                this.passwordField.UseSystemPasswordChar = true;
+                this.passwordField.PasswordChar = '*';
+                this.verifyField.UseSystemPasswordChar = true;
+                this.verifyField.PasswordChar = '*';
+            }
+        }
 
-		/// <summary>
-		/// Click the OK button
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void okButton_Click(object sender, EventArgs e)
-		{
-			string password = this.passwordField.Text.Trim();
-			string verify = this.verifyField.Text.Trim();
-			if (password != verify)
-			{
-				//WinAuthForm.ErrorDialog(this, "Your passwords do not match.");
-				this.errorLabel.Text = strings.PasswordsDontMatch;
-				this.errorLabel.Visible = true;
-				this.errorTimer.Enabled = true;
-				this.DialogResult = System.Windows.Forms.DialogResult.None;
-				return;
-			}
+        /// <summary>
+        /// Click the OK button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            string password = this.passwordField.Text.Trim();
+            string verify = this.verifyField.Text.Trim();
+            if (password != verify)
+            {
+                //WinAuthForm.ErrorDialog(this, "Your passwords do not match.");
+                this.errorLabel.Text = strings.PasswordsDontMatch;
+                this.errorLabel.Visible = true;
+                this.errorTimer.Enabled = true;
+                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                return;
+            }
 
-			this.Password = password;
-		}
+            this.Password = password;
+        }
 
-		/// <summary>
-		/// Timer fired to clear error message
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void errorTimer_Tick(object sender, EventArgs e)
-		{
-			this.errorTimer.Enabled = false;
-			this.errorLabel.Text = string.Empty;
-			this.errorLabel.Visible = false;
-		}
-	}
+        /// <summary>
+        /// Timer fired to clear error message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void errorTimer_Tick(object sender, EventArgs e)
+        {
+            this.errorTimer.Enabled = false;
+            this.errorLabel.Text = string.Empty;
+            this.errorLabel.Visible = false;
+        }
+    }
 }

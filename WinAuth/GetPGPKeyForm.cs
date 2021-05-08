@@ -26,76 +26,76 @@ namespace WinAuth
     /// Class for form that prompts for password and unprotects authenticator
     /// </summary>
     public partial class GetPGPKeyForm : ResourceForm
-	{
-		/// <summary>
-		/// Create new form
-		/// </summary>
-		public GetPGPKeyForm()
-			: base()
-		{
-			InitializeComponent();
-		}
+    {
+        /// <summary>
+        /// Create new form
+        /// </summary>
+        public GetPGPKeyForm()
+            : base()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// PGPKey
-		/// </summary>
-		public string PGPKey { get; private set; }
+        /// <summary>
+        /// PGPKey
+        /// </summary>
+        public string PGPKey { get; private set; }
 
-		/// <summary>
-		/// Password
-		/// </summary>
-		public string Password { get; private set; }
+        /// <summary>
+        /// Password
+        /// </summary>
+        public string Password { get; private set; }
 
-		/// <summary>
-		/// Load the form and make it topmost
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void GetPGPKeyForm_Load(object sender, EventArgs e)
-		{
-			// force this window to the front and topmost
-			// see: http://stackoverflow.com/questions/278237/keep-window-on-top-and-steal-focus-in-winforms
-			var oldtopmost = this.TopMost;
-			this.TopMost = true;
-			this.TopMost = oldtopmost;
-			this.Activate();
-		}
+        /// <summary>
+        /// Load the form and make it topmost
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GetPGPKeyForm_Load(object sender, EventArgs e)
+        {
+            // force this window to the front and topmost
+            // see: http://stackoverflow.com/questions/278237/keep-window-on-top-and-steal-focus-in-winforms
+            var oldtopmost = this.TopMost;
+            this.TopMost = true;
+            this.TopMost = oldtopmost;
+            this.Activate();
+        }
 
-		/// <summary>
-		/// Browse the PGP key
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void browseButton_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.CheckFileExists = true;
-			ofd.Filter = "All Files (*.*)|*.*";
-			ofd.Title = "Choose PGP Key File";
+        /// <summary>
+        /// Browse the PGP key
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void browseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.CheckFileExists = true;
+            ofd.Filter = "All Files (*.*)|*.*";
+            ofd.Title = "Choose PGP Key File";
 
-			if (ofd.ShowDialog(this.Parent) == System.Windows.Forms.DialogResult.OK)
-			{
-				this.pgpField.Text = File.ReadAllText(ofd.FileName);
-			}
-		}
+            if (ofd.ShowDialog(this.Parent) == System.Windows.Forms.DialogResult.OK)
+            {
+                this.pgpField.Text = File.ReadAllText(ofd.FileName);
+            }
+        }
 
-		/// <summary>
-		/// Click the OK button
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void okButton_Click(object sender, EventArgs e)
-		{
-			// it isn't empty
-			if (this.pgpField.Text.Length == 0)
-			{
-				this.DialogResult = System.Windows.Forms.DialogResult.None;
-				return;
-			}
+        /// <summary>
+        /// Click the OK button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            // it isn't empty
+            if (this.pgpField.Text.Length == 0)
+            {
+                this.DialogResult = System.Windows.Forms.DialogResult.None;
+                return;
+            }
 
-			this.PGPKey = this.pgpField.Text;
-			this.Password = this.passwordField.Text;
-		}
+            this.PGPKey = this.pgpField.Text;
+            this.Password = this.passwordField.Text;
+        }
 
-	}
+    }
 }

@@ -33,53 +33,53 @@ namespace WinAuth
     /// 
     /// </summary>
     public class SingleGlobalInstance : IDisposable
-	{
-		public bool HasHandle { get; set; }
+    {
+        public bool HasHandle { get; set; }
 
-		private Mutex _mutex;
+        private Mutex _mutex;
 
-		private void InitMutex()
-		{
-			HasHandle = false;
+        private void InitMutex()
+        {
+            HasHandle = false;
 
-			string appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value.ToString();
-			string userGuid = WindowsIdentity.GetCurrent().User.Value;
-			string mutexId = string.Format("Global\\{{{0}}}-{{{1}}}", userGuid, appGuid);
-			_mutex = new Mutex(false, mutexId);
+            string appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value.ToString();
+            string userGuid = WindowsIdentity.GetCurrent().User.Value;
+            string mutexId = string.Format("Global\\{{{0}}}-{{{1}}}", userGuid, appGuid);
+            _mutex = new Mutex(false, mutexId);
 
-			var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-			var securitySettings = new MutexSecurity();
-			securitySettings.AddAccessRule(allowEveryoneRule);
-			_mutex.SetAccessControl(securitySettings);
-		}
+            var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
+            var securitySettings = new MutexSecurity();
+            securitySettings.AddAccessRule(allowEveryoneRule);
+            _mutex.SetAccessControl(securitySettings);
+        }
 
-		public SingleGlobalInstance(int timeOut = Timeout.Infinite)
-		{
-			InitMutex();
-			try
-			{
-				HasHandle = _mutex.WaitOne(timeOut, false);
-				if (HasHandle == false)
-				{
-					throw new TimeoutException("Timeout waiting for exclusive access on SingleInstance");
-				}
-			}
-			catch (AbandonedMutexException)
-			{
-				HasHandle = true;
-			}
-		}
+        public SingleGlobalInstance(int timeOut = Timeout.Infinite)
+        {
+            InitMutex();
+            try
+            {
+                HasHandle = _mutex.WaitOne(timeOut, false);
+                if (HasHandle == false)
+                {
+                    throw new TimeoutException("Timeout waiting for exclusive access on SingleInstance");
+                }
+            }
+            catch (AbandonedMutexException)
+            {
+                HasHandle = true;
+            }
+        }
 
-		public void Dispose()
-		{
-			if (_mutex != null)
-			{
-				if (HasHandle)
-				{
-					_mutex.ReleaseMutex();
-				}
-				_mutex.Dispose();
-			}
-		}
-	}
+        public void Dispose()
+        {
+            if (_mutex != null)
+            {
+                if (HasHandle)
+                {
+                    _mutex.ReleaseMutex();
+                }
+                _mutex.Dispose();
+            }
+        }
+    }
 }

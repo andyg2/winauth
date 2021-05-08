@@ -27,78 +27,78 @@ namespace WinAuth
     /// Form display initialization confirmation.
     /// </summary>
     public partial class ShowSecretKeyForm : ResourceForm
-	{
-		/// <summary>
-		/// Current authenticator
-		/// </summary>
-		public WinAuthAuthenticator CurrentAuthenticator { get; set; }
+    {
+        /// <summary>
+        /// Current authenticator
+        /// </summary>
+        public WinAuthAuthenticator CurrentAuthenticator { get; set; }
 
-		/// <summary>
-		/// Create a new form
-		/// </summary>
-		public ShowSecretKeyForm()
-		{
-			InitializeComponent();
-		}
+        /// <summary>
+        /// Create a new form
+        /// </summary>
+        public ShowSecretKeyForm()
+        {
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Click OK button to close form
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void btnOK_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
+        /// <summary>
+        /// Click OK button to close form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-		/// <summary>
-		/// Form loaded event
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ShowSecretKeyForm_Load(object sender, EventArgs e)
-		{
-			this.secretKeyField.SecretMode = true;
+        /// <summary>
+        /// Form loaded event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowSecretKeyForm_Load(object sender, EventArgs e)
+        {
+            this.secretKeyField.SecretMode = true;
 
-			string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
-			this.secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
+            string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            this.secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
 
-			string type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
-			long counter = (CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0);
-			string issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
+            string type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
+            long counter = (CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0);
+            string issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
 
-			//string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
-			//	+ "?secret=" + key
-			//	+ "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
-			//	+ (counter != 0 ? "&counter=" + counter : string.Empty)
-			//	+ (string.IsNullOrEmpty(issuer) == false ? "&issuer=" + WinAuthHelper.HtmlEncode(issuer) : string.Empty);
-			string url = CurrentAuthenticator.ToUrl(true);
+            //string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
+            //	+ "?secret=" + key
+            //	+ "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
+            //	+ (counter != 0 ? "&counter=" + counter : string.Empty)
+            //	+ (string.IsNullOrEmpty(issuer) == false ? "&issuer=" + WinAuthHelper.HtmlEncode(issuer) : string.Empty);
+            string url = CurrentAuthenticator.ToUrl(true);
 
-			BarcodeWriter writer = new BarcodeWriter();
-			writer.Format = BarcodeFormat.QR_CODE;
-			writer.Options = new ZXing.Common.EncodingOptions { Width = qrImage.Width, Height = qrImage.Height };
-			qrImage.Image = writer.Write(url);
-		}
+            BarcodeWriter writer = new BarcodeWriter();
+            writer.Format = BarcodeFormat.QR_CODE;
+            writer.Options = new ZXing.Common.EncodingOptions { Width = qrImage.Width, Height = qrImage.Height };
+            qrImage.Image = writer.Write(url);
+        }
 
-		/// <summary>
-		/// Toggle the secret mode to allow copy
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void allowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
-		{
-			this.secretKeyField.SecretMode = !allowCopyCheckBox.Checked;
+        /// <summary>
+        /// Toggle the secret mode to allow copy
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void allowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            this.secretKeyField.SecretMode = !allowCopyCheckBox.Checked;
 
-			string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
-			if (this.secretKeyField.SecretMode == true)
-			{
-				this.secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
-			}
-			else
-			{
-				this.secretKeyField.Text = key;
-			}
-		}
+            string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            if (this.secretKeyField.SecretMode == true)
+            {
+                this.secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
+            }
+            else
+            {
+                this.secretKeyField.Text = key;
+            }
+        }
 
-	}
+    }
 }
