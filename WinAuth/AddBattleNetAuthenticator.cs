@@ -91,7 +91,7 @@ namespace WinAuth
         {
             if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
             {
-                int time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
+                var time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
                 newAuthenticatorProgress.Value = time + 1;
                 if (time == 0)
                 {
@@ -109,7 +109,7 @@ namespace WinAuth
         {
             if (Authenticator.AuthenticatorData != null)
             {
-                DialogResult result = WinAuthForm.ConfirmDialog(Owner,
+                var result = WinAuthForm.ConfirmDialog(Owner,
                     "You have created a new authenticator. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
@@ -147,11 +147,11 @@ namespace WinAuth
         /// <param name="e"></param>
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            TabPage page = tabControl1.TabPages[e.Index];
+            var page = tabControl1.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
 
-            Rectangle paddedBounds = e.Bounds;
-            int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
+            var paddedBounds = e.Bounds;
+            var yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
             TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
         }
@@ -221,8 +221,8 @@ namespace WinAuth
             }
             else if (tabControl1.SelectedIndex == 1)
             {
-                string serial = restoreSerialNumberField.Text.Trim();
-                string restore = restoreRestoreCodeField.Text.Trim();
+                var serial = restoreSerialNumberField.Text.Trim();
+                var restore = restoreRestoreCodeField.Text.Trim();
                 if (serial.Length == 0 || restore.Length == 0)
                 {
                     WinAuthForm.ErrorDialog(Owner, "Please enter the Serial number and Restore code");
@@ -231,7 +231,7 @@ namespace WinAuth
 
                 try
                 {
-                    BattleNetAuthenticator authenticator = new BattleNetAuthenticator();
+                    var authenticator = new BattleNetAuthenticator();
                     authenticator.Restore(serial, restore);
                     Authenticator.AuthenticatorData = authenticator;
                 }
@@ -243,7 +243,7 @@ namespace WinAuth
             }
             else if (tabControl1.SelectedIndex == 2)
             {
-                string privatekey = importPrivateKeyField.Text.Trim();
+                var privatekey = importPrivateKeyField.Text.Trim();
                 if (privatekey.Length == 0)
                 {
                     WinAuthForm.ErrorDialog(Owner, "Please enter the Private key");
@@ -259,7 +259,7 @@ namespace WinAuth
                 }
                 try
                 {
-                    BattleNetAuthenticator authenticator = new BattleNetAuthenticator();
+                    var authenticator = new BattleNetAuthenticator();
                     if (privatekey.Length == 40) // 20 bytes which is key only
                     {
                         authenticator.SecretKey = WinAuth.Authenticator.StringToByteArray(privatekey);
@@ -294,7 +294,7 @@ namespace WinAuth
         {
             if (Authenticator.AuthenticatorData != null && showWarning == true)
             {
-                DialogResult result = WinAuthForm.ConfirmDialog(Owner,
+                var result = WinAuthForm.ConfirmDialog(Owner,
                     "This will clear the authenticator you have just created. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Are you sure you want to continue?");
@@ -335,7 +335,7 @@ namespace WinAuth
                 {
                     newSerialNumberField.Text = "creating...";
 
-                    BattleNetAuthenticator authenticator = new BattleNetAuthenticator();
+                    var authenticator = new BattleNetAuthenticator();
 #if DEBUG
                     authenticator.Enroll(System.Diagnostics.Debugger.IsAttached);
 #else

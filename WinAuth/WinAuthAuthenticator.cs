@@ -89,7 +89,7 @@ namespace WinAuth
         /// <returns></returns>
         public object Clone()
         {
-            WinAuthAuthenticator clone = MemberwiseClone() as WinAuthAuthenticator;
+            var clone = MemberwiseClone() as WinAuthAuthenticator;
 
             clone.Id = Guid.NewGuid();
             clone.OnWinAuthAuthenticatorChanged = null;
@@ -310,7 +310,7 @@ namespace WinAuth
                     Stream stream;
                     if (Skin.StartsWith("base64:") == true)
                     {
-                        byte[] bytes = Convert.FromBase64String(Skin.Substring(7));
+                        var bytes = Convert.FromBase64String(Skin.Substring(7));
                         stream = new MemoryStream(bytes, 0, bytes.Length);
                     }
                     else
@@ -338,7 +338,7 @@ namespace WinAuth
                     return;
                 }
 
-                using (MemoryStream ms = new MemoryStream())
+                using (var ms = new MemoryStream())
                 {
                     value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     Skin = "base64:" + Convert.ToBase64String(ms.ToArray());
@@ -355,7 +355,7 @@ namespace WinAuth
                     return null;
                 }
 
-                string code = AuthenticatorData.CurrentCode;
+                var code = AuthenticatorData.CurrentCode;
 
                 if (AuthenticatorData is HOTPAuthenticator)
                 {
@@ -397,22 +397,22 @@ namespace WinAuth
                 code = CurrentCode;
             }
 
-            bool clipRetry = false;
+            var clipRetry = false;
             do
             {
-                bool failed = false;
+                var failed = false;
                 // check if the clipboard is locked
-                IntPtr hWnd = WinAPI.GetOpenClipboardWindow();
+                var hWnd = WinAPI.GetOpenClipboardWindow();
                 if (hWnd != IntPtr.Zero)
                 {
-                    int len = WinAPI.GetWindowTextLength(hWnd);
+                    var len = WinAPI.GetWindowTextLength(hWnd);
                     if (len == 0)
                     {
                         WinAuthMain.LogException(new ApplicationException("Clipboard in use by another process"));
                     }
                     else
                     {
-                        StringBuilder sb = new StringBuilder(len + 1);
+                        var sb = new StringBuilder(len + 1);
                         WinAPI.GetWindowText(hWnd, sb, sb.Capacity);
                         WinAuthMain.LogException(new ApplicationException("Clipboard in use by '" + sb.ToString() + "'"));
                     }
@@ -449,17 +449,17 @@ namespace WinAuth
 
         public bool ReadXml(XmlReader reader, string password)
         {
-            bool changed = false;
+            var changed = false;
 
             Guid id;
             if (Guid.TryParse(reader.GetAttribute("id"), out id) == true)
             {
                 Id = id;
             }
-            string authenticatorType = reader.GetAttribute("type");
+            var authenticatorType = reader.GetAttribute("type");
             if (string.IsNullOrEmpty(authenticatorType) == false)
             {
-                Type type = typeof(Authenticator).Assembly.GetType(authenticatorType, false, true);
+                var type = typeof(Authenticator).Assembly.GetType(authenticatorType, false, true);
                 AuthenticatorData = Activator.CreateInstance(type) as Authenticator;
             }
 
@@ -503,7 +503,7 @@ namespace WinAuth
                             break;
 
                         case "created":
-                            long t = reader.ReadElementContentAsLong();
+                            var t = reader.ReadElementContentAsLong();
                             t += Convert.ToInt64(new TimeSpan(new DateTime(1970, 1, 1).Ticks).TotalMilliseconds);
                             t *= TimeSpan.TicksPerMillisecond;
                             Created = new DateTime(t).ToLocalTime();
@@ -677,12 +677,12 @@ namespace WinAuth
         /// <returns>string</returns>
         public virtual string ToUrl(bool compat = false)
         {
-            string type = "totp";
-            string extraparams = string.Empty;
+            var type = "totp";
+            var extraparams = string.Empty;
 
             Match match;
-            string issuer = AuthenticatorData.Issuer;
-            string label = Name;
+            var issuer = AuthenticatorData.Issuer;
+            var label = Name;
             if (string.IsNullOrEmpty(issuer) == true && (match = Regex.Match(label, @"^([^\(]+)\s+\((.*?)\)(.*)")).Success == true)
             {
                 issuer = match.Groups[1].Value;
@@ -720,15 +720,15 @@ namespace WinAuth
                 extraparams += "&counter=" + ((HOTPAuthenticator)AuthenticatorData).Counter;
             }
 
-            string secret = HttpUtility.UrlEncode(Base32.getInstance().Encode(AuthenticatorData.SecretKey));
+            var secret = HttpUtility.UrlEncode(Base32.getInstance().Encode(AuthenticatorData.SecretKey));
 
             // add the skin
             if (string.IsNullOrEmpty(Skin) == false && compat == false)
             {
                 if (Skin.StartsWith("base64:") == true)
                 {
-                    byte[] bytes = Convert.FromBase64String(Skin.Substring(7));
-                    string icon32 = Base32.getInstance().Encode(bytes);
+                    var bytes = Convert.FromBase64String(Skin.Substring(7));
+                    var icon32 = Base32.getInstance().Encode(bytes);
                     extraparams += "&icon=" + HttpUtility.UrlEncode("base64:" + icon32);
                 }
                 else

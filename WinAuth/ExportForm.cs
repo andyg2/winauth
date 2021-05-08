@@ -115,7 +115,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void pgpBrowseButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.CheckFileExists = true;
             ofd.Filter = "All Files (*.*)|*.*";
             ofd.Title = "Choose PGP Key File";
@@ -133,7 +133,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void browseButton_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            var sfd = new SaveFileDialog();
             sfd.AddExtension = true;
             sfd.CheckPathExists = true;
             if (passwordCheckbox.Checked == true)

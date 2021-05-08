@@ -186,7 +186,7 @@ namespace WinAuth
                 var config = new LoggingConfiguration();
                 //
                 var fileTarget = new FileTarget();
-                string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 if (Directory.Exists(dir) == false)
                 {
                     dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -287,7 +287,7 @@ namespace WinAuth
 
                 if (silently == false)
                 {
-                    ExceptionForm report = new ExceptionForm();
+                    var report = new ExceptionForm();
                     report.ErrorException = ex;
                     report.TopMost = true;
                     if (_form != null && _form.Config != null)
@@ -334,7 +334,7 @@ namespace WinAuth
             // Issue #53: set a default culture
             if (System.Threading.Thread.CurrentThread.CurrentCulture == null || System.Threading.Thread.CurrentThread.CurrentUICulture == null)
             {
-                CultureInfo ci = new CultureInfo("en"); // or en-US, en-GB
+                var ci = new CultureInfo("en"); // or en-US, en-GB
                 System.Threading.Thread.CurrentThread.CurrentCulture = ci;
                 System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
             }

@@ -129,7 +129,7 @@ namespace WinAuth
 
             pollAction.Items.Clear();
 
-            BindingList<object> items = new BindingList<object>();
+            var items = new BindingList<object>();
             items.Add(new PollerActionItem { Text = "Show Notification", Value = SteamClient.PollerAction.Notify });
             items.Add(new PollerActionItem { Text = "Auto-Confirm", Value = SteamClient.PollerAction.AutoConfirm });
             items.Add(new PollerActionItem { Text = "Auto-Confirm (silently)", Value = SteamClient.PollerAction.SilentAutoConfirm });
@@ -190,11 +190,11 @@ namespace WinAuth
         /// <param name="e"></param>
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            TabPage page = tabs.TabPages[e.Index];
+            var page = tabs.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
 
-            Rectangle paddedBounds = e.Bounds;
-            int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
+            var paddedBounds = e.Bounds;
+            var yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
             TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
 
@@ -290,7 +290,7 @@ namespace WinAuth
         private void Trade_Click(object sender, EventArgs e)
         {
             // get the Trade object
-            Label panel = sender as Label;
+            var panel = sender as Label;
             var trade = m_trades.Where(t => t.Id == panel.Tag as string).FirstOrDefault();
             if (trade == null)
             {
@@ -348,8 +348,8 @@ namespace WinAuth
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
 
-                MetroButton button = sender as MetroButton;
-                string tradeId = button.Tag as string;
+                var button = sender as MetroButton;
+                var tradeId = button.Tag as string;
                 await AcceptTrade(tradeId);
             }
             finally
@@ -371,8 +371,8 @@ namespace WinAuth
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
 
-                MetroButton button = sender as MetroButton;
-                string tradeId = button.Tag as string;
+                var button = sender as MetroButton;
+                var tradeId = button.Tag as string;
                 await RejectTrade(tradeId);
             }
             finally
@@ -454,7 +454,7 @@ namespace WinAuth
                         break;
                     }
 
-                    DateTime start = DateTime.Now;
+                    var start = DateTime.Now;
 
                     var result = await AcceptTrade(tradeIds[i]);
                     if (result == false || cancelComfirmAll.IsCancellationRequested == true)
@@ -531,7 +531,7 @@ namespace WinAuth
                         break;
                     }
 
-                    DateTime start = DateTime.Now;
+                    var start = DateTime.Now;
 
                     var result = await RejectTrade(tradeIds[i]);
                     if (result == false || cancelCancelAll.IsCancellationRequested == true)
@@ -657,7 +657,7 @@ namespace WinAuth
 
                                 using (var web = new WebClient())
                                 {
-                                    byte[] data = web.DownloadData(steam.CaptchaUrl);
+                                    var data = web.DownloadData(steam.CaptchaUrl);
 
                                     using (var ms = new MemoryStream(data))
                                     {
@@ -748,10 +748,10 @@ namespace WinAuth
                         var trade = m_trades[row];
 
                         // clone the panel
-                        Panel tradePanel = Clone(tradePanelMaster, "_" + trade.Id) as Panel;
+                        var tradePanel = Clone(tradePanelMaster, "_" + trade.Id) as Panel;
                         tradePanel.SuspendLayout();
 
-                        using (WebClient wc = new WebClient())
+                        using (var wc = new WebClient())
                         {
                             byte[] imageData = null;
 
@@ -769,24 +769,24 @@ namespace WinAuth
                             }
                             if (imageData != null && imageData.Length != 0)
                             {
-                                using (MemoryStream ms = new MemoryStream(imageData))
+                                using (var ms = new MemoryStream(imageData))
                                 {
-                                    PictureBox imageBox = FindControl<PictureBox>(tradePanel, "tradeImage");
+                                    var imageBox = FindControl<PictureBox>(tradePanel, "tradeImage");
                                     imageBox.Image = Image.FromStream(ms);
                                 }
                             }
                         }
 
-                        Label label = FindControl<Label>(tradePanel, "tradeLabel");
+                        var label = FindControl<Label>(tradePanel, "tradeLabel");
                         label.Text = trade.Details + Environment.NewLine + trade.Traded + Environment.NewLine + trade.When;
                         label.Tag = trade.Id;
                         label.Click += Trade_Click;
 
-                        MetroButton tradeAcceptButton = FindControl<MetroButton>(tradePanel, "tradeAccept");
+                        var tradeAcceptButton = FindControl<MetroButton>(tradePanel, "tradeAccept");
                         tradeAcceptButton.Tag = trade.Id;
                         tradeAcceptButton.Click += tradeAccept_Click;
 
-                        MetroButton tradeRejectButton = FindControl<MetroButton>(tradePanel, "tradeReject");
+                        var tradeRejectButton = FindControl<MetroButton>(tradePanel, "tradeReject");
                         tradeRejectButton.Tag = trade.Id;
                         tradeRejectButton.Click += tradeReject_Click;
 
@@ -815,7 +815,7 @@ namespace WinAuth
                         {
                             pollCheckbox.Checked = true;
                             pollNumeric.Value = Convert.ToDecimal(steam.Session.Confirmations.Duration);
-                            int selected = 0;
+                            var selected = 0;
                             for (var i = 0; i < pollAction.Items.Count; i++)
                             {
                                 var item = pollAction.Items[i] as PollerActionItem;
@@ -885,11 +885,11 @@ namespace WinAuth
 
                 m_trades.Remove(trade);
 
-                MetroButton button = FindControl<MetroButton>(tabs.SelectedTab, "tradeAccept_" + trade.Id);
+                var button = FindControl<MetroButton>(tabs.SelectedTab, "tradeAccept_" + trade.Id);
                 button.Visible = false;
                 button = FindControl<MetroButton>(tabs.SelectedTab, "tradeReject_" + trade.Id);
                 button.Visible = false;
-                MetroLabel status = FindControl<MetroLabel>(tabs.SelectedTab, "tradeStatus_" + trade.Id);
+                var status = FindControl<MetroLabel>(tabs.SelectedTab, "tradeStatus_" + trade.Id);
                 status.Text = "Confirmed";
                 status.Visible = true;
 
@@ -932,11 +932,11 @@ namespace WinAuth
 
                 m_trades.Remove(trade);
 
-                MetroButton button = FindControl<MetroButton>(tabs.SelectedTab, "tradeAccept_" + trade.Id);
+                var button = FindControl<MetroButton>(tabs.SelectedTab, "tradeAccept_" + trade.Id);
                 button.Visible = false;
                 button = FindControl<MetroButton>(tabs.SelectedTab, "tradeReject_" + trade.Id);
                 button.Visible = false;
-                MetroLabel status = FindControl<MetroLabel>(tabs.SelectedTab, "tradeStatus_" + trade.Id);
+                var status = FindControl<MetroLabel>(tabs.SelectedTab, "tradeStatus_" + trade.Id);
                 status.Text = "Cancelled";
                 status.Visible = true;
 
@@ -970,7 +970,7 @@ namespace WinAuth
 
             foreach (Control child in control.Controls)
             {
-                T found = FindControl<T>(child, name);
+                var found = FindControl<T>(child, name);
                 if (found != null)
                 {
                     return found;
@@ -989,7 +989,7 @@ namespace WinAuth
         private Control Clone(Control control, string suffix)
         {
             var type = control.GetType();
-            Control clone = Activator.CreateInstance(type) as Control;
+            var clone = Activator.CreateInstance(type) as Control;
             clone.Name = control.Name + (string.IsNullOrEmpty(suffix) == false ? suffix : string.Empty);
 
             clone.SuspendLayout();
@@ -1010,7 +1010,7 @@ namespace WinAuth
                     continue;
                 }
 
-                object value = pi.GetValue(control, (object[])null);
+                var value = pi.GetValue(control, (object[])null);
                 if (value != null && value.GetType().IsValueType == false)
                 {
                     if (value is ICloneable)
@@ -1019,7 +1019,7 @@ namespace WinAuth
                     }
                     else if (value is ISerializable)
                     {
-                        object newvalue = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(value));
+                        var newvalue = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(value));
                         if (newvalue.GetType() == value.GetType())
                         {
                             value = newvalue;
@@ -1087,7 +1087,7 @@ namespace WinAuth
             }
 
             var steam = AuthenticatorData.GetClient();
-            int timeInMins = (pollCheckbox.Checked == true && steam.IsLoggedIn() == true ? (int)pollNumeric.Value : 0);
+            var timeInMins = (pollCheckbox.Checked == true && steam.IsLoggedIn() == true ? (int)pollNumeric.Value : 0);
 
             var p = new SteamClient.ConfirmationPoller
             {

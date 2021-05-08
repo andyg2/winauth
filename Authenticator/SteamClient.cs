@@ -129,7 +129,7 @@ namespace WinAuth
                 }
                 else
                 {
-                    List<string> props = new List<string>();
+                    var props = new List<string>();
 
                     props.Add("\"duration\":" + Duration);
                     props.Add("\"action\":" + (int)Action);
@@ -495,7 +495,7 @@ namespace WinAuth
                     Session.Cookies.Add(cookieuri, new Cookie("Steam_Language", "english"));
                     Session.Cookies.Add(cookieuri, new Cookie("dob", ""));
 
-                    NameValueCollection headers = new NameValueCollection();
+                    var headers = new NameValueCollection();
                     headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
 
                     response = GetString(COMMUNITY_BASE + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client", "GET", null, headers);
@@ -517,7 +517,7 @@ namespace WinAuth
                 }
 
                 // encrypt password with RSA key
-                RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
+                var random = new RNGCryptoServiceProvider();
                 string encryptedPassword64;
                 using (var rsa = new RSACryptoServiceProvider())
                 {
@@ -526,7 +526,7 @@ namespace WinAuth
                     p.Exponent = StringToByteArray(rsaresponse.SelectToken("publickey_exp").Value<string>());
                     p.Modulus = StringToByteArray(rsaresponse.SelectToken("publickey_mod").Value<string>());
                     rsa.ImportParameters(p);
-                    byte[] encryptedPassword = rsa.Encrypt(passwordBytes, false);
+                    var encryptedPassword = rsa.Encrypt(passwordBytes, false);
                     encryptedPassword64 = Convert.ToBase64String(encryptedPassword);
                 }
 
@@ -546,7 +546,7 @@ namespace WinAuth
                 data.Add("oauth_scope", "read_profile write_profile read_client write_client");
                 data.Add("donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString());
                 response = GetString(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data);
-                Dictionary<string, object> loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 
                 if (loginresponse.ContainsKey("emailsteamid") == true)
                 {
@@ -602,7 +602,7 @@ namespace WinAuth
                 }
 
                 // get the OAuth token
-                string oauth = (string)loginresponse["oauth"];
+                var oauth = (string)loginresponse["oauth"];
                 var oauthjson = JObject.Parse(oauth);
                 Session.OAuthToken = oauthjson.SelectToken("oauth_token").Value<string>();
                 if (oauthjson.SelectToken("steamid") != null)
@@ -659,7 +659,7 @@ namespace WinAuth
             {
                 var data = new NameValueCollection();
                 data.Add("access_token", Session.OAuthToken);
-                string response = GetString(API_GETWGTOKEN, "POST", data);
+                var response = GetString(API_GETWGTOKEN, "POST", data);
                 if (string.IsNullOrEmpty(response) == true)
                 {
                     return false;
@@ -819,7 +819,7 @@ namespace WinAuth
 
             try
             {
-                int retryCount = 0;
+                var retryCount = 0;
                 while (!cancel.IsCancellationRequested && Session.Confirmations != null)
                 {
                     try
@@ -854,7 +854,7 @@ namespace WinAuth
                                     break;
                                 }
 
-                                DateTime start = DateTime.Now;
+                                var start = DateTime.Now;
 
                                 ConfirmationEvent(this, conf, Session.Confirmations.Action);
 
@@ -909,10 +909,10 @@ namespace WinAuth
         /// <returns>list of Confirmation objects</returns>
         public List<Confirmation> GetConfirmations()
         {
-            long servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
+            var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
-            string ids = (jids != null ? jids.Value<string>() : string.Empty);
+            var ids = (jids != null ? jids.Value<string>() : string.Empty);
 
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
@@ -924,16 +924,16 @@ namespace WinAuth
             data.Add("m", "android");
             data.Add("tag", "conf");
 
-            string html = GetString(COMMUNITY_BASE + "/mobileconf/conf", "GET", data);
+            var html = GetString(COMMUNITY_BASE + "/mobileconf/conf", "GET", data);
 
             // save last html for confirmations details
             ConfirmationsHtml = html;
             ConfirmationsQuery = string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key]))));
 
-            List<Confirmation> trades = new List<Confirmation>();
+            var trades = new List<Confirmation>();
 
             // extract the trades
-            Match match = _tradesRegex.Match(html);
+            var match = _tradesRegex.Match(html);
             while (match.Success)
             {
                 var tradeIds = match.Groups[1].Value;
@@ -1014,18 +1014,18 @@ namespace WinAuth
         public string GetConfirmationDetails(Confirmation trade)
         {
             // build details URL
-            string url = COMMUNITY_BASE + "/mobileconf/details/" + trade.Id + "?" + ConfirmationsQuery;
+            var url = COMMUNITY_BASE + "/mobileconf/details/" + trade.Id + "?" + ConfirmationsQuery;
 
-            string response = GetString(url);
+            var response = GetString(url);
             if (response.IndexOf("success") == -1)
             {
                 throw new InvalidSteamRequestException("Invalid request from steam: " + response);
             }
             if (JObject.Parse(response).SelectToken("success").Value<bool>() == true)
             {
-                string html = JObject.Parse(response).SelectToken("html").Value<string>();
+                var html = JObject.Parse(response).SelectToken("html").Value<string>();
 
-                Regex detailsRegex = new Regex(@"(.*<body[^>]*>\s*<div\s+class=""[^""]+"">).*(</div>.*?</body>\s*</html>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                var detailsRegex = new Regex(@"(.*<body[^>]*>\s*<div\s+class=""[^""]+"">).*(</div>.*?</body>\s*</html>)", RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 var match = detailsRegex.Match(ConfirmationsHtml);
                 if (match.Success == true)
                 {
@@ -1050,10 +1050,10 @@ namespace WinAuth
                 return false;
             }
 
-            long servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
+            var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
-            string ids = (jids != null ? jids.Value<string>() : string.Empty);
+            var ids = (jids != null ? jids.Value<string>() : string.Empty);
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
             var data = new NameValueCollection();
@@ -1070,7 +1070,7 @@ namespace WinAuth
 
             try
             {
-                string response = GetString(COMMUNITY_BASE + "/mobileconf/ajaxop", "GET", data);
+                var response = GetString(COMMUNITY_BASE + "/mobileconf/ajaxop", "GET", data);
                 if (string.IsNullOrEmpty(response) == true)
                 {
                     Error = "Blank response";
@@ -1117,16 +1117,16 @@ namespace WinAuth
         /// <returns>hash string</returns>
         private static string CreateTimeHash(long time, string tag, string secret)
         {
-            byte[] b64secret = Convert.FromBase64String(secret);
+            var b64secret = Convert.FromBase64String(secret);
 
-            int bufferSize = 8;
+            var bufferSize = 8;
             if (string.IsNullOrEmpty(tag) == false)
             {
                 bufferSize += Math.Min(32, tag.Length);
             }
-            byte[] buffer = new byte[bufferSize];
+            var buffer = new byte[bufferSize];
 
-            byte[] timeArray = BitConverter.GetBytes(time);
+            var timeArray = BitConverter.GetBytes(time);
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(timeArray);
@@ -1137,8 +1137,8 @@ namespace WinAuth
                 Array.Copy(Encoding.UTF8.GetBytes(tag), 0, buffer, 8, bufferSize - 8);
             }
 
-            HMACSHA1 hmac = new HMACSHA1(b64secret, true);
-            byte[] hash = hmac.ComputeHash(buffer);
+            var hmac = new HMACSHA1(b64secret, true);
+            var hash = hmac.ComputeHash(buffer);
 
             return Convert.ToBase64String(hash, Base64FormattingOptions.None);
         }
@@ -1168,7 +1168,7 @@ namespace WinAuth
         /// <returns>string of returned data</returns>
         public string GetString(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null)
         {
-            byte[] data = Request(url, method ?? "GET", formdata, headers);
+            var data = Request(url, method ?? "GET", formdata, headers);
             if (data == null || data.Length == 0)
             {
                 return string.Empty;
@@ -1193,14 +1193,14 @@ namespace WinAuth
             lock (this)
             {
                 // create form-encoded data for query or body
-                string query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+                var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
                 if (string.Compare(method, "GET", true) == 0)
                 {
                     url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
                 }
 
                 // call the server
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                var request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = method;
                 request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
                 request.ServicePoint.Expect100Continue = false;
@@ -1219,14 +1219,14 @@ namespace WinAuth
                     request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                     request.ContentLength = query.Length;
 
-                    StreamWriter requestStream = new StreamWriter(request.GetRequestStream());
+                    var requestStream = new StreamWriter(request.GetRequestStream());
                     requestStream.Write(query);
                     requestStream.Close();
                 }
 
                 try
                 {
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (var response = (HttpWebResponse)request.GetResponse())
                     {
                         LogRequest(method, url, request.CookieContainer, data, response.StatusCode.ToString() + " " + response.StatusDescription);
 
@@ -1237,16 +1237,16 @@ namespace WinAuth
                         }
 
                         // load the response
-                        using (MemoryStream ms = new MemoryStream())
+                        using (var ms = new MemoryStream())
                         {
-                            byte[] buffer = new byte[4096];
+                            var buffer = new byte[4096];
                             int read;
                             while ((read = response.GetResponseStream().Read(buffer, 0, 4096)) > 0)
                             {
                                 ms.Write(buffer, 0, read);
                             }
 
-                            byte[] responsedata = ms.ToArray();
+                            var responsedata = ms.ToArray();
 
                             LogRequest(method, url, request.CookieContainer, data, responsedata != null && responsedata.Length != 0 ? Encoding.UTF8.GetString(responsedata) : string.Empty);
 
@@ -1277,7 +1277,7 @@ namespace WinAuth
         /// <param name="ex">Thrown exception</param>
         private static void LogException(string method, string url, CookieContainer cookies, NameValueCollection request, Exception ex)
         {
-            StringBuilder data = new StringBuilder();
+            var data = new StringBuilder();
             if (cookies != null)
             {
                 foreach (Cookie cookie in cookies.GetCookies(new Uri(url)))
@@ -1325,7 +1325,7 @@ namespace WinAuth
         /// <param name="response">response body</param>
         private static void LogRequest(string method, string url, CookieContainer cookies, NameValueCollection request, string response)
         {
-            StringBuilder data = new StringBuilder();
+            var data = new StringBuilder();
             if (cookies != null)
             {
                 foreach (Cookie cookie in cookies.GetCookies(new Uri(url)))
@@ -1372,9 +1372,9 @@ namespace WinAuth
         /// <returns>byte[] of hex string</returns>
         private static byte[] StringToByteArray(string hex)
         {
-            int len = hex.Length;
-            byte[] bytes = new byte[len / 2];
-            for (int i = 0; i < len; i += 2)
+            var len = hex.Length;
+            var bytes = new byte[len / 2];
+            for (var i = 0; i < len; i += 2)
             {
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
             }

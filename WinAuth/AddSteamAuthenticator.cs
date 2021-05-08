@@ -198,11 +198,11 @@ namespace WinAuth
         /// <param name="e"></param>
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            TabPage page = tabs.TabPages[e.Index];
+            var page = tabs.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
 
-            Rectangle paddedBounds = e.Bounds;
-            int yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
+            var paddedBounds = e.Bounds;
+            var yOffset = (e.State == DrawItemState.Selected) ? -2 : 1;
             paddedBounds.Offset(1, yOffset);
             TextRenderer.DrawText(e.Graphics, page.Text, Font, paddedBounds, page.ForeColor);
 
@@ -401,7 +401,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void importSDABrowse_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.AddExtension = true;
             ofd.CheckFileExists = true;
             ofd.CheckPathExists = true;
@@ -437,13 +437,13 @@ namespace WinAuth
         /// <returns>true if successful</returns>
         private bool ImportSteamGuard()
         {
-            string uuid = importUuid.Text.Trim();
+            var uuid = importUuid.Text.Trim();
             if (uuid.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the contents of the steam.uuid.xml file or your DeviceId");
                 return false;
             }
-            string steamguard = importSteamguard.Text.Trim();
+            var steamguard = importSteamguard.Text.Trim();
             if (steamguard.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the contents of your SteamGuard file");
@@ -456,7 +456,7 @@ namespace WinAuth
             {
                 try
                 {
-                    XmlDocument doc = new XmlDocument();
+                    var doc = new XmlDocument();
                     doc.LoadXml(uuid);
                     var node = doc.SelectSingleNode("//string[@name='uuidKey']");
                     if (node == null)
@@ -510,7 +510,7 @@ namespace WinAuth
                 return false;
             }
 
-            SteamAuthenticator auth = new SteamAuthenticator();
+            var auth = new SteamAuthenticator();
             auth.SecretKey = secret;
             auth.Serial = serial;
             auth.SteamData = steamguard;
@@ -534,13 +534,13 @@ namespace WinAuth
                 return false;
             }
 
-            SteamAuthenticator auth = new SteamAuthenticator();
+            var auth = new SteamAuthenticator();
             var token = JObject.Parse(entry.json);
             foreach (var prop in token.Root.Children().ToList())
             {
                 var child = token.SelectToken(prop.Path);
 
-                string lkey = prop.Path.ToLower();
+                var lkey = prop.Path.ToLower();
                 if (lkey == "fully_enrolled" || lkey == "session")
                 {
                     prop.Remove();
@@ -578,31 +578,31 @@ namespace WinAuth
         /// </summary>
         private void LoadSDA()
         {
-            string manifestfile = importSDAPath.Text.Trim();
+            var manifestfile = importSDAPath.Text.Trim();
             if (string.IsNullOrEmpty(manifestfile) == true || File.Exists(manifestfile) == false)
             {
                 WinAuthForm.ErrorDialog(this, "Enter a path for SteamDesktopAuthenticator");
                 return;
             }
 
-            string password = importSDAPassword.Text.Trim();
+            var password = importSDAPassword.Text.Trim();
 
             importSDAList.Items.Clear();
             try
             {
-                string path = Path.GetDirectoryName(manifestfile);
+                var path = Path.GetDirectoryName(manifestfile);
 
                 if (manifestfile.IndexOf("manifest.json") != -1)
                 {
                     var manifest = JObject.Parse(File.ReadAllText(manifestfile));
                     var token = manifest.SelectToken("encrypted");
-                    bool encrypted = token != null ? token.Value<bool>() : false;
+                    var encrypted = token != null ? token.Value<bool>() : false;
                     if (encrypted == true && password.Length == 0)
                     {
                         throw new ApplicationException("Please enter your password");
                     }
 
-                    JArray entries = manifest["entries"] as JArray;
+                    var entries = manifest["entries"] as JArray;
                     if (entries == null || entries.Count == 0)
                     {
                         throw new ApplicationException("SteamDesktopAuthenticator has no SteamGuard authenticators");
@@ -613,7 +613,7 @@ namespace WinAuth
                         token = entry.SelectToken("filename");
                         if (token != null)
                         {
-                            string filename = token.Value<string>();
+                            var filename = token.Value<string>();
                             string steamid = null;
                             string iv = null;
                             string salt = null;
@@ -676,13 +676,13 @@ namespace WinAuth
             // decrypt
             if (string.IsNullOrEmpty(password) == false)
             {
-                byte[] ciphertext = Convert.FromBase64String(data);
+                var ciphertext = Convert.FromBase64String(data);
 
-                using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), ImportedSDAEntry.PBKDF2_ITERATIONS))
+                using (var pbkdf2 = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), ImportedSDAEntry.PBKDF2_ITERATIONS))
                 {
-                    byte[] key = pbkdf2.GetBytes(ImportedSDAEntry.KEY_SIZE_BYTES);
+                    var key = pbkdf2.GetBytes(ImportedSDAEntry.KEY_SIZE_BYTES);
 
-                    using (RijndaelManaged aes256 = new RijndaelManaged())
+                    using (var aes256 = new RijndaelManaged())
                     {
                         aes256.IV = Convert.FromBase64String(iv);
                         aes256.Key = key;
@@ -691,13 +691,13 @@ namespace WinAuth
 
                         try
                         {
-                            using (ICryptoTransform decryptor = aes256.CreateDecryptor(aes256.Key, aes256.IV))
+                            using (var decryptor = aes256.CreateDecryptor(aes256.Key, aes256.IV))
                             {
-                                using (MemoryStream ms = new MemoryStream(ciphertext))
+                                using (var ms = new MemoryStream(ciphertext))
                                 {
-                                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                                    using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                                     {
-                                        using (StreamReader sr = new StreamReader(cs))
+                                        using (var sr = new StreamReader(cs))
                                         {
                                             data = sr.ReadToEnd();
                                         }
@@ -762,7 +762,7 @@ namespace WinAuth
                         {
                             using (var web = new WebClient())
                             {
-                                byte[] data = web.DownloadData(m_enroll.CaptchaUrl);
+                                var data = web.DownloadData(m_enroll.CaptchaUrl);
 
                                 using (var ms = new MemoryStream(data))
                                 {
@@ -784,7 +784,7 @@ namespace WinAuth
                             {
                                 authoriseTabLabel.Tag = authoriseTabLabel.Text;
                             }
-                            string email = string.IsNullOrEmpty(m_enroll.EmailDomain) == false ? "***@" + m_enroll.EmailDomain : string.Empty;
+                            var email = string.IsNullOrEmpty(m_enroll.EmailDomain) == false ? "***@" + m_enroll.EmailDomain : string.Empty;
                             authoriseTabLabel.Text = string.Format((string)authoriseTabLabel.Tag, email);
                             authcodeField.Text = "";
                             ShowTab("authTab");
@@ -816,7 +816,7 @@ namespace WinAuth
                             return;
                         }
 
-                        string error = m_enroll.Error;
+                        var error = m_enroll.Error;
                         if (string.IsNullOrEmpty(error) == true)
                         {
                             error = "Unable to add the add the authenticator to your account. Please try again later.";

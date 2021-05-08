@@ -89,7 +89,7 @@ namespace WinAuth
             _mask = _digits.Length - 1;
             _shift = NumberOfTrailingZeros(_digits.Length);
             _map = new Dictionary<char, int>();
-            for (int i = 0; i < _digits.Length; i++)
+            for (var i = 0; i < _digits.Length; i++)
             {
                 _map.Add(_digits[i], i);
             }
@@ -123,13 +123,13 @@ namespace WinAuth
                 return new byte[0];
             }
 
-            int encodedLength = encoded.Length;
-            int outLength = encodedLength * _shift / 8;
-            byte[] result = new byte[outLength];
-            int buffer = 0;
-            int next = 0;
-            int bitsLeft = 0;
-            foreach (char c in encoded.ToCharArray())
+            var encodedLength = encoded.Length;
+            var outLength = encodedLength * _shift / 8;
+            var result = new byte[outLength];
+            var buffer = 0;
+            var next = 0;
+            var bitsLeft = 0;
+            foreach (var c in encoded.ToCharArray())
             {
                 if (_map.ContainsKey(c) == false)
                 {
@@ -174,12 +174,12 @@ namespace WinAuth
                         StringBuilder result = new StringBuilder(outputLength);
             */
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             // encode data and map chars into result buffer
             int buffer = data[0];
-            int next = 1;
-            int bitsLeft = 8;
+            var next = 1;
+            var bitsLeft = 8;
             while (bitsLeft > 0 || next < data.Length)
             {
                 if (bitsLeft < _shift)
@@ -192,12 +192,12 @@ namespace WinAuth
                     }
                     else
                     {
-                        int pad = _shift - bitsLeft;
+                        var pad = _shift - bitsLeft;
                         buffer <<= pad;
                         bitsLeft += pad;
                     }
                 }
-                int index = _mask & (buffer >> (bitsLeft - _shift));
+                var index = _mask & (buffer >> (bitsLeft - _shift));
                 bitsLeft -= _shift;
                 result.Append(_digits[index]);
             }

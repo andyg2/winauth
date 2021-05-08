@@ -22,7 +22,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -33,7 +32,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.Win32;
 using Org.BouncyCastle.Bcpg;
 using Org.BouncyCastle.Bcpg.OpenPgp;
-using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
@@ -124,7 +122,7 @@ namespace WinAuth
         /// <returns>new WinAuthConfig settings</returns>
         public static WinAuthConfig LoadConfig(Form form, string configFile, string password = null)
         {
-            WinAuthConfig config = new WinAuthConfig();
+            var config = new WinAuthConfig();
             if (string.IsNullOrEmpty(password) == false)
             {
                 config.Password = password;
@@ -151,7 +149,7 @@ namespace WinAuth
             if (string.IsNullOrEmpty(configFile) == true)
             {
                 // do we have a file specific in the registry?
-                string configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 // check for default authenticator
                 configFile = Path.Combine(configDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
                 // if no config file, just return a blank config
@@ -172,13 +170,13 @@ namespace WinAuth
             }
 
             // check if readonly
-            FileInfo fi = new FileInfo(configFile);
+            var fi = new FileInfo(configFile);
             if (fi.Exists && fi.IsReadOnly)
             {
                 config.IsReadOnly = true;
             }
 
-            bool changed = false;
+            var changed = false;
             try
             {
                 var data = File.ReadAllBytes(configFile);
@@ -195,9 +193,9 @@ namespace WinAuth
                     }
                 }
 
-                using (FileStream fs = new FileStream(configFile, FileMode.Open, FileAccess.Read))
+                using (var fs = new FileStream(configFile, FileMode.Open, FileAccess.Read))
                 {
-                    XmlReader reader = XmlReader.Create(fs);
+                    var reader = XmlReader.Create(fs);
                     changed = config.ReadXml(reader, password);
                 }
 
@@ -206,7 +204,7 @@ namespace WinAuth
                 if (config.Version < WinAuthConfig.CURRENTVERSION)
                 {
                     // set new created values
-                    foreach (WinAuthAuthenticator wa in config)
+                    foreach (var wa in config)
                     {
                         wa.Created = fi.CreationTime;
                     }
@@ -248,7 +246,7 @@ namespace WinAuth
             // check for a v2 last file entry
             try
             {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(WINAUTH2REGKEY, false))
+                using (var key = Registry.CurrentUser.OpenSubKey(WINAUTH2REGKEY, false))
                 {
                     string lastfile;
                     if (key != null
@@ -272,15 +270,15 @@ namespace WinAuth
         public static void SaveConfig(WinAuthConfig config)
         {
             // create the xml
-            XmlWriterSettings settings = new XmlWriterSettings();
+            var settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.Encoding = Encoding.UTF8;
 
             // Issue 41 (http://code.google.com/p/winauth/issues/detail?id=41): saving may crash leaving file corrupt, so write into memory stream first before an atomic file write
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 // save config into memory
-                using (XmlWriter writer = XmlWriter.Create(ms, settings))
+                using (var writer = XmlWriter.Create(ms, settings))
                 {
                     config.WriteXmlString(writer);
                 }
@@ -288,18 +286,18 @@ namespace WinAuth
                 // if no config file yet, use default
                 if (string.IsNullOrEmpty(config.Filename) == true)
                 {
-                    string configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                    var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                     Directory.CreateDirectory(configDirectory);
                     config.Filename = Path.Combine(configDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
                 }
 
-                FileInfo fi = new FileInfo(config.Filename);
+                var fi = new FileInfo(config.Filename);
                 if (!fi.Exists || !fi.IsReadOnly)
                 {
                     // write memory stream to file
                     try
                     {
-                        byte[] data = ms.ToArray();
+                        var data = ms.ToArray();
 
                         // getting instance of zerod files, so do some sanity checks
                         if (data.Length == 0 || data[0] == 0)
@@ -364,17 +362,17 @@ namespace WinAuth
                 return;
             }
 
-            using (HashAlgorithm sha = Authenticator.SafeHasher("SHA256"))
+            using (var sha = Authenticator.SafeHasher("SHA256"))
             {
                 // get a hash based on the authenticator key
-                string authkey = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(wa.AuthenticatorData.SecretData)));
+                var authkey = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(wa.AuthenticatorData.SecretData)));
 
                 // save the PGP encrypted key
-                using (EncodedStringWriter sw = new EncodedStringWriter(Encoding.UTF8))
+                using (var sw = new EncodedStringWriter(Encoding.UTF8))
                 {
-                    XmlWriterSettings xmlsettings = new XmlWriterSettings();
+                    var xmlsettings = new XmlWriterSettings();
                     xmlsettings.Indent = true;
-                    using (XmlWriter xw = XmlWriter.Create(sw, xmlsettings))
+                    using (var xw = XmlWriter.Create(sw, xmlsettings))
                     {
                         xw.WriteStartElement("WinAuth");
                         xw.WriteAttributeString("version", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
@@ -382,7 +380,7 @@ namespace WinAuth
                         xw.WriteEndElement();
                     }
 
-                    string pgpkey = string.IsNullOrEmpty(config.PGPKey) == false ? config.PGPKey : WinAuthHelper.WINAUTH_PGP_PUBLICKEY;
+                    var pgpkey = string.IsNullOrEmpty(config.PGPKey) == false ? config.PGPKey : WinAuthHelper.WINAUTH_PGP_PUBLICKEY;
                     config.WriteSetting(WINAUTHREGKEY_BACKUP + "\\" + authkey, PGPEncrypt(sw.ToString(), pgpkey));
                 }
             }
@@ -393,10 +391,10 @@ namespace WinAuth
         /// </summary>
         public static string ReadBackupFromRegistry(WinAuthConfig config)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (string name in config.ReadSettingKeys(WINAUTHREGKEY_BACKUP))
+            var buffer = new StringBuilder();
+            foreach (var name in config.ReadSettingKeys(WINAUTHREGKEY_BACKUP))
             {
-                object val = ReadRegistryValue(name);
+                var val = ReadRegistryValue(name);
                 if (val != null)
                 {
                     buffer.Append(name + "=" + Convert.ToString(val)).Append(Environment.NewLine);
@@ -431,12 +429,12 @@ namespace WinAuth
         /// <returns>list of imported authenticators</returns>
         public static List<WinAuthAuthenticator> ImportAuthenticators(Form parent, string file)
         {
-            List<WinAuthAuthenticator> authenticators = new List<WinAuthAuthenticator>();
+            var authenticators = new List<WinAuthAuthenticator>();
 
             string password = null;
             string pgpKey = null;
 
-            StringBuilder lines = new StringBuilder();
+            var lines = new StringBuilder();
             bool retry;
             do
             {
@@ -457,7 +455,7 @@ namespace WinAuth
                                 zip.Password = password;
                             }
 
-                            byte[] buffer = new byte[4096];
+                            var buffer = new byte[4096];
                             foreach (ZipEntry entry in zip)
                             {
                                 if (entry.IsFile == false || string.Compare(Path.GetExtension(entry.Name), ".txt", true) != 0)
@@ -466,7 +464,7 @@ namespace WinAuth
                                 }
 
                                 // read file out
-                                Stream zs = zip.GetInputStream(entry);
+                                var zs = zip.GetInputStream(entry);
                                 using (var ms = new MemoryStream())
                                 {
                                     StreamUtils.Copy(zs, ms, buffer);
@@ -491,7 +489,7 @@ namespace WinAuth
                                 }
 
                                 // need password
-                                GetPasswordForm form = new GetPasswordForm();
+                                var form = new GetPasswordForm();
                                 if (form.ShowDialog(parent) == DialogResult.Cancel)
                                 {
                                     return null;
@@ -515,11 +513,11 @@ namespace WinAuth
                 }
                 else if (string.Compare(Path.GetExtension(file), ".pgp", true) == 0)
                 {
-                    string encoded = File.ReadAllText(file);
+                    var encoded = File.ReadAllText(file);
                     if (string.IsNullOrEmpty(pgpKey) == true)
                     {
                         // need password
-                        GetPGPKeyForm form = new GetPGPKeyForm();
+                        var form = new GetPGPKeyForm();
                         if (form.ShowDialog(parent) == DialogResult.Cancel)
                         {
                             return null;
@@ -531,7 +529,7 @@ namespace WinAuth
                     }
                     try
                     {
-                        string line = PGPDecrypt(encoded, pgpKey, password);
+                        var line = PGPDecrypt(encoded, pgpKey, password);
                         lines.Append(line);
                     }
                     catch (Exception ex)
@@ -550,7 +548,7 @@ namespace WinAuth
                 }
             } while (retry);
 
-            int linenumber = 0;
+            var linenumber = 0;
             try
             {
                 using (var sr = new StringReader(lines.ToString()))
@@ -590,9 +588,9 @@ namespace WinAuth
                         }
 
                         // get the label and optional issuer
-                        string issuer = string.Empty;
-                        string label = (string.IsNullOrEmpty(uri.LocalPath) == false ? uri.LocalPath.Substring(1) : string.Empty); // skip past initial /
-                        int p = label.IndexOf(":");
+                        var issuer = string.Empty;
+                        var label = (string.IsNullOrEmpty(uri.LocalPath) == false ? uri.LocalPath.Substring(1) : string.Empty); // skip past initial /
+                        var p = label.IndexOf(":");
                         if (p != -1)
                         {
                             issuer = label.Substring(0, p);
@@ -602,25 +600,25 @@ namespace WinAuth
                         label = label.Replace("+", " ");
 
                         var query = HttpUtility.ParseQueryString(uri.Query);
-                        string secret = query["secret"];
+                        var secret = query["secret"];
                         if (string.IsNullOrEmpty(secret) == true)
                         {
                             throw new ApplicationException("Authenticator does not contain secret");
                         }
 
-                        string counter = query["counter"];
+                        var counter = query["counter"];
                         if (uri.Host == "hotp" && string.IsNullOrEmpty(counter) == true)
                         {
                             throw new ApplicationException("HOTP authenticator should have a counter");
                         }
 
-                        WinAuthAuthenticator importedAuthenticator = new WinAuthAuthenticator();
+                        var importedAuthenticator = new WinAuthAuthenticator();
                         importedAuthenticator.AutoRefresh = false;
                         //
                         Authenticator auth;
                         if (string.Compare(issuer, "BattleNet", true) == 0)
                         {
-                            string serial = query["serial"];
+                            var serial = query["serial"];
                             if (string.IsNullOrEmpty(serial) == true)
                             {
                                 throw new ApplicationException("Battle.net Authenticator does not have a serial");
@@ -676,14 +674,14 @@ namespace WinAuth
                             }
                         }
 
-                        int period = 0;
+                        var period = 0;
                         int.TryParse(query["period"], out period);
                         if (period != 0)
                         {
                             auth.Period = period;
                         }
 
-                        int digits = 0;
+                        var digits = 0;
                         int.TryParse(query["digits"], out digits);
                         if (digits != 0)
                         {
@@ -712,12 +710,12 @@ namespace WinAuth
                         importedAuthenticator.AuthenticatorData = auth;
 
                         // set the icon
-                        string icon = query["icon"];
+                        var icon = query["icon"];
                         if (string.IsNullOrEmpty(icon) == false)
                         {
                             if (icon.StartsWith("base64:") == true)
                             {
-                                string b64 = Convert.ToBase64String(Base32.getInstance().Decode(icon.Substring(7)));
+                                var b64 = Convert.ToBase64String(Base32.getInstance().Decode(icon.Substring(7)));
                                 importedAuthenticator.Skin = "base64:" + b64;
                             }
                             else
@@ -752,16 +750,16 @@ namespace WinAuth
             {
                 using (var sw = new StreamWriter(ms))
                 {
-                    List<WinAuthAuthenticator> unprotected = new List<WinAuthAuthenticator>();
+                    var unprotected = new List<WinAuthAuthenticator>();
                     foreach (var auth in authenticators)
                     {
                         // unprotect if necessary
                         if (auth.AuthenticatorData.RequiresPassword == true)
                         {
                             // request the password
-                            UnprotectPasswordForm getPassForm = new UnprotectPasswordForm();
+                            var getPassForm = new UnprotectPasswordForm();
                             getPassForm.Authenticator = auth;
-                            DialogResult result = getPassForm.ShowDialog(form);
+                            var result = getPassForm.ShowDialog(form);
                             if (result == DialogResult.OK)
                             {
                                 unprotected.Add(auth);
@@ -772,7 +770,7 @@ namespace WinAuth
                             }
                         }
 
-                        string line = auth.ToUrl();
+                        var line = auth.ToUrl();
                         sw.WriteLine(line);
                     }
 
@@ -798,13 +796,13 @@ namespace WinAuth
 
                             zip.IsStreamOwner = true;
 
-                            ZipEntry entry = new ZipEntry(ZipEntry.CleanName(Path.GetFileNameWithoutExtension(file) + ".txt"));
+                            var entry = new ZipEntry(ZipEntry.CleanName(Path.GetFileNameWithoutExtension(file) + ".txt"));
                             entry.DateTime = DateTime.Now;
                             zip.UseZip64 = UseZip64.Off;
 
                             zip.PutNextEntry(entry);
 
-                            byte[] buffer = new byte[4096];
+                            var buffer = new byte[4096];
                             StreamUtils.Copy(ms, zip, buffer);
 
                             zip.CloseEntry();
@@ -815,7 +813,7 @@ namespace WinAuth
                         using (var sr = new StreamReader(ms))
                         {
                             var plain = sr.ReadToEnd();
-                            string encoded = PGPEncrypt(plain, pgpKey);
+                            var encoded = PGPEncrypt(plain, pgpKey);
 
                             File.WriteAllText(file, encoded);
                         }
@@ -824,7 +822,7 @@ namespace WinAuth
                     {
                         using (var fs = new FileStream(file, FileMode.Create, FileAccess.Write))
                         {
-                            byte[] buffer = new byte[4096];
+                            var buffer = new byte[4096];
                             StreamUtils.Copy(ms, fs, buffer);
                         }
                     }
@@ -847,10 +845,10 @@ namespace WinAuth
                 return text;
             }
 
-            StringBuilder sb = new StringBuilder(text.Length);
+            var sb = new StringBuilder(text.Length);
 
-            int len = text.Length;
-            for (int i = 0; i < len; i++)
+            var len = text.Length;
+            for (var i = 0; i < len; i++)
             {
                 switch (text[i])
                 {
@@ -894,7 +892,7 @@ namespace WinAuth
         /// <returns>collection of name value pairs</returns>
         public static NameValueCollection ParseQueryString(string qs)
         {
-            NameValueCollection pairs = new NameValueCollection();
+            var pairs = new NameValueCollection();
 
             // ignore blanks and remove initial "?"
             if (string.IsNullOrEmpty(qs) == true)
@@ -907,11 +905,11 @@ namespace WinAuth
             }
 
             // get each a=b&... key-value pair
-            foreach (string p in qs.Split('&'))
+            foreach (var p in qs.Split('&'))
             {
-                string[] keypair = p.Split('=');
-                string key = keypair[0];
-                string v = (keypair.Length >= 2 ? keypair[1] : null);
+                var keypair = p.Split('=');
+                var key = keypair[0];
+                var v = (keypair.Length >= 2 ? keypair[1] : null);
                 if (string.IsNullOrEmpty(v) == false)
                 {
                     // decode (without using System.Web)
@@ -944,7 +942,7 @@ namespace WinAuth
         public static object ReadRegistryValue(string keyname, object defaultValue = null)
         {
             RegistryKey basekey;
-            List<string> keyparts = keyname.Split('\\').ToList();
+            var keyparts = keyname.Split('\\').ToList();
             switch (keyparts[0])
             {
                 case "HKEY_CLASSES_ROOT":
@@ -971,12 +969,12 @@ namespace WinAuth
                     basekey = Registry.CurrentUser;
                     break;
             }
-            string subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
-            string valuekey = keyparts[keyparts.Count - 1];
+            var subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
+            var valuekey = keyparts[keyparts.Count - 1];
 
             try
             {
-                using (RegistryKey key = basekey.OpenSubKey(subkey))
+                using (var key = basekey.OpenSubKey(subkey))
                 {
                     return (key != null ? key.GetValue(valuekey, defaultValue) : defaultValue);
                 }
@@ -995,7 +993,7 @@ namespace WinAuth
         public static string[] ReadRegistryKeys(string keyname)
         {
             RegistryKey basekey;
-            List<string> keyparts = keyname.Split('\\').ToList();
+            var keyparts = keyname.Split('\\').ToList();
             switch (keyparts[0])
             {
                 case "HKEY_CLASSES_ROOT":
@@ -1022,11 +1020,11 @@ namespace WinAuth
                     basekey = Registry.CurrentUser;
                     break;
             }
-            string subkey = string.Join("\\", keyparts.ToArray());
+            var subkey = string.Join("\\", keyparts.ToArray());
 
             try
             {
-                using (RegistryKey key = basekey.OpenSubKey(subkey))
+                using (var key = basekey.OpenSubKey(subkey))
                 {
                     if (key == null)
                     {
@@ -1034,8 +1032,8 @@ namespace WinAuth
                     }
 
                     // get all value names
-                    List<string> keys = key.GetValueNames().ToList();
-                    for (int i = 0; i < keys.Count; i++)
+                    var keys = key.GetValueNames().ToList();
+                    for (var i = 0; i < keys.Count; i++)
                     {
                         keys[i] = keyname + "\\" + keys[i];
                     }
@@ -1043,7 +1041,7 @@ namespace WinAuth
                     // read any subkeys
                     if (key.SubKeyCount != 0)
                     {
-                        foreach (string subkeyname in key.GetSubKeyNames())
+                        foreach (var subkeyname in key.GetSubKeyNames())
                         {
                             keys.AddRange(ReadRegistryKeys(keyname + "\\" + subkeyname));
                         }
@@ -1066,7 +1064,7 @@ namespace WinAuth
         public static void WriteRegistryValue(string keyname, object value)
         {
             RegistryKey basekey;
-            List<string> keyparts = keyname.Split('\\').ToList();
+            var keyparts = keyname.Split('\\').ToList();
             switch (keyparts[0])
             {
                 case "HKEY_CLASSES_ROOT":
@@ -1093,12 +1091,12 @@ namespace WinAuth
                     basekey = Registry.CurrentUser;
                     break;
             }
-            string subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
-            string valuekey = keyparts[keyparts.Count - 1];
+            var subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
+            var valuekey = keyparts[keyparts.Count - 1];
 
             try
             {
-                using (RegistryKey key = basekey.CreateSubKey(subkey))
+                using (var key = basekey.CreateSubKey(subkey))
                 {
                     key.SetValue(valuekey, value);
                 }
@@ -1117,7 +1115,7 @@ namespace WinAuth
         public static void DeleteRegistryKey(string keyname)
         {
             RegistryKey basekey;
-            List<string> keyparts = keyname.Split('\\').ToList();
+            var keyparts = keyname.Split('\\').ToList();
             switch (keyparts[0])
             {
                 case "HKEY_CLASSES_ROOT":
@@ -1144,12 +1142,12 @@ namespace WinAuth
                     basekey = Registry.CurrentUser;
                     break;
             }
-            string subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
-            string valuekey = keyparts[keyparts.Count - 1];
+            var subkey = string.Join("\\", keyparts.Take(keyparts.Count - 1).ToArray());
+            var valuekey = keyparts[keyparts.Count - 1];
 
             try
             {
-                using (RegistryKey key = basekey.CreateSubKey(subkey))
+                using (var key = basekey.CreateSubKey(subkey))
                 {
                     if (key != null)
                     {
@@ -1191,21 +1189,21 @@ namespace WinAuth
         public static void PGPGenerateKey(int bits, string identifier, string password, out string privateKey, out string publicKey)
         {
             // generate a new RSA keypair 
-            RsaKeyPairGenerator gen = new RsaKeyPairGenerator();
+            var gen = new RsaKeyPairGenerator();
             gen.Init(new RsaKeyGenerationParameters(BigInteger.ValueOf(0x101), new Org.BouncyCastle.Security.SecureRandom(), bits, 80));
-            AsymmetricCipherKeyPair pair = gen.GenerateKeyPair();
+            var pair = gen.GenerateKeyPair();
 
             // create PGP subpacket
-            PgpSignatureSubpacketGenerator hashedGen = new PgpSignatureSubpacketGenerator();
+            var hashedGen = new PgpSignatureSubpacketGenerator();
             hashedGen.SetKeyFlags(true, PgpKeyFlags.CanCertify | PgpKeyFlags.CanSign | PgpKeyFlags.CanEncryptCommunications | PgpKeyFlags.CanEncryptStorage);
             hashedGen.SetPreferredCompressionAlgorithms(false, new int[] { (int)CompressionAlgorithmTag.Zip });
             hashedGen.SetPreferredHashAlgorithms(false, new int[] { (int)HashAlgorithmTag.Sha1 });
             hashedGen.SetPreferredSymmetricAlgorithms(false, new int[] { (int)SymmetricKeyAlgorithmTag.Cast5 });
-            PgpSignatureSubpacketVector sv = hashedGen.Generate();
-            PgpSignatureSubpacketGenerator unhashedGen = new PgpSignatureSubpacketGenerator();
+            var sv = hashedGen.Generate();
+            var unhashedGen = new PgpSignatureSubpacketGenerator();
 
             // create the PGP key
-            PgpSecretKey secretKey = new PgpSecretKey(
+            var secretKey = new PgpSecretKey(
               PgpSignature.DefaultCertification,
               PublicKeyAlgorithmTag.RsaGeneral,
               pair.Public,
@@ -1219,17 +1217,17 @@ namespace WinAuth
               new Org.BouncyCastle.Security.SecureRandom());
 
             // extract the keys
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                using (ArmoredOutputStream ars = new ArmoredOutputStream(ms))
+                using (var ars = new ArmoredOutputStream(ms))
                 {
                     secretKey.Encode(ars);
                 }
                 privateKey = Encoding.ASCII.GetString(ms.ToArray());
             }
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                using (ArmoredOutputStream ars = new ArmoredOutputStream(ms))
+                using (var ars = new ArmoredOutputStream(ms))
                 {
                     secretKey.PublicKey.Encode(ars);
                 }
@@ -1246,15 +1244,15 @@ namespace WinAuth
         public static string PGPEncrypt(string plain, string armoredPublicKey)
         {
             // encode data
-            byte[] data = Encoding.UTF8.GetBytes(plain);
+            var data = Encoding.UTF8.GetBytes(plain);
 
             // create the WinAuth public key
             PgpPublicKey publicKey = null;
-            using (MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(armoredPublicKey)))
+            using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(armoredPublicKey)))
             {
-                using (Stream dis = PgpUtilities.GetDecoderStream(ms))
+                using (var dis = PgpUtilities.GetDecoderStream(ms))
                 {
-                    PgpPublicKeyRingBundle bundle = new PgpPublicKeyRingBundle(dis);
+                    var bundle = new PgpPublicKeyRingBundle(dis);
                     foreach (PgpPublicKeyRing keyring in bundle.GetKeyRings())
                     {
                         foreach (PgpPublicKey key in keyring.GetPublicKeys())
@@ -1270,19 +1268,19 @@ namespace WinAuth
             }
 
             // encrypt the data using PGP
-            using (MemoryStream encryptedStream = new MemoryStream())
+            using (var encryptedStream = new MemoryStream())
             {
-                using (ArmoredOutputStream armored = new ArmoredOutputStream(encryptedStream))
+                using (var armored = new ArmoredOutputStream(encryptedStream))
                 {
-                    PgpEncryptedDataGenerator pedg = new PgpEncryptedDataGenerator(Org.BouncyCastle.Bcpg.SymmetricKeyAlgorithmTag.Cast5, true, new Org.BouncyCastle.Security.SecureRandom());
+                    var pedg = new PgpEncryptedDataGenerator(Org.BouncyCastle.Bcpg.SymmetricKeyAlgorithmTag.Cast5, true, new Org.BouncyCastle.Security.SecureRandom());
                     pedg.AddMethod(publicKey);
-                    using (Stream pedgStream = pedg.Open(armored, new byte[4096]))
+                    using (var pedgStream = pedg.Open(armored, new byte[4096]))
                     {
-                        PgpCompressedDataGenerator pcdg = new PgpCompressedDataGenerator(Org.BouncyCastle.Bcpg.CompressionAlgorithmTag.Zip);
-                        using (Stream pcdgStream = pcdg.Open(pedgStream))
+                        var pcdg = new PgpCompressedDataGenerator(Org.BouncyCastle.Bcpg.CompressionAlgorithmTag.Zip);
+                        using (var pcdgStream = pcdg.Open(pedgStream))
                         {
-                            PgpLiteralDataGenerator pldg = new PgpLiteralDataGenerator();
-                            using (Stream encrypter = pldg.Open(pcdgStream, PgpLiteralData.Binary, "", (long)data.Length, DateTime.Now))
+                            var pldg = new PgpLiteralDataGenerator();
+                            using (var encrypter = pldg.Open(pcdgStream, PgpLiteralData.Binary, "", (long)data.Length, DateTime.Now))
                             {
                                 encrypter.Write(data, 0, data.Length);
                             }
@@ -1305,12 +1303,12 @@ namespace WinAuth
         public static string PGPDecrypt(string armoredCipher, string armoredPrivateKey, string keyPassword)
         {
             // decode the private key
-            Dictionary<long, PgpPrivateKey> privateKeys = new Dictionary<long, PgpPrivateKey>();
-            using (MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(armoredPrivateKey)))
+            var privateKeys = new Dictionary<long, PgpPrivateKey>();
+            using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(armoredPrivateKey)))
             {
-                using (Stream dis = PgpUtilities.GetDecoderStream(ms))
+                using (var dis = PgpUtilities.GetDecoderStream(ms))
                 {
-                    PgpSecretKeyRingBundle bundle = new PgpSecretKeyRingBundle(dis);
+                    var bundle = new PgpSecretKeyRingBundle(dis);
                     foreach (PgpSecretKeyRing keyring in bundle.GetKeyRings())
                     {
                         foreach (PgpSecretKey key in keyring.GetSecretKeys())
@@ -1322,14 +1320,14 @@ namespace WinAuth
             }
 
             // decrypt armored block using our private key
-            byte[] cipher = Encoding.ASCII.GetBytes(armoredCipher);
-            using (MemoryStream decryptedStream = new MemoryStream())
+            var cipher = Encoding.ASCII.GetBytes(armoredCipher);
+            using (var decryptedStream = new MemoryStream())
             {
-                using (MemoryStream inputStream = new MemoryStream(cipher))
+                using (var inputStream = new MemoryStream(cipher))
                 {
-                    using (ArmoredInputStream ais = new ArmoredInputStream(inputStream))
+                    using (var ais = new ArmoredInputStream(inputStream))
                     {
-                        PgpObject message = new PgpObjectFactory(ais).NextPgpObject();
+                        var message = new PgpObjectFactory(ais).NextPgpObject();
                         if (message is PgpEncryptedDataList)
                         {
                             foreach (PgpPublicKeyEncryptedData pked in ((PgpEncryptedDataList)message).GetEncryptedDataObjects())
@@ -1343,8 +1341,8 @@ namespace WinAuth
                         }
                         if (message is PgpLiteralData)
                         {
-                            byte[] buffer = new byte[4096];
-                            using (Stream stream = ((PgpLiteralData)message).GetInputStream())
+                            var buffer = new byte[4096];
+                            using (var stream = ((PgpLiteralData)message).GetInputStream())
                             {
                                 int read;
                                 while ((read = stream.Read(buffer, 0, 4096)) > 0)

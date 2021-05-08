@@ -286,8 +286,8 @@ namespace WinAuth
         {
             base.OnMouseWheel(e);
 
-            int y = (e.Delta * ItemHeight) + MARGIN_TOP;
-            ScrollEventArgs sargs = new ScrollEventArgs(ScrollEventType.ThumbPosition, y, ScrollOrientation.VerticalScroll);
+            var y = (e.Delta * ItemHeight) + MARGIN_TOP;
+            var sargs = new ScrollEventArgs(ScrollEventType.ThumbPosition, y, ScrollOrientation.VerticalScroll);
             Scrolled(this, sargs);
         }
 
@@ -356,18 +356,18 @@ namespace WinAuth
         /// <param name="e"></param>
         public void Tick(object sender, EventArgs e)
         {
-            for (int index = 0; index < Items.Count; index++)
+            for (var index = 0; index < Items.Count; index++)
             {
                 // get the item
-                AuthenticatorListitem item = Items[index] as AuthenticatorListitem;
-                WinAuthAuthenticator auth = item.Authenticator;
+                var item = Items[index] as AuthenticatorListitem;
+                var auth = item.Authenticator;
 
-                int y = (ItemHeight * index) - (TopIndex * ItemHeight);
+                var y = (ItemHeight * index) - (TopIndex * ItemHeight);
                 if (auth.AutoRefresh == true)
                 {
                     // for autorefresh we repaint the pie or the code too
                     //int tillUpdate = (int)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L);
-                    int tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
+                    var tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
                     if (item.LastUpdate == DateTime.MinValue || tillUpdate == 0)
                     {
                         Invalidate(new Rectangle(0, y, Width, ItemHeight), false);
@@ -428,13 +428,13 @@ namespace WinAuth
             if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
             {
                 // if this was in a refresh icon, we do a refresh
-                int index = IndexFromPoint(e.Location);
+                var index = IndexFromPoint(e.Location);
                 if (index >= 0 && index < Items.Count)
                 {
                     var item = Items[index] as AuthenticatorListitem;
-                    int x = 0;
-                    int y = (ItemHeight * index) - (ItemHeight * TopIndex);
-                    bool hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var x = 0;
+                    var y = (ItemHeight * index) - (ItemHeight * TopIndex);
+                    var hasvscroll = (Height < (Items.Count * ItemHeight));
                     if (item.Authenticator.AutoRefresh == false && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(e.Location))
                     {
@@ -483,21 +483,21 @@ namespace WinAuth
             // if we are moving with LeftMouse down and moved more than 2 pixles then we are dragging
             if (e.Button == System.Windows.Forms.MouseButtons.Left && _mouseDownLocation != Point.Empty && Items.Count > 1)
             {
-                int dx = Math.Abs(_mouseDownLocation.X - e.Location.X);
-                int dy = Math.Abs(_mouseDownLocation.Y - e.Location.Y);
+                var dx = Math.Abs(_mouseDownLocation.X - e.Location.X);
+                var dy = Math.Abs(_mouseDownLocation.Y - e.Location.Y);
                 if (dx > 2 || dy > 2)
                 {
                     _draggedItem = CurrentItem;
 
                     // get a snapshot of the current item for the drag
-                    bool hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var hasvscroll = (Height < (Items.Count * ItemHeight));
                     _draggedBitmap = new Bitmap(Width - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), ItemHeight);
                     _draggedBitmapRect = Rectangle.Empty;
-                    using (Graphics g = Graphics.FromImage(_draggedBitmap))
+                    using (var g = Graphics.FromImage(_draggedBitmap))
                     {
-                        int y = (ItemHeight * CurrentItem.Index) - (ItemHeight * TopIndex);
+                        var y = (ItemHeight * CurrentItem.Index) - (ItemHeight * TopIndex);
 
-                        Point screen = Parent.PointToScreen(new Point(Location.X, Location.Y + y));
+                        var screen = Parent.PointToScreen(new Point(Location.X, Location.Y + y));
                         g.CopyFromScreen(screen.X, screen.Y, 0, 0, new Size(Width - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), ItemHeight), CopyPixelOperation.SourceCopy);
 
                         // save offset in Y from top of item
@@ -528,8 +528,8 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnDragOver(DragEventArgs e)
         {
-            Rectangle screen = Parent.RectangleToScreen(new Rectangle(Location.X, Location.Y, Width, Height));
-            Point mousePoint = new Point(e.X, e.Y);
+            var screen = Parent.RectangleToScreen(new Rectangle(Location.X, Location.Y, Width, Height));
+            var mousePoint = new Point(e.X, e.Y);
             if (screen.Contains(mousePoint) == false)
             {
                 e.Effect = DragDropEffects.None;
@@ -537,18 +537,18 @@ namespace WinAuth
             else if (_draggedBitmap != null)
             {
                 e.Effect = DragDropEffects.Move;
-                using (Graphics g = CreateGraphics())
+                using (var g = CreateGraphics())
                 {
-                    Point mouseClientPoint = PointToClient(mousePoint);
-                    int x = 0;
-                    int y = Math.Max(mouseClientPoint.Y - _draggedBitmapOffsetY, 0);
-                    Rectangle rect = new Rectangle(x, y, _draggedBitmap.Width, _draggedBitmap.Height);
+                    var mouseClientPoint = PointToClient(mousePoint);
+                    var x = 0;
+                    var y = Math.Max(mouseClientPoint.Y - _draggedBitmapOffsetY, 0);
+                    var rect = new Rectangle(x, y, _draggedBitmap.Width, _draggedBitmap.Height);
                     g.DrawImageUnscaled(_draggedBitmap, rect);
 
                     if (_draggedBitmapRect != Rectangle.Empty)
                     {
                         // invalidate the extent between the old rect and this one
-                        Region region = new Region(rect);
+                        var region = new Region(rect);
                         region.Union(_draggedBitmapRect);
                         region.Exclude(rect);
                         Invalidate(region);
@@ -565,8 +565,8 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnQueryContinueDrag(QueryContinueDragEventArgs e)
         {
-            Rectangle screen = Parent.RectangleToScreen(new Rectangle(Location.X, Location.Y, Width, Height));
-            Point mousePoint = Cursor.Position;
+            var screen = Parent.RectangleToScreen(new Rectangle(Location.X, Location.Y, Width, Height));
+            var mousePoint = Cursor.Position;
 
             // if ESC is pressed, always stop
             if (e.EscapePressed == true || ((e.KeyState & 1) == 0 && screen.Contains(mousePoint) == false))
@@ -589,13 +589,13 @@ namespace WinAuth
             }
             else
             {
-                DateTime now = DateTime.Now;
+                var now = DateTime.Now;
 
                 // if we are at the top or bottom, scroll every 150ms
                 if (mousePoint.Y >= screen.Bottom)
                 {
-                    int visible = ClientSize.Height / ItemHeight;
-                    int maxtopindex = Math.Max(Items.Count - visible + 1, 0);
+                    var visible = ClientSize.Height / ItemHeight;
+                    var maxtopindex = Math.Max(Items.Count - visible + 1, 0);
                     if (TopIndex < maxtopindex && now.Subtract(_lastDragScroll).TotalMilliseconds >= 150)
                     {
                         TopIndex++;
@@ -605,7 +605,7 @@ namespace WinAuth
                 }
                 else if (mousePoint.Y <= screen.Top)
                 {
-                    int visible = ClientSize.Height / ItemHeight;
+                    var visible = ClientSize.Height / ItemHeight;
                     if (TopIndex > 0 && now.Subtract(_lastDragScroll).TotalMilliseconds >= 150)
                     {
                         TopIndex--;
@@ -625,7 +625,7 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnDragDrop(DragEventArgs e)
         {
-            AuthenticatorListitem item = e.Data.GetData(typeof(AuthenticatorListitem)) as AuthenticatorListitem;
+            var item = e.Data.GetData(typeof(AuthenticatorListitem)) as AuthenticatorListitem;
             if (item != null)
             {
                 // stop paiting as we reorder to reduce flicker
@@ -633,8 +633,8 @@ namespace WinAuth
                 try
                 {
                     // get the new index
-                    Point point = PointToClient(new Point(e.X, e.Y));
-                    int index = IndexFromPoint(point);
+                    var point = PointToClient(new Point(e.X, e.Y));
+                    var index = IndexFromPoint(point);
                     if (index < 0)
                     {
                         index = Items.Count - 1;
@@ -644,7 +644,7 @@ namespace WinAuth
                     Items.Insert(index, item);
 
                     // set the correct indexes of our items
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         (Items[i] as AuthenticatorListitem).Index = i;
                     }
@@ -689,19 +689,19 @@ namespace WinAuth
             {
                 if (Scrolled != null)
                 {
-                    WinAPI.ScrollInfoStruct si = new WinAPI.ScrollInfoStruct();
+                    var si = new WinAPI.ScrollInfoStruct();
                     si.fMask = WinAPI.SIF_ALL;
                     si.cbSize = Marshal.SizeOf(si);
                     WinAPI.GetScrollInfo(msg.HWnd, 0, ref si);
 
                     if (msg.WParam.ToInt32() == WinAPI.SB_ENDSCROLL)
                     {
-                        ScrollEventArgs sargs = new ScrollEventArgs(ScrollEventType.EndScroll, si.nPos);
+                        var sargs = new ScrollEventArgs(ScrollEventType.EndScroll, si.nPos);
                         Scrolled(this, sargs);
                     }
                     else if (msg.WParam.ToInt32() == WinAPI.SB_THUMBTRACK)
                     {
-                        ScrollEventArgs sargs = new ScrollEventArgs(ScrollEventType.ThumbTrack, si.nPos);
+                        var sargs = new ScrollEventArgs(ScrollEventType.ThumbTrack, si.nPos);
                         Scrolled(this, sargs);
                     }
                 }
@@ -721,10 +721,10 @@ namespace WinAuth
         {
             if (_renameTextbox != null && _renameTextbox.Visible == true)
             {
-                AuthenticatorListitem item = _renameTextbox.Tag as AuthenticatorListitem;
+                var item = _renameTextbox.Tag as AuthenticatorListitem;
                 if (item != null)
                 {
-                    int y = (ItemHeight * item.Index) - (TopIndex * ItemHeight) + MARGIN_TOP;
+                    var y = (ItemHeight * item.Index) - (TopIndex * ItemHeight) + MARGIN_TOP;
                     if (RenameTextbox.Location.Y != y)
                     {
                         RenameTextbox.Location = new Point(RenameTextbox.Location.X, y);
@@ -741,8 +741,8 @@ namespace WinAuth
         {
             get
             {
-                bool hasvscroll = (Height < (Items.Count * ItemHeight));
-                int labelMaxWidth = GetMaxAvailableLabelWidth(Width - Margin.Horizontal - DefaultPadding.Horizontal - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0));
+                var hasvscroll = (Height < (Items.Count * ItemHeight));
+                var labelMaxWidth = GetMaxAvailableLabelWidth(Width - Margin.Horizontal - DefaultPadding.Horizontal - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0));
                 if (_renameTextbox == null)
                 {
                     _renameTextbox = new TextBox();
@@ -822,10 +822,10 @@ namespace WinAuth
         void RenameTextbox_Leave(object sender, EventArgs e)
         {
             RenameTextbox.Visible = false;
-            AuthenticatorListitem item = RenameTextbox.Tag as AuthenticatorListitem;
+            var item = RenameTextbox.Tag as AuthenticatorListitem;
             if (item != null)
             {
-                string newname = RenameTextbox.Text.Trim();
+                var newname = RenameTextbox.Text.Trim();
                 if (newname.Length != 0)
                 {
                     // force the autowidth to be recaculated when we set the name
@@ -874,7 +874,7 @@ namespace WinAuth
         /// <param name="mouseLocation">mouse position</param>
         private void SetCurrentItem(Point mouseLocation)
         {
-            int index = IndexFromPoint(mouseLocation);
+            var index = IndexFromPoint(mouseLocation);
             if (index < 0)
             {
                 index = 0;
@@ -904,13 +904,13 @@ namespace WinAuth
             var cursor = Cursor.Current;
             if (force == null)
             {
-                int index = IndexFromPoint(mouseLocation);
+                var index = IndexFromPoint(mouseLocation);
                 if (index >= 0 && index < Items.Count)
                 {
                     var item = Items[index] as AuthenticatorListitem;
-                    int x = 0;
-                    int y = (ItemHeight * index) - (TopIndex * ItemHeight);
-                    bool hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var x = 0;
+                    var y = (ItemHeight * index) - (TopIndex * ItemHeight);
+                    var hasvscroll = (Height < (Items.Count * ItemHeight));
                     if (item.Authenticator.AutoRefresh == false && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(mouseLocation))
                     {
@@ -944,28 +944,28 @@ namespace WinAuth
             }
 
             // if there is no protection return None
-            WinAuthAuthenticator auth = item.Authenticator;
+            var auth = item.Authenticator;
             if (auth.AuthenticatorData == null || auth.AuthenticatorData.RequiresPassword == false)
             {
                 return DialogResult.None;
             }
 
             // request the password
-            UnprotectPasswordForm getPassForm = new UnprotectPasswordForm();
+            var getPassForm = new UnprotectPasswordForm();
             getPassForm.Authenticator = auth;
             if (screen != null)
             {
                 // center on the current windows screen (in case of multiple monitors)
                 getPassForm.StartPosition = FormStartPosition.Manual;
-                int left = (screen.Bounds.Width / 2) - (getPassForm.Width / 2) + screen.Bounds.Left;
-                int top = (screen.Bounds.Height / 2) - (getPassForm.Height / 2) + screen.Bounds.Top;
+                var left = (screen.Bounds.Width / 2) - (getPassForm.Width / 2) + screen.Bounds.Left;
+                var top = (screen.Bounds.Height / 2) - (getPassForm.Height / 2) + screen.Bounds.Top;
                 getPassForm.Location = new Point(left, top);
             }
             else
             {
                 getPassForm.StartPosition = FormStartPosition.CenterScreen;
             }
-            DialogResult result = getPassForm.ShowDialog(Parent as Form);
+            var result = getPassForm.ShowDialog(Parent as Form);
             if (result == DialogResult.OK)
             {
                 item.UnprotectCount++;
@@ -988,7 +988,7 @@ namespace WinAuth
             }
 
             // reprotect the authenticator
-            WinAuthAuthenticator auth = item.Authenticator;
+            var auth = item.Authenticator;
             if (auth.AuthenticatorData == null)
             {
                 return;
@@ -1004,13 +1004,13 @@ namespace WinAuth
         {
             ContextMenuStrip.Items.Clear();
 
-            ToolStripLabel label = new ToolStripLabel();
+            var label = new ToolStripLabel();
             label.Name = "contextMenuItemName";
             label.ForeColor = SystemColors.HotTrack;
             ContextMenuStrip.Items.Add(label);
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            EventHandler onclick = new EventHandler(ContextMenu_Click);
+            var onclick = new EventHandler(ContextMenu_Click);
             //
             ToolStripMenuItem menuitem;
             ToolStripMenuItem subitem;
@@ -1089,12 +1089,12 @@ namespace WinAuth
             menuitem.DropDownItems.Add(subitem);
             menuitem.DropDownItems.Add("-");
             ContextMenuStrip.Items.Add(menuitem);
-            int iconindex = 1;
+            var iconindex = 1;
             var parentItem = menuitem;
-            foreach (Tuple<string, string> entry in WinAuthMain.AUTHENTICATOR_ICONS)
+            foreach (var entry in WinAuthMain.AUTHENTICATOR_ICONS)
             {
-                string icon = entry.Item1;
-                string iconfile = entry.Item2;
+                var icon = entry.Item1;
+                var iconfile = entry.Item2;
                 if (iconfile.Length == 0)
                 {
                     parentItem.DropDownItems.Add(new ToolStripSeparator());
@@ -1146,7 +1146,7 @@ namespace WinAuth
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            ToolStripSeparator sepitem = new ToolStripSeparator();
+            var sepitem = new ToolStripSeparator();
             sepitem.Name = "syncMenuSep";
             ContextMenuStrip.Items.Add(sepitem);
             //
@@ -1169,7 +1169,7 @@ namespace WinAuth
                 return;
             }
 
-            ToolStripLabel labelitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "contextMenuItemName").FirstOrDefault() as ToolStripLabel;
+            var labelitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "contextMenuItemName").FirstOrDefault() as ToolStripLabel;
             labelitem.Text = item.Authenticator.Name;
             if (auth.HotKey != null)
             {
@@ -1177,7 +1177,7 @@ namespace WinAuth
             }
 
             ToolStripItem sepitem;
-            ToolStripMenuItem menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "setPasswordMenuItem").FirstOrDefault() as ToolStripMenuItem;
+            var menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "setPasswordMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Text = (item.Authenticator.AuthenticatorData.PasswordType == Authenticator.PasswordTypes.Explicit ? strings.ChangeOrRemovePassword + "..." : strings.SetPassword + "...");
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
@@ -1209,13 +1209,13 @@ namespace WinAuth
             menuitem.CheckState = (auth.CopyOnCode == true ? CheckState.Checked : CheckState.Unchecked);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            ToolStripMenuItem subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem_default").FirstOrDefault() as ToolStripMenuItem;
+            var subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem_default").FirstOrDefault() as ToolStripMenuItem;
             subitem.CheckState = CheckState.Checked;
             foreach (ToolStripItem iconitem in menuitem.DropDownItems)
             {
                 if (iconitem is ToolStripMenuItem && iconitem.Tag is string)
                 {
-                    ToolStripMenuItem iconmenuitem = (ToolStripMenuItem)iconitem;
+                    var iconmenuitem = (ToolStripMenuItem)iconitem;
                     if (string.IsNullOrEmpty((string)iconmenuitem.Tag) && string.IsNullOrEmpty(auth.Skin) == true)
                     {
                         iconmenuitem.CheckState = CheckState.Checked;
@@ -1250,7 +1250,7 @@ namespace WinAuth
             if (menuitem.Name == "setPasswordMenuItem")
             {
                 // check if the authentcated is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1258,14 +1258,14 @@ namespace WinAuth
                 try
                 {
                     // show the new password form
-                    SetPasswordForm form = new SetPasswordForm();
+                    var form = new SetPasswordForm();
                     if (form.ShowDialog(Parent as Form) != DialogResult.OK)
                     {
                         return;
                     }
 
                     // set the encrpytion
-                    string password = form.Password;
+                    var password = form.Password;
                     if (string.IsNullOrEmpty(password) == false)
                     {
                         auth.AuthenticatorData.SetEncryption(Authenticator.PasswordTypes.Explicit, password);
@@ -1315,7 +1315,7 @@ namespace WinAuth
             else if (menuitem.Name == "copyCodeMenuItem")
             {
                 // check if the authentcated is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1341,14 +1341,14 @@ namespace WinAuth
             }
             else if (menuitem.Name == "shortcutKeyMenuItem")
             {
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
                 }
                 try
                 {
-                    SetShortcutKeyForm form = new SetShortcutKeyForm();
+                    var form = new SetShortcutKeyForm();
                     form.Hotkey = auth.HotKey;
                     if (form.ShowDialog(Parent as Form) != DialogResult.OK)
                     {
@@ -1371,7 +1371,7 @@ namespace WinAuth
             else if (menuitem.Name == "showRestoreCodeMenuItem")
             {
                 // check if the authentcated is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1384,10 +1384,10 @@ namespace WinAuth
                         var mainform = Parent as WinAuthForm;
                         if ((mainform.Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
                         {
-                            bool invalidPassword = false;
+                            var invalidPassword = false;
                             while (true)
                             {
-                                GetPasswordForm checkform = new GetPasswordForm();
+                                var checkform = new GetPasswordForm();
                                 checkform.InvalidPassword = invalidPassword;
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
@@ -1404,7 +1404,7 @@ namespace WinAuth
                     }
 
                     // show the serial and restore code for Battle.net authenticator				
-                    ShowRestoreCodeForm form = new ShowRestoreCodeForm();
+                    var form = new ShowRestoreCodeForm();
                     form.CurrentAuthenticator = auth;
                     form.ShowDialog(Parent as Form);
                 }
@@ -1419,7 +1419,7 @@ namespace WinAuth
             else if (menuitem.Name == "showGoogleSecretMenuItem")
             {
                 // check if the authentcated is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1432,10 +1432,10 @@ namespace WinAuth
                         var mainform = Parent as WinAuthForm;
                         if ((mainform.Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
                         {
-                            bool invalidPassword = false;
+                            var invalidPassword = false;
                             while (true)
                             {
-                                GetPasswordForm checkform = new GetPasswordForm();
+                                var checkform = new GetPasswordForm();
                                 checkform.InvalidPassword = invalidPassword;
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
@@ -1452,7 +1452,7 @@ namespace WinAuth
                     }
 
                     // show the secret key for Google authenticator				
-                    ShowSecretKeyForm form = new ShowSecretKeyForm();
+                    var form = new ShowSecretKeyForm();
                     form.CurrentAuthenticator = auth;
                     form.ShowDialog(Parent as Form);
                 }
@@ -1467,7 +1467,7 @@ namespace WinAuth
             else if (menuitem.Name == "showSteamSecretMenuItem")
             {
                 // check if the authenticator is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1481,10 +1481,10 @@ namespace WinAuth
                         var mainform = Parent as WinAuthForm;
                         if ((mainform.Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
                         {
-                            bool invalidPassword = false;
+                            var invalidPassword = false;
                             while (true)
                             {
-                                GetPasswordForm checkform = new GetPasswordForm();
+                                var checkform = new GetPasswordForm();
                                 checkform.InvalidPassword = invalidPassword;
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
@@ -1501,7 +1501,7 @@ namespace WinAuth
                     }
 
                     // show the secret key for Google authenticator				
-                    ShowSteamSecretForm form = new ShowSteamSecretForm();
+                    var form = new ShowSteamSecretForm();
                     form.CurrentAuthenticator = auth;
                     form.ShowDialog(Parent as Form);
                 }
@@ -1516,7 +1516,7 @@ namespace WinAuth
             else if (menuitem.Name == "showSteamTradesMenuItem")
             {
                 // check if the authenticator is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
@@ -1525,7 +1525,7 @@ namespace WinAuth
                 try
                 {
                     // show the Steam trades dialog
-                    ShowSteamTradesForm form = new ShowSteamTradesForm();
+                    var form = new ShowSteamTradesForm();
                     form.Authenticator = auth;
                     form.ShowDialog(Parent as Form);
                 }
@@ -1541,7 +1541,7 @@ namespace WinAuth
             {
                 if (WinAuthForm.ConfirmDialog(Parent as Form, strings.DeleteAuthenticatorWarning, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
-                    int index = item.Index;
+                    var index = item.Index;
                     Items.Remove(item);
                     ItemRemoved(this, new AuthenticatorListItemRemovedEventArgs(item));
                     if (index >= Items.Count)
@@ -1550,7 +1550,7 @@ namespace WinAuth
                     }
                     CurrentItem = (Items.Count != 0 ? Items[index] as AuthenticatorListitem : null);
                     // reset the correct indexes of our items
-                    for (int i = 0; i < Items.Count; i++)
+                    for (var i = 0; i < Items.Count; i++)
                     {
                         (Items[i] as AuthenticatorListitem).Index = i;
                     }
@@ -1558,7 +1558,7 @@ namespace WinAuth
             }
             else if (menuitem.Name == "renameMenuItem")
             {
-                int y = (ItemHeight * item.Index) - (TopIndex * ItemHeight) + 8;
+                var y = (ItemHeight * item.Index) - (TopIndex * ItemHeight) + 8;
                 RenameTextbox.Location = new Point(64, y);
                 RenameTextbox.Text = auth.Name;
                 RenameTextbox.Tag = item;
@@ -1568,12 +1568,12 @@ namespace WinAuth
             else if (menuitem.Name == "syncMenuItem")
             {
                 // check if the authentcated is still protected
-                DialogResult wasprotected = UnprotectAuthenticator(item);
+                var wasprotected = UnprotectAuthenticator(item);
                 if (wasprotected == DialogResult.Cancel)
                 {
                     return;
                 }
-                Cursor cursor = Cursor.Current;
+                var cursor = Cursor.Current;
                 try
                 {
                     Cursor.Current = Cursors.WaitCursor;
@@ -1596,7 +1596,7 @@ namespace WinAuth
                     do
                     {
                         // other..choose an image file
-                        OpenFileDialog ofd = new OpenFileDialog();
+                        var ofd = new OpenFileDialog();
                         ofd.AddExtension = true;
                         ofd.CheckFileExists = true;
                         ofd.DefaultExt = "png";
@@ -1606,7 +1606,7 @@ namespace WinAuth
                         ofd.RestoreDirectory = true;
                         ofd.ShowReadOnly = false;
                         ofd.Title = strings.LoadIconImage + " (png or gif @ 48x48)";
-                        DialogResult result = ofd.ShowDialog(this);
+                        var result = ofd.ShowDialog(this);
                         if (result != System.Windows.Forms.DialogResult.OK)
                         {
                             return;
@@ -1614,13 +1614,13 @@ namespace WinAuth
                         try
                         {
                             // get the image and create an icon if not already the right size
-                            using (Bitmap iconimage = (Bitmap)Image.FromFile(ofd.FileName))
+                            using (var iconimage = (Bitmap)Image.FromFile(ofd.FileName))
                             {
                                 if (iconimage.Width != ICON_WIDTH || iconimage.Height != ICON_HEIGHT)
                                 {
-                                    using (Bitmap scaled = new Bitmap(ICON_WIDTH, ICON_HEIGHT))
+                                    using (var scaled = new Bitmap(ICON_WIDTH, ICON_HEIGHT))
                                     {
-                                        using (Graphics g = Graphics.FromImage(scaled))
+                                        using (var g = Graphics.FromImage(scaled))
                                         {
                                             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                                             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -1665,10 +1665,10 @@ namespace WinAuth
         /// <returns>code or null if failed (i.e. bad password)</returns>
         public string GetItemCode(AuthenticatorListitem item, Screen screen = null)
         {
-            WinAuthAuthenticator auth = item.Authenticator;
+            var auth = item.Authenticator;
 
             // check if the authentcated is still protected
-            DialogResult wasprotected = UnprotectAuthenticator(item, screen);
+            var wasprotected = UnprotectAuthenticator(item, screen);
             if (wasprotected == DialogResult.Cancel)
             {
                 return null;
@@ -1700,9 +1700,9 @@ namespace WinAuth
         /// </summary>
         private void RefreshItem(AuthenticatorListitem item)
         {
-            bool hasvscroll = (Height < (Items.Count * ItemHeight));
-            int y = (ItemHeight * item.Index) - (ItemHeight * TopIndex);
-            Rectangle rect = new Rectangle(0, y, Width, Height);
+            var hasvscroll = (Height < (Items.Count * ItemHeight));
+            var y = (ItemHeight * item.Index) - (ItemHeight * TopIndex);
+            var rect = new Rectangle(0, y, Width, Height);
             Invalidate(rect, false);
         }
 
@@ -1717,9 +1717,9 @@ namespace WinAuth
             int rgb;
             Color c;
 
-            for (int y = 0; y < bmp.Height; y++)
+            for (var y = 0; y < bmp.Height; y++)
             {
-                for (int x = 0; x < bmp.Width; x++)
+                for (var x = 0; x < bmp.Width; x++)
                 {
                     c = bmp.GetPixel(x, y);
                     rgb = (int)((c.R * 0.3) + (c.G * 0.59) + (c.B * 0.11));
@@ -1740,9 +1740,9 @@ namespace WinAuth
             Color c;
             int r, g, b;
 
-            for (int y = 0; y < bmp.Height; y++)
+            for (var y = 0; y < bmp.Height; y++)
             {
-                for (int x = 0; x < bmp.Width; x++)
+                for (var x = 0; x < bmp.Width; x++)
                 {
                     c = bmp.GetPixel(x, y);
                     r = Math.Max(Math.Min(c.R + amount, 255), 0);
@@ -1779,22 +1779,22 @@ namespace WinAuth
 
             if (items.Where(i => i.AutoWidth == 0).Count() != 0)
             {
-                using (Graphics g = CreateGraphics())
+                using (var g = CreateGraphics())
                 {
                     using (var font = new Font(Font.FontFamily, FONT_SIZE, FontStyle.Regular))
                     {
-                        foreach (AuthenticatorListitem item in items.Where(i => i.AutoWidth == 0))
+                        foreach (var item in items.Where(i => i.AutoWidth == 0))
                         {
-                            WinAuthAuthenticator auth = item.Authenticator;
+                            var auth = item.Authenticator;
 
-                            SizeF labelsize = g.MeasureString(auth.Name, font);
+                            var labelsize = g.MeasureString(auth.Name, font);
                             item.AutoWidth = MARGIN_LEFT + ICON_WIDTH + ICON_MARGIN_RIGHT + (int)Math.Ceiling(labelsize.Width) + PIE_WIDTH + MARGIN_RIGHT;
                         }
                     }
                 }
             }
 
-            int maxWidth = Items.Cast<AuthenticatorListitem>().Max(i => i.AutoWidth);
+            var maxWidth = Items.Cast<AuthenticatorListitem>().Max(i => i.AutoWidth);
             return maxWidth;
         }
 
@@ -1826,8 +1826,8 @@ namespace WinAuth
                 return;
             }
 
-            AuthenticatorListitem item = Items[e.Index] as AuthenticatorListitem;
-            WinAuthAuthenticator auth = item.Authenticator;
+            var item = Items[e.Index] as AuthenticatorListitem;
+            var auth = item.Authenticator;
 
             // if the item is being dragged, we draw a blank placeholder
             if (item.Dragging == true)
@@ -1836,7 +1836,7 @@ namespace WinAuth
                 {
                     using (var brush = new SolidBrush(SystemColors.ControlLightLight))
                     {
-                        using (Pen pen = new Pen(SystemColors.Control))
+                        using (var pen = new Pen(SystemColors.Control))
                         {
                             e.Graphics.DrawRectangle(pen, e.Bounds);
                             e.Graphics.FillRectangle(brush, e.Bounds);
@@ -1849,11 +1849,11 @@ namespace WinAuth
             // draw the requested item
             using (var brush = new SolidBrush(e.ForeColor))
             {
-                bool showCode = (auth.AutoRefresh == true || item.DisplayUntil > DateTime.Now);
+                var showCode = (auth.AutoRefresh == true || item.DisplayUntil > DateTime.Now);
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                Rectangle rect = new Rectangle(e.Bounds.X + MARGIN_LEFT, e.Bounds.Y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT);
+                var rect = new Rectangle(e.Bounds.X + MARGIN_LEFT, e.Bounds.Y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT);
                 if (cliprect.IntersectsWith(rect) == true)
                 {
                     using (var icon = auth.Icon)
@@ -1867,12 +1867,12 @@ namespace WinAuth
 
                 using (var font = new Font(e.Font.FontFamily, FONT_SIZE, FontStyle.Regular))
                 {
-                    string label = auth.Name;
-                    SizeF labelsize = e.Graphics.MeasureString(label.ToString(), font);
-                    int labelMaxWidth = GetMaxAvailableLabelWidth(e.Bounds.Width);
+                    var label = auth.Name;
+                    var labelsize = e.Graphics.MeasureString(label.ToString(), font);
+                    var labelMaxWidth = GetMaxAvailableLabelWidth(e.Bounds.Width);
                     if (labelsize.Width > labelMaxWidth)
                     {
-                        StringBuilder newlabel = new StringBuilder(label + "...");
+                        var newlabel = new StringBuilder(label + "...");
                         while ((labelsize = e.Graphics.MeasureString(newlabel.ToString(), font)).Width > labelMaxWidth)
                         {
                             newlabel.Remove(newlabel.Length - 4, 1);
@@ -1926,7 +1926,7 @@ namespace WinAuth
                     {
                         code = "- - - - - -";
                     }
-                    SizeF codesize = e.Graphics.MeasureString(code, e.Font);
+                    var codesize = e.Graphics.MeasureString(code, e.Font);
                     rect = new Rectangle(e.Bounds.X + MARGIN_LEFT + ICON_WIDTH + ICON_MARGIN_RIGHT, e.Bounds.Y + MARGIN_TOP + (int)labelsize.Height + LABEL_MARGIN_BOTTOM, (int)codesize.Width, (int)codesize.Height);
                     if (cliprect.IntersectsWith(rect) == true)
                     {
@@ -1946,7 +1946,7 @@ namespace WinAuth
                             {
                                 //int y = (this.TopIndex * this.ItemHeight) + e.Bounds.y
                                 //int tillUpdate = ((int)((auth.AuthenticatorData.ServerTime % 30000) / 1000L) + 1) * 12;
-                                int tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
+                                var tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
                                 e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                 e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                             }
@@ -1960,7 +1960,7 @@ namespace WinAuth
                             {
                                 using (var piepen = new Pen(SystemColors.ActiveCaption))
                                 {
-                                    int tillUpdate = (int)((item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * (double)360) / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
+                                    var tillUpdate = (int)((item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * (double)360) / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
                                     e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                     e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                                 }
@@ -1981,7 +1981,7 @@ namespace WinAuth
                 rect = new Rectangle(e.Bounds.X, e.Bounds.Y + ItemHeight - 1, 1, 1);
                 if (cliprect.IntersectsWith(rect) == true)
                 {
-                    using (Pen pen = new Pen(SystemColors.Control))
+                    using (var pen = new Pen(SystemColors.Control))
                     {
                         e.Graphics.DrawLine(pen, e.Bounds.X, e.Bounds.Y + ItemHeight - 1, e.Bounds.X + e.Bounds.Width, e.Bounds.Y + ItemHeight - 1);
                     }
@@ -1997,21 +1997,21 @@ namespace WinAuth
         {
             using (var brush = new SolidBrush(BackColor))
             {
-                Region region = new Region(e.ClipRectangle);
+                var region = new Region(e.ClipRectangle);
 
                 e.Graphics.FillRegion(brush, region);
                 if (Items.Count > 0)
                 {
-                    for (int i = 0; i < Items.Count; ++i)
+                    for (var i = 0; i < Items.Count; ++i)
                     {
-                        Rectangle irect = GetItemRectangle(i);
+                        var irect = GetItemRectangle(i);
                         if (e.ClipRectangle.IntersectsWith(irect))
                         {
                             if ((SelectionMode == SelectionMode.One && SelectedIndex == i)
                             || (SelectionMode == SelectionMode.MultiSimple && SelectedIndices.Contains(i))
                             || (SelectionMode == SelectionMode.MultiExtended && SelectedIndices.Contains(i)))
                             {
-                                DrawItemEventArgs diea = new DrawItemEventArgs(e.Graphics, Font,
+                                var diea = new DrawItemEventArgs(e.Graphics, Font,
                                         irect, i,
                                         DrawItemState.Selected, ForeColor,
                                         BackColor);
@@ -2020,7 +2020,7 @@ namespace WinAuth
                             }
                             else
                             {
-                                DrawItemEventArgs diea = new DrawItemEventArgs(e.Graphics, Font,
+                                var diea = new DrawItemEventArgs(e.Graphics, Font,
                                         irect, i,
                                         DrawItemState.Default, ForeColor,
                                         BackColor);

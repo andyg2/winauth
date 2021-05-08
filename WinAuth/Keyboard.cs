@@ -98,11 +98,11 @@ namespace WinAuth
         /// </summary>
         protected void Hook()
         {
-            for (int i = 0; i < m_hooked.Count; i++)
+            for (var i = 0; i < m_hooked.Count; i++)
             {
-                WinAuthAuthenticator auth = m_hooked[i];
-                Keys key = (Keys)auth.HotKey.Key;
-                WinAPI.KeyModifiers modifier = auth.HotKey.Modifiers;
+                var auth = m_hooked[i];
+                var key = (Keys)auth.HotKey.Key;
+                var modifier = auth.HotKey.Modifiers;
 
                 if (WinAPI.RegisterHotKey(m_form.Handle, i + 1, modifier | WinAPI.KeyModifiers.NoRepeat, key) == false)
                 {
@@ -117,7 +117,7 @@ namespace WinAuth
         /// </summary>
         public void UnHook()
         {
-            for (int i = 0; i < m_hooked.Count; i++)
+            for (var i = 0; i < m_hooked.Count; i++)
             {
                 WinAPI.UnregisterHotKey(m_form.Handle, i + 1);
             }
@@ -133,7 +133,7 @@ namespace WinAuth
         /// <returns>true if available</returns>
         public static bool IsHotkeyAvailable(Form form, Keys key, WinAPI.KeyModifiers modifier)
         {
-            bool available = WinAPI.RegisterHotKey(form.Handle, 0, modifier, key);
+            var available = WinAPI.RegisterHotKey(form.Handle, 0, modifier, key);
             if (available == true)
             {
                 WinAPI.UnregisterHotKey(form.Handle, 0);
@@ -208,7 +208,7 @@ namespace WinAuth
 
             // clear events and stop input
             Application.DoEvents();
-            bool blocked = WinAPI.BlockInput(true);
+            var blocked = WinAPI.BlockInput(true);
             try
             {
                 // for now just split into parts and run each
@@ -217,7 +217,7 @@ namespace WinAuth
                     // split into either {CMD d w} or just plain text
                     if (match.Success == true)
                     {
-                        string single = match.Value;
+                        var single = match.Value;
                         if (single.Length == 0)
                         {
                             continue;
@@ -226,17 +226,17 @@ namespace WinAuth
                         if (single[0] == '{')
                         {
                             // send command {COMMAND delay repeat}
-                            Match cmdMatch = Regex.Match(single.Trim(), @"\{([^\s]+)\s*(\d*)\s*(\d*)\}");
+                            var cmdMatch = Regex.Match(single.Trim(), @"\{([^\s]+)\s*(\d*)\s*(\d*)\}");
                             if (cmdMatch.Success == true)
                             {
                                 // extract the command and any optional delay and repeat
-                                string cmd = cmdMatch.Groups[1].Value.ToUpper();
-                                int delay = 0;
+                                var cmd = cmdMatch.Groups[1].Value.ToUpper();
+                                var delay = 0;
                                 if (cmdMatch.Groups[2].Success == true && cmdMatch.Groups[2].Value.Length != 0)
                                 {
                                     int.TryParse(cmdMatch.Groups[2].Value, out delay);
                                 }
-                                int repeat = 1;
+                                var repeat = 1;
                                 if (cmdMatch.Groups[3].Success == true && cmdMatch.Groups[3].Value.Length != 0)
                                 {
                                     int.TryParse(cmdMatch.Groups[3].Value, out repeat);
@@ -263,10 +263,10 @@ namespace WinAuth
                                         form.Invoke(new WinAuthForm.SetClipboardDataDelegate(form.SetClipboardData), new object[] { code });
                                         break;
                                     case "PASTE":
-                                        string clipboard = form.Invoke(new WinAuthForm.GetClipboardDataDelegate(form.GetClipboardData), new object[] { typeof(string) }) as string;
+                                        var clipboard = form.Invoke(new WinAuthForm.GetClipboardDataDelegate(form.GetClipboardData), new object[] { typeof(string) }) as string;
                                         if (string.IsNullOrEmpty(clipboard) == false)
                                         {
-                                            foreach (char key in clipboard)
+                                            foreach (var key in clipboard)
                                             {
                                                 SendKey(key);
                                             }
@@ -359,10 +359,10 @@ namespace WinAuth
 
             // build regex
             Regex reg;
-            Match match = Regex.Match(window, @"/(.*)/([a-z]*)", RegexOptions.IgnoreCase);
+            var match = Regex.Match(window, @"/(.*)/([a-z]*)", RegexOptions.IgnoreCase);
             if (match.Success == true)
             {
-                RegexOptions regoptions = RegexOptions.None;
+                var regoptions = RegexOptions.None;
                 if (match.Groups[2].Value.Contains("i") == true)
                 {
                     regoptions |= RegexOptions.IgnoreCase;
@@ -376,7 +376,7 @@ namespace WinAuth
 
 
             // find process matches
-            List<Process> matchingProcesses = new List<Process>();
+            var matchingProcesses = new List<Process>();
             foreach (var process in Process.GetProcesses())
             {
                 if (reg.IsMatch(process.ProcessName) || reg.IsMatch(process.MainWindowTitle))

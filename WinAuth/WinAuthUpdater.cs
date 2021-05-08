@@ -207,7 +207,7 @@ namespace WinAuth
         public void AutoCheck(Action<Version> callback)
         {
             // create a thread to check for latest version
-            Thread thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller));
+            var thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller));
             thread.IsBackground = true;
             thread.Priority = ThreadPriority.BelowNormal;
             thread.Start(callback);
@@ -219,7 +219,7 @@ namespace WinAuth
         /// <param name="p">our callback</param>
         protected virtual void AutoCheckPoller(object p)
         {
-            Action<Version> callback = p as Action<Version>;
+            var callback = p as Action<Version>;
 
             do
             {
@@ -257,11 +257,11 @@ namespace WinAuth
         public virtual WinAuthVersionInfo GetLatestVersion(Action<WinAuthVersionInfo, bool, Exception> callback = null)
         {
             // get the update URL from the config else use the default
-            string updateUrl = WinAuthMain.WINAUTH_UPDATE_URL;
+            var updateUrl = WinAuthMain.WINAUTH_UPDATE_URL;
             try
             {
                 var settings = new System.Configuration.AppSettingsReader();
-                string appvalue = settings.GetValue("UpdateCheckUrl", typeof(string)) as string;
+                var appvalue = settings.GetValue("UpdateCheckUrl", typeof(string)) as string;
                 if (string.IsNullOrEmpty(appvalue) == false)
                 {
                     updateUrl = appvalue;
@@ -270,14 +270,14 @@ namespace WinAuth
             catch (Exception) { }
             try
             {
-                using (WebClient web = new WebClient())
+                using (var web = new WebClient())
                 {
                     web.Headers.Add("User-Agent", "WinAuth-" + CurrentVersion.ToString());
                     if (callback == null)
                     {
                         // immediate request
-                        string result = web.DownloadString(updateUrl);
-                        WinAuthVersionInfo latestVersion = ParseGetLatestVersion(result);
+                        var result = web.DownloadString(updateUrl);
+                        var latestVersion = ParseGetLatestVersion(result);
                         if (latestVersion != null)
                         {
                             // update local values
@@ -310,7 +310,7 @@ namespace WinAuth
         private void GetLatestVersionDownloadCompleted(object sender, DownloadStringCompletedEventArgs args)
         {
             // no point if e have no callback
-            Action<WinAuthVersionInfo, bool, Exception> callback = args.UserState as Action<WinAuthVersionInfo, bool, Exception>;
+            var callback = args.UserState as Action<WinAuthVersionInfo, bool, Exception>;
             if (callback == null)
             {
                 return;
@@ -326,7 +326,7 @@ namespace WinAuth
             try
             {
                 // extract the latest version
-                WinAuthVersionInfo latestVersion = ParseGetLatestVersion(args.Result);
+                var latestVersion = ParseGetLatestVersion(args.Result);
                 if (latestVersion != null)
                 {
                     // update local values
@@ -351,7 +351,7 @@ namespace WinAuth
         private WinAuthVersionInfo ParseGetLatestVersion(string result)
         {
             // load xml document and pull out nodes
-            XmlDocument xml = new XmlDocument();
+            var xml = new XmlDocument();
             xml.LoadXml(result);
             var node = xml.SelectSingleNode("//version");
 
@@ -359,7 +359,7 @@ namespace WinAuth
             Version.TryParse(node.InnerText, out version);
             if (node != null && version != null)
             {
-                WinAuthVersionInfo latestversion = new WinAuthVersionInfo(version);
+                var latestversion = new WinAuthVersionInfo(version);
 
                 DateTime released;
                 node = xml.SelectSingleNode("//released");

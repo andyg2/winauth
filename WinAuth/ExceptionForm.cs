@@ -83,7 +83,7 @@ namespace WinAuth
         /// <returns>diagnostics information</returns>
         private string BuildDiagnostics()
         {
-            StringBuilder diag = new StringBuilder();
+            var diag = new StringBuilder();
 
             Version version;
             if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out version) == true)
@@ -94,10 +94,10 @@ namespace WinAuth
             // add winauth log
             try
             {
-                string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 if (Directory.Exists(dir) == true)
                 {
-                    string winauthlog = Path.Combine(dir, "winauth.log");
+                    var winauthlog = Path.Combine(dir, "winauth.log");
                     if (File.Exists(winauthlog) == true)
                     {
                         diag.Append("--WINAUTH.LOG--").Append(Environment.NewLine);
@@ -105,7 +105,7 @@ namespace WinAuth
                     }
 
                     // add authenticator.xml
-                    foreach (string file in Directory.GetFiles(dir, "*.xml"))
+                    foreach (var file in Directory.GetFiles(dir, "*.xml"))
                     {
                         diag.Append("--" + file + "--").Append(Environment.NewLine);
                         diag.Append(File.ReadAllText(file)).Append(Environment.NewLine).Append(Environment.NewLine);
@@ -119,7 +119,7 @@ namespace WinAuth
             {
                 using (var ms = new MemoryStream())
                 {
-                    XmlWriterSettings settings = new XmlWriterSettings();
+                    var settings = new XmlWriterSettings();
                     settings.Indent = true;
                     using (var xml = XmlWriter.Create(ms, settings))
                     {
@@ -138,7 +138,7 @@ namespace WinAuth
             {
                 diag.Append("--EXCEPTION--").Append(Environment.NewLine);
 
-                Exception ex = ErrorException;
+                var ex = ErrorException;
                 while (ex != null)
                 {
                     diag.Append("Stack: ").Append(ex.Message).Append(Environment.NewLine).Append(new System.Diagnostics.StackTrace(ex).ToString()).Append(Environment.NewLine);
@@ -155,7 +155,7 @@ namespace WinAuth
                 {
                     diag.Append("EncType: " + ((InvalidSecretDataException)ErrorException).EncType).Append(Environment.NewLine);
                     diag.Append("Password: " + ((InvalidSecretDataException)ErrorException).Password).Append(Environment.NewLine);
-                    foreach (string data in ((InvalidSecretDataException)ErrorException).Decrypted)
+                    foreach (var data in ((InvalidSecretDataException)ErrorException).Decrypted)
                     {
                         diag.Append("Data: " + data).Append(Environment.NewLine);
                     }

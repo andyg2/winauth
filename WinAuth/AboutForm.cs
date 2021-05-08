@@ -48,8 +48,8 @@ namespace WinAuth
         private void AboutForm_Load(object sender, EventArgs e)
         {
             // get the version of the application
-            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            string debug = string.Empty;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var debug = string.Empty;
 #if DEBUG
             debug += " (DEBUG)";
 #endif
@@ -74,7 +74,7 @@ namespace WinAuth
         private void reportButton_Click(object sender, EventArgs e)
         {
             // display the error form, loading it with current authenticator data
-            DiagnosticForm errorreport = new DiagnosticForm();
+            var errorreport = new DiagnosticForm();
             errorreport.Config = Config;
             if (string.IsNullOrEmpty(errorreport.Config.Filename) == false)
             {
@@ -82,11 +82,11 @@ namespace WinAuth
             }
             else
             {
-                using (MemoryStream ms = new MemoryStream())
+                using (var ms = new MemoryStream())
                 {
-                    XmlWriterSettings settings = new XmlWriterSettings();
+                    var settings = new XmlWriterSettings();
                     settings.Indent = true;
-                    using (XmlWriter writer = XmlWriter.Create(ms, settings))
+                    using (var writer = XmlWriter.Create(ms, settings))
                     {
                         Config.WriteXmlString(writer);
                     }

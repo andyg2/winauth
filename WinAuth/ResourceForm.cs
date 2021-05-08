@@ -77,15 +77,15 @@ namespace WinAuth
             //var controls = GetControls(this, new Type[] { typeof(MetroFramework.Controls.MetroLabel), typeof(MetroFramework.Controls.MetroCheckBox) });
             var controls = GetControls(this);
 
-            string formname = "_" + Name + "_";
-            string text = WinAuthMain.StringResources.GetString(formname, System.Threading.Thread.CurrentThread.CurrentCulture);
+            var formname = "_" + Name + "_";
+            var text = WinAuthMain.StringResources.GetString(formname, System.Threading.Thread.CurrentThread.CurrentCulture);
             if (text != null)
             {
                 Text = text;
             }
-            foreach (Control c in controls)
+            foreach (var c in controls)
             {
-                string controlname = formname + c.Name + "_";
+                var controlname = formname + c.Name + "_";
                 text = WinAuthMain.StringResources.GetString(controlname, System.Threading.Thread.CurrentThread.CurrentCulture);
                 if (text != null)
                 {
@@ -116,7 +116,7 @@ namespace WinAuth
             {
                 controls = new List<Control>();
             }
-            BasedOnComparer baseComparer = new BasedOnComparer();
+            var baseComparer = new BasedOnComparer();
             foreach (Control c in control.Controls)
             {
                 if (controlTypes == null || controlTypes.Contains(c.GetType(), baseComparer) == true)

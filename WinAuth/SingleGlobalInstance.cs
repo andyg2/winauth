@@ -42,9 +42,9 @@ namespace WinAuth
         {
             HasHandle = false;
 
-            string appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value.ToString();
-            string userGuid = WindowsIdentity.GetCurrent().User.Value;
-            string mutexId = string.Format("Global\\{{{0}}}-{{{1}}}", userGuid, appGuid);
+            var appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value.ToString();
+            var userGuid = WindowsIdentity.GetCurrent().User.Value;
+            var mutexId = string.Format("Global\\{{{0}}}-{{{1}}}", userGuid, appGuid);
             _mutex = new Mutex(false, mutexId);
 
             var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);

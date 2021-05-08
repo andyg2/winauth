@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -68,7 +67,7 @@ namespace WinAuth
         {
             if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible == true)
             {
-                int time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
+                var time = (int)(Authenticator.AuthenticatorData.ServerTime / 1000L) % 30;
                 newAuthenticatorProgress.Value = time + 1;
                 if (time == 0)
                 {
@@ -85,7 +84,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void verifyAuthenticatorButton_Click(object sender, EventArgs e)
         {
-            string privatekey = secretCodeField.Text.Trim();
+            var privatekey = secretCodeField.Text.Trim();
             if (string.IsNullOrEmpty(privatekey) == true)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the secret code");
@@ -104,7 +103,7 @@ namespace WinAuth
         {
             if (Authenticator.AuthenticatorData != null)
             {
-                DialogResult result = WinAuthForm.ConfirmDialog(Owner,
+                var result = WinAuthForm.ConfirmDialog(Owner,
                     "WARNING: Your authenticator has not been saved." + Environment.NewLine + Environment.NewLine
                     + "If you have added this authenticator to your account, you will not be able to login in the future, and you need to click YES to save it." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
@@ -128,7 +127,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            string privatekey = secretCodeField.Text.Trim();
+            var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
             {
                 WinAuthForm.ErrorDialog(Owner, "Please enter the Secret Code");
@@ -136,7 +135,7 @@ namespace WinAuth
                 return;
             }
 
-            bool first = !newAuthenticatorProgress.Visible;
+            var first = !newAuthenticatorProgress.Visible;
             if (verifyAuthenticator(privatekey) == false)
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
@@ -209,7 +208,7 @@ namespace WinAuth
 
             Authenticator.Name = nameField.Text;
 
-            string authtype = "totp";
+            var authtype = "totp";
 
             // if this is a URL, pull it down
             Uri uri;
@@ -226,7 +225,7 @@ namespace WinAuth
                     {
                         if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase) == true)
                         {
-                            using (Bitmap bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
+                            using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
                             {
                                 IBarcodeReader reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
@@ -246,10 +245,10 @@ namespace WinAuth
             }
             else if ((match = Regex.Match(privatekey, @"data:image/([^;]+);base64,(.*)", RegexOptions.IgnoreCase)).Success == true)
             {
-                byte[] imagedata = Convert.FromBase64String(match.Groups[2].Value);
-                using (MemoryStream ms = new MemoryStream(imagedata))
+                var imagedata = Convert.FromBase64String(match.Groups[2].Value);
+                using (var ms = new MemoryStream(imagedata))
                 {
-                    using (Bitmap bitmap = (Bitmap)Bitmap.FromStream(ms))
+                    using (var bitmap = (Bitmap)Bitmap.FromStream(ms))
                     {
                         IBarcodeReader reader = new BarcodeReader();
                         var result = reader.Decode(bitmap);
@@ -263,7 +262,7 @@ namespace WinAuth
             else if (IsValidFile(privatekey) == true)
             {
                 // assume this is the image file
-                using (Bitmap bitmap = (Bitmap)Bitmap.FromFile(privatekey))
+                using (var bitmap = (Bitmap)Bitmap.FromFile(privatekey))
                 {
                     IBarcodeReader reader = new BarcodeReader();
                     var result = reader.Decode(bitmap);
@@ -285,13 +284,13 @@ namespace WinAuth
                     return false;
                 }
 
-                string label = match.Groups[2].Value;
+                var label = match.Groups[2].Value;
                 if (string.IsNullOrEmpty(label) == false)
                 {
                     Authenticator.Name = nameField.Text = label;
                 }
 
-                NameValueCollection qs = WinAuthHelper.ParseQueryString(match.Groups[3].Value);
+                var qs = WinAuthHelper.ParseQueryString(match.Groups[3].Value);
                 privatekey = qs["secret"] ?? privatekey;
             }
 
@@ -305,7 +304,7 @@ namespace WinAuth
 
             try
             {
-                OktaVerifyAuthenticator authenticator = new OktaVerifyAuthenticator();
+                var authenticator = new OktaVerifyAuthenticator();
                 authenticator.Enroll(privatekey);
                 Authenticator.AuthenticatorData = authenticator;
                 Authenticator.Name = nameField.Text;

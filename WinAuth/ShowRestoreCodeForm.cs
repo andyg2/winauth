@@ -57,7 +57,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void ShowRestoreCodeForm_Load(object sender, EventArgs e)
         {
-            BattleNetAuthenticator authenticator = CurrentAuthenticator.AuthenticatorData as BattleNetAuthenticator;
+            var authenticator = CurrentAuthenticator.AuthenticatorData as BattleNetAuthenticator;
 
             serialNumberField.SecretMode = true;
             restoreCodeField.SecretMode = true;
@@ -68,7 +68,7 @@ namespace WinAuth
             // if needed start a background thread to verify the restore code
             if (authenticator.RestoreCodeVerified == false)
             {
-                BackgroundWorker verify = new BackgroundWorker();
+                var verify = new BackgroundWorker();
                 verify.DoWork += new DoWorkEventHandler(VerifyRestoreCode);
                 verify.RunWorkerCompleted += new RunWorkerCompletedEventHandler(VerifyRestoreCodeCompleted);
                 verify.RunWorkerAsync(CurrentAuthenticator.AuthenticatorData);
@@ -82,7 +82,7 @@ namespace WinAuth
         /// <param name="e"></param>
         void VerifyRestoreCodeCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            string message = e.Result as string;
+            var message = e.Result as string;
             if (string.IsNullOrEmpty(message) == false)
             {
                 MessageBox.Show(this, message, WinAuthMain.APPLICATION_NAME, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -96,12 +96,12 @@ namespace WinAuth
         /// <param name="e"></param>
         void VerifyRestoreCode(object sender, DoWorkEventArgs e)
         {
-            BattleNetAuthenticator auth = e.Argument as BattleNetAuthenticator;
+            var auth = e.Argument as BattleNetAuthenticator;
 
             // check if this authenticator is too old to be restored
             try
             {
-                BattleNetAuthenticator testrestore = new BattleNetAuthenticator();
+                var testrestore = new BattleNetAuthenticator();
                 testrestore.Restore(auth.Serial, auth.RestoreCode);
                 auth.RestoreCodeVerified = true;
                 e.Result = null;

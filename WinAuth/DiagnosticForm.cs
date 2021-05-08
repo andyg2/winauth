@@ -75,21 +75,21 @@ namespace WinAuth
         /// <returns>diagnostics information</returns>
         private string BuildDiagnostics()
         {
-            StringBuilder diag = new StringBuilder();
+            var diag = new StringBuilder();
 
             if (Config != null)
             {
                 // clone the current config so we can extract key in case machine/user encrypted
-                WinAuthConfig clone = Config.Clone() as WinAuthConfig;
+                var clone = Config.Clone() as WinAuthConfig;
                 clone.PasswordType = Authenticator.PasswordTypes.None;
 
                 // add the config and authenticator
                 try
                 {
-                    StringBuilder xml = new StringBuilder();
-                    XmlWriterSettings settings = new XmlWriterSettings();
+                    var xml = new StringBuilder();
+                    var settings = new XmlWriterSettings();
                     settings.Indent = true;
-                    using (XmlWriter writer = XmlWriter.Create(xml, settings))
+                    using (var writer = XmlWriter.Create(xml, settings))
                     {
                         clone.WriteXmlString(writer);
                     }
@@ -117,8 +117,8 @@ namespace WinAuth
             }
 
             // add winauth log
-            string dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
-            string winauthlog = Path.Combine(dir, "winauth.log");
+            var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+            var winauthlog = Path.Combine(dir, "winauth.log");
             if (File.Exists(winauthlog) == true)
             {
                 diag.Append("--WINAUTH.LOG--").Append(Environment.NewLine);
@@ -130,7 +130,7 @@ namespace WinAuth
             {
                 diag.Append("--EXCEPTION--").Append(Environment.NewLine);
 
-                Exception ex = ErrorException;
+                var ex = ErrorException;
                 while (ex != null)
                 {
                     diag.Append("Stack: ").Append(ex.Message).Append(Environment.NewLine).Append(new System.Diagnostics.StackTrace(ex).ToString()).Append(Environment.NewLine);
@@ -147,7 +147,7 @@ namespace WinAuth
                 {
                     diag.Append("EncType: " + ((InvalidSecretDataException)ErrorException).EncType).Append(Environment.NewLine);
                     diag.Append("Password: " + ((InvalidSecretDataException)ErrorException).Password).Append(Environment.NewLine);
-                    foreach (string data in ((InvalidSecretDataException)ErrorException).Decrypted)
+                    foreach (var data in ((InvalidSecretDataException)ErrorException).Decrypted)
                     {
                         diag.Append("Data: " + data).Append(Environment.NewLine);
                     }

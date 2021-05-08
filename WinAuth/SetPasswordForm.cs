@@ -70,8 +70,8 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            string password = passwordField.Text.Trim();
-            string verify = verifyField.Text.Trim();
+            var password = passwordField.Text.Trim();
+            var verify = verifyField.Text.Trim();
             if (password != verify)
             {
                 //WinAuthForm.ErrorDialog(this, "Your passwords do not match.");

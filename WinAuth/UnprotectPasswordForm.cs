@@ -66,7 +66,7 @@ namespace WinAuth
         private void okButton_Click(object sender, EventArgs e)
         {
             // it isn't empty
-            string password = passwordField.Text;
+            var password = passwordField.Text;
             if (password.Length == 0)
             {
                 invalidPasswordLabel.Text = strings.EnterPassword;

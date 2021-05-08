@@ -177,7 +177,7 @@ namespace WinAuth
                 // for Battle.net, extract key + serial
                 if (string.IsNullOrEmpty(value) == false)
                 {
-                    string[] parts = value.Split('|');
+                    var parts = value.Split('|');
                     if (parts.Length <= 1)
                     {
                         // old WinAuth2 version with secretdata + serial
@@ -239,12 +239,12 @@ namespace WinAuth
         public void Enroll()
         {
             // default to US
-            string region = REGION_US;
-            string country = REGION_US;
+            var region = REGION_US;
+            var country = REGION_US;
 
             // Battle.net does a GEO IP lookup anyway so there is no need to pass the region
             // however China has its own URL so we must still do our own GEO IP lookup to find the country
-            HttpWebRequest georequest = (HttpWebRequest)WebRequest.Create(GEOIPURL);
+            var georequest = (HttpWebRequest)WebRequest.Create(GEOIPURL);
             georequest.Method = "GET";
             georequest.ContentType = "application/json";
             georequest.Timeout = 10000;
@@ -252,16 +252,16 @@ namespace WinAuth
             string responseString = null;
             try
             {
-                using (HttpWebResponse georesponse = (HttpWebResponse)georequest.GetResponse())
+                using (var georesponse = (HttpWebResponse)georequest.GetResponse())
                 {
                     // OK?
                     if (georesponse.StatusCode == HttpStatusCode.OK)
                     {
-                        using (MemoryStream ms = new MemoryStream())
+                        using (var ms = new MemoryStream())
                         {
-                            using (Stream bs = georesponse.GetResponseStream())
+                            using (var bs = georesponse.GetResponseStream())
                             {
-                                byte[] temp = new byte[RESPONSE_BUFFER_SIZE];
+                                var temp = new byte[RESPONSE_BUFFER_SIZE];
                                 int read;
                                 while ((read = bs.Read(temp, 0, RESPONSE_BUFFER_SIZE)) != 0)
                                 {
@@ -277,7 +277,7 @@ namespace WinAuth
             if (string.IsNullOrEmpty(responseString) == false)
             {
                 // not worth a full json parser, just regex it
-                Match match = Regex.Match(responseString, ".*\"country\":\"([^\"]*)\".*", RegexOptions.IgnoreCase);
+                var match = Regex.Match(responseString, ".*\"country\":\"([^\"]*)\".*", RegexOptions.IgnoreCase);
                 if (match.Success == true)
                 {
                     // match the correct region
@@ -303,10 +303,10 @@ namespace WinAuth
             }
 
             // allow override of country for CN using US from app.config
-            System.Configuration.AppSettingsReader config = new System.Configuration.AppSettingsReader();
+            var config = new System.Configuration.AppSettingsReader();
             try
             {
-                string configcountry = config.GetValue("BattleNetAuthenticator.Country", typeof(string)) as string;
+                var configcountry = config.GetValue("BattleNetAuthenticator.Country", typeof(string)) as string;
                 if (string.IsNullOrEmpty(configcountry) == false)
                 {
                     country = configcountry;
@@ -315,7 +315,7 @@ namespace WinAuth
             catch (InvalidOperationException) { }
             try
             {
-                string configregion = config.GetValue("BattleNetAuthenticator.Region", typeof(string)) as string;
+                var configregion = config.GetValue("BattleNetAuthenticator.Region", typeof(string)) as string;
                 if (string.IsNullOrEmpty(configregion) == false)
                 {
                     region = configregion;
@@ -328,34 +328,34 @@ namespace WinAuth
             //  20 byte[2] country code, e.g. US, GB, FR, KR, etc
             //  22 byte[16] model string for this device;
             //	38 END
-            byte[] data = new byte[38];
-            byte[] oneTimePad = CreateOneTimePad(20);
+            var data = new byte[38];
+            var oneTimePad = CreateOneTimePad(20);
             Array.Copy(oneTimePad, data, oneTimePad.Length);
             // add country
-            byte[] countrydata = Encoding.UTF8.GetBytes(country);
+            var countrydata = Encoding.UTF8.GetBytes(country);
             Array.Copy(countrydata, 0, data, 20, Math.Min(countrydata.Length, 2));
             // add model name
-            byte[] model = Encoding.UTF8.GetBytes(GeneralRandomModel());
+            var model = Encoding.UTF8.GetBytes(GeneralRandomModel());
             Array.Copy(model, 0, data, 22, Math.Min(model.Length, 16));
 
             // encrypt the data with BMA public key
-            RsaEngine rsa = new RsaEngine();
+            var rsa = new RsaEngine();
             rsa.Init(true, new RsaKeyParameters(false, new Org.BouncyCastle.Math.BigInteger(ENROLL_MODULUS, 16), new Org.BouncyCastle.Math.BigInteger(ENROLL_EXPONENT, 16)));
-            byte[] encrypted = rsa.ProcessBlock(data, 0, data.Length);
+            var encrypted = rsa.ProcessBlock(data, 0, data.Length);
 
             // call the enroll server
             byte[] responseData = null;
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(region) + ENROLL_PATH);
+                var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(region) + ENROLL_PATH);
                 request.Method = "POST";
                 request.ContentType = "application/octet-stream";
                 request.ContentLength = encrypted.Length;
                 request.Timeout = 10000;
-                Stream requestStream = request.GetRequestStream();
+                var requestStream = request.GetRequestStream();
                 requestStream.Write(encrypted, 0, encrypted.Length);
                 requestStream.Close();
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     // OK?
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -364,12 +364,12 @@ namespace WinAuth
                     }
 
                     // load back the buffer - should only be a byte[45]
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
                         //using (BufferedStream bs = new BufferedStream(response.GetResponseStream()))
-                        using (Stream bs = response.GetResponseStream())
+                        using (var bs = response.GetResponseStream())
                         {
-                            byte[] temp = new byte[RESPONSE_BUFFER_SIZE];
+                            var temp = new byte[RESPONSE_BUFFER_SIZE];
                             int read;
                             while ((read = bs.Read(temp, 0, RESPONSE_BUFFER_SIZE)) != 0)
                             {
@@ -397,7 +397,7 @@ namespace WinAuth
             // 45 END
 
             // extract the server time
-            byte[] serverTime = new byte[8];
+            var serverTime = new byte[8];
             Array.Copy(responseData, serverTime, 8);
             if (BitConverter.IsLittleEndian == true)
             {
@@ -407,10 +407,10 @@ namespace WinAuth
             ServerTimeDiff = BitConverter.ToInt64(serverTime, 0) - CurrentTime;
 
             // get the secret key
-            byte[] secretKey = new byte[20];
+            var secretKey = new byte[20];
             Array.Copy(responseData, 25, secretKey, 0, 20);
             // decrypt the initdata with a simple xor with our key
-            for (int i = oneTimePad.Length - 1; i >= 0; i--)
+            for (var i = oneTimePad.Length - 1; i >= 0; i--)
             {
                 secretKey[i] ^= oneTimePad[i];
             }
@@ -461,13 +461,13 @@ namespace WinAuth
             try
             {
                 // create a connection to time sync server
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(Region) + SYNC_PATH);
+                var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(Region) + SYNC_PATH);
                 request.Method = "GET";
                 request.Timeout = 5000;
 
                 // get response
                 byte[] responseData = null;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     // OK?
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -476,12 +476,12 @@ namespace WinAuth
                     }
 
                     // load back the buffer - should only be a byte[8]
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
                         // using (BufferedStream bs = new BufferedStream(response.GetResponseStream()))
-                        using (Stream bs = response.GetResponseStream())
+                        using (var bs = response.GetResponseStream())
                         {
-                            byte[] temp = new byte[RESPONSE_BUFFER_SIZE];
+                            var temp = new byte[RESPONSE_BUFFER_SIZE];
                             int read;
                             while ((read = bs.Read(temp, 0, RESPONSE_BUFFER_SIZE)) != 0)
                             {
@@ -507,7 +507,7 @@ namespace WinAuth
                     Array.Reverse(responseData);
                 }
                 // get the difference between the server time and our current time
-                long serverTimeDiff = BitConverter.ToInt64(responseData, 0) - CurrentTime;
+                var serverTimeDiff = BitConverter.ToInt64(responseData, 0) - CurrentTime;
 
                 // update the Data object
                 ServerTimeDiff = serverTimeDiff;
@@ -534,20 +534,20 @@ namespace WinAuth
         public void Restore(string serial, string restoreCode)
         {
             // get the serial data
-            byte[] serialBytes = Encoding.UTF8.GetBytes(serial.ToUpper().Replace("-", string.Empty));
+            var serialBytes = Encoding.UTF8.GetBytes(serial.ToUpper().Replace("-", string.Empty));
 
             // send the request to the server to get our challenge
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(serial) + RESTORE_PATH);
+            var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(serial) + RESTORE_PATH);
             request.Method = "POST";
             request.ContentType = "application/octet-stream";
             request.ContentLength = serialBytes.Length;
-            Stream requestStream = request.GetRequestStream();
+            var requestStream = request.GetRequestStream();
             requestStream.Write(serialBytes, 0, serialBytes.Length);
             requestStream.Close();
             byte[] challenge = null;
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     // OK?
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -556,11 +556,11 @@ namespace WinAuth
                     }
 
                     // load back the buffer - should only be a byte[32]
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
-                        using (Stream bs = response.GetResponseStream())
+                        using (var bs = response.GetResponseStream())
                         {
-                            byte[] temp = new byte[RESPONSE_BUFFER_SIZE];
+                            var temp = new byte[RESPONSE_BUFFER_SIZE];
                             int read;
                             while ((read = bs.Read(temp, 0, RESPONSE_BUFFER_SIZE)) != 0)
                             {
@@ -579,7 +579,7 @@ namespace WinAuth
             }
             catch (WebException we)
             {
-                int code = (int)((HttpWebResponse)we.Response).StatusCode;
+                var code = (int)((HttpWebResponse)we.Response).StatusCode;
                 if (code >= 500 && code < 600)
                 {
                     throw new InvalidRestoreResponseException(string.Format("No response from server ({0}). Perhaps maintainence?", code));
@@ -591,38 +591,38 @@ namespace WinAuth
             }
 
             // only take the first 10 bytes of the restore code and encode to byte taking count of the missing chars
-            byte[] restoreCodeBytes = new byte[10];
-            char[] arrayOfChar = restoreCode.ToUpper().ToCharArray();
-            for (int i = 0; i < 10; i++)
+            var restoreCodeBytes = new byte[10];
+            var arrayOfChar = restoreCode.ToUpper().ToCharArray();
+            for (var i = 0; i < 10; i++)
             {
                 restoreCodeBytes[i] = ConvertRestoreCodeCharToByte(arrayOfChar[i]);
             }
 
             // build the response to the challenge
-            HMac hmac = new HMac(new Sha1Digest());
+            var hmac = new HMac(new Sha1Digest());
             hmac.Init(new KeyParameter(restoreCodeBytes));
-            byte[] hashdata = new byte[serialBytes.Length + challenge.Length];
+            var hashdata = new byte[serialBytes.Length + challenge.Length];
             Array.Copy(serialBytes, 0, hashdata, 0, serialBytes.Length);
             Array.Copy(challenge, 0, hashdata, serialBytes.Length, challenge.Length);
             hmac.BlockUpdate(hashdata, 0, hashdata.Length);
-            byte[] hash = new byte[hmac.GetMacSize()];
+            var hash = new byte[hmac.GetMacSize()];
             hmac.DoFinal(hash, 0);
 
             // create a random key
-            byte[] oneTimePad = CreateOneTimePad(20);
+            var oneTimePad = CreateOneTimePad(20);
 
             // concatanate the hash and key
-            byte[] hashkey = new byte[hash.Length + oneTimePad.Length];
+            var hashkey = new byte[hash.Length + oneTimePad.Length];
             Array.Copy(hash, 0, hashkey, 0, hash.Length);
             Array.Copy(oneTimePad, 0, hashkey, hash.Length, oneTimePad.Length);
 
             // encrypt the data with BMA public key
-            RsaEngine rsa = new RsaEngine();
+            var rsa = new RsaEngine();
             rsa.Init(true, new RsaKeyParameters(false, new Org.BouncyCastle.Math.BigInteger(ENROLL_MODULUS, 16), new Org.BouncyCastle.Math.BigInteger(ENROLL_EXPONENT, 16)));
-            byte[] encrypted = rsa.ProcessBlock(hashkey, 0, hashkey.Length);
+            var encrypted = rsa.ProcessBlock(hashkey, 0, hashkey.Length);
 
             // prepend the serial to the encrypted data
-            byte[] postbytes = new byte[serialBytes.Length + encrypted.Length];
+            var postbytes = new byte[serialBytes.Length + encrypted.Length];
             Array.Copy(serialBytes, 0, postbytes, 0, serialBytes.Length);
             Array.Copy(encrypted, 0, postbytes, serialBytes.Length, encrypted.Length);
 
@@ -637,7 +637,7 @@ namespace WinAuth
             byte[] secretKey = null;
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     // OK?
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -646,11 +646,11 @@ namespace WinAuth
                     }
 
                     // load back the buffer - should only be a byte[32]
-                    using (MemoryStream ms = new MemoryStream())
+                    using (var ms = new MemoryStream())
                     {
-                        using (Stream bs = response.GetResponseStream())
+                        using (var bs = response.GetResponseStream())
                         {
-                            byte[] temp = new byte[RESPONSE_BUFFER_SIZE];
+                            var temp = new byte[RESPONSE_BUFFER_SIZE];
                             int read;
                             while ((read = bs.Read(temp, 0, RESPONSE_BUFFER_SIZE)) != 0)
                             {
@@ -669,7 +669,7 @@ namespace WinAuth
             }
             catch (WebException we)
             {
-                int code = (int)((HttpWebResponse)we.Response).StatusCode;
+                var code = (int)((HttpWebResponse)we.Response).StatusCode;
                 if (code >= 500 && code < 600)
                 {
                     throw new InvalidRestoreResponseException(string.Format("No response from server ({0}). Perhaps maintainence?", code));
@@ -685,7 +685,7 @@ namespace WinAuth
             }
 
             // xor the returned data key with our pad to get the actual secret key
-            for (int i = oneTimePad.Length - 1; i >= 0; i--)
+            for (var i = oneTimePad.Length - 1; i >= 0; i--)
             {
                 secretKey[i] ^= oneTimePad[i];
             }
@@ -746,7 +746,7 @@ namespace WinAuth
         /// <returns>string of Url for region</returns>
         private static string GetMobileUrl(string region)
         {
-            string upperregion = region.ToUpper();
+            var upperregion = region.ToUpper();
             if (upperregion.Length > 2)
             {
                 upperregion = upperregion.Substring(0, 2);
@@ -775,24 +775,24 @@ namespace WinAuth
             }
 
             // get byte array of serial
-            byte[] serialdata = Encoding.UTF8.GetBytes(Serial.ToUpper().Replace("-", string.Empty));
-            byte[] secretdata = SecretKey;
+            var serialdata = Encoding.UTF8.GetBytes(Serial.ToUpper().Replace("-", string.Empty));
+            var secretdata = SecretKey;
 
             // combine serial data and secret data
-            byte[] combined = new byte[serialdata.Length + secretdata.Length];
+            var combined = new byte[serialdata.Length + secretdata.Length];
             Array.Copy(serialdata, 0, combined, 0, serialdata.Length);
             Array.Copy(secretdata, 0, combined, serialdata.Length, secretdata.Length);
 
             // create digest of combined data
             IDigest digest = new Sha1Digest();
             digest.BlockUpdate(combined, 0, combined.Length);
-            byte[] digestdata = new byte[digest.GetDigestSize()];
+            var digestdata = new byte[digest.GetDigestSize()];
             digest.DoFinal(digestdata, 0);
 
             // take last 10 chars of hash and convert each byte to our encoded string that doesn't use I,L,O,S
-            StringBuilder code = new StringBuilder();
-            int startpos = digestdata.Length - 10;
-            for (int i = 0; i < 10; i++)
+            var code = new StringBuilder();
+            var startpos = digestdata.Length - 10;
+            for (var i = 0; i < 10; i++)
             {
                 code.Append(ConvertRestoreCodeByteToChar(digestdata[startpos + i]));
             }
@@ -807,14 +807,14 @@ namespace WinAuth
         private static string GeneralRandomModel()
         {
             // seed a new RNG
-            RNGCryptoServiceProvider randomSeedGenerator = new RNGCryptoServiceProvider();
-            byte[] seedBuffer = new byte[4];
+            var randomSeedGenerator = new RNGCryptoServiceProvider();
+            var seedBuffer = new byte[4];
             randomSeedGenerator.GetBytes(seedBuffer);
-            Random random = new Random(BitConverter.ToInt32(seedBuffer, 0));
+            var random = new Random(BitConverter.ToInt32(seedBuffer, 0));
 
             // create a model string with available characters
-            StringBuilder model = new StringBuilder(MODEL_SIZE);
-            for (int i = MODEL_SIZE; i > 0; i--)
+            var model = new StringBuilder(MODEL_SIZE);
+            for (var i = MODEL_SIZE; i > 0; i--)
             {
                 model.Append(MODEL_CHARS[random.Next(MODEL_CHARS.Length)]);
             }
@@ -837,7 +837,7 @@ namespace WinAuth
             }
             else
             {
-                byte index = (byte)(c + 10 - 65);
+                var index = (byte)(c + 10 - 65);
                 if (c >= 'I')
                 {
                     index--;
@@ -866,7 +866,7 @@ namespace WinAuth
         /// <returns>char value of restore code value</returns>
         private static char ConvertRestoreCodeByteToChar(byte b)
         {
-            int index = b & 0x1f;
+            var index = b & 0x1f;
             if (index <= 9)
             {
                 return (char)(index + 48);

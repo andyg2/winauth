@@ -199,13 +199,13 @@ namespace WinAuth
                 }
             }
 
-            List<string> words = new List<string>();
-            RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
-            byte[] buffer = new byte[4];
+            var words = new List<string>();
+            var random = new RNGCryptoServiceProvider();
+            var buffer = new byte[4];
             for (var i = 0; i < wordCount; i++)
             {
                 random.GetBytes(buffer);
-                int pos = (int)(BitConverter.ToUInt32(buffer, 0) % (uint)_seedWords.Count());
+                var pos = (int)(BitConverter.ToUInt32(buffer, 0) % (uint)_seedWords.Count());
 
                 // check for duplicates
                 var word = _seedWords[pos].ToLower();

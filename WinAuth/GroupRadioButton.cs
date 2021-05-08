@@ -41,16 +41,16 @@ namespace WinAuth
         {
             base.OnCheckedChanged(e);
 
-            string group = Group;
+            var group = Group;
             if (string.IsNullOrEmpty(group))
             {
                 return;
             }
 
-            bool check = Checked;
-            Form form = FindParentControl<Form>();
-            GroupMetroRadioButton[] radios = FindAllControls<GroupMetroRadioButton>(form);
-            foreach (GroupMetroRadioButton grb in radios)
+            var check = Checked;
+            var form = FindParentControl<Form>();
+            var radios = FindAllControls<GroupMetroRadioButton>(form);
+            foreach (var grb in radios)
             {
                 if (grb != this && check && grb.Group == group && grb.Checked)
                 {
@@ -61,7 +61,7 @@ namespace WinAuth
 
         private T FindParentControl<T>() where T : Control
         {
-            Control parent = Parent;
+            var parent = Parent;
             while (parent != null && !(parent is T))
             {
                 parent = parent.Parent;
@@ -71,7 +71,7 @@ namespace WinAuth
 
         private static T[] FindAllControls<T>(Control parent) where T : Control
         {
-            List<T> controls = new List<T>();
+            var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
                 if (c is T == true)
@@ -107,16 +107,16 @@ namespace WinAuth
         {
             base.OnCheckedChanged(e);
 
-            string group = Group;
+            var group = Group;
             if (string.IsNullOrEmpty(group))
             {
                 return;
             }
 
-            bool check = Checked;
-            Form form = FindParentControl<Form>();
-            GroupRadioButton[] radios = FindAllControls<GroupRadioButton>(form);
-            foreach (GroupRadioButton grb in radios)
+            var check = Checked;
+            var form = FindParentControl<Form>();
+            var radios = FindAllControls<GroupRadioButton>(form);
+            foreach (var grb in radios)
             {
                 if (grb != this && check && grb.Group == group && grb.Checked)
                 {
@@ -127,7 +127,7 @@ namespace WinAuth
 
         private T FindParentControl<T>() where T : Control
         {
-            Control parent = Parent;
+            var parent = Parent;
             while (parent != null && !(parent is T))
             {
                 parent = parent.Parent;
@@ -137,7 +137,7 @@ namespace WinAuth
 
         private static T[] FindAllControls<T>(Control parent) where T : Control
         {
-            List<T> controls = new List<T>();
+            var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
                 if (c is T == true)

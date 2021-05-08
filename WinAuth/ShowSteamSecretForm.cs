@@ -61,7 +61,7 @@ namespace WinAuth
             deviceidField.SecretMode = true;
             steamdataField.SecretMode = false;
 
-            SteamAuthenticator authenticator = CurrentAuthenticator.AuthenticatorData as SteamAuthenticator;
+            var authenticator = CurrentAuthenticator.AuthenticatorData as SteamAuthenticator;
 
             deviceidField.Text = authenticator.DeviceId;
             if (string.IsNullOrEmpty(authenticator.SteamData) == false && authenticator.SteamData[0] == '{')

@@ -123,21 +123,21 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
+            var g = e.Graphics;
             using (Brush brush = new SolidBrush(base.ForeColor))
             {
-                StringFormat sf = StringFormat.GenericTypographic;
+                var sf = StringFormat.GenericTypographic;
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
-                string text = m_text;
+                var text = m_text;
 
                 // if we have spacing, we add a space in between each set of chars
                 if (m_spaceOut != 0 && m_text != null)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < m_text.Length; i += m_spaceOut)
+                    var sb = new StringBuilder();
+                    for (var i = 0; i < m_text.Length; i += m_spaceOut)
                     {
                         if (i >= m_text.Length)
                         {

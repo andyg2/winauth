@@ -341,7 +341,7 @@ namespace WinAuth
                 // Do not attempt to animate MDI child forms while showing or hiding as they do not behave as expected
                 if (_form.MdiParent == null)
                 {
-                    int flags = (int)_method | (int)_direction;
+                    var flags = (int)_method | (int)_direction;
 
                     if (_form.Visible)
                     {
@@ -473,7 +473,7 @@ namespace WinAuth
             else
             {
                 // inject browser
-                TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
+                var browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
                 browser.Dock = DockStyle.Fill;
                 browser.Location = new Point(0, 0);
                 browser.Size = new Size(htmlBody.Width, htmlBody.Height);
@@ -526,7 +526,7 @@ namespace WinAuth
                                                                 Screen.PrimaryScreen.WorkingArea.Height - Height);
 
             // Move each open form upwards to make room for this one
-            foreach (Notification openForm in openNotifications)
+            foreach (var openForm in openNotifications)
             {
                 openForm.Top -= Height;
             }
@@ -558,7 +558,7 @@ namespace WinAuth
         private void Notification_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Move down any open forms above this one
-            foreach (Notification openForm in openNotifications)
+            foreach (var openForm in openNotifications)
             {
                 if (openForm == this)
                 {

@@ -79,7 +79,7 @@ namespace WinAuth
         {
             if (string.IsNullOrEmpty(data) == false)
             {
-                Match match = Regex.Match(data, @"([0-9a-fA-F]{8})([0-9a-fA-F]{4})\t([^\t]*)\t(Y|N)(.*)", RegexOptions.Multiline);
+                var match = Regex.Match(data, @"([0-9a-fA-F]{8})([0-9a-fA-F]{4})\t([^\t]*)\t(Y|N)(.*)", RegexOptions.Multiline);
                 if (match.Success == true)
                 {
                     Modifiers = (WinAPI.KeyModifiers)BitConverter.ToInt32(Authenticator.StringToByteArray(match.Groups[1].Value), 0);
@@ -100,8 +100,8 @@ namespace WinAuth
         /// <param name="data">XmlNode from config</param>
         public HoyKeySequence(XmlNode autoLoginNode, string password, decimal version)
         {
-            bool boolVal = false;
-            XmlNode node = autoLoginNode.SelectSingleNode("modifiers");
+            var boolVal = false;
+            var node = autoLoginNode.SelectSingleNode("modifiers");
             if (node != null && node.InnerText.Length != 0)
             {
                 Modifiers = (WinAPI.KeyModifiers)BitConverter.ToInt32(Authenticator.StringToByteArray(node.InnerText), 0);
@@ -134,31 +134,31 @@ namespace WinAuth
             node = autoLoginNode.SelectSingleNode("script");
             if (node != null && node.InnerText.Length != 0)
             {
-                string data = node.InnerText;
+                var data = node.InnerText;
 
-                XmlAttribute attr = node.Attributes["encrypted"];
+                var attr = node.Attributes["encrypted"];
                 if (attr != null && attr.InnerText.Length != 0)
                 {
-                    char[] encTypes = attr.InnerText.ToCharArray();
+                    var encTypes = attr.InnerText.ToCharArray();
                     // we read the string in reverse order (the order they were encrypted)
-                    for (int i = encTypes.Length - 1; i >= 0; i--)
+                    for (var i = encTypes.Length - 1; i >= 0; i--)
                     {
-                        char encryptedType = encTypes[i];
+                        var encryptedType = encTypes[i];
                         switch (encryptedType)
                         {
                             case 'u':
                             {
                                 // we are going to decrypt with the Windows User account key
-                                byte[] cipher = Authenticator.StringToByteArray(data);
-                                byte[] plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
+                                var cipher = Authenticator.StringToByteArray(data);
+                                var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
                                 data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                                 break;
                             }
                             case 'm':
                             {
                                 // we are going to decrypt with the Windows local machine key
-                                byte[] cipher = Authenticator.StringToByteArray(data);
-                                byte[] plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
+                                var cipher = Authenticator.StringToByteArray(data);
+                                var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
                                 data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                                 break;
                             }
@@ -170,7 +170,7 @@ namespace WinAuth
                                     throw new EncryptedSecretDataException();
                                 }
                                 data = Authenticator.Decrypt(data, password, (version >= (decimal)1.7)); // changed encrypted in 1.7
-                                byte[] plain = Authenticator.StringToByteArray(data);
+                                var plain = Authenticator.StringToByteArray(data);
                                 data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                                 break;
                             }
@@ -225,12 +225,12 @@ namespace WinAuth
                             break;
 
                         case "script":
-                            string encrypted = reader.GetAttribute("encrypted");
-                            string data = reader.ReadElementContentAsString();
+                            var encrypted = reader.GetAttribute("encrypted");
+                            var data = reader.ReadElementContentAsString();
 
                             if (string.IsNullOrEmpty(encrypted) == false)
                             {
-                                Authenticator.PasswordTypes passwordType = Authenticator.DecodePasswordTypes(encrypted);
+                                var passwordType = Authenticator.DecodePasswordTypes(encrypted);
                                 data = Authenticator.DecryptSequence(data, passwordType, password, true);
                                 //byte[] plain = Authenticator.StringToByteArray(data);
                                 //data = Encoding.UTF8.GetString(plain, 0, plain.Length);
@@ -328,7 +328,7 @@ namespace WinAuth
             writer.WriteEndElement();
             //
             writer.WriteStartElement("script");
-            string script = AdvancedScript.Replace("\n", string.Empty);
+            var script = AdvancedScript.Replace("\n", string.Empty);
             writer.WriteCData(script);
             writer.WriteEndElement();
 

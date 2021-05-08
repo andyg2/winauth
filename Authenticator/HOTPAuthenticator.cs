@@ -69,7 +69,7 @@ namespace WinAuth
                 // extract key + counter
                 if (string.IsNullOrEmpty(value) == false)
                 {
-                    string[] parts = value.Split('|');
+                    var parts = value.Split('|');
                     base.SecretData = value;
                     Counter = (parts.Length > 1 ? long.Parse(parts[1]) : 0);
                 }
@@ -114,38 +114,38 @@ namespace WinAuth
                 Counter = counter - 1;
             }
 
-            HMac hmac = new HMac(new Sha1Digest());
+            var hmac = new HMac(new Sha1Digest());
             hmac.Init(new KeyParameter(SecretKey));
 
             // increment counter
             Counter++;
 
-            byte[] codeIntervalArray = BitConverter.GetBytes(Counter);
+            var codeIntervalArray = BitConverter.GetBytes(Counter);
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(codeIntervalArray);
             }
             hmac.BlockUpdate(codeIntervalArray, 0, codeIntervalArray.Length);
 
-            byte[] mac = new byte[hmac.GetMacSize()];
+            var mac = new byte[hmac.GetMacSize()];
             hmac.DoFinal(mac, 0);
 
             // the last 4 bits of the mac say where the code starts (e.g. if last 4 bit are 1100, we start at byte 12)
-            int start = mac[19] & 0x0f;
+            var start = mac[19] & 0x0f;
 
             // extract those 4 bytes
-            byte[] bytes = new byte[4];
+            var bytes = new byte[4];
             Array.Copy(mac, start, bytes, 0, 4);
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(bytes);
             }
-            uint fullcode = BitConverter.ToUInt32(bytes, 0) & 0x7fffffff;
+            var fullcode = BitConverter.ToUInt32(bytes, 0) & 0x7fffffff;
 
             // we use the last 8 digits of this code in radix 10
-            uint codemask = (uint)Math.Pow(10, CodeDigits);
-            string format = new string('0', CodeDigits);
-            string code = (fullcode % codemask).ToString(format);
+            var codemask = (uint)Math.Pow(10, CodeDigits);
+            var format = new string('0', CodeDigits);
+            var code = (fullcode % codemask).ToString(format);
 
             return code;
         }

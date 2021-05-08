@@ -164,7 +164,7 @@ namespace WinAuth
         /// <returns></returns>
         public override string ToString()
         {
-            string shortcut = Key.ToString().Substring(3);
+            var shortcut = Key.ToString().Substring(3);
             if ((Modifiers & WinAPI.KeyModifiers.Alt) != 0)
             {
                 shortcut = "Alt-" + shortcut;

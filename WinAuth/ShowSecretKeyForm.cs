@@ -60,21 +60,21 @@ namespace WinAuth
         {
             secretKeyField.SecretMode = true;
 
-            string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            var key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
 
-            string type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
-            long counter = (CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0);
-            string issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
+            var type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
+            var counter = (CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0);
+            var issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
 
             //string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
             //	+ "?secret=" + key
             //	+ "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
             //	+ (counter != 0 ? "&counter=" + counter : string.Empty)
             //	+ (string.IsNullOrEmpty(issuer) == false ? "&issuer=" + WinAuthHelper.HtmlEncode(issuer) : string.Empty);
-            string url = CurrentAuthenticator.ToUrl(true);
+            var url = CurrentAuthenticator.ToUrl(true);
 
-            BarcodeWriter writer = new BarcodeWriter();
+            var writer = new BarcodeWriter();
             writer.Format = BarcodeFormat.QR_CODE;
             writer.Options = new ZXing.Common.EncodingOptions { Width = qrImage.Width, Height = qrImage.Height };
             qrImage.Image = writer.Write(url);
@@ -89,7 +89,7 @@ namespace WinAuth
         {
             secretKeyField.SecretMode = !allowCopyCheckBox.Checked;
 
-            string key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            var key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             if (secretKeyField.SecretMode == true)
             {
                 secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();

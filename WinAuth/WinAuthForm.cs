@@ -136,10 +136,10 @@ namespace WinAuth
             // get any command arguments
             string password = null;
             string proxy = null;
-            string[] args = Environment.GetCommandLineArgs();
-            for (int i = 1; i < args.Length; i++)
+            var args = Environment.GetCommandLineArgs();
+            for (var i = 1; i < args.Length; i++)
             {
-                string arg = args[i];
+                var arg = args[i];
                 if (arg[0] == '-')
                 {
                     switch (arg)
@@ -163,7 +163,7 @@ namespace WinAuth
                         case "-l":
                         case "--log":
                             i++;
-                            FieldInfo fi = typeof(LogLevel).GetField(args[i], BindingFlags.Static | BindingFlags.IgnoreCase | BindingFlags.Public);
+                            var fi = typeof(LogLevel).GetField(args[i], BindingFlags.Static | BindingFlags.IgnoreCase | BindingFlags.Public);
                             if (fi == null)
                             {
                                 WinAuthForm.ErrorDialog(this, "Invalid parameter: log value: " + args[i] + " (must be error,info,debug,trace)");
@@ -191,11 +191,11 @@ namespace WinAuth
             {
                 try
                 {
-                    Uri uri = new Uri(proxy.IndexOf("://") == -1 ? "http://" + proxy : proxy);
-                    WebProxy webproxy = new WebProxy(uri.Host + ":" + uri.Port, true);
+                    var uri = new Uri(proxy.IndexOf("://") == -1 ? "http://" + proxy : proxy);
+                    var webproxy = new WebProxy(uri.Host + ":" + uri.Port, true);
                     if (string.IsNullOrEmpty(uri.UserInfo) == false)
                     {
-                        string[] auth = uri.UserInfo.Split(':');
+                        var auth = uri.UserInfo.Split(':');
                         webproxy.Credentials = new NetworkCredential(auth[0], (auth.Length > 1 ? auth[1] : string.Empty));
                     }
                     WebRequest.DefaultWebProxy = webproxy;
@@ -221,7 +221,7 @@ namespace WinAuth
         /// <param name="configFile">optional explicit config file</param>
         private void loadConfig(string password)
         {
-            string configFile = _startupConfigFile;
+            var configFile = _startupConfigFile;
 
             loadingPanel.Visible = true;
             passwordPanel.Visible = false;
@@ -230,7 +230,7 @@ namespace WinAuth
                 try
                 {
                     // use previous config if we have one
-                    WinAuthConfig config = WinAuthHelper.LoadConfig(this, configFile, password);
+                    var config = WinAuthHelper.LoadConfig(this, configFile, password);
                     return new Tuple<WinAuthConfig, Exception>(config, null);
                 }
                 catch (Exception ex)
@@ -239,7 +239,7 @@ namespace WinAuth
                 }
             }).ContinueWith((configTask) =>
             {
-                Exception ex = configTask.Result.Item2;
+                var ex = configTask.Result.Item2;
                 if (ex is WinAuthInvalidNewerConfigException)
                 {
                     MessageBox.Show(this, ex.Message, WinAuthMain.APPLICATION_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -279,7 +279,7 @@ namespace WinAuth
                     return;
                 }
 
-                WinAuthConfig config = configTask.Result.Item1;
+                var config = configTask.Result.Item1;
                 if (config == null)
                 {
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
@@ -355,8 +355,8 @@ namespace WinAuth
                 authenticator.Sync();
 
                 // make sure there isn't a name clash
-                int rename = 0;
-                string importedName = authenticator.Name;
+                var rename = 0;
+                var importedName = authenticator.Name;
                 while (Config.Where(a => a.Name == importedName).Count() != 0)
                 {
                     importedName = authenticator.Name + " " + (++rename);
@@ -369,7 +369,7 @@ namespace WinAuth
                 // first time we prompt for protection and set out main settings from imported config
                 if (Config.Count == 0)
                 {
-                    ChangePasswordForm form = new ChangePasswordForm();
+                    var form = new ChangePasswordForm();
                     form.PasswordType = Authenticator.PasswordTypes.Explicit;
                     if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
@@ -402,29 +402,29 @@ namespace WinAuth
         /// <param name="authenticatorFile">name of v2 xml file</param>
         private void importAuthenticatorFromV2(string authenticatorFile)
         {
-            bool retry = false;
+            var retry = false;
             string password = null;
-            bool needPassword = false;
-            bool invalidPassword = false;
+            var needPassword = false;
+            var invalidPassword = false;
             do
             {
                 try
                 {
-                    WinAuthConfig config = WinAuthHelper.LoadConfig(this, authenticatorFile, password);
+                    var config = WinAuthHelper.LoadConfig(this, authenticatorFile, password);
                     if (config.Count == 0)
                     {
                         return;
                     }
 
                     // get the actual authenticator and ensure it is synced
-                    List<WinAuthAuthenticator> imported = new List<WinAuthAuthenticator>();
+                    var imported = new List<WinAuthAuthenticator>();
                     foreach (var importedAuthenticator in config)
                     {
                         importedAuthenticator.Sync();
 
                         // make sure there isn't a name clash
-                        int rename = 0;
-                        string importedName = importedAuthenticator.Name;
+                        var rename = 0;
+                        var importedName = importedAuthenticator.Name;
                         while (Config.Where(a => a.Name == importedName).Count() != 0)
                         {
                             importedName = importedAuthenticator.Name + " (" + (++rename) + ")";
@@ -443,7 +443,7 @@ namespace WinAuth
                         Config.CopySearchedSingle = config.CopySearchedSingle;
                         Config.AutoExitAfterCopy = config.AutoExitAfterCopy;
 
-                        ChangePasswordForm form = new ChangePasswordForm();
+                        var form = new ChangePasswordForm();
                         form.PasswordType = Authenticator.PasswordTypes.Explicit;
                         if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                         {
@@ -499,7 +499,7 @@ namespace WinAuth
 
                 if (needPassword == true)
                 {
-                    GetPasswordForm form = new GetPasswordForm();
+                    var form = new GetPasswordForm();
                     form.InvalidPassword = invalidPassword;
                     var result = form.ShowDialog(this);
                     if (result == DialogResult.Cancel)
@@ -545,7 +545,7 @@ namespace WinAuth
                 }
                 if (Updater.IsAutoCheck == true)
                 {
-                    Version latest = Updater.LastKnownLatestVersion;
+                    var latest = Updater.LastKnownLatestVersion;
 
                     if (latest != null && latest > Updater.CurrentVersion)
                     {
@@ -594,7 +594,7 @@ namespace WinAuth
             // set the shadow type (change in config for compatibility)
             try
             {
-                MetroFormShadowType shadow = (MetroFormShadowType)Enum.Parse(typeof(MetroFormShadowType), Config.ShadowType, true);
+                var shadow = (MetroFormShadowType)Enum.Parse(typeof(MetroFormShadowType), Config.ShadowType, true);
                 ShadowType = shadow;
             }
             catch (Exception) { }
@@ -616,7 +616,7 @@ namespace WinAuth
                 }
 
                 // check we aren't below the taskbar
-                int lowesty = Screen.GetWorkingArea(this).Bottom;
+                var lowesty = Screen.GetWorkingArea(this).Bottom;
                 var bottom = Top + Height;
                 if (bottom > lowesty)
                 {
@@ -666,7 +666,7 @@ namespace WinAuth
             // set up list
             authenticatorList.Items.Clear();
 
-            int index = 0;
+            var index = 0;
             AuthenticatorListitem lastFound = null;
             foreach (var auth in Config)
             {
@@ -741,8 +741,8 @@ namespace WinAuth
                 message += Environment.NewLine + Environment.NewLine + ex.Message;
             }
 #if DEBUG
-            StringBuilder capture = new StringBuilder();
-            Exception e = ex;
+            var capture = new StringBuilder();
+            var e = ex;
             while (e != null)
             {
                 capture.Append(new System.Diagnostics.StackTrace(e).ToString()).Append(Environment.NewLine);
@@ -779,8 +779,8 @@ namespace WinAuth
             addAuthenticatorMenu.Items.Clear();
 
             ToolStripMenuItem subitem;
-            int index = 0;
-            foreach (RegisteredAuthenticator auth in WinAuthMain.REGISTERED_AUTHENTICATORS)
+            var index = 0;
+            foreach (var auth in WinAuthMain.REGISTERED_AUTHENTICATORS)
             {
                 if (auth == null)
                 {
@@ -837,7 +837,7 @@ namespace WinAuth
             UnhookHotkeys();
 
             // hook hotkey
-            List<WinAuthAuthenticator> keys = new List<WinAuthAuthenticator>();
+            var keys = new List<WinAuthAuthenticator>();
             foreach (var auth in Config)
             {
                 if (auth.HotKey != null)
@@ -909,7 +909,7 @@ namespace WinAuth
         /// <param name="ex"></param>
         private void SteamClient_ConfirmationErrorEvent(object sender, string message, SteamClient.PollerAction action, Exception ex)
         {
-            SteamClient steam = sender as SteamClient;
+            var steam = sender as SteamClient;
             var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator && ((SteamAuthenticator)a.AuthenticatorData).Serial == steam.Authenticator.Serial).FirstOrDefault();
 
             WinAuthMain.LogException(ex, true);
@@ -966,7 +966,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void Notify_Click(object sender, EventArgs e)
         {
-            WinAuthAuthenticator auth = ((Notification)sender).Tag as WinAuthAuthenticator;
+            var auth = ((Notification)sender).Tag as WinAuthAuthenticator;
 
             // ensure window is front
             BringToFront();
@@ -991,14 +991,14 @@ namespace WinAuth
         /// <param name="action"></param>
         private void SteamClient_ConfirmationEvent(object sender, SteamClient.Confirmation confirmation, SteamClient.PollerAction action)
         {
-            SteamClient steam = sender as SteamClient;
+            var steam = sender as SteamClient;
 
             var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator && ((SteamAuthenticator)a.AuthenticatorData).Serial == steam.Authenticator.Serial).FirstOrDefault();
 
             string title = null;
             string message = null;
-            bool openOnClick = false;
-            int extraHeight = 0;
+            var openOnClick = false;
+            var extraHeight = 0;
 
             if (action == SteamClient.PollerAction.AutoConfirm || action == SteamClient.PollerAction.SilentAutoConfirm)
             {
@@ -1050,8 +1050,8 @@ namespace WinAuth
             // pick up the HotKey message from RegisterHotKey and call hook callback
             if (m.Msg == WinAPI.WM_HOTKEY)
             {
-                Keys key = (Keys)(((int)m.LParam >> 16) & 0xffff);
-                WinAPI.KeyModifiers modifier = (WinAPI.KeyModifiers)((int)m.LParam & 0xffff);
+                var key = (Keys)(((int)m.LParam >> 16) & 0xffff);
+                var modifier = (WinAPI.KeyModifiers)((int)m.LParam & 0xffff);
 
                 if (m_hook != null)
                 {
@@ -1101,7 +1101,7 @@ namespace WinAuth
         /// <param name="e"></param>
         void hotkeyTimer_Tick(object sender, EventArgs e)
         {
-            HotKeyLauncher data = hotkeyTimer.Tag as HotKeyLauncher;
+            var data = hotkeyTimer.Tag as HotKeyLauncher;
 
             // check we don't wait forever
             if (data.Started.AddSeconds(5) < DateTime.Now)
@@ -1145,8 +1145,8 @@ namespace WinAuth
 
                 // save the current window
                 var fgwindow = WinAPI.GetForegroundWindow();
-                Screen screen = Screen.FromHandle(fgwindow);
-                IntPtr activewindow = IntPtr.Zero;
+                var screen = Screen.FromHandle(fgwindow);
+                var activewindow = IntPtr.Zero;
                 if (Visible == true)
                 {
                     activewindow = WinAPI.SetActiveWindow(Handle);
@@ -1166,7 +1166,7 @@ namespace WinAuth
             if (code != null)
             {
                 // default to sending the code to the current window
-                KeyboardSender keysend = new KeyboardSender(auth.HotKey.Window);
+                var keysend = new KeyboardSender(auth.HotKey.Window);
                 string command = null;
                 if (auth.HotKey.Action == HotKey.HotKeyActions.Notify)
                 {
@@ -1219,8 +1219,8 @@ namespace WinAuth
 
                 // save the current window
                 var fgwindow = WinAPI.GetForegroundWindow();
-                Screen screen = Screen.FromHandle(fgwindow);
-                IntPtr activewindow = IntPtr.Zero;
+                var screen = Screen.FromHandle(fgwindow);
+                var activewindow = IntPtr.Zero;
                 if (Visible == true)
                 {
                     activewindow = WinAPI.SetActiveWindow(Handle);
@@ -1239,7 +1239,7 @@ namespace WinAuth
             }
             if (code != null)
             {
-                KeyboardSender keysend = new KeyboardSender(auth.HotKey != null ? auth.HotKey.Window : null);
+                var keysend = new KeyboardSender(auth.HotKey != null ? auth.HotKey.Window : null);
                 string command = null;
 
                 if (action == WinAuthConfig.NotifyActions.CopyToClipboard)
@@ -1275,7 +1275,7 @@ namespace WinAuth
         /// <param name="data"></param>
         public void SetClipboardData(object data)
         {
-            bool clipRetry = false;
+            var clipRetry = false;
             do
             {
                 try
@@ -1301,12 +1301,12 @@ namespace WinAuth
         /// <returns></returns>
         public object GetClipboardData(Type format)
         {
-            bool clipRetry = false;
+            var clipRetry = false;
             do
             {
                 try
                 {
-                    IDataObject clipdata = Clipboard.GetDataObject();
+                    var clipdata = Clipboard.GetDataObject();
                     return (clipdata != null ? clipdata.GetData(format) : null);
                 }
                 catch (ExternalException)
@@ -1339,7 +1339,7 @@ namespace WinAuth
                 }
 
                 // Issue#175; take the smallest of full height or 62% screen height
-                int height = Height - authenticatorList.Height;
+                var height = Height - authenticatorList.Height;
                 height += (Config.Count * authenticatorList.ItemHeight);
                 Height = Math.Min(Screen.GetWorkingArea(this).Height * 62 / 100, height);
 
@@ -1394,7 +1394,7 @@ namespace WinAuth
         /// </summary>
         private void ShowUpdaterForm()
         {
-            UpdateCheckForm form = new UpdateCheckForm();
+            var form = new UpdateCheckForm();
             form.Config = Config;
             form.Updater = Updater;
             if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
@@ -1432,7 +1432,7 @@ namespace WinAuth
             // prompt to import v2
             if (string.IsNullOrEmpty(_existingv2Config) == false)
             {
-                DialogResult importResult = MessageBox.Show(this,
+                var importResult = MessageBox.Show(this,
                     string.Format(strings.LoadPreviousAuthenticator, _existingv2Config),
                     WinAuthMain.APPLICATION_TITLE,
                     MessageBoxButtons.YesNo,
@@ -1500,17 +1500,17 @@ namespace WinAuth
         /// <param name="e"></param>
         void addAuthenticatorMenu_Click(object sender, EventArgs e)
         {
-            ToolStripItem menuitem = (ToolStripItem)sender;
-            RegisteredAuthenticator registeredauth = menuitem.Tag as RegisteredAuthenticator;
+            var menuitem = (ToolStripItem)sender;
+            var registeredauth = menuitem.Tag as RegisteredAuthenticator;
             if (registeredauth != null)
             {
                 // add the new authenticator
-                WinAuthAuthenticator winauthauthenticator = new WinAuthAuthenticator();
-                bool added = false;
+                var winauthauthenticator = new WinAuthAuthenticator();
+                var added = false;
 
                 if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.BattleNet)
                 {
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1522,14 +1522,14 @@ namespace WinAuth
                     winauthauthenticator.AutoRefresh = false;
 
                     // create the Battle.net authenticator
-                    AddBattleNetAuthenticator form = new AddBattleNetAuthenticator();
+                    var form = new AddBattleNetAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Steam)
                 {
                     // create the authenticator
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1540,7 +1540,7 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    AddSteamAuthenticator form = new AddSteamAuthenticator();
+                    var form = new AddSteamAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
@@ -1548,7 +1548,7 @@ namespace WinAuth
                 {
                     // create the Google authenticator
                     // add the new authenticator
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1558,14 +1558,14 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    AddGoogleAuthenticator form = new AddGoogleAuthenticator();
+                    var form = new AddGoogleAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Microsoft)
                 {
                     // create the Microsoft authenticator
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1575,7 +1575,7 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    AddMicrosoftAuthenticator form = new AddMicrosoftAuthenticator();
+                    var form = new AddMicrosoftAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
@@ -1583,7 +1583,7 @@ namespace WinAuth
                 {
                     // create the Google authenticator
                     // add the new authenticator
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1594,14 +1594,14 @@ namespace WinAuth
                     winauthauthenticator.AutoRefresh = false;
                     winauthauthenticator.Skin = "WinAuthIcon.png";
 
-                    AddAuthenticator form = new AddAuthenticator();
+                    var form = new AddAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.OktaVerify)
                 {
                     // create the Okta Verify authenticator
-                    int existing = 0;
+                    var existing = 0;
                     string name;
                     do
                     {
@@ -1611,7 +1611,7 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    AddOktaVerifyAuthenticator form = new AddOktaVerifyAuthenticator();
+                    var form = new AddOktaVerifyAuthenticator();
                     form.Authenticator = winauthauthenticator;
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
@@ -1628,7 +1628,7 @@ namespace WinAuth
                     // first time we prompt for protection
                     if (Config.Count == 0)
                     {
-                        ChangePasswordForm form = new ChangePasswordForm();
+                        var form = new ChangePasswordForm();
                         form.PasswordType = Authenticator.PasswordTypes.Explicit;
                         if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                         {
@@ -1661,14 +1661,14 @@ namespace WinAuth
         /// <param name="e"></param>
         void importTextMenu_Click(object sender, EventArgs e)
         {
-            ToolStripItem menuitem = (ToolStripItem)sender;
+            var menuitem = (ToolStripItem)sender;
 
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.AddExtension = true;
             ofd.CheckFileExists = true;
             ofd.CheckPathExists = true;
             //
-            string lastv2file = WinAuthHelper.GetLastV2Config();
+            var lastv2file = WinAuthHelper.GetLastV2Config();
             if (string.IsNullOrEmpty(lastv2file) == false)
             {
                 ofd.InitialDirectory = Path.GetDirectoryName(lastv2file);
@@ -1773,10 +1773,10 @@ namespace WinAuth
         private void authenticatorList_Reordered(object source, AuthenticatorListReorderedEventArgs args)
         {
             // set the new order of items in Config from that of the list
-            int count = authenticatorList.Items.Count;
-            for (int i = 0; i < count; i++)
+            var count = authenticatorList.Items.Count;
+            for (var i = 0; i < count; i++)
             {
-                AuthenticatorListitem item = (AuthenticatorListitem)authenticatorList.Items[i];
+                var item = (AuthenticatorListitem)authenticatorList.Items[i];
                 Config.Where(a => a == item.Authenticator).FirstOrDefault().Index = i;
             }
             // resort the config list
@@ -1877,7 +1877,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void searchTextbox_changed(object sender, EventArgs e)
         {
-            string txt = searchTextbox.Text.Trim();
+            var txt = searchTextbox.Text.Trim();
             if (txt != "")
             {
                 searchString = txt;
@@ -1949,7 +1949,7 @@ namespace WinAuth
         /// <param name="e"></param>
         void SystemEvents_TimeChanged(object sender, EventArgs e)
         {
-            Cursor cursor = Cursor.Current;
+            var cursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
             foreach (var auth in Config)
             {
@@ -2292,10 +2292,10 @@ namespace WinAuth
             // confirm current password
             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
             {
-                bool invalidPassword = false;
+                var invalidPassword = false;
                 while (true)
                 {
-                    GetPasswordForm checkform = new GetPasswordForm();
+                    var checkform = new GetPasswordForm();
                     checkform.InvalidPassword = invalidPassword;
                     var result = checkform.ShowDialog(this);
                     if (result == DialogResult.Cancel)
@@ -2310,7 +2310,7 @@ namespace WinAuth
                 }
             }
 
-            ChangePasswordForm form = new ChangePasswordForm();
+            var form = new ChangePasswordForm();
             form.PasswordType = Config.PasswordType;
             form.HasPassword = ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0);
             if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
@@ -2366,8 +2366,8 @@ namespace WinAuth
         /// <param name="e"></param>
         private void authenticatorOptionsMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem menuitem = (ToolStripMenuItem)sender;
-            WinAuthAuthenticator auth = menuitem.Tag as WinAuthAuthenticator;
+            var menuitem = (ToolStripMenuItem)sender;
+            var auth = menuitem.Tag as WinAuthAuthenticator;
             var item = authenticatorList.Items.Cast<AuthenticatorListitem>().Where(i => i.Authenticator == auth).FirstOrDefault();
             if (item != null)
             {
@@ -2489,10 +2489,10 @@ namespace WinAuth
             // confirm current password
             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
             {
-                bool invalidPassword = false;
+                var invalidPassword = false;
                 while (true)
                 {
-                    GetPasswordForm checkform = new GetPasswordForm();
+                    var checkform = new GetPasswordForm();
                     checkform.InvalidPassword = invalidPassword;
                     var result = checkform.ShowDialog(this);
                     if (result == DialogResult.Cancel)
@@ -2507,7 +2507,7 @@ namespace WinAuth
                 }
             }
 
-            ExportForm exportform = new ExportForm();
+            var exportform = new ExportForm();
             if (exportform.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 WinAuthHelper.ExportAuthenticators(this, Config, exportform.ExportFile, exportform.Password, exportform.PGPKey);
@@ -2531,7 +2531,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void aboutOptionMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm form = new AboutForm();
+            var form = new AboutForm();
             form.Config = Config;
             form.ShowDialog(this);
         }
@@ -2564,7 +2564,7 @@ namespace WinAuth
             }
             else if (args.PropertyName == "UseTrayIcon")
             {
-                bool useTrayIcon = Config.UseTrayIcon;
+                var useTrayIcon = Config.UseTrayIcon;
                 if (useTrayIcon == false && Visible == false)
                 {
                     BringToFront();

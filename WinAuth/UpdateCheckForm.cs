@@ -72,7 +72,7 @@ namespace WinAuth
             InitializeComponent();
 
             // set the font for the HtmlLabel to match the form
-            Font font = MetroFonts.Label(MetroLabelSize.Small, MetroLabelWeight.Regular);
+            var font = MetroFonts.Label(MetroLabelSize.Small, MetroLabelWeight.Regular);
             versionInfoLabel.Font = new Font(font.FontFamily, 10);
         }
 
@@ -104,7 +104,7 @@ namespace WinAuth
             }
             else
             {
-                TimeSpan? interval = Updater.UpdateInterval;
+                var interval = Updater.UpdateInterval;
                 if (interval != null)
                 {
                     foreach (UpdateIntervalItem item in autoDropdown.Items)
@@ -132,7 +132,7 @@ namespace WinAuth
             if (autoCheckbox.Checked == true)
             {
                 // get the interval and set in the updater
-                UpdateIntervalItem interval = autoDropdown.SelectedItem as UpdateIntervalItem;
+                var interval = autoDropdown.SelectedItem as UpdateIntervalItem;
                 Updater.SetUpdateInterval(interval.Interval);
             }
             else
@@ -206,7 +206,7 @@ namespace WinAuth
                 return;
             }
 
-            string text = string.Empty;
+            var text = string.Empty;
             if (cancelled == true)
             {
                 text = "Update was cancelled";
@@ -218,15 +218,15 @@ namespace WinAuth
             }
             else
             {
-                Version latest = new Version(latestInfo.Version.Major, latestInfo.Version.Minor, latestInfo.Version.Build);
-                Version current = new Version(Updater.CurrentVersion.Major, Updater.CurrentVersion.Minor, Updater.CurrentVersion.Build);
+                var latest = new Version(latestInfo.Version.Major, latestInfo.Version.Minor, latestInfo.Version.Build);
+                var current = new Version(Updater.CurrentVersion.Major, Updater.CurrentVersion.Minor, Updater.CurrentVersion.Build);
                 if (current >= latest)
                 {
                     text = GetHtmlText("<p>Latest Version: {0}</p><p>You are on the latest version.</p>", latest.ToString(3));
                 }
                 else
                 {
-                    string info = string.Format("<p>Latest Version: {0} (yours {1})</p><p><a href=\"{2}\">Download version {0}</a></p></body></html>", latest.ToString(3), current.ToString(3), latestInfo.Url);
+                    var info = string.Format("<p>Latest Version: {0} (yours {1})</p><p><a href=\"{2}\">Download version {0}</a></p></body></html>", latest.ToString(3), current.ToString(3), latestInfo.Url);
                     text = GetHtmlText("{0}", info);
                 }
             }

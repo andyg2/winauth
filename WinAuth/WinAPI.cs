@@ -437,7 +437,7 @@ namespace WinAuth
         /// <returns>handle for unregistering</returns>
         public static IntPtr RegisterUsbDeviceNotification(IntPtr hWnd)
         {
-            DevBroadcastDeviceinterface dbi = new DevBroadcastDeviceinterface
+            var dbi = new DevBroadcastDeviceinterface
             {
                 DeviceType = DbtDevtypDeviceinterface,
                 Reserved = 0,
@@ -446,7 +446,7 @@ namespace WinAuth
             };
 
             dbi.Size = Marshal.SizeOf(dbi);
-            IntPtr buffer = Marshal.AllocHGlobal(dbi.Size);
+            var buffer = Marshal.AllocHGlobal(dbi.Size);
             Marshal.StructureToPtr(dbi, buffer, true);
 
             return RegisterDeviceNotification(hWnd, buffer, 0);
@@ -462,7 +462,7 @@ namespace WinAuth
 
         public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
         {
-            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            var placement = new WINDOWPLACEMENT();
             placement.length = Marshal.SizeOf(placement);
             GetWindowPlacement(hwnd, ref placement);
             return placement;
@@ -475,11 +475,11 @@ namespace WinAuth
         /// <returns>List of child windows</returns>
         public static List<IntPtr> GetChildWindows(IntPtr parent, bool onlyDirect = false)
         {
-            List<IntPtr> result = new List<IntPtr>();
-            GCHandle listHandle = GCHandle.Alloc(result);
+            var result = new List<IntPtr>();
+            var listHandle = GCHandle.Alloc(result);
             try
             {
-                EnumWindowProc childProc = new EnumWindowProc(EnumWindow);
+                var childProc = new EnumWindowProc(EnumWindow);
                 EnumChildWindows(parent, childProc, GCHandle.ToIntPtr(listHandle));
             }
             finally
@@ -513,8 +513,8 @@ namespace WinAuth
         /// <returns>True to continue the enumeration, false to bail</returns>
         private static bool EnumWindow(IntPtr handle, IntPtr pointer)
         {
-            GCHandle gch = GCHandle.FromIntPtr(pointer);
-            List<IntPtr> list = gch.Target as List<IntPtr>;
+            var gch = GCHandle.FromIntPtr(pointer);
+            var list = gch.Target as List<IntPtr>;
             if (list == null)
             {
                 throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");

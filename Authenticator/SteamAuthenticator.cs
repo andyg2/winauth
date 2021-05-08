@@ -202,7 +202,7 @@ namespace WinAuth
                 // extract key + serial + deviceid
                 if (string.IsNullOrEmpty(value) == false)
                 {
-                    string[] parts = value.Split('|');
+                    var parts = value.Split('|');
                     base.SecretData = value;
                     Serial = (parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null);
                     DeviceId = (parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null);
@@ -213,7 +213,7 @@ namespace WinAuth
                         // convert old recovation code into SteamData json
                         SteamData = "{\"revocation_code\":\"" + SteamData + "\"}";
                     }
-                    string session = (parts.Length > 4 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[4])) : null);
+                    var session = (parts.Length > 4 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[4])) : null);
 
                     //if (Logger != null)
                     //{
@@ -264,14 +264,14 @@ namespace WinAuth
         private string Request(string url, string method, NameValueCollection data = null, CookieContainer cookies = null, NameValueCollection headers = null, int timeout = 0)
         {
             // create form-encoded data for query or body
-            string query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+            var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
             if (string.Compare(method, "GET", true) == 0)
             {
                 url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
             }
 
             // call the server
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
             request.ServicePoint.Expect100Continue = false;
@@ -296,14 +296,14 @@ namespace WinAuth
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.ContentLength = query.Length;
 
-                StreamWriter requestStream = new StreamWriter(request.GetRequestStream());
+                var requestStream = new StreamWriter(request.GetRequestStream());
                 requestStream.Write(query);
                 requestStream.Close();
             }
 
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     LogRequest(method, url, cookies, data, response.StatusCode.ToString() + " " + response.StatusDescription);
 
@@ -314,9 +314,9 @@ namespace WinAuth
                     }
 
                     // load the response
-                    using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
+                    using (var responseStream = new StreamReader(response.GetResponseStream()))
                     {
-                        string responseData = responseStream.ReadToEnd();
+                        var responseData = responseStream.ReadToEnd();
                         LogRequest(method, url, cookies, data, responseData);
                         return responseData;
                     }
@@ -361,7 +361,7 @@ namespace WinAuth
                         cookies.Add(new Uri(COMMUNITY_BASE + "/"), new Cookie("Steam_Language", "english"));
                         cookies.Add(new Uri(COMMUNITY_BASE + "/"), new Cookie("dob", ""));
 
-                        NameValueCollection headers = new NameValueCollection();
+                        var headers = new NameValueCollection();
                         headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
 
                         response = Request("https://steamcommunity.com/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client", "GET", null, cookies, headers);
@@ -381,7 +381,7 @@ namespace WinAuth
                     }
 
                     // encrypt password with RSA key
-                    RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
+                    var random = new RNGCryptoServiceProvider();
                     byte[] encryptedPassword;
                     using (var rsa = new RSACryptoServiceProvider())
                     {
@@ -409,7 +409,7 @@ namespace WinAuth
                     data.Add("oauth_scope", "read_profile write_profile read_client write_client");
                     data.Add("donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString());
                     response = Request(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data, cookies);
-                    Dictionary<string, object> loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                    var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 
                     if (loginresponse.ContainsKey("emailsteamid") == true)
                     {
@@ -475,7 +475,7 @@ namespace WinAuth
                     }
 
                     // get the OAuth token - is stringified json
-                    string oauth = (string)loginresponse["oauth"];
+                    var oauth = (string)loginresponse["oauth"];
                     var oauthjson = JObject.Parse(oauth);
                     state.OAuthToken = oauthjson.SelectToken("oauth_token").Value<string>();
                     if (oauthjson.SelectToken("steamid") != null)
@@ -500,7 +500,7 @@ namespace WinAuth
 
                     response = Request(COMMUNITY_BASE + "/steamguard/phoneajax", "POST", data, cookies);
                     var jsonresponse = JObject.Parse(response);
-                    bool hasPhone = jsonresponse.SelectToken("has_phone").Value<Boolean>();
+                    var hasPhone = jsonresponse.SelectToken("has_phone").Value<Boolean>();
                     if (hasPhone == false)
                     {
                         state.OAuthToken = null; // force new login
@@ -514,7 +514,7 @@ namespace WinAuth
 
                     // add a new authenticator
                     data.Clear();
-                    string deviceId = BuildRandomId();
+                    var deviceId = BuildRandomId();
                     data.Add("access_token", state.OAuthToken);
                     data.Add("steamid", state.SteamId);
                     data.Add("authenticator_type", "1");
@@ -561,7 +561,7 @@ namespace WinAuth
                     SteamData = steamdata.ToString(Newtonsoft.Json.Formatting.None);
 
                     // calculate server drift
-                    long servertime = tfaresponse.SelectToken("response.server_time").Value<long>() * 1000;
+                    var servertime = tfaresponse.SelectToken("response.server_time").Value<long>() * 1000;
                     ServerTimeDiff = servertime - CurrentTime;
                     LastServerTime = DateTime.Now.Ticks;
 
@@ -593,7 +593,7 @@ namespace WinAuth
                     // reset our time
                     if (response.IndexOf("server_time") != -1)
                     {
-                        long servertime = finalizeresponse.SelectToken("response.server_time").Value<long>() * 1000;
+                        var servertime = finalizeresponse.SelectToken("response.server_time").Value<long>() * 1000;
                         ServerTimeDiff = servertime - CurrentTime;
                         LastServerTime = DateTime.Now.Ticks;
                     }
@@ -666,7 +666,7 @@ namespace WinAuth
                 var json = JObject.Parse(response);
 
                 // get servertime in ms
-                long servertime = json.SelectToken("response.server_time").Value<long>() * 1000;
+                var servertime = json.SelectToken("response.server_time").Value<long>() * 1000;
 
                 // get the difference between the server time and our current time
                 ServerTimeDiff = servertime - CurrentTime;
@@ -705,33 +705,33 @@ namespace WinAuth
                 }
             }
 
-            HMac hmac = new HMac(new Sha1Digest());
+            var hmac = new HMac(new Sha1Digest());
             hmac.Init(new KeyParameter(SecretKey));
 
-            byte[] codeIntervalArray = BitConverter.GetBytes(CodeInterval);
+            var codeIntervalArray = BitConverter.GetBytes(CodeInterval);
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(codeIntervalArray);
             }
             hmac.BlockUpdate(codeIntervalArray, 0, codeIntervalArray.Length);
 
-            byte[] mac = new byte[hmac.GetMacSize()];
+            var mac = new byte[hmac.GetMacSize()];
             hmac.DoFinal(mac, 0);
 
             // the last 4 bits of the mac say where the code starts (e.g. if last 4 bit are 1100, we start at byte 12)
-            int start = mac[19] & 0x0f;
+            var start = mac[19] & 0x0f;
 
             // extract those 4 bytes
-            byte[] bytes = new byte[4];
+            var bytes = new byte[4];
             Array.Copy(mac, start, bytes, 0, 4);
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(bytes);
             }
-            uint fullcode = BitConverter.ToUInt32(bytes, 0) & 0x7fffffff;
+            var fullcode = BitConverter.ToUInt32(bytes, 0) & 0x7fffffff;
 
             // build the alphanumeric code
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
             for (var i = 0; i < CODE_DIGITS; i++)
             {
                 code.Append(STEAMCHARS[fullcode % STEAMCHARS.Length]);
@@ -760,7 +760,7 @@ namespace WinAuth
         /// <param name="ex">Thrown exception</param>
         private static void LogException(string method, string url, CookieContainer cookies, NameValueCollection request, Exception ex)
         {
-            StringBuilder data = new StringBuilder();
+            var data = new StringBuilder();
             if (cookies != null)
             {
                 foreach (Cookie cookie in cookies.GetCookies(new Uri(url)))
@@ -808,7 +808,7 @@ namespace WinAuth
         /// <param name="response">response body</param>
         private static void LogRequest(string method, string url, CookieContainer cookies, NameValueCollection request, string response)
         {
-            StringBuilder data = new StringBuilder();
+            var data = new StringBuilder();
             if (cookies != null)
             {
                 foreach (Cookie cookie in cookies.GetCookies(new Uri(url)))

@@ -499,7 +499,7 @@ namespace WinAuth
         {
             if (IsPortable == true)
             {
-                List<string> keys = new List<string>();
+                var keys = new List<string>();
                 foreach (var entry in _settings)
                 {
                     if (entry.Key.StartsWith(name) == true)
@@ -568,8 +568,8 @@ namespace WinAuth
         /// </summary>
         private void SetIndexes()
         {
-            int count = Count;
-            for (int i = 0; i < count; i++)
+            var count = Count;
+            for (var i = 0; i < count; i++)
             {
                 this[i].Index = i;
             }
@@ -591,7 +591,7 @@ namespace WinAuth
         /// </summary>
         public void Clear()
         {
-            foreach (WinAuthAuthenticator authenticator in this)
+            foreach (var authenticator in this)
             {
                 authenticator.Index = 0;
                 authenticator.OnWinAuthAuthenticatorChanged -= new WinAuthAuthenticatorChangedHandler(OnWinAuthAuthenticatorChanged);
@@ -687,7 +687,7 @@ namespace WinAuth
         public bool Remove(WinAuthAuthenticator authenticator)
         {
             authenticator.OnWinAuthAuthenticatorChanged -= new WinAuthAuthenticatorChangedHandler(OnWinAuthAuthenticatorChanged);
-            bool result = _authenticators.Remove(authenticator);
+            var result = _authenticators.Remove(authenticator);
             SetIndexes();
             return result;
         }
@@ -793,7 +793,7 @@ namespace WinAuth
         /// <returns></returns>
         public object Clone()
         {
-            WinAuthConfig clone = (WinAuthConfig)MemberwiseClone();
+            var clone = (WinAuthConfig)MemberwiseClone();
             // close the internal authenticator so the data is kept separate
             clone.OnConfigChanged = null;
             clone._authenticators = new List<WinAuthAuthenticator>();
@@ -807,7 +807,7 @@ namespace WinAuth
 
         public bool ReadXml(XmlReader reader, string password = null)
         {
-            bool changed = false;
+            var changed = false;
 
             reader.Read();
             while (reader.EOF == false && reader.IsEmptyElement == true)
@@ -843,7 +843,7 @@ namespace WinAuth
 
         protected bool ReadXmlInternal(XmlReader reader, string password = null)
         {
-            bool changed = false;
+            var changed = false;
 
             decimal version;
             if (decimal.TryParse(reader.GetAttribute("version"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out version) == true)
@@ -857,16 +857,16 @@ namespace WinAuth
                 }
             }
 
-            string encrypted = reader.GetAttribute("encrypted");
+            var encrypted = reader.GetAttribute("encrypted");
             PasswordType = Authenticator.DecodePasswordTypes(encrypted);
             if (PasswordType != Authenticator.PasswordTypes.None)
             {
                 // read the encrypted text from the node
-                string data = reader.ReadElementContentAsString();
+                var data = reader.ReadElementContentAsString();
                 // decrypt
                 data = Authenticator.DecryptSequence(data, PasswordType, password);
 
-                using (MemoryStream ms = new MemoryStream(Authenticator.StringToByteArray(data)))
+                using (var ms = new MemoryStream(Authenticator.StringToByteArray(data)))
                 {
                     reader = XmlReader.Create(ms);
                     changed = ReadXml(reader, password);
@@ -885,10 +885,10 @@ namespace WinAuth
                 return changed;
             }
 
-            bool defaultAutoRefresh = true;
-            bool defaultAllowCopy = false;
-            bool defaultCopyOnCode = false;
-            bool defaultHideSerial = true;
+            var defaultAutoRefresh = true;
+            var defaultAllowCopy = false;
+            var defaultCopyOnCode = false;
+            var defaultHideSerial = true;
             string defaultSkin = null;
 
             reader.Read();
@@ -910,7 +910,7 @@ namespace WinAuth
                             if (PasswordType != Authenticator.PasswordTypes.None)
                             {
                                 HashAlgorithm hasher;
-                                string hash = reader.GetAttribute("sha1");
+                                var hash = reader.GetAttribute("sha1");
                                 if (string.IsNullOrEmpty(hash) == false)
                                 {
                                     hasher = Authenticator.SafeHasher("SHA1");
@@ -922,16 +922,16 @@ namespace WinAuth
                                     hasher = Authenticator.SafeHasher("MD5");
                                 }
                                 // read the encrypted text from the node
-                                string data = reader.ReadElementContentAsString();
+                                var data = reader.ReadElementContentAsString();
 
                                 hasher.ComputeHash(Authenticator.StringToByteArray(data));
                                 hasher.Dispose();
 
                                 // decrypt
                                 data = Authenticator.DecryptSequence(data, PasswordType, password);
-                                byte[] plain = Authenticator.StringToByteArray(data);
+                                var plain = Authenticator.StringToByteArray(data);
 
-                                using (MemoryStream ms = new MemoryStream(plain))
+                                using (var ms = new MemoryStream(plain))
                                 {
                                     var datareader = XmlReader.Create(ms);
                                     changed = ReadXmlInternal(datareader, password) || changed;
@@ -952,7 +952,7 @@ namespace WinAuth
                             break;
 
                         case "notifyaction":
-                            string s = reader.ReadElementContentAsString();
+                            var s = reader.ReadElementContentAsString();
                             if (string.IsNullOrEmpty(s) == false)
                             {
                                 try
@@ -1004,7 +1004,7 @@ namespace WinAuth
                             break;
 
                         case "settings":
-                            XmlSerializer serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
+                            var serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
                             _settings = ((setting[])serializer.Deserialize(reader)).ToDictionary(e => e.Key, e => e.Value);
                             break;
 
@@ -1061,7 +1061,7 @@ namespace WinAuth
                                 {
                                     CurrentAuthenticator.HotKey = new HotKey();
                                 }
-                                HotKey hotkey = CurrentAuthenticator.HotKey;
+                                var hotkey = CurrentAuthenticator.HotKey;
                                 hotkey.Action = HotKey.HotKeyActions.Inject;
                                 hotkey.Key = hks.HotKey;
                                 hotkey.Modifiers = hks.Modifiers;
@@ -1180,7 +1180,7 @@ namespace WinAuth
             {
                 writer.WriteStartElement("data");
 
-                StringBuilder encryptedTypes = new StringBuilder();
+                var encryptedTypes = new StringBuilder();
                 if ((PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
                 {
                     encryptedTypes.Append("y");
@@ -1196,15 +1196,15 @@ namespace WinAuth
                 writer.WriteAttributeString("encrypted", encryptedTypes.ToString());
 
                 byte[] data;
-                using (MemoryStream ms = new MemoryStream())
+                using (var ms = new MemoryStream())
                 {
-                    XmlWriterSettings settings = new XmlWriterSettings();
+                    var settings = new XmlWriterSettings();
                     settings.Indent = true;
                     settings.Encoding = Encoding.UTF8;
-                    using (XmlWriter encryptedwriter = XmlWriter.Create(ms, settings))
+                    using (var encryptedwriter = XmlWriter.Create(ms, settings))
                     {
                         encryptedwriter.WriteStartElement("config");
-                        foreach (WinAuthAuthenticator wa in this)
+                        foreach (var wa in this)
                         {
                             wa.WriteXmlString(encryptedwriter);
                         }
@@ -1216,8 +1216,8 @@ namespace WinAuth
 
                 using (var hasher = Authenticator.SafeHasher("SHA1"))
                 {
-                    string encdata = Authenticator.EncryptSequence(Authenticator.ByteArrayToString(data), PasswordType, Password);
-                    string enchash = Authenticator.ByteArrayToString(hasher.ComputeHash(Authenticator.StringToByteArray(encdata)));
+                    var encdata = Authenticator.EncryptSequence(Authenticator.ByteArrayToString(data), PasswordType, Password);
+                    var enchash = Authenticator.ByteArrayToString(hasher.ComputeHash(Authenticator.StringToByteArray(encdata)));
                     writer.WriteAttributeString("sha1", enchash);
                     writer.WriteString(encdata);
                 }
@@ -1226,7 +1226,7 @@ namespace WinAuth
             }
             else
             {
-                foreach (WinAuthAuthenticator wa in this)
+                foreach (var wa in this)
                 {
                     wa.WriteXmlString(writer);
                 }
@@ -1234,9 +1234,9 @@ namespace WinAuth
 
             if (includeSettings == true && _settings.Count != 0)
             {
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                var ns = new XmlSerializerNamespaces();
                 ns.Add(string.Empty, string.Empty);
-                XmlSerializer serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
+                var serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
                 serializer.Serialize(writer, _settings.Select(e => new setting { Key = e.Key, Value = e.Value }).ToArray(), ns);
             }
 
