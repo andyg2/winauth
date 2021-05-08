@@ -540,7 +540,6 @@
     <EmbeddedResource Include="Resources\ArcheAgeIcon.png" />
     <EmbeddedResource Include="Resources\SteamAuthenticatorIcon.png" />
     <EmbeddedResource Include="Resources\SteamIcon.png" />
-    <None Include="images\spinner24.gif" />
     <EmbeddedResource Include="Resources\SeedWords.txt" />
     <EmbeddedResource Include="Resources\Swtor.png" />
     <EmbeddedResource Include="Resources\SwtorEmpire.png" />
