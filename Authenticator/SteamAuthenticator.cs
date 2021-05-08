@@ -264,7 +264,7 @@ namespace WinAuth
         private string Request(string url, string method, NameValueCollection data = null, CookieContainer cookies = null, NameValueCollection headers = null, int timeout = 0)
         {
             // create form-encoded data for query or body
-            var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+            var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
             if (string.Compare(method, "GET", true) == 0)
             {
                 url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
@@ -500,7 +500,7 @@ namespace WinAuth
 
                     response = Request(COMMUNITY_BASE + "/steamguard/phoneajax", "POST", data, cookies);
                     var jsonresponse = JObject.Parse(response);
-                    var hasPhone = jsonresponse.SelectToken("has_phone").Value<Boolean>();
+                    var hasPhone = jsonresponse.SelectToken("has_phone").Value<bool>();
                     if (hasPhone == false)
                     {
                         state.OAuthToken = null; // force new login

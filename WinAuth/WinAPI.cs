@@ -259,10 +259,10 @@ namespace WinAuth
         /// </summary>
         public struct KeyboardHookStruct
         {
-            public UInt32 vkCode;
-            public UInt32 scanCode;
-            public UInt32 flags;
-            public UInt32 time;
+            public uint vkCode;
+            public uint scanCode;
+            public uint flags;
+            public uint time;
             public IntPtr dwExtraInfo;
         }
 
@@ -291,26 +291,26 @@ namespace WinAuth
 
         public struct MOUSEINPUT
         {
-            public Int32 X;
-            public Int32 Y;
-            public UInt32 MouseData;
-            public UInt32 Flags;
-            public UInt32 Time;
+            public int X;
+            public int Y;
+            public uint MouseData;
+            public uint Flags;
+            public uint Time;
             public IntPtr ExtraInfo;
         }
         public struct KEYBDINPUT
         {
-            public UInt16 KeyCode;
-            public UInt16 Scan;
-            public UInt32 Flags;
-            public UInt32 Time;
+            public ushort KeyCode;
+            public ushort Scan;
+            public uint Flags;
+            public uint Time;
             public IntPtr ExtraInfo;
         }
         public struct HARDWAREINPUT
         {
-            public UInt32 Msg;
-            public UInt16 ParamL;
-            public UInt16 ParamH;
+            public uint Msg;
+            public ushort ParamL;
+            public ushort ParamH;
         }
         [StructLayout(LayoutKind.Explicit)]
         public struct MOUSEKEYBDHARDWAREINPUT
@@ -324,7 +324,7 @@ namespace WinAuth
         }
         public struct INPUT
         {
-            public UInt32 Type;
+            public uint Type;
             public MOUSEKEYBDHARDWAREINPUT Data;
         }
 
@@ -360,7 +360,7 @@ namespace WinAuth
         [DllImport("user32.dll", EntryPoint = "PostMessageA", SetLastError = true)]
         internal static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, IntPtr lParam);
         [DllImport("user32.dll", EntryPoint = "SendMessageA", SetLastError = true)]
-        internal static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, int wParam, IntPtr lParam);
+        internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, IntPtr lParam);
         [DllImport("user32.dll")]
         internal static extern byte VkKeyScan(char ch);
         [DllImport("user32.dll")]
@@ -386,11 +386,11 @@ namespace WinAuth
         internal static extern IntPtr GetParent(IntPtr hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
-        internal static extern UInt32 SendInput(UInt32 numberOfInputs, INPUT[] inputs, Int32 sizeOfInputStructure);
+        internal static extern uint SendInput(uint numberOfInputs, INPUT[] inputs, int sizeOfInputStructure);
         [DllImport("user32.dll", SetLastError = true)]
-        internal static extern Int16 GetKeyState(UInt16 virtualKeyCode);
+        internal static extern short GetKeyState(ushort virtualKeyCode);
         [DllImport("user32.dll", SetLastError = true)]
-        internal static extern Int16 GetAsyncKeyState(UInt16 virtualKeyCode);
+        internal static extern short GetAsyncKeyState(ushort virtualKeyCode);
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetKeyboardState(byte[] lpKeyState);
@@ -428,7 +428,7 @@ namespace WinAuth
         private static extern bool UnregisterDeviceNotification(IntPtr handle);
 
         [DllImport("cfgmgr32.dll")]
-        public static extern int CMP_WaitNoPendingInstallEvents(UInt32 timeOut);
+        public static extern int CMP_WaitNoPendingInstallEvents(uint timeOut);
 
         /// <summary>
         /// Register a window handle to receive device change notifications

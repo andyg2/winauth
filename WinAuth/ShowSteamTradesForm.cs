@@ -401,7 +401,7 @@ namespace WinAuth
             var steam = AuthenticatorData.GetClient();
             steam.Logout();
 
-            if (String.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
+            if (string.IsNullOrEmpty(AuthenticatorData.SessionData) == false)
             {
                 AuthenticatorData.SessionData = null;
                 //AuthenticatorData.PermSession = false;

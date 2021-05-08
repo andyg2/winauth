@@ -141,14 +141,14 @@ namespace WinAuth
             writer.WriteString(Enum.GetName(typeof(HotKeyActions), Action));
             writer.WriteEndElement();
             //
-            if (String.IsNullOrEmpty(Window) == false)
+            if (string.IsNullOrEmpty(Window) == false)
             {
                 writer.WriteStartElement("window");
                 writer.WriteString(Window);
                 writer.WriteEndElement();
             }
             //
-            if (String.IsNullOrEmpty(Advanced) == false)
+            if (string.IsNullOrEmpty(Advanced) == false)
             {
                 writer.WriteStartElement("advanced");
                 writer.WriteString(Advanced);

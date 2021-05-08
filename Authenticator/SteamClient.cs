@@ -928,7 +928,7 @@ namespace WinAuth
 
             // save last html for confirmations details
             ConfirmationsHtml = html;
-            ConfirmationsQuery = string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key]))));
+            ConfirmationsQuery = string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key]))));
 
             var trades = new List<Confirmation>();
 
@@ -1193,7 +1193,7 @@ namespace WinAuth
             lock (this)
             {
                 // create form-encoded data for query or body
-                var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+                var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
                 if (string.Compare(method, "GET", true) == 0)
                 {
                     url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
