@@ -434,8 +434,7 @@ namespace WinAuth
         {
             var changed = false;
 
-            Guid id;
-            if (Guid.TryParse(reader.GetAttribute("id"), out id) == true)
+            if (Guid.TryParse(reader.GetAttribute("id"), out var id) == true)
             {
                 Id = id;
             }

@@ -220,10 +220,9 @@ namespace WinAuth
         /// </summary>
         private void DecodeSecretCode()
         {
-            Uri uri;
             Match match;
 
-            if (Regex.IsMatch(secretCodeField.Text, "https?://.*") == true && Uri.TryCreate(secretCodeField.Text, UriKind.Absolute, out uri) == true)
+            if (Regex.IsMatch(secretCodeField.Text, "https?://.*") == true && Uri.TryCreate(secretCodeField.Text, UriKind.Absolute, out var uri) == true)
             {
                 try
                 {
@@ -273,8 +272,7 @@ namespace WinAuth
                 var qs = WinAuthHelper.ParseQueryString(match.Groups[3].Value);
                 if (qs["counter"] != null)
                 {
-                    long counter;
-                    if (long.TryParse(qs["counter"], out counter) == true)
+                    if (long.TryParse(qs["counter"], out var counter) == true)
                     {
                         counterField.Text = counter.ToString();
                     }
@@ -287,20 +285,17 @@ namespace WinAuth
                 }
                 nameField.Text = label;
 
-                int period;
-                if (int.TryParse(qs["period"], out period) == true && period > 0)
+                if (int.TryParse(qs["period"], out var period) == true && period > 0)
                 {
                     intervalField.Text = period.ToString();
                 }
 
-                int digits;
-                if (int.TryParse(qs["digits"], out digits) == true && digits > 0)
+                if (int.TryParse(qs["digits"], out var digits) == true && digits > 0)
                 {
                     digitsField.Text = digits.ToString();
                 }
 
-                WinAuth.Authenticator.HMACTypes hmac;
-                if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out hmac) == true)
+                if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out var hmac) == true)
                 {
                     hashField.SelectedItem = hmac.ToString();
                 }
@@ -350,8 +345,7 @@ namespace WinAuth
 
             var authtype = timeBasedRadio.Checked == true ? TOTP : HOTP;
 
-            var period = 0;
-            if (string.IsNullOrEmpty(intervalField.Text) == true || int.TryParse(intervalField.Text, out period) == false || period <= 0)
+            if (string.IsNullOrEmpty(intervalField.Text) == true || int.TryParse(intervalField.Text, out var period) == false || period <= 0)
             {
                 return false;
             }
@@ -359,9 +353,8 @@ namespace WinAuth
             long counter = 0;
 
             // if this is a URL, pull it down
-            Uri uri;
             Match match;
-            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out uri) == true)
+            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri) == true)
             {
                 try
                 {
@@ -440,8 +433,7 @@ namespace WinAuth
 
                 var qs = WinAuthHelper.ParseQueryString(match.Groups[3].Value);
                 privatekey = qs["secret"] ?? privatekey;
-                int querydigits;
-                if (int.TryParse(qs["digits"], out querydigits) && querydigits != 0)
+                if (int.TryParse(qs["digits"], out var querydigits) && querydigits != 0)
                 {
                     digits = querydigits;
                 }

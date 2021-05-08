@@ -169,8 +169,7 @@ namespace WinAuth
                     SecretKey = Authenticator.StringToByteArray(parts[0]);
                     if (parts.Length > 1)
                     {
-                        int digits;
-                        if (int.TryParse(parts[1], out digits) == true)
+                        if (int.TryParse(parts[1], out var digits) == true)
                         {
                             CodeDigits = digits;
                         }
@@ -181,8 +180,7 @@ namespace WinAuth
                     }
                     if (parts.Length > 3)
                     {
-                        int period;
-                        if (int.TryParse(parts[3], out period) == true)
+                        if (int.TryParse(parts[3], out var period) == true)
                         {
                             Period = period;
                         }

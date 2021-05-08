@@ -671,22 +671,19 @@ namespace WinAuth
                             }
                         }
 
-                        var period = 0;
-                        int.TryParse(query["period"], out period);
+                        int.TryParse(query["period"], out var period);
                         if (period != 0)
                         {
                             auth.Period = period;
                         }
 
-                        var digits = 0;
-                        int.TryParse(query["digits"], out digits);
+                        int.TryParse(query["digits"], out var digits);
                         if (digits != 0)
                         {
                             auth.CodeDigits = digits;
                         }
 
-                        Authenticator.HMACTypes hmactype;
-                        if (Enum.TryParse<Authenticator.HMACTypes>(query["algorithm"], true, out hmactype) == true)
+                        if (Enum.TryParse<Authenticator.HMACTypes>(query["algorithm"], true, out var hmactype) == true)
                         {
                             auth.HMACType = hmactype;
                         }

@@ -113,20 +113,17 @@ namespace WinAuth
             Config = config;
 
             // read the update interval and last known latest version from the registry
-            TimeSpan interval;
-            if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out interval) == true)
+            if (TimeSpan.TryParse(Config.ReadSetting(WINAUTHREGKEY_CHECKFREQUENCY, string.Empty), out var interval) == true)
             {
                 _autocheckInterval = interval;
             }
 
-            long lastCheck = 0;
-            if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out lastCheck) == true)
+            if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out var lastCheck) == true)
             {
                 _lastCheck = new DateTime(lastCheck);
             }
 
-            Version version;
-            if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out version) == true)
+            if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out var version) == true)
             {
                 _latestVersion = version;
             }
@@ -155,8 +152,7 @@ namespace WinAuth
         {
             get
             {
-                Version version;
-                if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out version) == false)
+                if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version) == false)
                 {
                     throw new InvalidOperationException("Cannot get Assembly version information");
                 }
@@ -331,15 +327,13 @@ namespace WinAuth
             xml.LoadXml(result);
             var node = xml.SelectSingleNode("//version");
 
-            Version version = null;
-            Version.TryParse(node.InnerText, out version);
+            Version.TryParse(node.InnerText, out var version);
             if (node != null && version != null)
             {
                 var latestversion = new WinAuthVersionInfo(version);
 
-                DateTime released;
                 node = xml.SelectSingleNode("//released");
-                if (node != null && DateTime.TryParse(node.InnerText, out released) == true)
+                if (node != null && DateTime.TryParse(node.InnerText, out var released) == true)
                 {
                     latestversion.Released = released;
                 }

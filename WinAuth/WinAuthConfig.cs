@@ -420,8 +420,7 @@ namespace WinAuth
             if (IsPortable == true)
             {
                 // read setting from _settings
-                string value;
-                if (_settings.TryGetValue(name, out value) == true)
+                if (_settings.TryGetValue(name, out var value) == true)
                 {
                     return value;
                 }
@@ -743,8 +742,7 @@ namespace WinAuth
         {
             var changed = false;
 
-            decimal version;
-            if (decimal.TryParse(reader.GetAttribute("version"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out version) == true)
+            if (decimal.TryParse(reader.GetAttribute("version"), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var version) == true)
             {
                 Version = version;
 

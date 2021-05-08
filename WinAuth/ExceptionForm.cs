@@ -85,8 +85,7 @@ namespace WinAuth
         {
             var diag = new StringBuilder();
 
-            Version version;
-            if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out version) == true)
+            if (Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version) == true)
             {
                 diag.Append("Version:" + version.ToString(4));
             }

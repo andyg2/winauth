@@ -225,9 +225,8 @@ namespace WinAuth
             var authtype = "totp";
 
             // if this is a URL, pull it down
-            Uri uri;
             Match match;
-            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out uri) == true)
+            if (Regex.IsMatch(privatekey, "https?://.*") == true && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri) == true)
             {
                 try
                 {

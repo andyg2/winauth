@@ -100,7 +100,6 @@ namespace WinAuth
         /// <param name="data">XmlNode from config</param>
         public HoyKeySequence(XmlNode autoLoginNode, string password, decimal version)
         {
-            var boolVal = false;
             var node = autoLoginNode.SelectSingleNode("modifiers");
             if (node != null && node.InnerText.Length != 0)
             {
@@ -117,7 +116,7 @@ namespace WinAuth
                 WindowTitle = node.InnerText;
             }
             node = autoLoginNode.SelectSingleNode("windowtitleregex");
-            if (node != null && bool.TryParse(node.InnerText, out boolVal) == true)
+            if (node != null && bool.TryParse(node.InnerText, out var boolVal) == true)
             {
                 WindowTitleRegex = boolVal;
             }
