@@ -501,7 +501,7 @@ namespace WinAuth
         /// <param name="keyCode"></param>
         public KeyboardHookEventArgs(Keys keyCode)
         {
-            Key = (Keys)keyCode;
+            Key = keyCode;
             try
             {
                 // we have to use Windows Form to get the modifiers as won't work if no focus 

@@ -603,7 +603,7 @@ namespace WinAuth
                     {
                         if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>() == true)
                         {
-                            ServerTimeDiff += ((long)Period * 1000L);
+                            ServerTimeDiff += (Period * 1000L);
                             retries++;
                             continue;
                         }
@@ -611,7 +611,7 @@ namespace WinAuth
                         break;
                     }
 
-                    ServerTimeDiff += ((long)Period * 1000L);
+                    ServerTimeDiff += (Period * 1000L);
                     retries++;
                 }
                 if (state.RequiresActivation == true)
@@ -697,7 +697,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * ((long)Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * (Period * 1000L)) - CurrentTime;
                 }
                 else
                 {

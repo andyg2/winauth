@@ -255,7 +255,7 @@ namespace WinAuth
 
         static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            LogException(e.Exception as Exception);
+            LogException(e.Exception);
         }
 
         static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

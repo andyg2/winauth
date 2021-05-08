@@ -1010,7 +1010,7 @@ namespace WinAuth
                     continue;
                 }
 
-                var value = pi.GetValue(control, (object[])null);
+                var value = pi.GetValue(control, null);
                 if (value != null && value.GetType().IsValueType == false)
                 {
                     if (value is ICloneable)
@@ -1026,7 +1026,7 @@ namespace WinAuth
                         }
                     }
                 }
-                pi.SetValue(clone, value, (object[])null);
+                pi.SetValue(clone, value, null);
             }
 
             // copy child controls

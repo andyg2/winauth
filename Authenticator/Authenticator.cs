@@ -221,7 +221,7 @@ namespace WinAuth
             get
             {
                 // calculate the code interval; the server's time div 30,000
-                return (CurrentTime + ServerTimeDiff) / ((long)Period * 1000L);
+                return (CurrentTime + ServerTimeDiff) / (Period * 1000L);
             }
         }
 
@@ -275,7 +275,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * ((long)Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * (Period * 1000L)) - CurrentTime;
                 }
                 else
                 {

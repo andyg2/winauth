@@ -1280,7 +1280,7 @@ namespace WinAuth
                         using (var pcdgStream = pcdg.Open(pedgStream))
                         {
                             var pldg = new PgpLiteralDataGenerator();
-                            using (var encrypter = pldg.Open(pcdgStream, PgpLiteralData.Binary, "", (long)data.Length, DateTime.Now))
+                            using (var encrypter = pldg.Open(pcdgStream, PgpLiteralData.Binary, "", data.Length, DateTime.Now))
                             {
                                 encrypter.Write(data, 0, data.Length);
                             }

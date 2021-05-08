@@ -367,7 +367,7 @@ namespace WinAuth
                 {
                     // for autorefresh we repaint the pie or the code too
                     //int tillUpdate = (int)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L);
-                    var tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
+                    var tillUpdate = (int)Math.Round((auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L)) / 1000L * (360M / auth.AuthenticatorData.Period));
                     if (item.LastUpdate == DateTime.MinValue || tillUpdate == 0)
                     {
                         Invalidate(new Rectangle(0, y, Width, ItemHeight), false);
@@ -749,7 +749,7 @@ namespace WinAuth
                     _renameTextbox.Name = "renameTextBox";
                     _renameTextbox.AllowDrop = true;
                     _renameTextbox.CausesValidation = false;
-                    _renameTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    _renameTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
                     _renameTextbox.Location = new System.Drawing.Point(0, 0);
                     _renameTextbox.Multiline = false;
                     _renameTextbox.Name = "secretCodeField";
@@ -1193,7 +1193,7 @@ namespace WinAuth
             menuitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
             menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData) == false);
             //
-            sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault() as ToolStripItem;
+            sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault();
             sepitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamTradesMenuItem").FirstOrDefault() as ToolStripMenuItem;
@@ -1231,7 +1231,7 @@ namespace WinAuth
                 }
             }
             //
-            sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "syncMenuSep").FirstOrDefault() as ToolStripItem;
+            sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "syncMenuSep").FirstOrDefault();
             sepitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "syncMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
@@ -1946,7 +1946,7 @@ namespace WinAuth
                             {
                                 //int y = (this.TopIndex * this.ItemHeight) + e.Bounds.y
                                 //int tillUpdate = ((int)((auth.AuthenticatorData.ServerTime % 30000) / 1000L) + 1) * 12;
-                                var tillUpdate = (int)Math.Round((decimal)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L) * (360M / (decimal)auth.AuthenticatorData.Period));
+                                var tillUpdate = (int)Math.Round((auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L)) / 1000L * (360M / auth.AuthenticatorData.Period));
                                 e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                 e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                             }
@@ -1960,7 +1960,7 @@ namespace WinAuth
                             {
                                 using (var piepen = new Pen(SystemColors.ActiveCaption))
                                 {
-                                    var tillUpdate = (int)((item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * (double)360) / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
+                                    var tillUpdate = (int)((item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * 360) / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
                                     e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                     e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                                 }
