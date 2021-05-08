@@ -19,23 +19,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 using WindowsInput;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// A generic keyboard hook to find keys and send to the application. Used in WinAuth to set up a global hotkey
-	/// so we can press ctrl-alt-L and have it send the code ... that's all, honest :)
-	/// </summary>
-	public class KeyboardHook : IDisposable
+    /// <summary>
+    /// A generic keyboard hook to find keys and send to the application. Used in WinAuth to set up a global hotkey
+    /// so we can press ctrl-alt-L and have it send the code ... that's all, honest :)
+    /// </summary>
+    public class KeyboardHook : IDisposable
 	{
 		/// <summary>
 		/// Owning form for hotkey

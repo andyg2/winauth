@@ -17,23 +17,16 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Text;
-using System.Security;
-using System.Security.Cryptography;
-using System.Windows.Forms;
 using System.Xml;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// General error report form
-	/// </summary>
-	public partial class DiagnosticForm : WinAuth.ResourceForm
+    /// <summary>
+    /// General error report form
+    /// </summary>
+    public partial class DiagnosticForm : WinAuth.ResourceForm
 	{
 		/// <summary>
 		/// Current Winauth config settings

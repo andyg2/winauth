@@ -17,40 +17,27 @@
  */
 
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Cache;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.XPath;
-
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Macs;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Paddings;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Generators;
-
-using NLog;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
+using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Crypto.Macs;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class that implements Steam's SteamGuadrd version of the RFC6238 Authenticator
-	/// </summary>
-	public class SteamAuthenticator : Authenticator
+    /// <summary>
+    /// Class that implements Steam's SteamGuadrd version of the RFC6238 Authenticator
+    /// </summary>
+    public class SteamAuthenticator : Authenticator
 	{
 		/// <summary>
 		/// Number of characters in code

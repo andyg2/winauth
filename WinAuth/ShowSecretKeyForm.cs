@@ -17,22 +17,16 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 using ZXing;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form display initialization confirmation.
-	/// </summary>
-	public partial class ShowSecretKeyForm : ResourceForm
+    /// <summary>
+    /// Form display initialization confirmation.
+    /// </summary>
+    public partial class ShowSecretKeyForm : ResourceForm
 	{
 		/// <summary>
 		/// Current authenticator

@@ -17,34 +17,24 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Serialization;
-
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Macs;
-using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Paddings;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Generators;
-using System.Collections;
-using System.Security;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace WinAuth
 {
-  /// <summary>
-  /// Class that implements base RFC 4226 an RFC 6238 authenticator
-  /// </summary>
-  public abstract class Authenticator : ICloneable
+    /// <summary>
+    /// Class that implements base RFC 4226 an RFC 6238 authenticator
+    /// </summary>
+    public abstract class Authenticator : ICloneable
   {
     /// <summary>
     /// Number of bytes making up the salt

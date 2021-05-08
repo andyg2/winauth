@@ -18,16 +18,13 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Exception class wrapper for importing error
-	/// </summary>
-	public class ImportException : ApplicationException
+    /// <summary>
+    /// Exception class wrapper for importing error
+    /// </summary>
+    public class ImportException : ApplicationException
 	{
 		public ImportException() : base() { }
 

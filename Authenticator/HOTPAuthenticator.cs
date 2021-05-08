@@ -17,37 +17,16 @@
  */
 
 using System;
-using System.Collections.Specialized;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Cache;
-using System.Security.Cryptography;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.XPath;
-
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Macs;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Paddings;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Generators;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class that implements a standard counter based HOTP RFC 4226 Authenticator
-	/// </summary>
-	public class HOTPAuthenticator : Authenticator
+    /// <summary>
+    /// Class that implements a standard counter based HOTP RFC 4226 Authenticator
+    /// </summary>
+    public class HOTPAuthenticator : Authenticator
 	{
 		#region Authenticator data
 

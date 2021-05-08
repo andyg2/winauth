@@ -17,25 +17,18 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.ComponentModel;
-using System.Security;
 using System.Windows.Forms;
-
-using MetroFramework.Components;
-using MetroFramework.Drawing;
-using MetroFramework.Interfaces;
-using System.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Subclass of the MetroForm that replaces Text properties of any matching controls from the resource file
-	/// </summary>
-	[Designer("MetroFramework.Design.Controls.MetroLabelDesigner, " + MetroFramework.AssemblyRef.MetroFrameworkDesignSN)]
+    /// <summary>
+    /// Subclass of the MetroForm that replaces Text properties of any matching controls from the resource file
+    /// </summary>
+    [Designer("MetroFramework.Design.Controls.MetroLabelDesigner, " + MetroFramework.AssemblyRef.MetroFrameworkDesignSN)]
 	[ToolboxBitmap(typeof(Form))]
 	public class ResourceForm : MetroFramework.Forms.MetroForm
 	{

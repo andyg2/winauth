@@ -17,23 +17,15 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-
-using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class for form that prompts for password and unprotects authenticator
-	/// </summary>
-	public partial class GetPGPKeyForm : ResourceForm
+    /// <summary>
+    /// Class for form that prompts for password and unprotects authenticator
+    /// </summary>
+    public partial class GetPGPKeyForm : ResourceForm
 	{
 		/// <summary>
 		/// Create new form

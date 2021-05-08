@@ -19,46 +19,32 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Permissions;
-using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.XPath;
 using System.Web;
-using System.Windows;
 using System.Windows.Forms;
-
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Macs;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Paddings;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Bcpg;
-using Org.BouncyCastle.Bcpg.OpenPgp;
-
+using System.Xml;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-
 using Microsoft.Win32;
-
+using Org.BouncyCastle.Bcpg;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math;
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-  /// <summary>
-  /// Class proving helper functions to save data for application
-  /// </summary>
-  class WinAuthHelper
+    /// <summary>
+    /// Class proving helper functions to save data for application
+    /// </summary>
+    class WinAuthHelper
   {
     /// <summary>
     /// Registry key for application

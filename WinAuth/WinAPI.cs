@@ -18,20 +18,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows.Forms;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class holding the various Windows API consts and extern function
-	/// </summary>
-	public class WinAPI
+    /// <summary>
+    /// Class holding the various Windows API consts and extern function
+    /// </summary>
+    public class WinAPI
 	{
 		/// <summary>
 		/// Type of hook to set

@@ -18,22 +18,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class that implements conversion to Base32 RFC3548
-	/// </summary>
+    /// <summary>
+    /// Class that implements conversion to Base32 RFC3548
+    /// </summary>
 
-	public class Base32
+    public class Base32
 	{
 		/// <summary>
 		/// Default base32 character set as per RFC 4648/3548

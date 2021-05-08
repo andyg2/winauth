@@ -20,26 +20,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Windows.Forms;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Resources;
-using System.Runtime.CompilerServices;
-
+using System.Windows.Forms;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class that launches the main form
-	/// </summary>
-	static class WinAuthMain
+    /// <summary>
+    /// Class that launches the main form
+    /// </summary>
+    static class WinAuthMain
 	{
     /// <summary>
     /// Name of this application used for %USEPATH%\[name] folder

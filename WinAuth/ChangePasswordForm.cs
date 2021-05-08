@@ -18,25 +18,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MetroFramework.Controls;
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form for setting the password and encryption for the current authenticators
-	/// </summary>
-	public partial class ChangePasswordForm : WinAuth.ResourceForm
+    /// <summary>
+    /// Form for setting the password and encryption for the current authenticators
+    /// </summary>
+    public partial class ChangePasswordForm : WinAuth.ResourceForm
 	{
 		/// <summary>
 		/// Used to show a filled password box

@@ -17,23 +17,15 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form display initialization confirmation.
-	/// </summary>
-	public partial class ShowSteamSecretForm : ResourceForm
+    /// <summary>
+    /// Form display initialization confirmation.
+    /// </summary>
+    public partial class ShowSteamSecretForm : ResourceForm
 	{
 		/// <summary>
 		/// Current authenticator

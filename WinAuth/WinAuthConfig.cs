@@ -23,8 +23,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -34,12 +32,12 @@ using WinAuth.Resources;
 
 namespace WinAuth
 {
-  /// <summary>
-  /// Delegate for ConfigChange event
-  /// </summary>
-  /// <param name="source"></param>
-  /// <param name="args"></param>
-  public delegate void ConfigChangedHandler(object source, ConfigChangedEventArgs args);
+    /// <summary>
+    /// Delegate for ConfigChange event
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="args"></param>
+    public delegate void ConfigChangedHandler(object source, ConfigChangedEventArgs args);
 
   /// <summary>
   /// Class holding configuration data for application

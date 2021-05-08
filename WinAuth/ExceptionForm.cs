@@ -17,30 +17,20 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Reflection;
-using System.Security;
-using System.Security.Cryptography;
-using System.Windows.Forms;
+using System.Text;
 using System.Xml;
-using System.Net;
-using System.Web;
-
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// General error report form
-	/// </summary>
-	public partial class ExceptionForm : WinAuth.ResourceForm
+    /// <summary>
+    /// General error report form
+    /// </summary>
+    public partial class ExceptionForm : WinAuth.ResourceForm
 	{
 		/// <summary>
 		/// Exception that caused the error report

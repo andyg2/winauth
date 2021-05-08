@@ -17,22 +17,16 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form for exporting authenticators to a file
-	/// </summary>
-	public partial class ExportForm : WinAuth.ResourceForm
+    /// <summary>
+    /// Form for exporting authenticators to a file
+    /// </summary>
+    public partial class ExportForm : WinAuth.ResourceForm
 	{
 		/// <summary>
 		/// Create the form

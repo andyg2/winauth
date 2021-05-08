@@ -16,20 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-using System.Windows;
 using System.Windows.Forms;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Subclass of TextBox that does not set the Text value based on the ShowBitmap flag and we
-	/// draw it ourselves, so that window spys cannot get the contents
-	/// </summary>
-	public class SecretTextBox : TextBox, ISecretTextBox
+    /// <summary>
+    /// Subclass of TextBox that does not set the Text value based on the ShowBitmap flag and we
+    /// draw it ourselves, so that window spys cannot get the contents
+    /// </summary>
+    public class SecretTextBox : TextBox, ISecretTextBox
 	{
 		/// <summary>
 		/// Our hidden txet value

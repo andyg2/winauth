@@ -18,28 +18,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.XPath;
-
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form class for create a new Battle.net authenticator
-	/// </summary>
-	public partial class AddSteamAuthenticator : ResourceForm
+    /// <summary>
+    /// Form class for create a new Battle.net authenticator
+    /// </summary>
+    public partial class AddSteamAuthenticator : ResourceForm
 	{
 		/// <summary>
 		/// Entry for a single SDA account

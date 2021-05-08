@@ -30,7 +30,7 @@ using MetroFramework.Forms;
 
 namespace WinAuth
 {
-	public partial class Notification : MetroForm
+    public partial class Notification : MetroForm
 	{
 		/// <summary>
 		/// The methods of animation available.

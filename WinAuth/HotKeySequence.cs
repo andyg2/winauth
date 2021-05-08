@@ -17,8 +17,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,10 +24,10 @@ using System.Xml;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// A hot key sequence and command containing the key, modifier and script
-	/// </summary>
-	public class HoyKeySequence
+    /// <summary>
+    /// A hot key sequence and command containing the key, modifier and script
+    /// </summary>
+    public class HoyKeySequence
 	{
 		/// <summary>
 		/// Modifier for hotkey

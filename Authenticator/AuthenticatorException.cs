@@ -18,20 +18,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Security.Cryptography;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace WinAuth
 {
-  /// <summary>
-  /// Base Authenticator exception class
-  /// </summary>
-  public class AuthenticatorException : ApplicationException
+    /// <summary>
+    /// Base Authenticator exception class
+    /// </summary>
+    public class AuthenticatorException : ApplicationException
   {
     public AuthenticatorException()
       : base()

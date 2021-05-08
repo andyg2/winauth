@@ -26,21 +26,18 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Show Steam trade confirmations
-	/// </summary>
-	public partial class ShowSteamTradesForm : ResourceForm
+    /// <summary>
+    /// Show Steam trade confirmations
+    /// </summary>
+    public partial class ShowSteamTradesForm : ResourceForm
 	{
 		[DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		static extern bool InternetSetCookie(string lpszUrlName, string lpszCookieName, string lpszCookieData);

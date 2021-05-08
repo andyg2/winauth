@@ -17,22 +17,15 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Form used to get a password used to protect an authenticator
-	/// </summary>
-	public partial class SetPasswordForm : ResourceForm
+    /// <summary>
+    /// Form used to get a password used to protect an authenticator
+    /// </summary>
+    public partial class SetPasswordForm : ResourceForm
 	{
 		/// <summary>
 		/// Default constructor

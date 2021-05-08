@@ -17,26 +17,22 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-
 using WinAuth.Resources;
-using System.Diagnostics;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// An item within the OwnerDraw list that represents an authenticator
-	/// </summary>
-	public class AuthenticatorListitem
+    /// <summary>
+    /// An item within the OwnerDraw list that represents an authenticator
+    /// </summary>
+    public class AuthenticatorListitem
 	{
 		/// <summary>
 		/// Create a new AuthenticatorListitem

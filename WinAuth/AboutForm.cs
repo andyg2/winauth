@@ -17,25 +17,15 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Windows.Forms;
 using System.Xml;
-
-using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Show the About form
-	/// </summary>
-	public partial class AboutForm : ResourceForm
+    /// <summary>
+    /// Show the About form
+    /// </summary>
+    public partial class AboutForm : ResourceForm
 	{
 		/// <summary>
 		/// Current config object

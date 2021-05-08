@@ -17,30 +17,18 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Deployment.Application;
-using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
-using System.Xml.XPath;
-using System.Windows;
-using System.Windows.Forms;
-
-using WinAuth.Resources;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// Class holding the latest version information
-	/// </summary>
-	public class WinAuthVersionInfo
+    /// <summary>
+    /// Class holding the latest version information
+    /// </summary>
+    public class WinAuthVersionInfo
 	{
 		/// <summary>
 		/// Version number

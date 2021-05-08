@@ -17,8 +17,8 @@
  */
 
 using System;
-using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -26,21 +26,18 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
-
-using NLog;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
+using NLog;
 
 namespace WinAuth
 {
-	/// <summary>
-	/// SteamClient for logging and getting/accepting/rejecting trade confirmations
-	/// </summary>
-	public class SteamClient : IDisposable
+    /// <summary>
+    /// SteamClient for logging and getting/accepting/rejecting trade confirmations
+    /// </summary>
+    public class SteamClient : IDisposable
 	{
 		/// <summary>
 		/// URLs for all mobile services

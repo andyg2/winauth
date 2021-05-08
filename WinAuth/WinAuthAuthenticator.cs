@@ -17,24 +17,20 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Web;
-using System.Windows;
 using System.Windows.Forms;
-
+using System.Xml;
 using WinAuth.Resources;
 
 namespace WinAuth
 {
-  public interface IWinAuthAuthenticatorChangedListener
+    public interface IWinAuthAuthenticatorChangedListener
   {
     void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e);
   }
