@@ -281,9 +281,11 @@ namespace WinAuth
 
                 if (silently == false)
                 {
-                    var report = new ExceptionForm();
-                    report.ErrorException = ex;
-                    report.TopMost = true;
+                    var report = new ExceptionForm
+                    {
+                        ErrorException = ex,
+                        TopMost = true
+                    };
                     if (_form != null && _form.Config != null)
                     {
                         report.Config = _form.Config;

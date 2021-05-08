@@ -71,9 +71,11 @@ namespace WinAuth
             //	+ (string.IsNullOrEmpty(issuer) == false ? "&issuer=" + WinAuthHelper.HtmlEncode(issuer) : string.Empty);
             var url = CurrentAuthenticator.ToUrl(true);
 
-            var writer = new BarcodeWriter();
-            writer.Format = BarcodeFormat.QR_CODE;
-            writer.Options = new ZXing.Common.EncodingOptions { Width = qrImage.Width, Height = qrImage.Height };
+            var writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new ZXing.Common.EncodingOptions { Width = qrImage.Width, Height = qrImage.Height }
+            };
             qrImage.Image = writer.Write(url);
         }
 

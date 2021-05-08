@@ -476,9 +476,11 @@ namespace WinAuth
                 using (var ms = new MemoryStream())
                 {
                     // get the plain version
-                    var settings = new XmlWriterSettings();
-                    settings.Indent = true;
-                    settings.Encoding = Encoding.UTF8;
+                    var settings = new XmlWriterSettings
+                    {
+                        Indent = true,
+                        Encoding = Encoding.UTF8
+                    };
                     using (var encryptedwriter = XmlWriter.Create(ms, settings))
                     {
                         var encrpytedData = EncryptedData;
@@ -572,9 +574,11 @@ namespace WinAuth
                     using (var ms = new MemoryStream())
                     {
                         // get the plain version
-                        var settings = new XmlWriterSettings();
-                        settings.Indent = true;
-                        settings.Encoding = Encoding.UTF8;
+                        var settings = new XmlWriterSettings
+                        {
+                            Indent = true,
+                            Encoding = Encoding.UTF8
+                        };
                         using (var encryptedwriter = XmlWriter.Create(ms, settings))
                         {
                             WriteToWriter(encryptedwriter);

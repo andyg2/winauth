@@ -118,8 +118,10 @@ namespace WinAuth
             {
                 using (var ms = new MemoryStream())
                 {
-                    var settings = new XmlWriterSettings();
-                    settings.Indent = true;
+                    var settings = new XmlWriterSettings
+                    {
+                        Indent = true
+                    };
                     using (var xml = XmlWriter.Create(ms, settings))
                     {
                         Config.WriteXmlString(xml);

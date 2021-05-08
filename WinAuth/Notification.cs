@@ -449,10 +449,12 @@ namespace WinAuth
             else
             {
                 // inject browser
-                var browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
-                browser.Dock = DockStyle.Fill;
-                browser.Location = new Point(0, 0);
-                browser.Size = new Size(htmlBody.Width, htmlBody.Height);
+                var browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel
+                {
+                    Dock = DockStyle.Fill,
+                    Location = new Point(0, 0),
+                    Size = new Size(htmlBody.Width, htmlBody.Height)
+                };
                 htmlBody.Controls.Add(browser);
 
                 browser.Text = "<!doctype html><html><head><meta charset=\"UTF-8\"><style>html,body{width:100%;height:100%;margin:0;padding:0;}body{margin:0 5px;font-size:14px;border:1px;}h1{font-size:16px;font-weight:normal;margin:0;padding:0 0 4px 0;}</style></head><body>" + body + "</body></html>";

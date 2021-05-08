@@ -115,10 +115,12 @@ namespace WinAuth
         /// <param name="e"></param>
         private void pgpBrowseButton_Click(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
-            ofd.CheckFileExists = true;
-            ofd.Filter = "All Files (*.*)|*.*";
-            ofd.Title = "Choose PGP Key File";
+            var ofd = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                Filter = "All Files (*.*)|*.*",
+                Title = "Choose PGP Key File"
+            };
 
             if (ofd.ShowDialog(Parent) == System.Windows.Forms.DialogResult.OK)
             {
@@ -133,9 +135,11 @@ namespace WinAuth
         /// <param name="e"></param>
         private void browseButton_Click(object sender, EventArgs e)
         {
-            var sfd = new SaveFileDialog();
-            sfd.AddExtension = true;
-            sfd.CheckPathExists = true;
+            var sfd = new SaveFileDialog
+            {
+                AddExtension = true,
+                CheckPathExists = true
+            };
             if (passwordCheckbox.Checked == true)
             {
                 sfd.Filter = "Zip File (*.zip)|*.zip";

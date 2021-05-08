@@ -383,16 +383,18 @@ namespace WinAuth
         /// <param name="e"></param>
         private void importSDABrowse_Click(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
-            ofd.AddExtension = true;
-            ofd.CheckFileExists = true;
-            ofd.CheckPathExists = true;
-            ofd.DefaultExt = "*.json";
-            ofd.FileName = "manifest.json";
-            ofd.Filter = "Manifest file|manifest.json|maFile (*.maFile)|*.maFile";
-            ofd.FilterIndex = 0;
-            ofd.RestoreDirectory = true;
-            ofd.Title = "SteamDesktopAuthenticator";
+            var ofd = new OpenFileDialog
+            {
+                AddExtension = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                DefaultExt = "*.json",
+                FileName = "manifest.json",
+                Filter = "Manifest file|manifest.json|maFile (*.maFile)|*.maFile",
+                FilterIndex = 0,
+                RestoreDirectory = true,
+                Title = "SteamDesktopAuthenticator"
+            };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 importSDAPath.Text = ofd.FileName;
@@ -489,11 +491,13 @@ namespace WinAuth
                 return false;
             }
 
-            var auth = new SteamAuthenticator();
-            auth.SecretKey = secret;
-            auth.Serial = serial;
-            auth.SteamData = steamguard;
-            auth.DeviceId = deviceId;
+            var auth = new SteamAuthenticator
+            {
+                SecretKey = secret,
+                Serial = serial,
+                SteamData = steamguard,
+                DeviceId = deviceId
+            };
 
             Authenticator.AuthenticatorData = auth;
 
@@ -693,9 +697,11 @@ namespace WinAuth
             }
 
             var token = JObject.Parse(data);
-            var sdaentry = new ImportedSDAEntry();
-            sdaentry.Username = token.SelectToken("account_name") != null ? token.SelectToken("account_name").Value<string>() : null;
-            sdaentry.SteamId = steamid;
+            var sdaentry = new ImportedSDAEntry
+            {
+                Username = token.SelectToken("account_name") != null ? token.SelectToken("account_name").Value<string>() : null,
+                SteamId = steamid
+            };
             if (string.IsNullOrEmpty(sdaentry.SteamId) == true)
             {
                 sdaentry.SteamId = token.SelectToken("Session.SteamID") != null ? token.SelectToken("Session.SteamID").Value<string>() : null;

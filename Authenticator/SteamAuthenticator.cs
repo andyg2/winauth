@@ -361,8 +361,10 @@ namespace WinAuth
                         cookies.Add(new Uri(COMMUNITY_BASE + "/"), new Cookie("Steam_Language", "english"));
                         cookies.Add(new Uri(COMMUNITY_BASE + "/"), new Cookie("dob", ""));
 
-                        var headers = new NameValueCollection();
-                        headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
+                        var headers = new NameValueCollection
+                        {
+                            { "X-Requested-With", "com.valvesoftware.android.steam.community" }
+                        };
 
                         response = Request("https://steamcommunity.com/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client", "GET", null, cookies, headers);
                     }
@@ -394,20 +396,22 @@ namespace WinAuth
                     }
 
                     // login request
-                    data = new NameValueCollection();
-                    data.Add("password", Convert.ToBase64String(encryptedPassword));
-                    data.Add("username", state.Username);
-                    data.Add("twofactorcode", "");
-                    data.Add("emailauth", (state.EmailAuthText != null ? state.EmailAuthText : string.Empty));
-                    data.Add("loginfriendlyname", "#login_emailauth_friendlyname_mobile");
-                    data.Add("captchagid", (state.CaptchaId != null ? state.CaptchaId : "-1"));
-                    data.Add("captcha_text", (state.CaptchaText != null ? state.CaptchaText : "enter above characters"));
-                    data.Add("emailsteamid", (state.EmailAuthText != null ? state.SteamId ?? string.Empty : string.Empty));
-                    data.Add("rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>());
-                    data.Add("remember_login", "false");
-                    data.Add("oauth_client_id", "DE45CD61");
-                    data.Add("oauth_scope", "read_profile write_profile read_client write_client");
-                    data.Add("donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString());
+                    data = new NameValueCollection
+                    {
+                        { "password", Convert.ToBase64String(encryptedPassword) },
+                        { "username", state.Username },
+                        { "twofactorcode", "" },
+                        { "emailauth", (state.EmailAuthText != null ? state.EmailAuthText : string.Empty) },
+                        { "loginfriendlyname", "#login_emailauth_friendlyname_mobile" },
+                        { "captchagid", (state.CaptchaId != null ? state.CaptchaId : "-1") },
+                        { "captcha_text", (state.CaptchaText != null ? state.CaptchaText : "enter above characters") },
+                        { "emailsteamid", (state.EmailAuthText != null ? state.SteamId ?? string.Empty : string.Empty) },
+                        { "rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>() },
+                        { "remember_login", "false" },
+                        { "oauth_client_id", "DE45CD61" },
+                        { "oauth_scope", "read_profile write_profile read_client write_client" },
+                        { "donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString() }
+                    };
                     response = Request(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data, cookies);
                     var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 

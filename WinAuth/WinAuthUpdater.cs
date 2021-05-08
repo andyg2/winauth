@@ -179,9 +179,11 @@ namespace WinAuth
         public void AutoCheck(Action<Version> callback)
         {
             // create a thread to check for latest version
-            var thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller));
-            thread.IsBackground = true;
-            thread.Priority = ThreadPriority.BelowNormal;
+            var thread = new Thread(new ParameterizedThreadStart(AutoCheckPoller))
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.BelowNormal
+            };
             thread.Start(callback);
         }
 

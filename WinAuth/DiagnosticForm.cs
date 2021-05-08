@@ -87,8 +87,10 @@ namespace WinAuth
                 try
                 {
                     var xml = new StringBuilder();
-                    var settings = new XmlWriterSettings();
-                    settings.Indent = true;
+                    var settings = new XmlWriterSettings
+                    {
+                        Indent = true
+                    };
                     using (var writer = XmlWriter.Create(xml, settings))
                     {
                         clone.WriteXmlString(writer);

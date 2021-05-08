@@ -683,8 +683,10 @@ namespace WinAuth
             {
                 if (Scrolled != null)
                 {
-                    var si = new WinAPI.ScrollInfoStruct();
-                    si.fMask = WinAPI.SIF_ALL;
+                    var si = new WinAPI.ScrollInfoStruct
+                    {
+                        fMask = WinAPI.SIF_ALL
+                    };
                     si.cbSize = Marshal.SizeOf(si);
                     WinAPI.GetScrollInfo(msg.HWnd, 0, ref si);
 
@@ -739,13 +741,15 @@ namespace WinAuth
                 var labelMaxWidth = GetMaxAvailableLabelWidth(Width - Margin.Horizontal - DefaultPadding.Horizontal - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0));
                 if (_renameTextbox == null)
                 {
-                    _renameTextbox = new TextBox();
-                    _renameTextbox.Name = "renameTextBox";
-                    _renameTextbox.AllowDrop = true;
-                    _renameTextbox.CausesValidation = false;
-                    _renameTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-                    _renameTextbox.Location = new System.Drawing.Point(0, 0);
-                    _renameTextbox.Multiline = false;
+                    _renameTextbox = new TextBox
+                    {
+                        Name = "renameTextBox",
+                        AllowDrop = true,
+                        CausesValidation = false,
+                        Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0),
+                        Location = new System.Drawing.Point(0, 0),
+                        Multiline = false
+                    };
                     _renameTextbox.Name = "secretCodeField";
                     _renameTextbox.Size = new System.Drawing.Size(labelMaxWidth, 22);
                     _renameTextbox.TabIndex = 0;
@@ -936,8 +940,10 @@ namespace WinAuth
             }
 
             // request the password
-            var getPassForm = new UnprotectPasswordForm();
-            getPassForm.Authenticator = auth;
+            var getPassForm = new UnprotectPasswordForm
+            {
+                Authenticator = auth
+            };
             if (screen != null)
             {
                 // center on the current windows screen (in case of multiple monitors)
@@ -989,9 +995,11 @@ namespace WinAuth
         {
             ContextMenuStrip.Items.Clear();
 
-            var label = new ToolStripLabel();
-            label.Name = "contextMenuItemName";
-            label.ForeColor = SystemColors.HotTrack;
+            var label = new ToolStripLabel
+            {
+                Name = "contextMenuItemName",
+                ForeColor = SystemColors.HotTrack
+            };
             ContextMenuStrip.Items.Add(label);
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
@@ -1000,76 +1008,102 @@ namespace WinAuth
             ToolStripMenuItem menuitem;
             ToolStripMenuItem subitem;
             //
-            menuitem = new ToolStripMenuItem(strings.SetPassword + "...");
-            menuitem.Name = "setPasswordMenuItem";
+            menuitem = new ToolStripMenuItem(strings.SetPassword + "...")
+            {
+                Name = "setPasswordMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            menuitem = new ToolStripMenuItem(strings.ShowCode);
-            menuitem.Name = "showCodeMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ShowCode)
+            {
+                Name = "showCodeMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.CopyCode);
-            menuitem.Name = "copyCodeMenuItem";
+            menuitem = new ToolStripMenuItem(strings.CopyCode)
+            {
+                Name = "copyCodeMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            menuitem = new ToolStripMenuItem(strings.ShowSerialAndRestoreCode + "...");
-            menuitem.Name = "showRestoreCodeMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ShowSerialAndRestoreCode + "...")
+            {
+                Name = "showRestoreCodeMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.ShowSecretKey + "...");
-            menuitem.Name = "showGoogleSecretMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ShowSecretKey + "...")
+            {
+                Name = "showGoogleSecretMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.ShowRevocation + "...");
-            menuitem.Name = "showSteamSecretMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ShowRevocation + "...")
+            {
+                Name = "showSteamSecretMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
             ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "steamSeperator" });
             //
-            menuitem = new ToolStripMenuItem(strings.ConfirmTrades + "...");
-            menuitem.Name = "showSteamTradesMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ConfirmTrades + "...")
+            {
+                Name = "showSteamTradesMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            menuitem = new ToolStripMenuItem(strings.Delete);
-            menuitem.Name = "deleteMenuItem";
+            menuitem = new ToolStripMenuItem(strings.Delete)
+            {
+                Name = "deleteMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.Rename);
-            menuitem.Name = "renameMenuItem";
+            menuitem = new ToolStripMenuItem(strings.Rename)
+            {
+                Name = "renameMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            menuitem = new ToolStripMenuItem(strings.AutoRefresh);
-            menuitem.Name = "autoRefreshMenuItem";
+            menuitem = new ToolStripMenuItem(strings.AutoRefresh)
+            {
+                Name = "autoRefreshMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.CopyOnNewCode);
-            menuitem.Name = "copyOnCodeMenuItem";
+            menuitem = new ToolStripMenuItem(strings.CopyOnNewCode)
+            {
+                Name = "copyOnCodeMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            menuitem = new ToolStripMenuItem(strings.Icon);
-            menuitem.Name = "iconMenuItem";
-            subitem = new ToolStripMenuItem();
-            subitem.Text = strings.IconAuto;
-            subitem.Name = "iconMenuItem_default";
-            subitem.Tag = string.Empty;
+            menuitem = new ToolStripMenuItem(strings.Icon)
+            {
+                Name = "iconMenuItem"
+            };
+            subitem = new ToolStripMenuItem
+            {
+                Text = strings.IconAuto,
+                Name = "iconMenuItem_default",
+                Tag = string.Empty
+            };
             subitem.Click += ContextMenu_Click;
             menuitem.DropDownItems.Add(subitem);
             menuitem.DropDownItems.Add("-");
@@ -1091,52 +1125,64 @@ namespace WinAuth
                         parentItem = parentItem.Tag as ToolStripMenuItem;
                     }
 
-                    subitem = new ToolStripMenuItem();
-                    subitem.Text = icon.Substring(1);
-                    //subitem.Name = "iconMenuItem_" + iconindex++;
-                    subitem.Tag = parentItem;
-                    subitem.Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + iconfile));
-                    subitem.ImageAlign = ContentAlignment.MiddleLeft;
-                    subitem.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+                    subitem = new ToolStripMenuItem
+                    {
+                        Text = icon.Substring(1),
+                        //subitem.Name = "iconMenuItem_" + iconindex++;
+                        Tag = parentItem,
+                        Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + iconfile)),
+                        ImageAlign = ContentAlignment.MiddleLeft,
+                        ImageScaling = ToolStripItemImageScaling.SizeToFit
+                    };
                     //subitem.Click += ContextMenu_Click;
                     parentItem.DropDownItems.Add(subitem);
                     parentItem = subitem;
                 }
                 else
                 {
-                    subitem = new ToolStripMenuItem();
-                    subitem.Text = icon;
-                    subitem.Name = "iconMenuItem_" + iconindex++;
-                    subitem.Tag = iconfile;
-                    subitem.Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + iconfile));
-                    subitem.ImageAlign = ContentAlignment.MiddleLeft;
-                    subitem.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+                    subitem = new ToolStripMenuItem
+                    {
+                        Text = icon,
+                        Name = "iconMenuItem_" + iconindex++,
+                        Tag = iconfile,
+                        Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + iconfile)),
+                        ImageAlign = ContentAlignment.MiddleLeft,
+                        ImageScaling = ToolStripItemImageScaling.SizeToFit
+                    };
                     subitem.Click += ContextMenu_Click;
                     parentItem.DropDownItems.Add(subitem);
                 }
             }
             menuitem.DropDownItems.Add("-");
-            subitem = new ToolStripMenuItem();
-            subitem.Text = strings.Other + "...";
-            subitem.Name = "iconMenuItem_0";
-            subitem.Tag = "OTHER";
+            subitem = new ToolStripMenuItem
+            {
+                Text = strings.Other + "...",
+                Name = "iconMenuItem_0",
+                Tag = "OTHER"
+            };
             subitem.Click += ContextMenu_Click;
             menuitem.DropDownItems.Add(subitem);
             ContextMenuStrip.Items.Add(menuitem);
             //
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
             //
-            menuitem = new ToolStripMenuItem(strings.ShortcutKey + "...");
-            menuitem.Name = "shortcutKeyMenuItem";
+            menuitem = new ToolStripMenuItem(strings.ShortcutKey + "...")
+            {
+                Name = "shortcutKeyMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             //
-            var sepitem = new ToolStripSeparator();
-            sepitem.Name = "syncMenuSep";
+            var sepitem = new ToolStripSeparator
+            {
+                Name = "syncMenuSep"
+            };
             ContextMenuStrip.Items.Add(sepitem);
             //
-            menuitem = new ToolStripMenuItem(strings.SyncTime);
-            menuitem.Name = "syncMenuItem";
+            menuitem = new ToolStripMenuItem(strings.SyncTime)
+            {
+                Name = "syncMenuItem"
+            };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
         }
@@ -1333,8 +1379,10 @@ namespace WinAuth
                 }
                 try
                 {
-                    var form = new SetShortcutKeyForm();
-                    form.Hotkey = auth.HotKey;
+                    var form = new SetShortcutKeyForm
+                    {
+                        Hotkey = auth.HotKey
+                    };
                     if (form.ShowDialog(Parent as Form) != DialogResult.OK)
                     {
                         return;
@@ -1372,8 +1420,10 @@ namespace WinAuth
                             var invalidPassword = false;
                             while (true)
                             {
-                                var checkform = new GetPasswordForm();
-                                checkform.InvalidPassword = invalidPassword;
+                                var checkform = new GetPasswordForm
+                                {
+                                    InvalidPassword = invalidPassword
+                                };
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
                                 {
@@ -1389,8 +1439,10 @@ namespace WinAuth
                     }
 
                     // show the serial and restore code for Battle.net authenticator				
-                    var form = new ShowRestoreCodeForm();
-                    form.CurrentAuthenticator = auth;
+                    var form = new ShowRestoreCodeForm
+                    {
+                        CurrentAuthenticator = auth
+                    };
                     form.ShowDialog(Parent as Form);
                 }
                 finally
@@ -1420,8 +1472,10 @@ namespace WinAuth
                             var invalidPassword = false;
                             while (true)
                             {
-                                var checkform = new GetPasswordForm();
-                                checkform.InvalidPassword = invalidPassword;
+                                var checkform = new GetPasswordForm
+                                {
+                                    InvalidPassword = invalidPassword
+                                };
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
                                 {
@@ -1437,8 +1491,10 @@ namespace WinAuth
                     }
 
                     // show the secret key for Google authenticator				
-                    var form = new ShowSecretKeyForm();
-                    form.CurrentAuthenticator = auth;
+                    var form = new ShowSecretKeyForm
+                    {
+                        CurrentAuthenticator = auth
+                    };
                     form.ShowDialog(Parent as Form);
                 }
                 finally
@@ -1469,8 +1525,10 @@ namespace WinAuth
                             var invalidPassword = false;
                             while (true)
                             {
-                                var checkform = new GetPasswordForm();
-                                checkform.InvalidPassword = invalidPassword;
+                                var checkform = new GetPasswordForm
+                                {
+                                    InvalidPassword = invalidPassword
+                                };
                                 var result = checkform.ShowDialog(this);
                                 if (result == DialogResult.Cancel)
                                 {
@@ -1486,8 +1544,10 @@ namespace WinAuth
                     }
 
                     // show the secret key for Google authenticator				
-                    var form = new ShowSteamSecretForm();
-                    form.CurrentAuthenticator = auth;
+                    var form = new ShowSteamSecretForm
+                    {
+                        CurrentAuthenticator = auth
+                    };
                     form.ShowDialog(Parent as Form);
                 }
                 finally
@@ -1510,8 +1570,10 @@ namespace WinAuth
                 try
                 {
                     // show the Steam trades dialog
-                    var form = new ShowSteamTradesForm();
-                    form.Authenticator = auth;
+                    var form = new ShowSteamTradesForm
+                    {
+                        Authenticator = auth
+                    };
                     form.ShowDialog(Parent as Form);
                 }
                 finally
@@ -1581,16 +1643,18 @@ namespace WinAuth
                     do
                     {
                         // other..choose an image file
-                        var ofd = new OpenFileDialog();
-                        ofd.AddExtension = true;
-                        ofd.CheckFileExists = true;
-                        ofd.DefaultExt = "png";
-                        ofd.InitialDirectory = Directory.GetCurrentDirectory();
-                        ofd.FileName = string.Empty;
-                        ofd.Filter = "PNG Image Files (*.png)|*.png|GIF Image Files (*.gif)|*.gif|All Files (*.*)|*.*";
-                        ofd.RestoreDirectory = true;
-                        ofd.ShowReadOnly = false;
-                        ofd.Title = strings.LoadIconImage + " (png or gif @ 48x48)";
+                        var ofd = new OpenFileDialog
+                        {
+                            AddExtension = true,
+                            CheckFileExists = true,
+                            DefaultExt = "png",
+                            InitialDirectory = Directory.GetCurrentDirectory(),
+                            FileName = string.Empty,
+                            Filter = "PNG Image Files (*.png)|*.png|GIF Image Files (*.gif)|*.gif|All Files (*.*)|*.*",
+                            RestoreDirectory = true,
+                            ShowReadOnly = false,
+                            Title = strings.LoadIconImage + " (png or gif @ 48x48)"
+                        };
                         var result = ofd.ShowDialog(this);
                         if (result != System.Windows.Forms.DialogResult.OK)
                         {

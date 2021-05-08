@@ -933,8 +933,10 @@ namespace WinAuth
 
                         // for old 2.x configs
                         case "authenticator":
-                            var waold = new WinAuthAuthenticator();
-                            waold.AuthenticatorData = Authenticator.ReadXmlv2(reader, password);
+                            var waold = new WinAuthAuthenticator
+                            {
+                                AuthenticatorData = Authenticator.ReadXmlv2(reader, password)
+                            };
                             if (waold.AuthenticatorData is BattleNetAuthenticator)
                             {
                                 waold.Name = "Battle.net";
@@ -1094,9 +1096,11 @@ namespace WinAuth
                 byte[] data;
                 using (var ms = new MemoryStream())
                 {
-                    var settings = new XmlWriterSettings();
-                    settings.Indent = true;
-                    settings.Encoding = Encoding.UTF8;
+                    var settings = new XmlWriterSettings
+                    {
+                        Indent = true,
+                        Encoding = Encoding.UTF8
+                    };
                     using (var encryptedwriter = XmlWriter.Create(ms, settings))
                     {
                         encryptedwriter.WriteStartElement("config");

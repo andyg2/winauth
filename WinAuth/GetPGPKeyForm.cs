@@ -68,10 +68,12 @@ namespace WinAuth
         /// <param name="e"></param>
         private void browseButton_Click(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
-            ofd.CheckFileExists = true;
-            ofd.Filter = "All Files (*.*)|*.*";
-            ofd.Title = "Choose PGP Key File";
+            var ofd = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                Filter = "All Files (*.*)|*.*",
+                Title = "Choose PGP Key File"
+            };
 
             if (ofd.ShowDialog(Parent) == System.Windows.Forms.DialogResult.OK)
             {

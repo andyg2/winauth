@@ -120,10 +120,12 @@ namespace WinAuth
 
             pollAction.Items.Clear();
 
-            var items = new BindingList<object>();
-            items.Add(new PollerActionItem { Text = "Show Notification", Value = SteamClient.PollerAction.Notify });
-            items.Add(new PollerActionItem { Text = "Auto-Confirm", Value = SteamClient.PollerAction.AutoConfirm });
-            items.Add(new PollerActionItem { Text = "Auto-Confirm (silently)", Value = SteamClient.PollerAction.SilentAutoConfirm });
+            var items = new BindingList<object>
+            {
+                new PollerActionItem { Text = "Show Notification", Value = SteamClient.PollerAction.Notify },
+                new PollerActionItem { Text = "Auto-Confirm", Value = SteamClient.PollerAction.AutoConfirm },
+                new PollerActionItem { Text = "Auto-Confirm (silently)", Value = SteamClient.PollerAction.SilentAutoConfirm }
+            };
 
             pollAction.DataSource = items;
             pollAction.DisplayMember = "Text";
@@ -290,10 +292,12 @@ namespace WinAuth
                 browserContainer.Height = m_browserHeight;
                 m_browserHeight = 0;
 
-                browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
-                browser.Dock = DockStyle.Fill;
-                browser.Location = new Point(0, 0);
-                browser.Size = new Size(browserContainer.Width, browserContainer.Height);
+                browser = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel
+                {
+                    Dock = DockStyle.Fill,
+                    Location = new Point(0, 0),
+                    Size = new Size(browserContainer.Width, browserContainer.Height)
+                };
                 browserContainer.Controls.Add(browser);
             }
             else

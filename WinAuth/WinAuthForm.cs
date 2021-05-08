@@ -369,8 +369,10 @@ namespace WinAuth
                 // first time we prompt for protection and set out main settings from imported config
                 if (Config.Count == 0)
                 {
-                    var form = new ChangePasswordForm();
-                    form.PasswordType = Authenticator.PasswordTypes.Explicit;
+                    var form = new ChangePasswordForm
+                    {
+                        PasswordType = Authenticator.PasswordTypes.Explicit
+                    };
                     if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
                         Config.PasswordType = form.PasswordType;
@@ -443,8 +445,10 @@ namespace WinAuth
                         Config.CopySearchedSingle = config.CopySearchedSingle;
                         Config.AutoExitAfterCopy = config.AutoExitAfterCopy;
 
-                        var form = new ChangePasswordForm();
-                        form.PasswordType = Authenticator.PasswordTypes.Explicit;
+                        var form = new ChangePasswordForm
+                        {
+                            PasswordType = Authenticator.PasswordTypes.Explicit
+                        };
                         if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                         {
                             Config.PasswordType = form.PasswordType;
@@ -499,8 +503,10 @@ namespace WinAuth
 
                 if (needPassword == true)
                 {
-                    var form = new GetPasswordForm();
-                    form.InvalidPassword = invalidPassword;
+                    var form = new GetPasswordForm
+                    {
+                        InvalidPassword = invalidPassword
+                    };
                     var result = form.ShowDialog(this);
                     if (result == DialogResult.Cancel)
                     {
@@ -785,10 +791,12 @@ namespace WinAuth
                     continue;
                 }
 
-                subitem = new ToolStripMenuItem();
-                subitem.Text = auth.Name;
-                subitem.Name = "addAuthenticatorMenuItem_" + index++;
-                subitem.Tag = auth;
+                subitem = new ToolStripMenuItem
+                {
+                    Text = auth.Name,
+                    Name = "addAuthenticatorMenuItem_" + index++,
+                    Tag = auth
+                };
                 if (string.IsNullOrEmpty(auth.Icon) == false)
                 {
                     subitem.Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + auth.Icon));
@@ -801,12 +809,14 @@ namespace WinAuth
             //
             addAuthenticatorMenu.Items.Add(new ToolStripSeparator());
             //
-            subitem = new ToolStripMenuItem();
-            subitem.Text = strings.MenuImportText;
-            subitem.Name = "importTextMenuItem";
-            subitem.Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources.TextIcon.png"));
-            subitem.ImageAlign = ContentAlignment.MiddleLeft;
-            subitem.ImageScaling = ToolStripItemImageScaling.SizeToFit;
+            subitem = new ToolStripMenuItem
+            {
+                Text = strings.MenuImportText,
+                Name = "importTextMenuItem",
+                Image = new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources.TextIcon.png")),
+                ImageAlign = ContentAlignment.MiddleLeft,
+                ImageScaling = ToolStripItemImageScaling.SizeToFit
+            };
             subitem.Click += importTextMenu_Click;
             addAuthenticatorMenu.Items.Add(subitem);
         }
@@ -1391,9 +1401,11 @@ namespace WinAuth
         /// </summary>
         private void ShowUpdaterForm()
         {
-            var form = new UpdateCheckForm();
-            form.Config = Config;
-            form.Updater = Updater;
+            var form = new UpdateCheckForm
+            {
+                Config = Config,
+                Updater = Updater
+            };
             if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 NewVersionAvailable(Updater.LastKnownLatestVersion);
@@ -1519,8 +1531,10 @@ namespace WinAuth
                     winauthauthenticator.AutoRefresh = false;
 
                     // create the Battle.net authenticator
-                    var form = new AddBattleNetAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddBattleNetAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Steam)
@@ -1537,8 +1551,10 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    var form = new AddSteamAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddSteamAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Google)
@@ -1555,8 +1571,10 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    var form = new AddGoogleAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddGoogleAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Microsoft)
@@ -1572,8 +1590,10 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    var form = new AddMicrosoftAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddMicrosoftAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.RFC6238_TIME)
@@ -1591,8 +1611,10 @@ namespace WinAuth
                     winauthauthenticator.AutoRefresh = false;
                     winauthauthenticator.Skin = "WinAuthIcon.png";
 
-                    var form = new AddAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.OktaVerify)
@@ -1608,8 +1630,10 @@ namespace WinAuth
                     winauthauthenticator.Name = name;
                     winauthauthenticator.AutoRefresh = false;
 
-                    var form = new AddOktaVerifyAuthenticator();
-                    form.Authenticator = winauthauthenticator;
+                    var form = new AddOktaVerifyAuthenticator
+                    {
+                        Authenticator = winauthauthenticator
+                    };
                     added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
                 }
                 else
@@ -1625,8 +1649,10 @@ namespace WinAuth
                     // first time we prompt for protection
                     if (Config.Count == 0)
                     {
-                        var form = new ChangePasswordForm();
-                        form.PasswordType = Authenticator.PasswordTypes.Explicit;
+                        var form = new ChangePasswordForm
+                        {
+                            PasswordType = Authenticator.PasswordTypes.Explicit
+                        };
                         if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                         {
                             Config.PasswordType = form.PasswordType;
@@ -1660,10 +1686,12 @@ namespace WinAuth
         {
             var menuitem = (ToolStripItem)sender;
 
-            var ofd = new OpenFileDialog();
-            ofd.AddExtension = true;
-            ofd.CheckFileExists = true;
-            ofd.CheckPathExists = true;
+            var ofd = new OpenFileDialog
+            {
+                AddExtension = true,
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
             //
             var lastv2file = WinAuthHelper.GetLastV2Config();
             if (string.IsNullOrEmpty(lastv2file) == false)
@@ -1959,8 +1987,10 @@ namespace WinAuth
 
             if (Config == null || Config.IsReadOnly == false)
             {
-                menuitem = new ToolStripMenuItem(strings.MenuChangeProtection + "...");
-                menuitem.Name = "changePasswordOptionsMenuItem";
+                menuitem = new ToolStripMenuItem(strings.MenuChangeProtection + "...")
+                {
+                    Name = "changePasswordOptionsMenuItem"
+                };
                 menuitem.Click += changePasswordOptionsMenuItem_Click;
                 menu.Items.Add(menuitem);
                 menu.Items.Add(new ToolStripSeparator() { Name = "changePasswordOptionsSeparatorItem" });
@@ -1968,41 +1998,55 @@ namespace WinAuth
 
             if (Config != null && Config.IsPortable == false)
             {
-                menuitem = new ToolStripMenuItem(strings.MenuStartWithWindows);
-                menuitem.Name = "startWithWindowsOptionsMenuItem";
+                menuitem = new ToolStripMenuItem(strings.MenuStartWithWindows)
+                {
+                    Name = "startWithWindowsOptionsMenuItem"
+                };
                 menuitem.Click += startWithWindowsOptionsMenuItem_Click;
                 menu.Items.Add(menuitem);
             }
 
-            menuitem = new ToolStripMenuItem(strings.MenuAlwaysOnTop);
-            menuitem.Name = "alwaysOnTopOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuAlwaysOnTop)
+            {
+                Name = "alwaysOnTopOptionsMenuItem"
+            };
             menuitem.Click += alwaysOnTopOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
-            menuitem = new ToolStripMenuItem(strings.MenuUseSystemTrayIcon);
-            menuitem.Name = "useSystemTrayIconOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuUseSystemTrayIcon)
+            {
+                Name = "useSystemTrayIconOptionsMenuItem"
+            };
             menuitem.Click += useSystemTrayIconOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
-            menuitem = new ToolStripMenuItem(strings.MenuAutoSize);
-            menuitem.Name = "autoSizeOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuAutoSize)
+            {
+                Name = "autoSizeOptionsMenuItem"
+            };
             menuitem.Click += autoSizeOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
-            menuitem = new ToolStripMenuItem(strings.CopySearchedSingle);
-            menuitem.Name = "copySearchedSingleOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.CopySearchedSingle)
+            {
+                Name = "copySearchedSingleOptionsMenuItem"
+            };
             menuitem.Click += copySearchedSingleOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
-            menuitem = new ToolStripMenuItem(strings.AutoExitAfterCopy);
-            menuitem.Name = "autoExitAfterCopyOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.AutoExitAfterCopy)
+            {
+                Name = "autoExitAfterCopyOptionsMenuItem"
+            };
             menuitem.Click += autoExitAfterCopyOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
 
-            menuitem = new ToolStripMenuItem(strings.MenuExport);
-            menuitem.Name = "exportOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuExport)
+            {
+                Name = "exportOptionsMenuItem"
+            };
             menuitem.Click += exportOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
@@ -2010,24 +2054,30 @@ namespace WinAuth
 
             if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed == false)
             {
-                menuitem = new ToolStripMenuItem(strings.MenuUpdates + "...");
-                menuitem.Name = "aboutUpdatesMenuItem";
+                menuitem = new ToolStripMenuItem(strings.MenuUpdates + "...")
+                {
+                    Name = "aboutUpdatesMenuItem"
+                };
                 menuitem.Click += aboutUpdatesMenuItem_Click;
                 menu.Items.Add(menuitem);
 
                 menu.Items.Add(new ToolStripSeparator());
             }
 
-            menuitem = new ToolStripMenuItem(strings.MenuAbout + "...");
-            menuitem.Name = "aboutOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuAbout + "...")
+            {
+                Name = "aboutOptionsMenuItem"
+            };
             menuitem.Click += aboutOptionMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
 
-            menuitem = new ToolStripMenuItem(strings.MenuExit);
-            menuitem.Name = "exitOptionsMenuItem";
-            menuitem.ShortcutKeys = Keys.F4 | Keys.Alt;
+            menuitem = new ToolStripMenuItem(strings.MenuExit)
+            {
+                Name = "exitOptionsMenuItem",
+                ShortcutKeys = Keys.F4 | Keys.Alt
+            };
             menuitem.Click += exitOptionMenuItem_Click;
             menu.Items.Add(menuitem);
         }
@@ -2042,8 +2092,10 @@ namespace WinAuth
 
             menu.Items.Clear();
 
-            menuitem = new ToolStripMenuItem(strings.MenuOpen);
-            menuitem.Name = "openOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuOpen)
+            {
+                Name = "openOptionsMenuItem"
+            };
             menuitem.Click += openOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
             menu.Items.Add(new ToolStripSeparator() { Name = "openOptionsSeparatorItem" });
@@ -2055,37 +2107,51 @@ namespace WinAuth
                 var index = 1;
                 foreach (var auth in Config.Take(30))
                 {
-                    menuitem = new ToolStripMenuItem(index.ToString() + ". " + auth.Name);
-                    menuitem.Name = "authenticatorOptionsMenuItem_" + index;
-                    menuitem.Tag = auth;
-                    menuitem.ShortcutKeyDisplayString = (auth.HotKey != null ? auth.HotKey.ToString() : null);
+                    menuitem = new ToolStripMenuItem(index.ToString() + ". " + auth.Name)
+                    {
+                        Name = "authenticatorOptionsMenuItem_" + index,
+                        Tag = auth,
+                        ShortcutKeyDisplayString = (auth.HotKey != null ? auth.HotKey.ToString() : null)
+                    };
                     menuitem.Click += authenticatorOptionsMenuItem_Click;
                     menu.Items.Add(menuitem);
                     index++;
                 }
-                var separator = new ToolStripSeparator();
-                separator.Name = "authenticatorOptionsSeparatorItem";
+                var separator = new ToolStripSeparator
+                {
+                    Name = "authenticatorOptionsSeparatorItem"
+                };
                 menu.Items.Add(separator);
 
-                menuitem = new ToolStripMenuItem(strings.DefaultAction);
-                menuitem.Name = "defaultActionOptionsMenuItem";
+                menuitem = new ToolStripMenuItem(strings.DefaultAction)
+                {
+                    Name = "defaultActionOptionsMenuItem"
+                };
                 menu.Items.Add(menuitem);
-                subitem = new ToolStripMenuItem(strings.DefaultActionNotification);
-                subitem.Name = "defaultActionNotificationOptionsMenuItem";
+                subitem = new ToolStripMenuItem(strings.DefaultActionNotification)
+                {
+                    Name = "defaultActionNotificationOptionsMenuItem"
+                };
                 subitem.Click += defaultActionNotificationOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
-                subitem = new ToolStripMenuItem(strings.DefaultActionCopyToClipboard);
-                subitem.Name = "defaultActionCopyToClipboardOptionsMenuItem";
+                subitem = new ToolStripMenuItem(strings.DefaultActionCopyToClipboard)
+                {
+                    Name = "defaultActionCopyToClipboardOptionsMenuItem"
+                };
                 subitem.Click += defaultActionCopyToClipboardOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
-                subitem = new ToolStripMenuItem(strings.DefaultActionHotkey);
-                subitem.Name = "defaultActionHotkeyOptionsMenuItem";
+                subitem = new ToolStripMenuItem(strings.DefaultActionHotkey)
+                {
+                    Name = "defaultActionHotkeyOptionsMenuItem"
+                };
                 subitem.Click += defaultActionHotkeyOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
                 menu.Items.Add(menuitem);
 
-                separator = new ToolStripSeparator();
-                separator.Name = "authenticatorActionOptionsSeparatorItem";
+                separator = new ToolStripSeparator
+                {
+                    Name = "authenticatorActionOptionsSeparatorItem"
+                };
                 menu.Items.Add(separator);
             }
 
@@ -2099,16 +2165,20 @@ namespace WinAuth
             //	menu.Items.Add(new ToolStripSeparator());
             //}
 
-            menuitem = new ToolStripMenuItem(strings.MenuAbout + "...");
-            menuitem.Name = "aboutOptionsMenuItem";
+            menuitem = new ToolStripMenuItem(strings.MenuAbout + "...")
+            {
+                Name = "aboutOptionsMenuItem"
+            };
             menuitem.Click += aboutOptionMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
 
-            menuitem = new ToolStripMenuItem(strings.MenuExit);
-            menuitem.Name = "exitOptionsMenuItem";
-            menuitem.ShortcutKeys = Keys.F4 | Keys.Alt;
+            menuitem = new ToolStripMenuItem(strings.MenuExit)
+            {
+                Name = "exitOptionsMenuItem",
+                ShortcutKeys = Keys.F4 | Keys.Alt
+            };
             menuitem.Click += exitOptionMenuItem_Click;
             menu.Items.Add(menuitem);
         }
@@ -2268,8 +2338,10 @@ namespace WinAuth
                 var invalidPassword = false;
                 while (true)
                 {
-                    var checkform = new GetPasswordForm();
-                    checkform.InvalidPassword = invalidPassword;
+                    var checkform = new GetPasswordForm
+                    {
+                        InvalidPassword = invalidPassword
+                    };
                     var result = checkform.ShowDialog(this);
                     if (result == DialogResult.Cancel)
                     {
@@ -2283,9 +2355,11 @@ namespace WinAuth
                 }
             }
 
-            var form = new ChangePasswordForm();
-            form.PasswordType = Config.PasswordType;
-            form.HasPassword = ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0);
+            var form = new ChangePasswordForm
+            {
+                PasswordType = Config.PasswordType,
+                HasPassword = ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
+            };
             if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 bool retry;
@@ -2438,8 +2512,10 @@ namespace WinAuth
                 var invalidPassword = false;
                 while (true)
                 {
-                    var checkform = new GetPasswordForm();
-                    checkform.InvalidPassword = invalidPassword;
+                    var checkform = new GetPasswordForm
+                    {
+                        InvalidPassword = invalidPassword
+                    };
                     var result = checkform.ShowDialog(this);
                     if (result == DialogResult.Cancel)
                     {
@@ -2474,8 +2550,10 @@ namespace WinAuth
         /// <param name="e"></param>
         private void aboutOptionMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new AboutForm();
-            form.Config = Config;
+            var form = new AboutForm
+            {
+                Config = Config
+            };
             form.ShowDialog(this);
         }
 

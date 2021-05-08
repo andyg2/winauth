@@ -129,10 +129,11 @@ namespace WinAuth
                 }
                 else
                 {
-                    var props = new List<string>();
-
-                    props.Add("\"duration\":" + Duration);
-                    props.Add("\"action\":" + (int)Action);
+                    var props = new List<string>
+                    {
+                        "\"duration\":" + Duration,
+                        "\"action\":" + (int)Action
+                    };
                     if (Ids != null)
                     {
                         props.Add("\"ids\":[" + (Ids.Count != 0 ? "\"" + string.Join("\",\"", Ids.ToArray()) + "\"" : string.Empty) + "]");
@@ -489,8 +490,10 @@ namespace WinAuth
                     Session.Cookies.Add(cookieuri, new Cookie("Steam_Language", "english"));
                     Session.Cookies.Add(cookieuri, new Cookie("dob", ""));
 
-                    var headers = new NameValueCollection();
-                    headers.Add("X-Requested-With", "com.valvesoftware.android.steam.community");
+                    var headers = new NameValueCollection
+                    {
+                        { "X-Requested-With", "com.valvesoftware.android.steam.community" }
+                    };
 
                     response = GetString(COMMUNITY_BASE + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client", "GET", null, headers);
                 }
@@ -525,20 +528,22 @@ namespace WinAuth
                 }
 
                 // login request
-                data = new NameValueCollection();
-                data.Add("password", encryptedPassword64);
-                data.Add("username", username);
-                data.Add("twofactorcode", Authenticator.CurrentCode);
-                //data.Add("emailauth", string.Empty);
-                data.Add("loginfriendlyname", "#login_emailauth_friendlyname_mobile");
-                data.Add("captchagid", (string.IsNullOrEmpty(captchaId) == false ? captchaId : "-1"));
-                data.Add("captcha_text", (string.IsNullOrEmpty(captchaText) == false ? captchaText : "enter above characters"));
-                //data.Add("emailsteamid", (string.IsNullOrEmpty(emailcode) == false ? this.SteamId ?? string.Empty : string.Empty));
-                data.Add("rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>());
-                data.Add("remember_login", "false");
-                data.Add("oauth_client_id", "DE45CD61");
-                data.Add("oauth_scope", "read_profile write_profile read_client write_client");
-                data.Add("donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString());
+                data = new NameValueCollection
+                {
+                    { "password", encryptedPassword64 },
+                    { "username", username },
+                    { "twofactorcode", Authenticator.CurrentCode },
+                    //data.Add("emailauth", string.Empty);
+                    { "loginfriendlyname", "#login_emailauth_friendlyname_mobile" },
+                    { "captchagid", (string.IsNullOrEmpty(captchaId) == false ? captchaId : "-1") },
+                    { "captcha_text", (string.IsNullOrEmpty(captchaText) == false ? captchaText : "enter above characters") },
+                    //data.Add("emailsteamid", (string.IsNullOrEmpty(emailcode) == false ? this.SteamId ?? string.Empty : string.Empty));
+                    { "rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>() },
+                    { "remember_login", "false" },
+                    { "oauth_client_id", "DE45CD61" },
+                    { "oauth_scope", "read_profile write_profile read_client write_client" },
+                    { "donotache", new DateTime().ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString() }
+                };
                 response = GetString(COMMUNITY_BASE + "/mobilelogin/dologin/", "POST", data);
                 var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
 
@@ -633,9 +638,11 @@ namespace WinAuth
 
                 if (string.IsNullOrEmpty(Session.UmqId) == false)
                 {
-                    var data = new NameValueCollection();
-                    data.Add("access_token", Session.OAuthToken);
-                    data.Add("umqid", Session.UmqId);
+                    var data = new NameValueCollection
+                    {
+                        { "access_token", Session.OAuthToken },
+                        { "umqid", Session.UmqId }
+                    };
                     GetString(API_LOGOFF, "POST", data);
                 }
             }
@@ -651,8 +658,10 @@ namespace WinAuth
         {
             try
             {
-                var data = new NameValueCollection();
-                data.Add("access_token", Session.OAuthToken);
+                var data = new NameValueCollection
+                {
+                    { "access_token", Session.OAuthToken }
+                };
                 var response = GetString(API_GETWGTOKEN, "POST", data);
                 if (string.IsNullOrEmpty(response) == true)
                 {
@@ -707,8 +716,10 @@ namespace WinAuth
                 return false;
             }
 
-            var data = new NameValueCollection();
-            data.Add("access_token", Session.OAuthToken);
+            var data = new NameValueCollection
+            {
+                { "access_token", Session.OAuthToken }
+            };
             var response = GetString(API_LOGON, "POST", data);
             var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
             if (loginresponse.ContainsKey("umqid") == true)
@@ -910,13 +921,15 @@ namespace WinAuth
 
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
-            var data = new NameValueCollection();
-            data.Add("p", Authenticator.DeviceId);
-            data.Add("a", Session.SteamId);
-            data.Add("k", timehash);
-            data.Add("t", servertime.ToString());
-            data.Add("m", "android");
-            data.Add("tag", "conf");
+            var data = new NameValueCollection
+            {
+                { "p", Authenticator.DeviceId },
+                { "a", Session.SteamId },
+                { "k", timehash },
+                { "t", servertime.ToString() },
+                { "m", "android" },
+                { "tag", "conf" }
+            };
 
             var html = GetString(COMMUNITY_BASE + "/mobileconf/conf", "GET", data);
 
@@ -1050,17 +1063,19 @@ namespace WinAuth
             var ids = (jids != null ? jids.Value<string>() : string.Empty);
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
-            var data = new NameValueCollection();
-            data.Add("op", accept ? "allow" : "cancel");
-            data.Add("p", Authenticator.DeviceId);
-            data.Add("a", Session.SteamId);
-            data.Add("k", timehash);
-            data.Add("t", servertime.ToString());
-            data.Add("m", "android");
-            data.Add("tag", "conf");
-            //
-            data.Add("cid", id);
-            data.Add("ck", key);
+            var data = new NameValueCollection
+            {
+                { "op", accept ? "allow" : "cancel" },
+                { "p", Authenticator.DeviceId },
+                { "a", Session.SteamId },
+                { "k", timehash },
+                { "t", servertime.ToString() },
+                { "m", "android" },
+                { "tag", "conf" },
+                //
+                { "cid", id },
+                { "ck", key }
+            };
 
             try
             {

@@ -270,9 +270,11 @@ namespace WinAuth
         public static void SaveConfig(WinAuthConfig config)
         {
             // create the xml
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.Encoding = Encoding.UTF8;
+            var settings = new XmlWriterSettings
+            {
+                Indent = true,
+                Encoding = Encoding.UTF8
+            };
 
             // Issue 41 (http://code.google.com/p/winauth/issues/detail?id=41): saving may crash leaving file corrupt, so write into memory stream first before an atomic file write
             using (var ms = new MemoryStream())
@@ -367,8 +369,10 @@ namespace WinAuth
                 // save the PGP encrypted key
                 using (var sw = new EncodedStringWriter(Encoding.UTF8))
                 {
-                    var xmlsettings = new XmlWriterSettings();
-                    xmlsettings.Indent = true;
+                    var xmlsettings = new XmlWriterSettings
+                    {
+                        Indent = true
+                    };
                     using (var xw = XmlWriter.Create(sw, xmlsettings))
                     {
                         xw.WriteStartElement("WinAuth");
@@ -609,8 +613,10 @@ namespace WinAuth
                             throw new ApplicationException("HOTP authenticator should have a counter");
                         }
 
-                        var importedAuthenticator = new WinAuthAuthenticator();
-                        importedAuthenticator.AutoRefresh = false;
+                        var importedAuthenticator = new WinAuthAuthenticator
+                        {
+                            AutoRefresh = false
+                        };
                         //
                         Authenticator auth;
                         if (string.Compare(issuer, "BattleNet", true) == 0)
@@ -751,8 +757,10 @@ namespace WinAuth
                         if (auth.AuthenticatorData.RequiresPassword == true)
                         {
                             // request the password
-                            var getPassForm = new UnprotectPasswordForm();
-                            getPassForm.Authenticator = auth;
+                            var getPassForm = new UnprotectPasswordForm
+                            {
+                                Authenticator = auth
+                            };
                             var result = getPassForm.ShowDialog(form);
                             if (result == DialogResult.OK)
                             {
@@ -790,8 +798,10 @@ namespace WinAuth
 
                             zip.IsStreamOwner = true;
 
-                            var entry = new ZipEntry(ZipEntry.CleanName(Path.GetFileNameWithoutExtension(file) + ".txt"));
-                            entry.DateTime = DateTime.Now;
+                            var entry = new ZipEntry(ZipEntry.CleanName(Path.GetFileNameWithoutExtension(file) + ".txt"))
+                            {
+                                DateTime = DateTime.Now
+                            };
                             zip.UseZip64 = UseZip64.Off;
 
                             zip.PutNextEntry(entry);

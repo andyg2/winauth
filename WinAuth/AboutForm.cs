@@ -71,8 +71,10 @@ namespace WinAuth
         private void reportButton_Click(object sender, EventArgs e)
         {
             // display the error form, loading it with current authenticator data
-            var errorreport = new DiagnosticForm();
-            errorreport.Config = Config;
+            var errorreport = new DiagnosticForm
+            {
+                Config = Config
+            };
             if (string.IsNullOrEmpty(errorreport.Config.Filename) == false)
             {
                 errorreport.ConfigFileContents = File.ReadAllText(errorreport.Config.Filename);
@@ -81,8 +83,10 @@ namespace WinAuth
             {
                 using (var ms = new MemoryStream())
                 {
-                    var settings = new XmlWriterSettings();
-                    settings.Indent = true;
+                    var settings = new XmlWriterSettings
+                    {
+                        Indent = true
+                    };
                     using (var writer = XmlWriter.Create(ms, settings))
                     {
                         Config.WriteXmlString(writer);
