@@ -92,10 +92,7 @@ namespace WinAuth
         /// </summary>
         public Authenticator.PasswordTypes PasswordType
         {
-            get
-            {
-                return _passwordType;
-            }
+            get => _passwordType;
             set
             {
                 _passwordType = value;
@@ -214,14 +211,8 @@ namespace WinAuth
         /// </summary>
         public string Filename
         {
-            get
-            {
-                return _filename;
-            }
-            set
-            {
-                _filename = value;
-            }
+            get => _filename;
+            set => _filename = value;
         }
 
         /// <summary>
@@ -229,10 +220,7 @@ namespace WinAuth
         /// </summary>
         public bool AlwaysOnTop
         {
-            get
-            {
-                return _alwaysOnTop;
-            }
+            get => _alwaysOnTop;
             set
             {
                 _alwaysOnTop = value;
@@ -247,10 +235,7 @@ namespace WinAuth
         /// </summary>
         public bool CopySearchedSingle
         {
-            get
-            {
-                return _copySearchedSingle;
-            }
+            get => _copySearchedSingle;
             set
             {
                 _copySearchedSingle = value;
@@ -265,10 +250,7 @@ namespace WinAuth
         /// </summary>
         public bool AutoExitAfterCopy
         {
-            get
-            {
-                return _autoExitAfterCopy;
-            }
+            get => _autoExitAfterCopy;
             set
             {
                 _autoExitAfterCopy = value;
@@ -284,10 +266,7 @@ namespace WinAuth
         /// </summary>
         public bool UseTrayIcon
         {
-            get
-            {
-                return _useTrayIcon;
-            }
+            get => _useTrayIcon;
             set
             {
                 _useTrayIcon = value;
@@ -303,10 +282,7 @@ namespace WinAuth
         /// </summary>
         public NotifyActions NotifyAction
         {
-            get
-            {
-                return _notifyAction;
-            }
+            get => _notifyAction;
             set
             {
                 _notifyAction = value;
@@ -322,10 +298,7 @@ namespace WinAuth
         /// </summary>
         public bool StartWithWindows
         {
-            get
-            {
-                return _startWithWindows;
-            }
+            get => _startWithWindows;
             set
             {
                 _startWithWindows = value;
@@ -341,10 +314,7 @@ namespace WinAuth
         /// </summary>
         public bool AutoSize
         {
-            get
-            {
-                return _autoSize;
-            }
+            get => _autoSize;
             set
             {
                 _autoSize = value;
@@ -360,10 +330,7 @@ namespace WinAuth
         /// </summary>
         public Point Position
         {
-            get
-            {
-                return _position;
-            }
+            get => _position;
             set
             {
                 if (_position != value)
@@ -382,10 +349,7 @@ namespace WinAuth
         /// </summary>
         public int Width
         {
-            get
-            {
-                return _width;
-            }
+            get => _width;
             set
             {
                 if (_width != value)
@@ -404,10 +368,7 @@ namespace WinAuth
         /// </summary>
         public int Height
         {
-            get
-            {
-                return _height;
-            }
+            get => _height;
             set
             {
                 if (_height != value)
@@ -426,10 +387,7 @@ namespace WinAuth
         /// </summary>
         public string ShadowType
         {
-            get
-            {
-                return _shadowType;
-            }
+            get => _shadowType;
             set
             {
                 _shadowType = value;
@@ -443,25 +401,13 @@ namespace WinAuth
         /// <summary>
         /// Get user's own PGP key
         /// </summary>
-        public string PGPKey
-        {
-            get
-            {
-                return _pgpKey;
-            }
-        }
+        public string PGPKey => _pgpKey;
 
         /// <summary>
         /// Return if we are in portable mode, which is when the config filename is in teh same directory as the exe
         /// </summary>
-        public bool IsPortable
-        {
-            get
-            {
-                return (string.IsNullOrEmpty(Filename) == false
+        public bool IsPortable => (string.IsNullOrEmpty(Filename) == false
                     && string.Compare(Path.GetDirectoryName(Filename), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), true) == 0);
-            }
-        }
 
         /// <summary>
         /// Read a setting value.
@@ -554,10 +500,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool IsPassword(string password)
-        {
-            return (string.Compare(password, Password) == 0);
-        }
+        public bool IsPassword(string password) => (string.Compare(password, Password) == 0);
 
         #endregion
 
@@ -604,10 +547,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="authenticator"></param>
         /// <returns></returns>
-        public bool Contains(WinAuthAuthenticator authenticator)
-        {
-            return _authenticators.Contains(authenticator);
-        }
+        public bool Contains(WinAuthAuthenticator authenticator) => _authenticators.Contains(authenticator);
 
         /// <summary>
         /// Copy elements from the list to an array
@@ -616,41 +556,26 @@ namespace WinAuth
         /// <param name="array"></param>
         /// <param name="arrayIndex"></param>
         /// <param name="count"></param>
-        public void CopyTo(int index, WinAuthAuthenticator[] array, int arrayIndex, int count)
-        {
-            _authenticators.CopyTo(index, array, arrayIndex, count);
-        }
+        public void CopyTo(int index, WinAuthAuthenticator[] array, int arrayIndex, int count) => _authenticators.CopyTo(index, array, arrayIndex, count);
 
         /// <summary>
         /// Copy the list into an array
         /// </summary>
         /// <param name="array"></param>
         /// <param name="index"></param>
-        public void CopyTo(WinAuthAuthenticator[] array, int index)
-        {
-            _authenticators.CopyTo(array, index);
-        }
+        public void CopyTo(WinAuthAuthenticator[] array, int index) => _authenticators.CopyTo(array, index);
 
         /// <summary>
         /// return the count of authenticators
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _authenticators.Count;
-            }
-        }
+        public int Count => _authenticators.Count;
 
         /// <summary>
         /// Get the index of an authenticator
         /// </summary>
         /// <param name="authenticator"></param>
         /// <returns></returns>
-        public int IndexOf(WinAuthAuthenticator authenticator)
-        {
-            return _authenticators.IndexOf(authenticator);
-        }
+        public int IndexOf(WinAuthAuthenticator authenticator) => _authenticators.IndexOf(authenticator);
 
         /// <summary>
         /// Insert an authenticator at a specified position
@@ -669,14 +594,8 @@ namespace WinAuth
         /// </summary>
         public bool IsReadOnly
         {
-            get
-            {
-                return _readOnly;
-            }
-            set
-            {
-                _readOnly = value;
-            }
+            get => _readOnly;
+            set => _readOnly = value;
         }
 
         /// <summary>
@@ -707,19 +626,13 @@ namespace WinAuth
         /// Get an enumerator for the authenticators
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<WinAuthAuthenticator> GetEnumerator()
-        {
-            return _authenticators.GetEnumerator();
-        }
+        public IEnumerator<WinAuthAuthenticator> GetEnumerator() => _authenticators.GetEnumerator();
 
         /// <summary>
         /// Get an enumerator for the authenticators
         /// </summary>
         /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// Indexer to get an authenticator by postion
@@ -728,23 +641,14 @@ namespace WinAuth
         /// <returns></returns>
         public WinAuthAuthenticator this[int index]
         {
-            get
-            {
-                return _authenticators[index];
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => _authenticators[index];
+            set => throw new NotImplementedException();
         }
 
         /// <summary>
         /// Sort the authenticator by their index value
         /// </summary>
-        public void Sort()
-        {
-            _authenticators.Sort((a, b) => a.Index.CompareTo(b.Index));
-        }
+        public void Sort() => _authenticators.Sort((a, b) => a.Index.CompareTo(b.Index));
 
         #endregion
 
@@ -755,14 +659,8 @@ namespace WinAuth
         /// </summary>
         public WinAuthAuthenticator CurrentAuthenticator
         {
-            get
-            {
-                return _authenticator;
-            }
-            set
-            {
-                _authenticator = value;
-            }
+            get => _authenticator;
+            set => _authenticator = value;
         }
 
         #endregion

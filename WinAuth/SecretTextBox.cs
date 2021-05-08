@@ -62,10 +62,7 @@ namespace WinAuth
         /// </summary>
         public bool SecretMode
         {
-            get
-            {
-                return m_secretMode;
-            }
+            get => m_secretMode;
             set
             {
                 m_secretMode = value;
@@ -90,14 +87,8 @@ namespace WinAuth
 
         public int SpaceOut
         {
-            get
-            {
-                return m_spaceOut;
-            }
-            set
-            {
-                m_spaceOut = value;
-            }
+            get => m_spaceOut;
+            set => m_spaceOut = value;
         }
 
         /// <summary>
@@ -105,10 +96,7 @@ namespace WinAuth
         /// </summary>
         public override string Text
         {
-            get
-            {
-                return (SecretMode == true ? m_text : base.Text);
-            }
+            get => (SecretMode == true ? m_text : base.Text);
             set
             {
                 m_text = value;

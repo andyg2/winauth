@@ -283,15 +283,12 @@ namespace WinAuth
             /// Get session data that can be saved and imported
             /// </summary>
             /// <returns></returns>
-            public override string ToString()
-            {
-                return "{\"steamid\":\"" + (SteamId ?? string.Empty) + "\","
+            public override string ToString() => "{\"steamid\":\"" + (SteamId ?? string.Empty) + "\","
                     + "\"cookies\":\"" + Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
                     + "\"oauthtoken\":\"" + (OAuthToken ?? string.Empty) + "\","
                     // + "\"umqid\":\"" + (this.UmqId ?? string.Empty) + "\","
                     + "\"confs\":" + (Confirmations != null ? Confirmations.ToString() : "null")
                     + "}";
-            }
 
             /// <summary>
             /// Convert json data into session 
@@ -460,10 +457,7 @@ namespace WinAuth
         /// Check if user is logged in
         /// </summary>
         /// <returns></returns>
-        public bool IsLoggedIn()
-        {
-            return (Session != null && string.IsNullOrEmpty(Session.OAuthToken) == false);
-        }
+        public bool IsLoggedIn() => (Session != null && string.IsNullOrEmpty(Session.OAuthToken) == false);
 
         /// <summary>
         /// Login to Steam using credentials and optional captcha
@@ -1153,10 +1147,7 @@ namespace WinAuth
         /// <param name="formdata">optional form data</param>
         /// <param name="headers">optional headers</param>
         /// <returns>array of returned data</returns>
-        public byte[] GetData(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null)
-        {
-            return Request(url, method ?? "GET", formdata, headers);
-        }
+        public byte[] GetData(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null) => Request(url, method ?? "GET", formdata, headers);
 
         /// <summary>
         /// Get string from web request
@@ -1386,11 +1377,9 @@ namespace WinAuth
         /// </summary>
         /// <param name="bytes">byte array to convert</param>
         /// <returns>string version of byte array</returns>
-        private static string ByteArrayToString(byte[] bytes)
-        {
+        private static string ByteArrayToString(byte[] bytes) =>
             // Use BitConverter, but it sticks dashes in the string
-            return BitConverter.ToString(bytes).Replace("-", string.Empty);
-        }
+            BitConverter.ToString(bytes).Replace("-", string.Empty);
 
         /// <summary>
         /// Our custom exception for the internal Http Request

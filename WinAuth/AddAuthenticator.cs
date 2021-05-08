@@ -209,10 +209,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void secretCodeField_Leave(object sender, EventArgs e)
-        {
-            DecodeSecretCode();
-        }
+        private void secretCodeField_Leave(object sender, EventArgs e) => DecodeSecretCode();
 
         #endregion
 
@@ -586,10 +583,7 @@ namespace WinAuth
             secretCodeField.Text = files[0];
         }
 
-        private void secretCodeField_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Copy;
-        }
+        private void secretCodeField_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Copy;
 
         private Color initialColor;
 
@@ -600,10 +594,7 @@ namespace WinAuth
             (sender as Panel).BackColor = Color.LightGreen;
         }
 
-        private void dragImagePanel_DragLeave(object sender, EventArgs e)
-        {
-            (sender as Panel).BackColor = initialColor;
-        }
+        private void dragImagePanel_DragLeave(object sender, EventArgs e) => (sender as Panel).BackColor = initialColor;
 
         private void dragPanel_DragDrop(object sender, DragEventArgs e)
         {

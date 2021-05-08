@@ -49,10 +49,7 @@ namespace WinAuth
             public string SteamId;
             public string json;
 
-            public override string ToString()
-            {
-                return Username + " (" + SteamId + ")";
-            }
+            public override string ToString() => Username + " (" + SteamId + ")";
         }
 
         /// <summary>
@@ -163,20 +160,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRift_Click(object sender, EventArgs e)
-        {
-            steamIconRadioButton.Checked = true;
-        }
+        private void iconRift_Click(object sender, EventArgs e) => steamIconRadioButton.Checked = true;
 
         /// <summary>
         /// Select one of the icons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconGlyph_Click(object sender, EventArgs e)
-        {
-            steamAuthenticatorIconRadioButton.Checked = true;
-        }
+        private void iconGlyph_Click(object sender, EventArgs e) => steamAuthenticatorIconRadioButton.Checked = true;
 
         /// <summary>
         /// Set the authenticator icon
@@ -350,30 +341,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            confirmButton.Enabled = revocationCheckbox.Checked;
-        }
+        private void revocationCheckbox_CheckedChanged(object sender, EventArgs e) => confirmButton.Enabled = revocationCheckbox.Checked;
 
         /// <summary>
         /// Allow the field to be copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationcodeCopy_CheckedChanged(object sender, EventArgs e)
-        {
-            revocationcodeField.SecretMode = !revocationcodeCopy.Checked;
-        }
+        private void revocationcodeCopy_CheckedChanged(object sender, EventArgs e) => revocationcodeField.SecretMode = !revocationcodeCopy.Checked;
 
         /// <summary>
         /// Allow the field to be copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationcode2Copy_CheckedChanged(object sender, EventArgs e)
-        {
-            revocationcode2Field.SecretMode = !revocationcode2Copy.Checked;
-        }
+        private void revocationcode2Copy_CheckedChanged(object sender, EventArgs e) => revocationcode2Field.SecretMode = !revocationcode2Copy.Checked;
 
         /// <summary>
         /// When changing tabs, set the correct buttons
@@ -422,10 +404,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void importSDALoad_Click(object sender, EventArgs e)
-        {
-            LoadSDA();
-        }
+        private void importSDALoad_Click(object sender, EventArgs e) => LoadSDA();
 
         #endregion
 

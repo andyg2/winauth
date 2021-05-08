@@ -47,10 +47,7 @@ namespace WinAuth
             public string Text;
             public SteamClient.PollerAction Value;
 
-            public override string ToString()
-            {
-                return Text;
-            }
+            public override string ToString() => Text;
         }
 
         /// <summary>
@@ -74,13 +71,7 @@ namespace WinAuth
         /// <summary>
         /// Steam authenticator
         /// </summary>
-        public SteamAuthenticator AuthenticatorData
-        {
-            get
-            {
-                return Authenticator != null ? Authenticator.AuthenticatorData as SteamAuthenticator : null;
-            }
-        }
+        public SteamAuthenticator AuthenticatorData => Authenticator != null ? Authenticator.AuthenticatorData as SteamAuthenticator : null;
 
         /// <summary>
         /// Trade info state
@@ -155,10 +146,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowSteamTradesForm_Shown(object sender, EventArgs e)
-        {
-            usernameField.Focus();
-        }
+        private void ShowSteamTradesForm_Shown(object sender, EventArgs e) => usernameField.Focus();
 
         /// <summary>
         /// If we close after adding, make sure we save it
@@ -178,10 +166,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            DialogResult = System.Windows.Forms.DialogResult.Cancel;
-        }
+        private void cancelButton_Click(object sender, EventArgs e) => DialogResult = System.Windows.Forms.DialogResult.Cancel;
 
         /// <summary>
         /// Draw the tabs of the tabcontrol so they aren't white
@@ -386,10 +371,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void refreshButton_Click(object sender, EventArgs e)
-        {
-            Process();
-        }
+        private void refreshButton_Click(object sender, EventArgs e) => Process();
 
         /// <summary>
         /// Logout of session

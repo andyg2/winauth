@@ -48,10 +48,7 @@ namespace WinAuth
             /// Override string to show display name
             /// </summary>
             /// <returns></returns>
-            public override string ToString()
-            {
-                return Name;
-            }
+            public override string ToString() => Name;
         }
 
         /// <summary>
@@ -159,10 +156,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoLabel_Click(object sender, EventArgs e)
-        {
-            autoCheckbox.Checked = !autoCheckbox.Checked;
-        }
+        private void autoLabel_Click(object sender, EventArgs e) => autoCheckbox.Checked = !autoCheckbox.Checked;
 
         /// <summary>
         /// If interval is set, make sure checkbox is checked

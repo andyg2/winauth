@@ -46,10 +46,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void btnOK_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Form loaded event

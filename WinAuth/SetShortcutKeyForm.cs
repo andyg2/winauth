@@ -48,10 +48,7 @@ namespace WinAuth
             /// Get the string representation, ignoring the VK_
             /// </summary>
             /// <returns></returns>
-            public override string ToString()
-            {
-                return Key.ToString().Substring(3);
-            }
+            public override string ToString() => Key.ToString().Substring(3);
         }
 
         /// <summary>
@@ -233,29 +230,20 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void injectRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            injectTextbox.Enabled = injectRadioButton.Checked;
-        }
+        private void injectRadioButton_CheckedChanged(object sender, EventArgs e) => injectTextbox.Enabled = injectRadioButton.Checked;
 
         /// <summary>
         /// Click the Advanced radio
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void advancedRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            advancedTextbox.Enabled = advancedRadioButton.Checked;
-        }
+        private void advancedRadioButton_CheckedChanged(object sender, EventArgs e) => advancedTextbox.Enabled = advancedRadioButton.Checked;
 
         /// <summary>
         /// Click to manually show the Advanced tooltip
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void advancedLink_Click(object sender, EventArgs e)
-        {
-            tooltip.Show(tooltip.GetToolTip(advancedTextbox), advancedTextbox);
-        }
+        private void advancedLink_Click(object sender, EventArgs e) => tooltip.Show(tooltip.GetToolTip(advancedTextbox), advancedTextbox);
     }
 }

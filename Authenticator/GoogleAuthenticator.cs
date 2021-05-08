@@ -48,13 +48,7 @@ namespace WinAuth
 
         #region Authenticator data
 
-        public string Serial
-        {
-            get
-            {
-                return Base32.getInstance().Encode(SecretKey);
-            }
-        }
+        public string Serial => Base32.getInstance().Encode(SecretKey);
 
         #endregion
 

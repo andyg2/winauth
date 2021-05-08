@@ -88,10 +88,7 @@ namespace WinAuth
         /// <summary>
         /// Dispose and unhook
         /// </summary>
-        public void Dispose()
-        {
-            UnHook();
-        }
+        public void Dispose() => UnHook();
 
         /// <summary>
         /// Set up the hook into Windows
@@ -302,19 +299,13 @@ namespace WinAuth
         /// Send a single key to the current window
         /// </summary>
         /// <param name="key">key to send</param>
-        private void SendKey(char key)
-        {
-            SendKey(key, 0, 1);
-        }
+        private void SendKey(char key) => SendKey(key, 0, 1);
 
         /// <summary>
         /// Send a key string to the current window
         /// </summary>
         /// <param name="key">key string to send</param>
-        private void SendKey(string key)
-        {
-            SendKey(key, 0, 1);
-        }
+        private void SendKey(string key) => SendKey(key, 0, 1);
 
         /// <summary>
         /// Send a key string to the current window a number of times with a delay after each key
@@ -338,10 +329,7 @@ namespace WinAuth
         /// <param name="key">key to send</param>
         /// <param name="delay">delay in millisecs after each keypress</param>
         /// <param name="repeat">number of times</param>
-        private void SendKey(char key, int delay, int repeat)
-        {
-            SendKey(key.ToString(), delay, repeat);
-        }
+        private void SendKey(char key, int delay, int repeat) => SendKey(key.ToString(), delay, repeat);
 
         /// <summary>
         /// Find a window for the give process and/or title

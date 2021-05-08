@@ -745,10 +745,7 @@ namespace WinAuth
         /// Create a random Device ID string for Enrolling
         /// </summary>
         /// <returns>Random string</returns>
-        private static string BuildRandomId()
-        {
-            return "android:" + Guid.NewGuid().ToString();
-        }
+        private static string BuildRandomId() => "android:" + Guid.NewGuid().ToString();
 
         /// <summary>
         /// Log an exception from a Request

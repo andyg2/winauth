@@ -61,10 +61,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void closeButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click the report button

@@ -170,20 +170,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void quitButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void quitButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click the Continue button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void continueButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void continueButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click to show the details

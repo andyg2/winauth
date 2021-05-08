@@ -171,30 +171,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon1_Click(object sender, EventArgs e)
-        {
-            icon1RadioButton.Checked = true;
-        }
+        private void icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon2_Click(object sender, EventArgs e)
-        {
-            icon2RadioButton.Checked = true;
-        }
+        private void icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon3
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon3_Click(object sender, EventArgs e)
-        {
-            icon3RadioButton.Checked = true;
-        }
+        private void icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
 
         #endregion
 

@@ -455,10 +455,7 @@ namespace WinAuth
         /// <summary>
         /// Unregisters the window for USB device notifications
         /// </summary>
-        public static void UnregisterUsbDeviceNotification(IntPtr handle)
-        {
-            UnregisterDeviceNotification(handle);
-        }
+        public static void UnregisterUsbDeviceNotification(IntPtr handle) => UnregisterDeviceNotification(handle);
 
         public static WINDOWPLACEMENT GetPlacement(IntPtr hwnd)
         {
@@ -583,20 +580,11 @@ namespace WinAuth
                 _previousParent = _control.Parent;
             }
 
-            void control_MouseEnter(object sender, EventArgs e)
-            {
-                _isMouseOverControl = true;
-            }
+            void control_MouseEnter(object sender, EventArgs e) => _isMouseOverControl = true;
 
-            void control_MouseLeave(object sender, EventArgs e)
-            {
-                _isMouseOverControl = false;
-            }
+            void control_MouseLeave(object sender, EventArgs e) => _isMouseOverControl = false;
 
-            void control_Leave(object sender, EventArgs e)
-            {
-                _isMouseOverControl = false;
-            }
+            void control_Leave(object sender, EventArgs e) => _isMouseOverControl = false;
         }
 
     }

@@ -766,10 +766,7 @@ namespace WinAuth
         /// <param name="message">message to display</param>
         /// <param name="buttons">button if other than YesNo</param>
         /// <returns>DialogResult</returns>
-        public static DialogResult ConfirmDialog(Form form, string message, MessageBoxButtons buttons = MessageBoxButtons.YesNo, MessageBoxIcon icon = MessageBoxIcon.Question, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
-        {
-            return MessageBox.Show(form, message, WinAuthMain.APPLICATION_TITLE, buttons, icon, defaultButton);
-        }
+        public static DialogResult ConfirmDialog(Form form, string message, MessageBoxButtons buttons = MessageBoxButtons.YesNo, MessageBoxIcon icon = MessageBoxIcon.Question, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) => MessageBox.Show(form, message, WinAuthMain.APPLICATION_TITLE, buttons, icon, defaultButton);
 
         /// <summary>
         /// Preload the context menu with the possible set of authenticator types
@@ -1705,20 +1702,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void addAuthenticatorButton_Click(object sender, EventArgs e)
-        {
-            addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
-        }
+        private void addAuthenticatorButton_Click(object sender, EventArgs e) => addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
 
         /// <summary>
         /// Click the Options button to show menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void optionsButton_Click(object sender, EventArgs e)
-        {
-            optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
-        }
+        private void optionsButton_Click(object sender, EventArgs e) => optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
 
         /// <summary>
         /// Double click notify to re-open
@@ -1796,30 +1787,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        private void authenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args)
-        {
-            RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
-        }
+        private void authenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args) => RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
 
         /// <summary>
         /// Click in the main form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WinAuthForm_MouseDown(object sender, MouseEventArgs e)
-        {
-            EndRenaming();
-        }
+        private void WinAuthForm_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
 
         /// <summary>
         /// Click in the command panel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void commandPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            EndRenaming();
-        }
+        private void commandPanel_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
 
         /// <summary>
         /// Resizing the form, we have to manually adjust the width and height of list else starting as minimized borks
@@ -1924,10 +1906,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void searchTextbox_KeyUp(object sender, KeyEventArgs e)
-        {
-            searchTextbox_changed(sender, null);
-        }
+        private void searchTextbox_KeyUp(object sender, KeyEventArgs e) => searchTextbox_changed(sender, null);
 
         /// <summary>
         /// If click the new version status link
@@ -2139,20 +2118,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void optionsMenu_Opening(object sender, CancelEventArgs e)
-        {
-            OpeningOptionsMenu(optionsMenu, e);
-        }
+        private void optionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu, e);
 
         /// <summary>
         /// Set the state of the items when opening the notify menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void notifyMenu_Opening(object sender, CancelEventArgs e)
-        {
-            OpeningNotifyMenu(notifyMenu, e);
-        }
+        private void notifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu, e);
 
         /// <summary>
         /// Set state of menuitems when opening the Options menu
@@ -2394,90 +2367,63 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void startWithWindowsOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.StartWithWindows = !Config.StartWithWindows;
-        }
+        private void startWithWindowsOptionsMenuItem_Click(object sender, EventArgs e) => Config.StartWithWindows = !Config.StartWithWindows;
 
         /// <summary>
         /// Click the Always On Top menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void alwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.AlwaysOnTop = !Config.AlwaysOnTop;
-        }
+        private void alwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e) => Config.AlwaysOnTop = !Config.AlwaysOnTop;
 
         /// <summary>
         /// Click the Use Tray Icon menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void useSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.UseTrayIcon = !Config.UseTrayIcon;
-        }
+        private void useSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e) => Config.UseTrayIcon = !Config.UseTrayIcon;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
-        }
+        private void defaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
-        }
+        private void defaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
-        }
+        private void defaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
 
         /// <summary>
         /// Click the Auto Size menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoSizeOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.AutoSize = !Config.AutoSize;
-        }
+        private void autoSizeOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoSize = !Config.AutoSize;
 
         /// <summary>
         /// Automatically copy the code when search result is only one item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void copySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.CopySearchedSingle = !Config.CopySearchedSingle;
-        }
+        private void copySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e) => Config.CopySearchedSingle = !Config.CopySearchedSingle;
 
         /// <summary>
         /// Automatically exit program after code is copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
-        }
+        private void autoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
 
         /// <summary>
         /// Click the Export menu
@@ -2519,10 +2465,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void aboutUpdatesMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowUpdaterForm();
-        }
+        private void aboutUpdatesMenuItem_Click(object sender, EventArgs e) => ShowUpdaterForm();
 
         /// <summary>
         /// Click the About menu item

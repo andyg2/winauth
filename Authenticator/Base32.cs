@@ -53,10 +53,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="alphabet"></param>
         /// <returns></returns>
-        public static Base32 getInstance(string alphabet = null)
-        {
-            return (alphabet == null ? _instance : new Base32(alphabet));
-        }
+        public static Base32 getInstance(string alphabet = null) => (alphabet == null ? _instance : new Base32(alphabet));
 
         /// <summary>
         /// array of alaphabet chars
@@ -101,10 +98,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private static int NumberOfTrailingZeros(int i)
-        {
-            return NumberTrailingZerosLookup[(i & -i) % 37];
-        }
+        private static int NumberOfTrailingZeros(int i) => NumberTrailingZerosLookup[(i & -i) % 37];
 
         public byte[] Decode(string encoded)
         {

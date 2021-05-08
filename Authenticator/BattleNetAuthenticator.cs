@@ -152,13 +152,7 @@ namespace WinAuth
         /// <summary>
         /// Region for authenticator taken from first 2 chars of serial
         /// </summary>
-        public string Region
-        {
-            get
-            {
-                return (string.IsNullOrEmpty(Serial) == false ? Serial.Substring(0, 2) : string.Empty);
-            }
-        }
+        public string Region => (string.IsNullOrEmpty(Serial) == false ? Serial.Substring(0, 2) : string.Empty);
 
         public string Serial { get; set; }
 
@@ -167,11 +161,9 @@ namespace WinAuth
         /// </summary>
         public override string SecretData
         {
-            get
-            {
+            get =>
                 // for Battle.net, this is the key + serial
-                return base.SecretData + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(Serial));
-            }
+                base.SecretData + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(Serial));
             set
             {
                 // for Battle.net, extract key + serial
@@ -214,13 +206,7 @@ namespace WinAuth
         /// Get the restore code for an authenticator used to recover a lost authenticator along with the serial number.
         /// </summary>
         /// <returns>restore code (10 chars)</returns>
-        public string RestoreCode
-        {
-            get
-            {
-                return BuildRestoreCode();
-            }
-        }
+        public string RestoreCode => BuildRestoreCode();
 
         #endregion
 

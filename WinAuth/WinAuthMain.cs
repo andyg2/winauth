@@ -253,15 +253,9 @@ namespace WinAuth
             }
         }
 
-        static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            LogException(e.Exception);
-        }
+        static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) => LogException(e.Exception);
 
-        static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            LogException(e.ExceptionObject as Exception);
-        }
+        static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e) => LogException(e.ExceptionObject as Exception);
 
         public static void LogException(Exception ex, bool silently = false)
         {

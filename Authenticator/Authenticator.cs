@@ -158,11 +158,9 @@ namespace WinAuth
         /// </summary>
         public virtual string SecretData
         {
-            get
-            {
+            get =>
                 // this is the secretkey
-                return Authenticator.ByteArrayToString(SecretKey) + "\t" + CodeDigits.ToString() + "\t" + HMACType.ToString() + "\t" + Period.ToString();
-            }
+                Authenticator.ByteArrayToString(SecretKey) + "\t" + CodeDigits.ToString() + "\t" + HMACType.ToString() + "\t" + Period.ToString();
             set
             {
                 if (string.IsNullOrEmpty(value) == false)
@@ -205,25 +203,14 @@ namespace WinAuth
         /// <summary>
         /// Get the server time since 1/1/70
         /// </summary>
-        public long ServerTime
-        {
-            get
-            {
-                return CurrentTime + ServerTimeDiff;
-            }
-        }
+        public long ServerTime => CurrentTime + ServerTimeDiff;
 
         /// <summary>
         /// Calculate the code interval based on the calculated server time
         /// </summary>
-        public long CodeInterval
-        {
-            get
-            {
+        public long CodeInterval =>
                 // calculate the code interval; the server's time div 30,000
-                return (CurrentTime + ServerTimeDiff) / (Period * 1000L);
-            }
-        }
+                (CurrentTime + ServerTimeDiff) / (Period * 1000L);
 
         /// <summary>
         /// Get the current code for the authenticator.
@@ -409,10 +396,7 @@ namespace WinAuth
             return authenticator;
         }
 
-        public virtual bool ReadExtraXml(XmlReader reader, string name)
-        {
-            return false;
-        }
+        public virtual bool ReadExtraXml(XmlReader reader, string name) => false;
 
         /// <summary>
         /// Convert the string password types into the PasswordTypes type
@@ -875,13 +859,7 @@ namespace WinAuth
         /// <summary>
         /// Get the milliseconds since 1/1/70 (same as Java currentTimeMillis)
         /// </summary>
-        public static long CurrentTime
-        {
-            get
-            {
-                return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds);
-            }
-        }
+        public static long CurrentTime => Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds);
 
         /// <summary>
         /// Convert a hex string into a byte array. E.g. "001f406a" -> byte[] {0x00, 0x1f, 0x40, 0x6a}
@@ -904,11 +882,9 @@ namespace WinAuth
         /// </summary>
         /// <param name="bytes">byte array to convert</param>
         /// <returns>string version of byte array</returns>
-        public static string ByteArrayToString(byte[] bytes)
-        {
+        public static string ByteArrayToString(byte[] bytes) =>
             // Use BitConverter, but it sticks dashes in the string
-            return BitConverter.ToString(bytes).Replace("-", string.Empty);
-        }
+            BitConverter.ToString(bytes).Replace("-", string.Empty);
 
         /// <summary>
         /// Decrypt a string sequence using the selected encryption types
@@ -1262,11 +1238,9 @@ namespace WinAuth
         /// Clone the current object
         /// </summary>
         /// <returns>return clone</returns>
-        public object Clone()
-        {
+        public object Clone() =>
             // we only need to do shallow copy
-            return MemberwiseClone();
-        }
+            MemberwiseClone();
 
         #endregion
 

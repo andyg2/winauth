@@ -114,10 +114,7 @@ namespace WinAuth
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => _name;
             set
             {
                 _name = value;
@@ -133,10 +130,7 @@ namespace WinAuth
         /// </summary>
         public string Skin
         {
-            get
-            {
-                return _skin;
-            }
+            get => _skin;
             set
             {
                 _skin = value;
@@ -186,10 +180,7 @@ namespace WinAuth
         /// </summary>
         public bool AllowCopy
         {
-            get
-            {
-                return _allowCopy;
-            }
+            get => _allowCopy;
             set
             {
                 _allowCopy = value;
@@ -205,10 +196,7 @@ namespace WinAuth
         /// </summary>
         public bool CopyOnCode
         {
-            get
-            {
-                return _copyOnCode;
-            }
+            get => _copyOnCode;
             set
             {
                 _copyOnCode = value;
@@ -224,10 +212,7 @@ namespace WinAuth
         /// </summary>
         public bool HideSerial
         {
-            get
-            {
-                return _hideSerial;
-            }
+            get => _hideSerial;
             set
             {
                 _hideSerial = value;
@@ -243,14 +228,12 @@ namespace WinAuth
         /// </summary>
         public HotKey HotKey
         {
-            get
-            {
+            get =>
                 //if (this.AuthenticatorData != null && _hotkey != null)
                 //{
                 //	_hotkey.Advanced = this.AuthenticatorData.Script;
                 //}
-                return _hotkey;
-            }
+                _hotkey;
             set
             {
                 _hotkey = value;

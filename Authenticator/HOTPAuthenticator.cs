@@ -58,12 +58,10 @@ namespace WinAuth
         /// </summary>
         public override string SecretData
         {
-            get
-            {
+            get =>
                 // this is the key |  serial | deviceid
-                return base.SecretData
+                base.SecretData
                     + "|" + Counter.ToString();
-            }
             set
             {
                 // extract key + counter

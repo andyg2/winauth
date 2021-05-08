@@ -334,20 +334,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ContextMenu_Click(object sender, EventArgs e)
-        {
-            ProcessMenu((ToolStripItem)sender);
-        }
+        void ContextMenu_Click(object sender, EventArgs e) => ProcessMenu((ToolStripItem)sender);
 
         /// <summary>
         /// Click to open the contxet menu and set the state
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
-        {
-            SetContextMenuItems();
-        }
+        void ContextMenuStrip_Opening(object sender, CancelEventArgs e) => SetContextMenuItems();
 
         /// <summary>
         /// Tick event used to update the pie, codes and relock authenticators
@@ -773,13 +767,7 @@ namespace WinAuth
         /// <summary>
         /// Get flag is we are renaming
         /// </summary>
-        public bool IsRenaming
-        {
-            get
-            {
-                return (RenameTextbox.Visible == true);
-            }
-        }
+        public bool IsRenaming => (RenameTextbox.Visible == true);
 
         /// <summary>
         /// End the renaming and decide to save
@@ -858,10 +846,7 @@ namespace WinAuth
                 }
                 return _currentItem;
             }
-            set
-            {
-                _currentItem = value;
-            }
+            set => _currentItem = value;
         }
 
         #endregion
@@ -1690,10 +1675,7 @@ namespace WinAuth
         /// <summary>
         /// Refresh the current item by invalidating it
         /// </summary>
-        private void RefreshCurrentItem()
-        {
-            RefreshItem(CurrentItem);
-        }
+        private void RefreshCurrentItem() => RefreshItem(CurrentItem);
 
         /// <summary>
         /// Refresh the item by invalidating it
@@ -1763,10 +1745,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="totalWidth">control size</param>
         /// <returns>maximum possible width for label</returns>
-        protected int GetMaxAvailableLabelWidth(int totalWidth)
-        {
-            return totalWidth - MARGIN_LEFT - ICON_WIDTH - ICON_MARGIN_RIGHT - PIE_WIDTH - MARGIN_RIGHT;
-        }
+        protected int GetMaxAvailableLabelWidth(int totalWidth) => totalWidth - MARGIN_LEFT - ICON_WIDTH - ICON_MARGIN_RIGHT - PIE_WIDTH - MARGIN_RIGHT;
 
         /// <summary>
         /// Calculate the maximum label width based on the currnet names

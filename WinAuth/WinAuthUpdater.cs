@@ -137,27 +137,15 @@ namespace WinAuth
         /// <summary>
         /// Get when the last check was done
         /// </summary>
-        public DateTime LastCheck
-        {
-            get
-            {
-                return _lastCheck;
-            }
-        }
+        public DateTime LastCheck => _lastCheck;
 
         /// <summary>
         /// Get the last known latest version or null
         /// </summary>
         public Version LastKnownLatestVersion
         {
-            get
-            {
-                return _latestVersion;
-            }
-            protected set
-            {
-                _latestVersion = value;
-            }
+            get => _latestVersion;
+            protected set => _latestVersion = value;
         }
 
         /// <summary>
@@ -179,24 +167,12 @@ namespace WinAuth
         /// <summary>
         /// Get flag if we have autochecking enabled
         /// </summary>
-        public bool IsAutoCheck
-        {
-            get
-            {
-                return (_autocheckInterval != null);
-            }
-        }
+        public bool IsAutoCheck => (_autocheckInterval != null);
 
         /// <summary>
         /// Get the interval between checks
         /// </summary>
-        public TimeSpan? UpdateInterval
-        {
-            get
-            {
-                return _autocheckInterval;
-            }
-        }
+        public TimeSpan? UpdateInterval => _autocheckInterval;
 
         #endregion
 

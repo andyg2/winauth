@@ -168,10 +168,7 @@ namespace WinAuth
             }
         }
 
-        private void helpLink_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://support.okta.com/help/Documentation/Knowledge_Article/How-to-Configure-WinAuth-for-Okta-MFA");
-        }
+        private void helpLink_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start("https://support.okta.com/help/Documentation/Knowledge_Article/How-to-Configure-WinAuth-for-Okta-MFA");
 
         #endregion
 

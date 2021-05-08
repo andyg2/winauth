@@ -43,20 +43,14 @@ namespace WinAuth
             /// <param name="t1"></param>
             /// <param name="t2"></param>
             /// <returns>true if equal or subclassed</returns>
-            public bool Equals(Type t1, Type t2)
-            {
-                return (t1 == t2 || t2.IsSubclassOf(t1));
-            }
+            public bool Equals(Type t1, Type t2) => (t1 == t2 || t2.IsSubclassOf(t1));
 
             /// <summary>
             /// Get the hash code for a Type
             /// </summary>
             /// <param name="t"></param>
             /// <returns></returns>
-            public int GetHashCode(Type t)
-            {
-                return t.GetHashCode();
-            }
+            public int GetHashCode(Type t) => t.GetHashCode();
         }
 
         /// <summary>

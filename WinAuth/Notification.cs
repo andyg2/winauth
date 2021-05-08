@@ -185,14 +185,8 @@ namespace WinAuth
             /// </remarks>
             public AnimationMethod Method
             {
-                get
-                {
-                    return _method;
-                }
-                set
-                {
-                    _method = value;
-                }
+                get => _method;
+                set => _method = value;
             }
 
             /// <summary>
@@ -206,14 +200,8 @@ namespace WinAuth
             /// </remarks>
             public AnimationDirection Direction
             {
-                get
-                {
-                    return _direction;
-                }
-                set
-                {
-                    _direction = value;
-                }
+                get => _direction;
+                set => _direction = value;
             }
 
             /// <summary>
@@ -224,14 +212,8 @@ namespace WinAuth
             /// </value>
             public int Duration
             {
-                get
-                {
-                    return _duration;
-                }
-                set
-                {
-                    _duration = value;
-                }
+                get => _duration;
+                set => _duration = value;
             }
 
             /// <summary>
@@ -240,13 +222,7 @@ namespace WinAuth
             /// <value>
             /// The form to be animated
             /// </value>
-            public Form Form
-            {
-                get
-                {
-                    return _form;
-                }
-            }
+            public Form Form => _form;
 
             #endregion // Properties
 
@@ -571,10 +547,7 @@ namespace WinAuth
             openNotifications.Remove(this);
         }
 
-        private void lifeTimer_Tick(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void lifeTimer_Tick(object sender, EventArgs e) => Close();
 
         private void Notification_Click(object sender, EventArgs e)
         {
@@ -616,23 +589,12 @@ namespace WinAuth
         }
 
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            //	using (var pen = new Pen(Color.FromArgb(32, 32, 32), 1))
-            //	{
-            //		e.Graphics.DrawRectangle(pen, 0, 0, this.Width, this.Height);
-            //	}
-        }
+        protected override void OnPaint(PaintEventArgs e) => base.OnPaint(e);//	using (var pen = new Pen(Color.FromArgb(32, 32, 32), 1))//	{//		e.Graphics.DrawRectangle(pen, 0, 0, this.Width, this.Height);//	}
 
         private void Notification_Paint(object sender, PaintEventArgs e)
         {
         }
 
-        private void closeLink_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void closeLink_Click(object sender, EventArgs e) => Close();
     }
 }

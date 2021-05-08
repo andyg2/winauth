@@ -346,10 +346,7 @@ namespace WinAuth
         /// but in the meantime we have to clear it out
         /// </summary>
         /// <param name="config"></param>
-        private static void SaveToRegistry(WinAuthConfig config)
-        {
-            config.WriteSetting(WINAUTHREGKEY_CONFIGBACKUP, null);
-        }
+        private static void SaveToRegistry(WinAuthConfig config) => config.WriteSetting(WINAUTHREGKEY_CONFIGBACKUP, null);
 
         /// <summary>
         /// Save a PGP encrypted version of an authenticator into the registry for recovery
@@ -1374,13 +1371,7 @@ namespace WinAuth
             _encoding = encoding;
         }
 
-        public override Encoding Encoding
-        {
-            get
-            {
-                return _encoding;
-            }
-        }
+        public override Encoding Encoding => _encoding;
 
 
     }
