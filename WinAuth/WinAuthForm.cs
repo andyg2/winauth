@@ -1246,7 +1246,7 @@ namespace WinAuth
             }
             if (code != null)
             {
-                var keysend = new KeyboardSender(auth.HotKey != null ? auth.HotKey.Window : null);
+                var keysend = new KeyboardSender(auth.HotKey?.Window);
                 string command = null;
 
                 if (action == WinAuthConfig.NotifyActions.CopyToClipboard)
@@ -1255,7 +1255,7 @@ namespace WinAuth
                 }
                 else if (action == WinAuthConfig.NotifyActions.HotKey)
                 {
-                    command = auth.HotKey != null ? auth.HotKey.Advanced : null;
+                    command = auth.HotKey?.Advanced;
                 }
                 else // if (this.Config.NotifyAction == WinAuthConfig.NotifyActions.Notification)
                 {
@@ -1314,7 +1314,7 @@ namespace WinAuth
                 try
                 {
                     var clipdata = Clipboard.GetDataObject();
-                    return clipdata != null ? clipdata.GetData(format) : null;
+                    return clipdata?.GetData(format);
                 }
                 catch (ExternalException)
                 {
@@ -2111,7 +2111,7 @@ namespace WinAuth
                     {
                         Name = "authenticatorOptionsMenuItem_" + index,
                         Tag = auth,
-                        ShortcutKeyDisplayString = auth.HotKey != null ? auth.HotKey.ToString() : null
+                        ShortcutKeyDisplayString = auth.HotKey?.ToString()
                     };
                     menuitem.Click += authenticatorOptionsMenuItem_Click;
                     menu.Items.Add(menuitem);

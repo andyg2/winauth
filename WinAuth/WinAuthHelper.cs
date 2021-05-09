@@ -1215,7 +1215,7 @@ namespace WinAuth
               DateTime.Now,
               identifier,
               SymmetricKeyAlgorithmTag.Cast5,
-              password != null ? password.ToCharArray() : null,
+              password?.ToCharArray(),
               hashedGen.Generate(),
               unhashedGen.Generate(),
               new Org.BouncyCastle.Security.SecureRandom());
@@ -1317,7 +1317,7 @@ namespace WinAuth
                     {
                         foreach (PgpSecretKey key in keyring.GetSecretKeys())
                         {
-                            privateKeys.Add(key.KeyId, key.ExtractPrivateKey(keyPassword != null ? keyPassword.ToCharArray() : null));
+                            privateKeys.Add(key.KeyId, key.ExtractPrivateKey(keyPassword?.ToCharArray()));
                         }
                     }
                 }

@@ -699,12 +699,12 @@ namespace WinAuth
             var token = JObject.Parse(data);
             var sdaentry = new ImportedSDAEntry
             {
-                Username = token.SelectToken("account_name") != null ? token.SelectToken("account_name").Value<string>() : null,
+                Username = token.SelectToken("account_name")?.Value<string>(),
                 SteamId = steamid
             };
             if (string.IsNullOrEmpty(sdaentry.SteamId))
             {
-                sdaentry.SteamId = token.SelectToken("Session.SteamID") != null ? token.SelectToken("Session.SteamID").Value<string>() : null;
+                sdaentry.SteamId = token.SelectToken("Session.SteamID")?.Value<string>();
             }
             if (string.IsNullOrEmpty(sdaentry.SteamId))
             {
