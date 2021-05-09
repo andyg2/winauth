@@ -288,11 +288,11 @@ namespace WinAuth
 
                     if (Form.Visible)
                     {
-                        flags = flags | AwActivate;
+                        flags |= AwActivate;
                     }
                     else
                     {
-                        flags = flags | AwHide;
+                        flags |= AwHide;
                     }
 
                     AnimateWindow(Form.Handle, Duration, flags);
