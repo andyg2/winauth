@@ -161,10 +161,7 @@ namespace WinAuth
             kea.Authenticator = match;
 
             // call user events
-            if (KeyPressed != null)
-            {
-                KeyPressed(this, kea);
-            }
+            KeyPressed?.Invoke(this, kea);
         }
     }
 

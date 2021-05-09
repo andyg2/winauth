@@ -555,10 +555,7 @@ namespace WinAuth
         {
             Close();
 
-            if (OnNotificationClicked != null)
-            {
-                OnNotificationClicked(this, e);
-            }
+            OnNotificationClicked?.Invoke(this, e);
         }
 
         #endregion // Event Handlers

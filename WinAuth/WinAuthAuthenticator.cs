@@ -103,10 +103,7 @@ namespace WinAuth
         /// </summary>
         public void MarkChanged()
         {
-            if (OnWinAuthAuthenticatorChanged != null)
-            {
-                OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs());
-            }
+            OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs());
         }
 
         /// <summary>
@@ -118,10 +115,7 @@ namespace WinAuth
             set
             {
                 _name = value;
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("Name"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("Name"));
             }
         }
 
@@ -134,10 +128,7 @@ namespace WinAuth
             set
             {
                 _skin = value;
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("Skin"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("Skin"));
             }
         }
 
@@ -168,10 +159,7 @@ namespace WinAuth
                 {
                     _autoRefresh = value;
                 }
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("AutoRefresh"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("AutoRefresh"));
             }
         }
 
@@ -184,10 +172,7 @@ namespace WinAuth
             set
             {
                 _allowCopy = value;
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("AllowCopy"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("AllowCopy"));
             }
         }
 
@@ -200,10 +185,7 @@ namespace WinAuth
             set
             {
                 _copyOnCode = value;
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("CopyOnCode"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("CopyOnCode"));
             }
         }
 
@@ -216,10 +198,7 @@ namespace WinAuth
             set
             {
                 _hideSerial = value;
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("HideSerial"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("HideSerial"));
             }
         }
 
@@ -241,10 +220,7 @@ namespace WinAuth
                 //{
                 //	AuthenticatorData.Script = _hotkey.Advanced;
                 //}
-                if (OnWinAuthAuthenticatorChanged != null)
-                {
-                    OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("HotKey"));
-                }
+                OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("HotKey"));
             }
         }
 
@@ -342,10 +318,7 @@ namespace WinAuth
 
                 if (AuthenticatorData is HOTPAuthenticator)
                 {
-                    if (OnWinAuthAuthenticatorChanged != null)
-                    {
-                        OnWinAuthAuthenticatorChanged(this, new WinAuthAuthenticatorChangedEventArgs("HOTP", AuthenticatorData));
-                    }
+                    OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("HOTP", AuthenticatorData));
                 }
 
                 return code;

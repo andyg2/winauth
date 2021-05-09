@@ -224,10 +224,7 @@ namespace WinAuth
             set
             {
                 _alwaysOnTop = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("AlwaysOnTop"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("AlwaysOnTop"));
             }
         }
         /// <summary>
@@ -239,10 +236,7 @@ namespace WinAuth
             set
             {
                 _copySearchedSingle = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("CopySearchedSingle"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("CopySearchedSingle"));
             }
         }
         /// <summary>
@@ -254,10 +248,7 @@ namespace WinAuth
             set
             {
                 _autoExitAfterCopy = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("AutoExitAfterCopy"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("AutoExitAfterCopy"));
             }
         }
 
@@ -270,10 +261,7 @@ namespace WinAuth
             set
             {
                 _useTrayIcon = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("UseTrayIcon"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("UseTrayIcon"));
             }
         }
 
@@ -286,10 +274,7 @@ namespace WinAuth
             set
             {
                 _notifyAction = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("NotifyAction"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("NotifyAction"));
             }
         }
 
@@ -302,10 +287,7 @@ namespace WinAuth
             set
             {
                 _startWithWindows = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("StartWithWindows"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("StartWithWindows"));
             }
         }
 
@@ -318,10 +300,7 @@ namespace WinAuth
             set
             {
                 _autoSize = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("AutoSize"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("AutoSize"));
             }
         }
 
@@ -336,10 +315,7 @@ namespace WinAuth
                 if (_position != value)
                 {
                     _position = value;
-                    if (OnConfigChanged != null)
-                    {
-                        OnConfigChanged(this, new ConfigChangedEventArgs("Position"));
-                    }
+                    OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Position"));
                 }
             }
         }
@@ -355,10 +331,7 @@ namespace WinAuth
                 if (_width != value)
                 {
                     _width = value;
-                    if (OnConfigChanged != null)
-                    {
-                        OnConfigChanged(this, new ConfigChangedEventArgs("Width"));
-                    }
+                    OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Width"));
                 }
             }
         }
@@ -374,10 +347,7 @@ namespace WinAuth
                 if (_height != value)
                 {
                     _height = value;
-                    if (OnConfigChanged != null)
-                    {
-                        OnConfigChanged(this, new ConfigChangedEventArgs("Height"));
-                    }
+                    OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Height"));
                 }
             }
         }
@@ -391,10 +361,7 @@ namespace WinAuth
             set
             {
                 _shadowType = value;
-                if (OnConfigChanged != null)
-                {
-                    OnConfigChanged(this, new ConfigChangedEventArgs("ShadowType"));
-                }
+                OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("ShadowType"));
             }
         }
 
@@ -676,10 +643,7 @@ namespace WinAuth
 
         public void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e)
         {
-            if (OnConfigChanged != null)
-            {
-                OnConfigChanged(this, new ConfigChangedEventArgs("Authenticator", sender, e));
-            }
+            OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Authenticator", sender, e));
         }
 
         #region ICloneable
