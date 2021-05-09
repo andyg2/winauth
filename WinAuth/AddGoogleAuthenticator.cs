@@ -97,14 +97,14 @@ namespace WinAuth
                     "WARNING: Your authenticator has not been saved." + Environment.NewLine + Environment.NewLine
                     + "If you have added this authenticator to your online account, you will not be able to login in the future, and you need to click YES to save it." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.OK;
+                    DialogResult = DialogResult.OK;
                     return;
                 }
-                else if (result == System.Windows.Forms.DialogResult.Cancel)
+                else if (result == DialogResult.Cancel)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
             }
@@ -121,18 +121,18 @@ namespace WinAuth
             if (privatekey.Length == 0)
             {
                 WinAuthForm.ErrorDialog(Owner, "Please enter the Secret Code");
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
             var first = !codeProgress.Visible;
             if (!VerifyAuthenticator(privatekey))
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
             if (first)
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
         }
@@ -236,7 +236,7 @@ namespace WinAuth
                     {
                         if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
-                            using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
+                            using (var bitmap = (Bitmap)Image.FromStream(response.GetResponseStream()))
                             {
                                 IBarcodeReader reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
@@ -259,7 +259,7 @@ namespace WinAuth
                 var imagedata = Convert.FromBase64String(match.Groups[2].Value);
                 using (var ms = new MemoryStream(imagedata))
                 {
-                    using (var bitmap = (Bitmap)Bitmap.FromStream(ms))
+                    using (var bitmap = (Bitmap)Image.FromStream(ms))
                     {
                         IBarcodeReader reader = new BarcodeReader();
                         var result = reader.Decode(bitmap);
@@ -273,7 +273,7 @@ namespace WinAuth
             else if (IsValidFile(privatekey))
             {
                 // assume this is the image file
-                using (var bitmap = (Bitmap)Bitmap.FromFile(privatekey))
+                using (var bitmap = (Bitmap)Image.FromFile(privatekey))
                 {
                     IBarcodeReader reader = new BarcodeReader();
                     var result = reader.Decode(bitmap);

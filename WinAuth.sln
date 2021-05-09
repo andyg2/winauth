@@ -6,6 +6,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAuth", "WinAuth\WinAuth.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authenticator", "Authenticator\Authenticator.csproj", "{EAF2D5CE-D817-453A-8A32-3D531570AE04}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA107AF3-E266-4CE4-8D39-59DBA1BC3A2A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -45,7 +45,7 @@ namespace WinAuth
     [Serializable()]
     public class WinAuthConfig : IList<WinAuthAuthenticator>, ICloneable, IWinAuthAuthenticatorChangedListener
     {
-        public static decimal CURRENTVERSION = decimal.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(2), System.Globalization.CultureInfo.InvariantCulture);
+        public static decimal CURRENTVERSION = decimal.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString(2), System.Globalization.CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Default actions for double-click or click system tray
@@ -634,7 +634,10 @@ namespace WinAuth
             NotifyAction = NotifyActions.Notification;
         }
 
-        public void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e) => OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Authenticator", sender, e));
+        public void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e)
+        {
+            OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Authenticator", sender, e));
+        }
 
         #region ICloneable
 
@@ -700,7 +703,7 @@ namespace WinAuth
             {
                 Version = version;
 
-                if (version > WinAuthConfig.CURRENTVERSION)
+                if (version > CURRENTVERSION)
                 {
                     // ensure we don't overwrite a newer config
                     throw new WinAuthInvalidNewerConfigException(string.Format(strings.ConfigIsNewer, version));
@@ -754,7 +757,6 @@ namespace WinAuth
 
                         // 3.2 has new layout 
                         case "data":
-                        {
                             encrypted = reader.GetAttribute("encrypted");
                             PasswordType = Authenticator.DecodePasswordTypes(encrypted);
                             if (PasswordType != Authenticator.PasswordTypes.None)
@@ -790,8 +792,7 @@ namespace WinAuth
                                 PasswordType = Authenticator.DecodePasswordTypes(encrypted);
                                 Password = password;
                             }
-                        }
-                        break;
+                            break;
 
                         case "alwaysontop":
                             _alwaysOnTop = reader.ReadElementContentAsBoolean();
@@ -966,7 +967,7 @@ namespace WinAuth
             }
             //
             writer.WriteStartElement("WinAuth");
-            writer.WriteAttributeString("version", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
+            writer.WriteAttributeString("version", Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
             //
             writer.WriteStartElement("alwaysontop");
             writer.WriteValue(AlwaysOnTop);

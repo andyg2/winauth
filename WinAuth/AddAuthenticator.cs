@@ -75,7 +75,7 @@ namespace WinAuth
             nameField.Text = Authenticator.Name;
             codeField.SecretMode = true;
             hashField.Items.Clear();
-            hashField.Items.AddRange(Enum.GetNames(typeof(WinAuth.Authenticator.HMACTypes)));
+            hashField.Items.AddRange(Enum.GetNames(typeof(Authenticator.HMACTypes)));
             hashField.SelectedIndex = 0;
             intervalField.Text = WinAuth.Authenticator.DEFAULT_PERIOD.ToString();
             digitsField.Text = WinAuth.Authenticator.DEFAULT_CODE_DIGITS.ToString();
@@ -112,14 +112,14 @@ namespace WinAuth
                     "WARNING: Your authenticator has not been saved." + Environment.NewLine + Environment.NewLine
                     + "If you have added this authenticator to your online account, you will not be able to login in the future, and you need to click YES to save it." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.OK;
+                    DialogResult = DialogResult.OK;
                     return;
                 }
-                else if (result == System.Windows.Forms.DialogResult.Cancel)
+                else if (result == DialogResult.Cancel)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
             }
@@ -136,18 +136,18 @@ namespace WinAuth
             if (privatekey.Length == 0)
             {
                 WinAuthForm.ErrorDialog(Owner, "Please enter the Secret Code");
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
             var first = Authenticator.AuthenticatorData == null;
             if (!VerifyAuthenticator(privatekey))
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
             if (first)
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 
@@ -234,7 +234,7 @@ namespace WinAuth
                     {
                         if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
-                            using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
+                            using (var bitmap = (Bitmap)Image.FromStream(response.GetResponseStream()))
                             {
                                 IBarcodeReader reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
@@ -295,7 +295,7 @@ namespace WinAuth
                     digitsField.Text = digits.ToString();
                 }
 
-                if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out var hmac))
+                if (Enum.TryParse<Authenticator.HMACTypes>(qs["algorithm"], true, out var hmac))
                 {
                     hashField.SelectedItem = hmac.ToString();
                 }
@@ -364,7 +364,7 @@ namespace WinAuth
                     {
                         if (response.StatusCode == HttpStatusCode.OK && response.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
                         {
-                            using (var bitmap = (Bitmap)Bitmap.FromStream(response.GetResponseStream()))
+                            using (var bitmap = (Bitmap)Image.FromStream(response.GetResponseStream()))
                             {
                                 IBarcodeReader reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
@@ -388,7 +388,7 @@ namespace WinAuth
                 var imagedata = Convert.FromBase64String(imageB64Content);
                 using (var ms = new MemoryStream(imagedata))
                 {
-                    using (var bitmap = (Bitmap)Bitmap.FromStream(ms))
+                    using (var bitmap = (Bitmap)Image.FromStream(ms))
                     {
                         IBarcodeReader reader = new BarcodeReader();
                         var result = reader.Decode(bitmap);
@@ -402,7 +402,7 @@ namespace WinAuth
             else if (IsValidFile(privatekey))
             {
                 // assume this is the image file
-                using (var bitmap = (Bitmap)Bitmap.FromFile(privatekey))
+                using (var bitmap = (Bitmap)Image.FromFile(privatekey))
                 {
                     IBarcodeReader reader = new BarcodeReader();
                     var result = reader.Decode(bitmap);
@@ -455,7 +455,7 @@ namespace WinAuth
                 }
                 if (qs["algorithm"] != null)
                 {
-                    if (Enum.TryParse<WinAuth.Authenticator.HMACTypes>(qs["algorithm"], true, out hmac))
+                    if (Enum.TryParse(qs["algorithm"], true, out hmac))
                     {
                         hashField.SelectedItem = hmac.ToString();
                     }
@@ -583,7 +583,7 @@ namespace WinAuth
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             var filePath = files[0];
             var ext = Path.GetExtension(filePath);
-            var imageArray = System.IO.File.ReadAllBytes(filePath);
+            var imageArray = File.ReadAllBytes(filePath);
             var base64ImageRepresentation = Convert.ToBase64String(imageArray);
             secretCodeField.Text = @"data:image/" + ext + ";base64," + base64ImageRepresentation;
             VerifyButton_Click(null, null);

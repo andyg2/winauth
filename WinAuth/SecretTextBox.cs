@@ -135,7 +135,7 @@ namespace WinAuth
                 }
 
                 // draw the whole string
-                g.DrawString(text ?? string.Empty, base.Font, brush, new RectangleF(0, 0, base.Width, base.Height), sf);
+                g.DrawString(text ?? string.Empty, base.Font, brush, new RectangleF(0, 0, Width, Height), sf);
             }
         }
 

@@ -187,10 +187,10 @@ namespace WinAuth
 
                 // this is the key |  serial | deviceid
                 return base.SecretData
-                    + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(Serial))
-                    + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(DeviceId))
-                    + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(SteamData))
-                    + "|" + (string.IsNullOrEmpty(SessionData) ? string.Empty : Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(SessionData)));
+                    + "|" + ByteArrayToString(Encoding.UTF8.GetBytes(Serial))
+                    + "|" + ByteArrayToString(Encoding.UTF8.GetBytes(DeviceId))
+                    + "|" + ByteArrayToString(Encoding.UTF8.GetBytes(SteamData))
+                    + "|" + (string.IsNullOrEmpty(SessionData) ? string.Empty : ByteArrayToString(Encoding.UTF8.GetBytes(SessionData)));
             }
             set
             {
@@ -199,16 +199,16 @@ namespace WinAuth
                 {
                     var parts = value.Split('|');
                     base.SecretData = value;
-                    Serial = parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null;
-                    DeviceId = parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null;
-                    SteamData = parts.Length > 3 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[3])) : string.Empty;
+                    Serial = parts.Length > 1 ? Encoding.UTF8.GetString(StringToByteArray(parts[1])) : null;
+                    DeviceId = parts.Length > 2 ? Encoding.UTF8.GetString(StringToByteArray(parts[2])) : null;
+                    SteamData = parts.Length > 3 ? Encoding.UTF8.GetString(StringToByteArray(parts[3])) : string.Empty;
 
                     if (!string.IsNullOrEmpty(SteamData) && SteamData[0] != '{')
                     {
                         // convert old recovation code into SteamData json
                         SteamData = "{\"revocation_code\":\"" + SteamData + "\"}";
                     }
-                    var session = parts.Length > 4 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[4])) : null;
+                    var session = parts.Length > 4 ? Encoding.UTF8.GetString(StringToByteArray(parts[4])) : null;
 
                     //if (Logger != null)
                     //{
@@ -384,8 +384,8 @@ namespace WinAuth
                     {
                         var passwordBytes = Encoding.ASCII.GetBytes(state.Password);
                         var p = rsa.ExportParameters(false);
-                        p.Exponent = Authenticator.StringToByteArray(rsaresponse.SelectToken("publickey_exp").Value<string>());
-                        p.Modulus = Authenticator.StringToByteArray(rsaresponse.SelectToken("publickey_mod").Value<string>());
+                        p.Exponent = StringToByteArray(rsaresponse.SelectToken("publickey_exp").Value<string>());
+                        p.Modulus = StringToByteArray(rsaresponse.SelectToken("publickey_mod").Value<string>());
                         rsa.ImportParameters(p);
                         encryptedPassword = rsa.Encrypt(passwordBytes, false);
                     }
@@ -550,7 +550,7 @@ namespace WinAuth
                     {
                         steamdata.Add("steamguard_scheme", "2");
                     }
-                    SteamData = steamdata.ToString(Newtonsoft.Json.Formatting.None);
+                    SteamData = steamdata.ToString(Formatting.None);
 
                     // calculate server drift
                     var servertime = tfaresponse.SelectToken("response.server_time").Value<long>() * 1000;
@@ -614,7 +614,7 @@ namespace WinAuth
 
                 // mark and successful and return key
                 state.Success = true;
-                state.SecretKey = Authenticator.ByteArrayToString(SecretKey);
+                state.SecretKey = ByteArrayToString(SecretKey);
 
                 // send confirmation email
                 data.Clear();
@@ -834,23 +834,21 @@ namespace WinAuth
 
             Logger.Info("{0}\t{1}\t{2}\t{3}", method, url, data.ToString(), response != null ? response.Replace("\n", "\\n").Replace("\r", "") : string.Empty);
         }
-
-        /// <summary>
-        /// Our custom exception for the internal Http Request
-        /// </summary>
-        class InvalidRequestException : ApplicationException
-        {
-            public InvalidRequestException(string msg = null, Exception ex = null) : base(msg, ex) { }
-        }
-
-        /// <summary>
-        /// 403 forbidden responses
-        /// </summary>
-        class UnauthorisedRequestException : InvalidRequestException
-        {
-            public UnauthorisedRequestException(Exception ex = null) : base("Unauthorised", ex) { }
-        }
     }
 
+    /// <summary>
+    /// Our custom exception for the internal Http Request
+    /// </summary>
+    public class InvalidRequestException : ApplicationException
+    {
+        public InvalidRequestException(string msg = null, Exception ex = null) : base(msg, ex) { }
+    }
 
+    /// <summary>
+    /// 403 forbidden responses
+    /// </summary>
+    public class UnauthorisedRequestException : InvalidRequestException
+    {
+        public UnauthorisedRequestException(Exception ex = null) : base("Unauthorised", ex) { }
+    }
 }

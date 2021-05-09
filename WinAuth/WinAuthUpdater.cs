@@ -17,7 +17,6 @@
  */
 
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Threading;
@@ -134,17 +133,7 @@ namespace WinAuth
         /// <summary>
         /// Get the current version
         /// </summary>
-        public Version CurrentVersion
-        {
-            get
-            {
-                if (!Version.TryParse(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion, out var version))
-                {
-                    throw new InvalidOperationException("Cannot get Assembly version information");
-                }
-                return version;
-            }
-        }
+        public Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
         /// Get flag if we have autochecking enabled

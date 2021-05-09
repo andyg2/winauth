@@ -262,12 +262,9 @@ namespace WinAuth
                     }
                 }
 
-                if (AuthenticatorData == null)
-                {
-                    return null;
-                }
-
-                return new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + AuthenticatorData.GetType().Name + "Icon.png"));
+                return AuthenticatorData != null
+                    ? new Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources." + AuthenticatorData.GetType().Name + "Icon.png"))
+                    : null;
             }
             set
             {
@@ -465,7 +462,7 @@ namespace WinAuth
                             break;
 
                         case "hotkey":
-                            _hotkey = new WinAuth.HotKey();
+                            _hotkey = new HotKey();
                             _hotkey.ReadXml(reader);
                             break;
 

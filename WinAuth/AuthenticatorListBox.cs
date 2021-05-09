@@ -255,7 +255,7 @@ namespace WinAuth
         {
             // set owner draw stlying
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
-            DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            DrawMode = DrawMode.OwnerDrawFixed;
             ReadOnly = true;
             AllowDrop = true;
             DoubleBuffered = true;
@@ -314,7 +314,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void AuthenticatorListBox_Scrolled(object sender, ScrollEventArgs e)
+        private void AuthenticatorListBox_Scrolled(object sender, ScrollEventArgs e)
         {
             if (e.Type == ScrollEventType.EndScroll || e.Type == ScrollEventType.ThumbPosition)
             {
@@ -327,14 +327,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ContextMenu_Click(object sender, EventArgs e) => ProcessMenu((ToolStripItem)sender);
+        private void ContextMenu_Click(object sender, EventArgs e) => ProcessMenu((ToolStripItem)sender);
 
         /// <summary>
         /// Click to open the contxet menu and set the state
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ContextMenuStrip_Opening(object sender, CancelEventArgs e) => SetContextMenuItems();
+        private void ContextMenuStrip_Opening(object sender, CancelEventArgs e) => SetContextMenuItems();
 
         /// <summary>
         /// Tick event used to update the pie, codes and relock authenticators
@@ -383,7 +383,7 @@ namespace WinAuth
                                 ProtectAuthenticator(item);
                             }
 
-                            SetCursor(PointToClient(Control.MousePosition));
+                            SetCursor(PointToClient(MousePosition));
                         }
                         Invalidate(new Rectangle(0, y, Width, ItemHeight), false);
                     }
@@ -412,7 +412,7 @@ namespace WinAuth
         {
             base.OnMouseUp(e);
 
-            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
+            if ((e.Button & MouseButtons.Left) != 0)
             {
                 // if this was in a refresh icon, we do a refresh
                 var index = IndexFromPoint(e.Location);
@@ -466,7 +466,7 @@ namespace WinAuth
         protected override void OnMouseMove(MouseEventArgs e)
         {
             // if we are moving with LeftMouse down and moved more than 2 pixles then we are dragging
-            if (e.Button == System.Windows.Forms.MouseButtons.Left && _mouseDownLocation != Point.Empty && Items.Count > 1)
+            if (e.Button == MouseButtons.Left && _mouseDownLocation != Point.Empty && Items.Count > 1)
             {
                 var dx = Math.Abs(_mouseDownLocation.X - e.Location.X);
                 var dy = Math.Abs(_mouseDownLocation.Y - e.Location.Y);
@@ -499,7 +499,7 @@ namespace WinAuth
                     DoDragDrop(_draggedItem, DragDropEffects.Move);
                 }
             }
-            else if (e.Button == System.Windows.Forms.MouseButtons.None)
+            else if (e.Button == MouseButtons.None)
             {
                 SetCursor(e.Location);
             }
@@ -590,7 +590,6 @@ namespace WinAuth
                 }
                 else if (mousePoint.Y <= screen.Top)
                 {
-                    var visible = ClientSize.Height / ItemHeight;
                     if (TopIndex > 0 && now.Subtract(_lastDragScroll).TotalMilliseconds >= 150)
                     {
                         TopIndex--;
@@ -667,7 +666,7 @@ namespace WinAuth
         /// Main WndProc handler to capture scroll events
         /// </summary>
         /// <param name="msg"></param>
-        protected override void WndProc(ref System.Windows.Forms.Message msg)
+        protected override void WndProc(ref Message msg)
         {
             if (msg.Msg == WinAPI.WM_VSCROLL)
             {
@@ -735,12 +734,12 @@ namespace WinAuth
                         Name = "renameTextBox",
                         AllowDrop = true,
                         CausesValidation = false,
-                        Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0),
-                        Location = new System.Drawing.Point(0, 0),
+                        Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        Location = new Point(0, 0),
                         Multiline = false
                     };
                     _renameTextbox.Name = "secretCodeField";
-                    _renameTextbox.Size = new System.Drawing.Size(labelMaxWidth, 22);
+                    _renameTextbox.Size = new Size(labelMaxWidth, 22);
                     _renameTextbox.TabIndex = 0;
                     _renameTextbox.Visible = false;
                     _renameTextbox.Leave += RenameTextbox_Leave;
@@ -780,7 +779,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void RenameTextbox_KeyPress(object sender, KeyPressEventArgs e)
+        private void RenameTextbox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
             {
@@ -800,7 +799,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void RenameTextbox_Leave(object sender, EventArgs e)
+        private void RenameTextbox_Leave(object sender, EventArgs e)
         {
             RenameTextbox.Visible = false;
             if (RenameTextbox.Tag is AuthenticatorListitem item)
@@ -1227,6 +1226,7 @@ namespace WinAuth
             {
                 if (iconitem is ToolStripMenuItem iconmenuitem && iconitem.Tag is string)
                 {
+#pragma warning disable IDE0045 // Convert to conditional expression
                     if (string.IsNullOrEmpty((string)iconmenuitem.Tag) && string.IsNullOrEmpty(auth.Skin))
                     {
                         iconmenuitem.CheckState = CheckState.Checked;
@@ -1239,6 +1239,7 @@ namespace WinAuth
                     {
                         iconmenuitem.CheckState = CheckState.Unchecked;
                     }
+#pragma warning restore IDE0045 // Convert to conditional expression
                 }
             }
             //
@@ -1636,7 +1637,7 @@ namespace WinAuth
                             Title = strings.LoadIconImage + " (png or gif @ 48x48)"
                         };
                         var result = ofd.ShowDialog(this);
-                        if (result != System.Windows.Forms.DialogResult.OK)
+                        if (result != DialogResult.OK)
                         {
                             return;
                         }
@@ -1726,7 +1727,6 @@ namespace WinAuth
         /// </summary>
         private void RefreshItem(AuthenticatorListitem item)
         {
-            var hasvscroll = Height < (Items.Count * ItemHeight);
             var y = (ItemHeight * item.Index) - (ItemHeight * TopIndex);
             var rect = new Rectangle(0, y, Width, Height);
             Invalidate(rect, false);
@@ -1766,7 +1766,10 @@ namespace WinAuth
         /// </summary>
         /// <param name="totalWidth">control size</param>
         /// <returns>maximum possible width for label</returns>
-        protected int GetMaxAvailableLabelWidth(int totalWidth) => totalWidth - MARGIN_LEFT - ICON_WIDTH - ICON_MARGIN_RIGHT - PIE_WIDTH - MARGIN_RIGHT;
+        protected int GetMaxAvailableLabelWidth(int totalWidth)
+        {
+            return totalWidth - MARGIN_LEFT - ICON_WIDTH - ICON_MARGIN_RIGHT - PIE_WIDTH - MARGIN_RIGHT;
+        }
 
         /// <summary>
         /// Calculate the maximum label width based on the currnet names
@@ -1961,11 +1964,11 @@ namespace WinAuth
                         }
                         else if (auth.AuthenticatorData != null && auth.AuthenticatorData.RequiresPassword)
                         {
-                            e.Graphics.DrawImage(WinAuth.Properties.Resources.RefreshIconWithLock, rect);
+                            e.Graphics.DrawImage(Properties.Resources.RefreshIconWithLock, rect);
                         }
                         else
                         {
-                            e.Graphics.DrawImage(WinAuth.Properties.Resources.RefreshIcon, rect);
+                            e.Graphics.DrawImage(Properties.Resources.RefreshIcon, rect);
                         }
                     }
                 }

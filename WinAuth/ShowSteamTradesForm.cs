@@ -23,7 +23,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,10 +37,7 @@ namespace WinAuth
     /// </summary>
     public partial class ShowSteamTradesForm : ResourceForm
     {
-        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern bool InternetSetCookie(string lpszUrlName, string lpszCookieName, string lpszCookieData);
-
-        class PollerActionItem
+        private class PollerActionItem
         {
             public string Text;
             public SteamClient.PollerAction Value;
@@ -159,7 +155,7 @@ namespace WinAuth
             // update poller
             SetPolling();
 
-            DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         /// <summary>
@@ -167,7 +163,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CancelButton_Click(object sender, EventArgs e) => DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        private void CancelButton_Click(object sender, EventArgs e) => DialogResult = DialogResult.Cancel;
 
         /// <summary>
         /// Draw the tabs of the tabcontrol so they aren't white
@@ -226,7 +222,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -832,7 +828,7 @@ namespace WinAuth
                 catch (SteamClient.InvalidSteamRequestException iere)
                 {
                     Cursor.Current = cursor;
-                    if (WinAuthForm.ErrorDialog(this, "An error occurred while loading trades", iere, MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
+                    if (WinAuthForm.ErrorDialog(this, "An error occurred while loading trades", iere, MessageBoxButtons.RetryCancel) != DialogResult.Retry)
                     {
                         break;
                     }
@@ -1065,7 +1061,6 @@ namespace WinAuth
             }
 
             var steam = AuthenticatorData.GetClient();
-            var timeInMins = pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0;
 
             var p = new SteamClient.ConfirmationPoller
             {

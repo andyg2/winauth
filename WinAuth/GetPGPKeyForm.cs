@@ -75,7 +75,7 @@ namespace WinAuth
                 Title = "Choose PGP Key File"
             };
 
-            if (ofd.ShowDialog(Parent) == System.Windows.Forms.DialogResult.OK)
+            if (ofd.ShowDialog(Parent) == DialogResult.OK)
             {
                 pgpField.Text = File.ReadAllText(ofd.FileName);
             }
@@ -91,7 +91,7 @@ namespace WinAuth
             // it isn't empty
             if (pgpField.Text.Length == 0)
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 

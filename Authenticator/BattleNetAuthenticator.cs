@@ -163,7 +163,7 @@ namespace WinAuth
         {
             get =>
                 // for Battle.net, this is the key + serial
-                base.SecretData + "|" + Authenticator.ByteArrayToString(Encoding.UTF8.GetBytes(Serial));
+                base.SecretData + "|" + ByteArrayToString(Encoding.UTF8.GetBytes(Serial));
             set
             {
                 // for Battle.net, extract key + serial
@@ -173,20 +173,20 @@ namespace WinAuth
                     if (parts.Length <= 1)
                     {
                         // old WinAuth2 version with secretdata + serial
-                        SecretKey = Authenticator.StringToByteArray(value.Substring(0, 40));
-                        Serial = Encoding.UTF8.GetString(Authenticator.StringToByteArray(value.Substring(40)));
+                        SecretKey = StringToByteArray(value.Substring(0, 40));
+                        Serial = Encoding.UTF8.GetString(StringToByteArray(value.Substring(40)));
                     }
                     else if (parts.Length == 3) // alpha 3.0.6
                     {
                         // secret|script|serial
                         base.SecretData = value;
-                        Serial = parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null;
+                        Serial = parts.Length > 2 ? Encoding.UTF8.GetString(StringToByteArray(parts[2])) : null;
                     }
                     else
                     {
                         // secret|serial
                         base.SecretData = value;
-                        Serial = parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null;
+                        Serial = parts.Length > 1 ? Encoding.UTF8.GetString(StringToByteArray(parts[1])) : null;
                     }
                 }
                 else
@@ -269,6 +269,7 @@ namespace WinAuth
                     // match the correct region
                     country = match.Groups[1].Value.ToUpper();
 
+#pragma warning disable IDE0045 // Convert to conditional expression
                     if (EU_COUNTRIES.Contains(country))
                     {
                         region = REGION_EU;
@@ -285,6 +286,7 @@ namespace WinAuth
                     {
                         region = REGION_US;
                     }
+#pragma warning restore IDE0045 // Convert to conditional expression
                 }
             }
 

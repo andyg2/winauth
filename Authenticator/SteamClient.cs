@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) 2015 Colin Mackie.
  * This software is distributed under the terms of the GNU General Public License.
  *
@@ -284,11 +284,11 @@ namespace WinAuth
             /// </summary>
             /// <returns></returns>
             public override string ToString() => "{\"steamid\":\"" + (SteamId ?? string.Empty) + "\","
-                    + "\"cookies\":\"" + Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
-                    + "\"oauthtoken\":\"" + (OAuthToken ?? string.Empty) + "\","
-                    // + "\"umqid\":\"" + (this.UmqId ?? string.Empty) + "\","
-                    + "\"confs\":" + (Confirmations != null ? Confirmations.ToString() : "null")
-                    + "}";
+                + "\"cookies\":\"" + Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
+                + "\"oauthtoken\":\"" + (OAuthToken ?? string.Empty) + "\","
+                // + "\"umqid\":\"" + (this.UmqId ?? string.Empty) + "\","
+                + "\"confs\":" + (Confirmations != null ? Confirmations.ToString() : "null")
+                + "}";
 
             /// <summary>
             /// Convert json data into session 
@@ -494,7 +494,9 @@ namespace WinAuth
                         { "X-Requested-With", "com.valvesoftware.android.steam.community" }
                     };
 
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
                     response = GetString(COMMUNITY_BASE + "/mobilelogin?oauth_client_id=DE45CD61&oauth_scope=read_profile%20write_profile%20read_client%20write_client", "GET", null, headers);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
                 }
 
                 // Steam strips any non-ascii chars from username and password
@@ -513,7 +515,7 @@ namespace WinAuth
                 }
 
                 // encrypt password with RSA key
-                var random = new RNGCryptoServiceProvider();
+                _ = new RNGCryptoServiceProvider();
                 string encryptedPassword64;
                 using (var rsa = new RSACryptoServiceProvider())
                 {
@@ -882,7 +884,7 @@ namespace WinAuth
         /// <returns>list of Confirmation objects</returns>
         public List<Confirmation> GetConfirmations()
         {
-            var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
+            var servertime = (WinAuth.Authenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
             var ids = jids != null ? jids.Value<string>() : string.Empty;
@@ -1025,7 +1027,7 @@ namespace WinAuth
                 return false;
             }
 
-            var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
+            var servertime = (WinAuth.Authenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
             var ids = jids != null ? jids.Value<string>() : string.Empty;
@@ -1079,7 +1081,7 @@ namespace WinAuth
 #if DEBUG
                 Error = ex.Message + Environment.NewLine + ex.StackTrace;
 #else
-				this.Error = ex.Message;
+                Error = ex.Message;
 #endif
                 return false;
             }
@@ -1130,7 +1132,10 @@ namespace WinAuth
         /// <param name="formdata">optional form data</param>
         /// <param name="headers">optional headers</param>
         /// <returns>array of returned data</returns>
-        public byte[] GetData(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null) => Request(url, method ?? "GET", formdata, headers);
+        public byte[] GetData(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null)
+        {
+            return Request(url, method ?? "GET", formdata, headers);
+        }
 
         /// <summary>
         /// Get string from web request

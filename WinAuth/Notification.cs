@@ -25,7 +25,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
 using MetroFramework.Forms;
 
 namespace WinAuth
@@ -132,7 +131,7 @@ namespace WinAuth
         /// <remarks>
         /// MDI child forms do not support the Fade method and only support other methods while being displayed for the first time and when closing
         /// </remarks>
-        class FormAnimator
+        private class FormAnimator
         {
             #region Constants
 
@@ -552,7 +551,14 @@ namespace WinAuth
         }
 
 
-        protected override void OnPaint(PaintEventArgs e) => base.OnPaint(e);//	using (var pen = new Pen(Color.FromArgb(32, 32, 32), 1))//	{//		e.Graphics.DrawRectangle(pen, 0, 0, this.Width, this.Height);//	}
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            //using (var pen = new Pen(Color.FromArgb(32, 32, 32), 1))
+            //{
+            //    e.Graphics.DrawRectangle(pen, 0, 0, this.Width, this.Height);
+            //}
+        }
 
         private void Notification_Paint(object sender, PaintEventArgs e)
         {

@@ -26,7 +26,7 @@ namespace WinAuth
     /// <summary>
     /// Form for exporting authenticators to a file
     /// </summary>
-    public partial class ExportForm : WinAuth.ResourceForm
+    public partial class ExportForm : ResourceForm
     {
         /// <summary>
         /// Create the form
@@ -122,7 +122,7 @@ namespace WinAuth
                 Title = "Choose PGP Key File"
             };
 
-            if (ofd.ShowDialog(Parent) == System.Windows.Forms.DialogResult.OK)
+            if (ofd.ShowDialog(Parent) == DialogResult.OK)
             {
                 pgpField.Text = File.ReadAllText(ofd.FileName);
             }
@@ -156,7 +156,7 @@ namespace WinAuth
                 sfd.FileName = "winauth-" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
             }
             sfd.OverwritePrompt = true;
-            if (sfd.ShowDialog(Parent) != System.Windows.Forms.DialogResult.OK)
+            if (sfd.ShowDialog(Parent) != DialogResult.OK)
             {
                 return;
             }
@@ -175,27 +175,27 @@ namespace WinAuth
             if (passwordCheckbox.Checked && passwordField.Text.Trim().Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.EnterPassword);
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
             if (passwordCheckbox.Checked && string.Compare(passwordField.Text, verifyField.Text) != 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.PasswordsDontMatch);
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 
             if (pgpCheckbox.Checked && pgpField.Text.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.MissingPGPKey);
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 
             if (fileField.Text.Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, strings.MissingFile);
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 

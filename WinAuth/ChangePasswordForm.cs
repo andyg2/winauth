@@ -17,11 +17,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
 using WinAuth.Resources;
 
 namespace WinAuth
@@ -29,7 +24,7 @@ namespace WinAuth
     /// <summary>
     /// Form for setting the password and encryption for the current authenticators
     /// </summary>
-    public partial class ChangePasswordForm : WinAuth.ResourceForm
+    public partial class ChangePasswordForm : ResourceForm
     {
         /// <summary>
         /// Used to show a filled password box

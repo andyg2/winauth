@@ -108,14 +108,14 @@ namespace WinAuth
                     "You have created a new authenticator. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Do you want to save this authenticator?", MessageBoxButtons.YesNoCancel);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.OK;
+                    DialogResult = DialogResult.OK;
                     return;
                 }
-                else if (result == System.Windows.Forms.DialogResult.Cancel)
+                else if (result == DialogResult.Cancel)
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
             }
@@ -130,7 +130,7 @@ namespace WinAuth
         {
             if (!VerifyAuthenticator())
             {
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
         }
@@ -284,7 +284,7 @@ namespace WinAuth
                     "This will clear the authenticator you have just created. "
                     + "If you have attached this authenticator to your account, you might not be able to login in the future." + Environment.NewLine + Environment.NewLine
                     + "Are you sure you want to continue?");
-                if (result != System.Windows.Forms.DialogResult.Yes)
+                if (result != DialogResult.Yes)
                 {
                     return;
                 }
@@ -325,7 +325,7 @@ namespace WinAuth
 #if DEBUG
                     authenticator.Enroll(System.Diagnostics.Debugger.IsAttached);
 #else
-					authenticator.Enroll();
+                    authenticator.Enroll();
 #endif
                     Authenticator.AuthenticatorData = authenticator;
                     newSerialNumberField.Text = authenticator.Serial;
@@ -339,7 +339,7 @@ namespace WinAuth
                 }
                 catch (InvalidEnrollResponseException iere)
                 {
-                    if (WinAuthForm.ErrorDialog(Owner, "An error occured while registering a new authenticator", iere, MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
+                    if (WinAuthForm.ErrorDialog(Owner, "An error occured while registering a new authenticator", iere, MessageBoxButtons.RetryCancel) != DialogResult.Retry)
                     {
                         break;
                     }

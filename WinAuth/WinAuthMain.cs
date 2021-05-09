@@ -35,7 +35,7 @@ namespace WinAuth
     /// <summary>
     /// Class that launches the main form
     /// </summary>
-    static class WinAuthMain
+    internal static class WinAuthMain
     {
         /// <summary>
         /// Name of this application used for %USEPATH%\[name] folder
@@ -170,7 +170,7 @@ namespace WinAuth
             new RegisteredAuthenticator {Name="Okta Verify", AuthenticatorType=RegisteredAuthenticator.AuthenticatorTypes.OktaVerify, Icon="OktaVerifyAuthenticatorIcon.png"}
         };
 
-        public static ResourceManager StringResources = new ResourceManager(typeof(WinAuth.Resources.strings).FullName, typeof(WinAuth.Resources.strings).Assembly);
+        public static ResourceManager StringResources = new ResourceManager(typeof(strings).FullName, typeof(strings).Assembly);
 
         public static ILogger Logger;
 
@@ -178,7 +178,7 @@ namespace WinAuth
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             try
             {
@@ -186,7 +186,7 @@ namespace WinAuth
                 var config = new LoggingConfiguration();
                 //
                 var fileTarget = new FileTarget();
-                var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), APPLICATION_NAME);
                 if (!Directory.Exists(dir))
                 {
                     dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -205,7 +205,7 @@ namespace WinAuth
 
                 using (var instance = new SingleGlobalInstance(2000))
                 {
-                    if (!System.Diagnostics.Debugger.IsAttached)
+                    if (!Debugger.IsAttached)
                     {
                         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
                         Application.ThreadException += OnThreadException;
@@ -253,9 +253,9 @@ namespace WinAuth
             }
         }
 
-        static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) => LogException(e.Exception);
+        private static void OnThreadException(object sender, System.Threading.ThreadExceptionEventArgs e) => LogException(e.Exception);
 
-        static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e) => LogException(e.ExceptionObject as Exception);
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e) => LogException(e.ExceptionObject as Exception);
 
         public static void LogException(Exception ex, bool silently = false)
         {

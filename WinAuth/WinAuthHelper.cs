@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) 2013 Colin Mackie.
  * This software is distributed under the terms of the GNU General Public License.
  *
@@ -42,7 +42,7 @@ namespace WinAuth
     /// <summary>
     /// Class proving helper functions to save data for application
     /// </summary>
-    class WinAuthHelper
+    internal class WinAuthHelper
     {
         /// <summary>
         /// Registry key for application
@@ -143,7 +143,7 @@ namespace WinAuth
             if (string.IsNullOrEmpty(configFile))
             {
                 // do we have a file specific in the registry?
-                var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var configDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 // check for default authenticator
                 configFile = Path.Combine(configDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
                 // if no config file, just return a blank config
@@ -281,7 +281,7 @@ namespace WinAuth
                 // if no config file yet, use default
                 if (string.IsNullOrEmpty(config.Filename))
                 {
-                    var configDirectory = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                    var configDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                     Directory.CreateDirectory(configDirectory);
                     config.Filename = Path.Combine(configDirectory, DEFAULT_AUTHENTICATOR_FILE_NAME);
                 }
@@ -374,7 +374,7 @@ namespace WinAuth
                         xw.WriteEndElement();
                     }
 
-                    var pgpkey = string.IsNullOrEmpty(config.PGPKey) ? WinAuthHelper.WINAUTH_PGP_PUBLICKEY : config.PGPKey;
+                    var pgpkey = string.IsNullOrEmpty(config.PGPKey) ? WINAUTH_PGP_PUBLICKEY : config.PGPKey;
                     config.WriteSetting(WINAUTHREGKEY_BACKUP + "\\" + authkey, PGPEncrypt(sw.ToString(), pgpkey));
                 }
             }
@@ -687,18 +687,16 @@ namespace WinAuth
                             auth.HMACType = hmactype;
                         }
                         //
+#pragma warning disable IDE0045 // Convert to conditional expression
                         if (label.Length != 0)
                         {
                             importedAuthenticator.Name = issuer.Length != 0 ? issuer + " (" + label + ")" : label;
                         }
-                        else if (issuer.Length != 0)
-                        {
-                            importedAuthenticator.Name = issuer;
-                        }
                         else
                         {
-                            importedAuthenticator.Name = "Imported";
+                            importedAuthenticator.Name = issuer.Length != 0 ? issuer : "Imported";
                         }
+#pragma warning restore IDE0045 // Convert to conditional expression
                         //
                         importedAuthenticator.AuthenticatorData = auth;
 
@@ -1196,7 +1194,7 @@ namespace WinAuth
             hashedGen.SetPreferredCompressionAlgorithms(false, new int[] { (int)CompressionAlgorithmTag.Zip });
             hashedGen.SetPreferredHashAlgorithms(false, new int[] { (int)HashAlgorithmTag.Sha1 });
             hashedGen.SetPreferredSymmetricAlgorithms(false, new int[] { (int)SymmetricKeyAlgorithmTag.Cast5 });
-            var sv = hashedGen.Generate();
+            hashedGen.Generate();
             var unhashedGen = new PgpSignatureSubpacketGenerator();
 
             // create the PGP key
@@ -1269,11 +1267,11 @@ namespace WinAuth
             {
                 using (var armored = new ArmoredOutputStream(encryptedStream))
                 {
-                    var pedg = new PgpEncryptedDataGenerator(Org.BouncyCastle.Bcpg.SymmetricKeyAlgorithmTag.Cast5, true, new Org.BouncyCastle.Security.SecureRandom());
+                    var pedg = new PgpEncryptedDataGenerator(SymmetricKeyAlgorithmTag.Cast5, true, new Org.BouncyCastle.Security.SecureRandom());
                     pedg.AddMethod(publicKey);
                     using (var pedgStream = pedg.Open(armored, new byte[4096]))
                     {
-                        var pcdg = new PgpCompressedDataGenerator(Org.BouncyCastle.Bcpg.CompressionAlgorithmTag.Zip);
+                        var pcdg = new PgpCompressedDataGenerator(CompressionAlgorithmTag.Zip);
                         using (var pcdgStream = pcdg.Open(pedgStream))
                         {
                             var pldg = new PgpLiteralDataGenerator();
@@ -1362,7 +1360,7 @@ namespace WinAuth
     /// <summary>
     /// Helper class to make a StreamWriter use an Encoding else it will default to UTF-16
     /// </summary>
-    class EncodedStringWriter : StringWriter
+    internal class EncodedStringWriter : StringWriter
     {
         private readonly Encoding _encoding;
 

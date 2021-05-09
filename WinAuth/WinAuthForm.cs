@@ -25,7 +25,9 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+#if DEBUG
 using System.Text;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -150,11 +152,11 @@ namespace WinAuth
                             var fi = typeof(LogLevel).GetField(args[i], BindingFlags.Static | BindingFlags.IgnoreCase | BindingFlags.Public);
                             if (fi == null)
                             {
-                                WinAuthForm.ErrorDialog(this, "Invalid parameter: log value: " + args[i] + " (must be error,info,debug,trace)");
+                                ErrorDialog(this, "Invalid parameter: log value: " + args[i] + " (must be error,info,debug,trace)");
                                 System.Diagnostics.Process.GetCurrentProcess().Kill();
                             }
                             var loglevel = fi.GetValue(null) as LogLevel;
-                            var target = NLog.LogManager.Configuration.AllTargets.Where(t => t.Name == null).FirstOrDefault();
+                            var target = LogManager.Configuration.AllTargets.Where(t => t.Name == null).FirstOrDefault();
                             if (target != null)
                             {
                                 LogManager.Configuration.LoggingRules.Add(new NLog.Config.LoggingRule("*", loglevel, target));
@@ -209,7 +211,7 @@ namespace WinAuth
 
             loadingPanel.Visible = true;
             passwordPanel.Visible = false;
-            Task.Factory.StartNew<Tuple<WinAuthConfig, Exception>>(() =>
+            Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -254,7 +256,7 @@ namespace WinAuth
                 }
                 else if (ex is Exception)
                 {
-                    if (ErrorDialog(this, strings.UnknownError + ": " + ex.Message, ex, MessageBoxButtons.RetryCancel) == System.Windows.Forms.DialogResult.Cancel)
+                    if (ErrorDialog(this, strings.UnknownError + ": " + ex.Message, ex, MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     {
                         Close();
                         return;
@@ -283,7 +285,7 @@ namespace WinAuth
                 {
                     SaveConfig(true);
                     // display warning
-                    WinAuthForm.ErrorDialog(this, string.Format(strings.ConfigUpgraded, WinAuthConfig.CURRENTVERSION));
+                    ErrorDialog(this, string.Format(strings.ConfigUpgraded, WinAuthConfig.CURRENTVERSION));
                 }
 
                 InitializeForm();
@@ -320,7 +322,7 @@ namespace WinAuth
                 }
                 catch (ImportException ex)
                 {
-                    if (ErrorDialog(this, ex.Message, ex.InnerException, MessageBoxButtons.RetryCancel) == System.Windows.Forms.DialogResult.Cancel)
+                    if (ErrorDialog(this, ex.Message, ex.InnerException, MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     {
                         return;
                     }
@@ -357,7 +359,7 @@ namespace WinAuth
                     {
                         PasswordType = Authenticator.PasswordTypes.Explicit
                     };
-                    if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    if (form.ShowDialog(this) == DialogResult.OK)
                     {
                         Config.PasswordType = form.PasswordType;
                         if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0 && !string.IsNullOrEmpty(form.Password))
@@ -433,7 +435,7 @@ namespace WinAuth
                         {
                             PasswordType = Authenticator.PasswordTypes.Explicit
                         };
-                        if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                        if (form.ShowDialog(this) == DialogResult.OK)
                         {
                             Config.PasswordType = form.PasswordType;
                             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0 && !string.IsNullOrEmpty(form.Password))
@@ -476,7 +478,7 @@ namespace WinAuth
                 }
                 catch (Exception ex)
                 {
-                    if (ErrorDialog(this, strings.UnknownError + ": " + ex.Message, ex, MessageBoxButtons.RetryCancel) == System.Windows.Forms.DialogResult.Cancel)
+                    if (ErrorDialog(this, strings.UnknownError + ": " + ex.Message, ex, MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     {
                         return;
                     }
@@ -661,7 +663,7 @@ namespace WinAuth
                     ali.DisplayUntil = DateTime.Now.AddSeconds(10);
                 }
 
-                if (searchString == "" || ali.Authenticator.Name.ToLower().Contains(searchString.ToLower()))
+                if (_searchString == "" || ali.Authenticator.Name.ToLower().Contains(_searchString.ToLower()))
                 {
                     lastFound = ali;
                     authenticatorList.Items.Add(ali);
@@ -750,7 +752,10 @@ namespace WinAuth
         /// <param name="message">message to display</param>
         /// <param name="buttons">button if other than YesNo</param>
         /// <returns>DialogResult</returns>
-        public static DialogResult ConfirmDialog(Form form, string message, MessageBoxButtons buttons = MessageBoxButtons.YesNo, MessageBoxIcon icon = MessageBoxIcon.Question, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) => MessageBox.Show(form, message, WinAuthMain.APPLICATION_TITLE, buttons, icon, defaultButton);
+        public static DialogResult ConfirmDialog(Form form, string message, MessageBoxButtons buttons = MessageBoxButtons.YesNo, MessageBoxIcon icon = MessageBoxIcon.Question, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
+        {
+            return MessageBox.Show(form, message, WinAuthMain.APPLICATION_TITLE, buttons, icon, defaultButton);
+        }
 
         /// <summary>
         /// Preload the context menu with the possible set of authenticator types
@@ -1058,7 +1063,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Hotkey_KeyPressed(object sender, KeyboardHookEventArgs e)
+        private void Hotkey_KeyPressed(object sender, KeyboardHookEventArgs e)
         {
             // avoid multiple keypresses being sent
             if (e.Authenticator != null && Monitor.TryEnter(m_sendingKeys))
@@ -1084,7 +1089,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void HotkeyTimer_Tick(object sender, EventArgs e)
+        private void HotkeyTimer_Tick(object sender, EventArgs e)
         {
             var data = hotkeyTimer.Tag as HotKeyLauncher;
 
@@ -1096,9 +1101,9 @@ namespace WinAuth
             }
 
             // wait until the modifiers are released
-            if ((System.Windows.Forms.Control.ModifierKeys & Keys.Alt) != 0
-                || (System.Windows.Forms.Control.ModifierKeys & Keys.Control) != 0
-                || (System.Windows.Forms.Control.ModifierKeys & Keys.Shift) != 0)
+            if ((ModifierKeys & Keys.Alt) != 0
+                || (ModifierKeys & Keys.Control) != 0
+                || (ModifierKeys & Keys.Shift) != 0)
             {
                 return;
             }
@@ -1286,7 +1291,9 @@ namespace WinAuth
         /// <returns></returns>
         public object GetClipboardData(Type format)
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var clipRetry = false;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             do
             {
                 try
@@ -1303,7 +1310,6 @@ namespace WinAuth
                 }
             }
             while (clipRetry);
-
             return null;
         }
 
@@ -1379,7 +1385,7 @@ namespace WinAuth
                 Config = Config,
                 Updater = Updater
             };
-            if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (form.ShowDialog(this) == DialogResult.OK)
             {
                 NewVersionAvailable(Updater.LastKnownLatestVersion);
                 SaveConfig();
@@ -1419,7 +1425,7 @@ namespace WinAuth
                     WinAuthMain.APPLICATION_TITLE,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
-                if (importResult == System.Windows.Forms.DialogResult.Yes)
+                if (importResult == DialogResult.Yes)
                 {
                     ImportAuthenticatorFromV2(_existingv2Config);
                 }
@@ -1480,7 +1486,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void AddAuthenticatorMenu_Click(object sender, EventArgs e)
+        private void AddAuthenticatorMenu_Click(object sender, EventArgs e)
         {
             var menuitem = (ToolStripItem)sender;
             if (menuitem.Tag is RegisteredAuthenticator registeredauth)
@@ -1507,7 +1513,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Steam)
                 {
@@ -1527,7 +1533,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Google)
                 {
@@ -1547,7 +1553,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Microsoft)
                 {
@@ -1566,7 +1572,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.RFC6238_TIME)
                 {
@@ -1587,7 +1593,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.OktaVerify)
                 {
@@ -1606,7 +1612,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
+                    added = form.ShowDialog(this) == DialogResult.OK;
                 }
                 else
                 {
@@ -1625,7 +1631,7 @@ namespace WinAuth
                         {
                             PasswordType = Authenticator.PasswordTypes.Explicit
                         };
-                        if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                        if (form.ShowDialog(this) == DialogResult.OK)
                         {
                             Config.PasswordType = form.PasswordType;
                             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0 && !string.IsNullOrEmpty(form.Password))
@@ -1654,7 +1660,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ImportTextMenu_Click(object sender, EventArgs e)
+        private void ImportTextMenu_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog
             {
@@ -1673,7 +1679,7 @@ namespace WinAuth
             ofd.Filter = "WinAuth Files (*.xml)|*.xml|Text Files (*.txt)|*.txt|Zip Files (*.zip)|*.zip|PGP Files (*.pgp)|*.pgp|All Files (*.*)|*.*";
             ofd.RestoreDirectory = true;
             ofd.Title = WinAuthMain.APPLICATION_TITLE;
-            if (ofd.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 ImportAuthenticator(ofd.FileName);
             }
@@ -1700,14 +1706,20 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AddAuthenticatorButton_Click(object sender, EventArgs e) => addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
+        private void AddAuthenticatorButton_Click(object sender, EventArgs e)
+        {
+            addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
+        }
 
         /// <summary>
         /// Click the Options button to show menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OptionsButton_Click(object sender, EventArgs e) => optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
+        private void OptionsButton_Click(object sender, EventArgs e)
+        {
+            optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
+        }
 
         /// <summary>
         /// Double click notify to re-open
@@ -1785,21 +1797,30 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        private void AuthenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args) => RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
+        private void AuthenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args)
+        {
+            RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
+        }
 
         /// <summary>
         /// Click in the main form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WinAuthForm_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
+        private void WinAuthForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            EndRenaming();
+        }
 
         /// <summary>
         /// Click in the command panel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CommandPanel_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
+        private void CommandPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            EndRenaming();
+        }
 
         /// <summary>
         /// Resizing the form, we have to manually adjust the width and height of list else starting as minimized borks
@@ -1858,11 +1879,12 @@ namespace WinAuth
         private void SearchTextbox_changed(object sender, EventArgs e)
         {
             var txt = searchTextbox.Text.Trim();
-            searchString = txt != "" ? txt : "";
+            _searchString = txt != "" ? txt : "";
             noticeLabel.Text = "";
             LoadAuthenticatorList();
         }
-        string searchString = "";
+
+        private string _searchString = "";
 
         /// <summary>
         /// Remove the password error message after a few seconds
@@ -1897,7 +1919,10 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SearchTextbox_KeyUp(object sender, KeyEventArgs e) => SearchTextbox_changed(sender, null);
+        private void SearchTextbox_KeyUp(object sender, KeyEventArgs e)
+        {
+            SearchTextbox_changed(sender, null);
+        }
 
         /// <summary>
         /// If click the new version status link
@@ -1917,7 +1942,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void SystemEvents_TimeChanged(object sender, EventArgs e)
+        private void SystemEvents_TimeChanged(object sender, EventArgs e)
         {
             var cursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
@@ -2151,14 +2176,20 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OptionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu);
+        private void OptionsMenu_Opening(object sender, CancelEventArgs e)
+        {
+            OpeningOptionsMenu(optionsMenu);
+        }
 
         /// <summary>
         /// Set the state of the items when opening the notify menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NotifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu);
+        private void NotifyMenu_Opening(object sender, CancelEventArgs e)
+        {
+            OpeningNotifyMenu(notifyMenu);
+        }
 
         /// <summary>
         /// Set state of menuitems when opening the Options menu
@@ -2323,7 +2354,7 @@ namespace WinAuth
                 PasswordType = Config.PasswordType,
                 HasPassword = (Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0
             };
-            if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (form.ShowDialog(this) == DialogResult.OK)
             {
                 bool retry;
                 var retrypasswordtype = Config.PasswordType;
@@ -2343,7 +2374,7 @@ namespace WinAuth
                     }
                     catch (InvalidEncryptionException)
                     {
-                        var result = WinAuthForm.ConfirmDialog(this, "Decryption test failed. Retry?", MessageBoxButtons.YesNo);
+                        var result = ConfirmDialog(this, "Decryption test failed. Retry?", MessageBoxButtons.YesNo);
                         if (result == DialogResult.Yes)
                         {
                             retry = true;
@@ -2404,63 +2435,90 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StartWithWindowsOptionsMenuItem_Click(object sender, EventArgs e) => Config.StartWithWindows = !Config.StartWithWindows;
+        private void StartWithWindowsOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.StartWithWindows = !Config.StartWithWindows;
+        }
 
         /// <summary>
         /// Click the Always On Top menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AlwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e) => Config.AlwaysOnTop = !Config.AlwaysOnTop;
+        private void AlwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.AlwaysOnTop = !Config.AlwaysOnTop;
+        }
 
         /// <summary>
         /// Click the Use Tray Icon menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UseSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e) => Config.UseTrayIcon = !Config.UseTrayIcon;
+        private void UseSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.UseTrayIcon = !Config.UseTrayIcon;
+        }
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DefaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
+        private void DefaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
+        }
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DefaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
+        private void DefaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
+        }
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DefaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
+        private void DefaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
+        }
 
         /// <summary>
         /// Click the Auto Size menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AutoSizeOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoSize = !Config.AutoSize;
+        private void AutoSizeOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.AutoSize = !Config.AutoSize;
+        }
 
         /// <summary>
         /// Automatically copy the code when search result is only one item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CopySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e) => Config.CopySearchedSingle = !Config.CopySearchedSingle;
+        private void CopySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.CopySearchedSingle = !Config.CopySearchedSingle;
+        }
 
         /// <summary>
         /// Automatically exit program after code is copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AutoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
+        private void AutoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
+        }
 
         /// <summary>
         /// Click the Export menu
@@ -2493,7 +2551,7 @@ namespace WinAuth
             }
 
             var exportform = new ExportForm();
-            if (exportform.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (exportform.ShowDialog(this) == DialogResult.OK)
             {
                 WinAuthHelper.ExportAuthenticators(this, Config, exportform.ExportFile, exportform.Password, exportform.PGPKey);
             }
@@ -2504,7 +2562,10 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AboutUpdatesMenuItem_Click(object sender, EventArgs e) => ShowUpdaterForm();
+        private void AboutUpdatesMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowUpdaterForm();
+        }
 
         /// <summary>
         /// Click the About menu item
@@ -2540,7 +2601,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        void OnConfigChanged(object source, ConfigChangedEventArgs args)
+        private void OnConfigChanged(object source, ConfigChangedEventArgs args)
         {
             if (args.PropertyName == "AlwaysOnTop")
             {
@@ -2584,7 +2645,7 @@ namespace WinAuth
         /// <summary>
         /// Inner class used to form details of hot key
         /// </summary>
-        class HotKeyLauncher
+        private class HotKeyLauncher
         {
             /// <summary>
             /// Owning form
@@ -2613,8 +2674,5 @@ namespace WinAuth
                 Authenticator = auth;
             }
         }
-
-
-
     }
 }

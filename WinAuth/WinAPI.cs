@@ -410,9 +410,9 @@ namespace WinAuth
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
 
-        [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("user32.dll", SetLastError = true)]
-        static extern bool PostMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool PostMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         internal static extern IntPtr GetOpenClipboardWindow();
@@ -566,7 +566,7 @@ namespace WinAuth
                 return false;
             }
 
-            void Control_ParentChanged(object sender, EventArgs e)
+            private void Control_ParentChanged(object sender, EventArgs e)
             {
                 if (_control.Parent == null)
                 {
@@ -579,11 +579,11 @@ namespace WinAuth
                 _previousParent = _control.Parent;
             }
 
-            void Control_MouseEnter(object sender, EventArgs e) => _isMouseOverControl = true;
+            private void Control_MouseEnter(object sender, EventArgs e) => _isMouseOverControl = true;
 
-            void Control_MouseLeave(object sender, EventArgs e) => _isMouseOverControl = false;
+            private void Control_MouseLeave(object sender, EventArgs e) => _isMouseOverControl = false;
 
-            void Control_Leave(object sender, EventArgs e) => _isMouseOverControl = false;
+            private void Control_Leave(object sender, EventArgs e) => _isMouseOverControl = false;
         }
 
     }

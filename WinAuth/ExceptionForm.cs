@@ -17,12 +17,16 @@
  */
 
 using System;
+#if !DEBUG
 using System.Diagnostics;
+#endif
 using System.Drawing;
+#if !DEBUG
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+#endif
 using WinAuth.Resources;
 
 namespace WinAuth
@@ -30,7 +34,7 @@ namespace WinAuth
     /// <summary>
     /// General error report form
     /// </summary>
-    public partial class ExceptionForm : WinAuth.ResourceForm
+    public partial class ExceptionForm : ResourceForm
     {
         /// <summary>
         /// Exception that caused the error report
@@ -72,7 +76,7 @@ namespace WinAuth
             }
             catch (Exception ex)
             {
-                dataText.Text = string.Format("{0}\n\n{1}", ex.Message, new System.Diagnostics.StackTrace(ex).ToString());
+                dataText.Text = string.Format("{0}\n\n{1}", ex.Message, new StackTrace(ex).ToString());
             }
 #endif
         }
@@ -94,7 +98,7 @@ namespace WinAuth
             // add winauth log
             try
             {
-                var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
                 if (Directory.Exists(dir))
                 {
                     var winauthlog = Path.Combine(dir, "winauth.log");
@@ -143,7 +147,7 @@ namespace WinAuth
                 var ex = ErrorException;
                 while (ex != null)
                 {
-                    diag.Append("Stack: ").Append(ex.Message).Append(Environment.NewLine).Append(new System.Diagnostics.StackTrace(ex).ToString()).Append(Environment.NewLine);
+                    diag.Append("Stack: ").Append(ex.Message).Append(Environment.NewLine).Append(new StackTrace(ex).ToString()).Append(Environment.NewLine);
                     ex = ex.InnerException;
                 }
                 if (ErrorException is InvalidEncryptionException invalidEncryptionException)

@@ -77,7 +77,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void VerifyRestoreCodeCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void VerifyRestoreCodeCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var message = e.Result as string;
             if (!string.IsNullOrEmpty(message))
@@ -91,7 +91,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void VerifyRestoreCode(object sender, DoWorkEventArgs e)
+        private void VerifyRestoreCode(object sender, DoWorkEventArgs e)
         {
             var auth = e.Argument as BattleNetAuthenticator;
 

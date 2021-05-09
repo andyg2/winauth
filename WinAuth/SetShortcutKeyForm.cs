@@ -28,7 +28,7 @@ namespace WinAuth
         /// <summary>
         /// Inner class to put into the dropdown to represent the keys
         /// </summary>
-        class KeyItem
+        private class KeyItem
         {
             /// <summary>
             /// The virtual Key code
@@ -162,7 +162,7 @@ namespace WinAuth
                 if ((key != Hotkey.Key || modifiers != Hotkey.Modifiers) && !KeyboardHook.IsHotkeyAvailable(this, (Keys)key, modifiers))
                 {
                     WinAuthForm.ErrorDialog(this, strings.HotKeyNotAvailable);
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
 

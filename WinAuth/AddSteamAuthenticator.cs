@@ -38,7 +38,7 @@ namespace WinAuth
         /// <summary>
         /// Entry for a single SDA account
         /// </summary>
-        class ImportedSDAEntry
+        private class ImportedSDAEntry
         {
             public const int PBKDF2_ITERATIONS = 50000;
             public const int SALT_LENGTH = 8;
@@ -118,7 +118,7 @@ namespace WinAuth
             if (m_enroll.Success)
             {
                 Authenticator.Name = nameField.Text;
-                DialogResult = System.Windows.Forms.DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
         }
 
@@ -132,7 +132,7 @@ namespace WinAuth
             // if we press ESC after adding, make sure we save it
             if (m_enroll.Success)
             {
-                DialogResult = System.Windows.Forms.DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
         }
 
@@ -146,7 +146,7 @@ namespace WinAuth
             if (activationcodeField.Text.Trim().Length == 0)
             {
                 WinAuthForm.ErrorDialog(this, "Please enter the activation code from your email");
-                DialogResult = System.Windows.Forms.DialogResult.None;
+                DialogResult = DialogResult.None;
                 return;
             }
 
@@ -270,7 +270,7 @@ namespace WinAuth
             {
                 if (!ImportSteamGuard())
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
             }
@@ -278,12 +278,12 @@ namespace WinAuth
             {
                 if (!ImportSDA())
                 {
-                    DialogResult = System.Windows.Forms.DialogResult.None;
+                    DialogResult = DialogResult.None;
                     return;
                 }
             }
 
-            DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -822,7 +822,7 @@ namespace WinAuth
                 }
                 catch (InvalidEnrollResponseException iere)
                 {
-                    if (WinAuthForm.ErrorDialog(this, "An error occurred while registering the authenticator", iere, MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
+                    if (WinAuthForm.ErrorDialog(this, "An error occurred while registering the authenticator", iere, MessageBoxButtons.RetryCancel) != DialogResult.Retry)
                     {
                         break;
                     }

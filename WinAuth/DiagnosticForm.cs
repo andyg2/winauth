@@ -26,7 +26,7 @@ namespace WinAuth
     /// <summary>
     /// General error report form
     /// </summary>
-    public partial class DiagnosticForm : WinAuth.ResourceForm
+    public partial class DiagnosticForm : ResourceForm
     {
         /// <summary>
         /// Current Winauth config settings
@@ -119,7 +119,7 @@ namespace WinAuth
             }
 
             // add winauth log
-            var dir = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), WinAuthMain.APPLICATION_NAME);
             var winauthlog = Path.Combine(dir, "winauth.log");
             if (File.Exists(winauthlog))
             {

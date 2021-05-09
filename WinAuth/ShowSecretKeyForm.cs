@@ -60,9 +60,9 @@ namespace WinAuth
             var key = Base32.GetInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
 
-            var type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
-            var counter = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator hotpAuthenticator ? hotpAuthenticator.Counter : 0;
-            var issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
+            //var type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
+            //var counter = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator hotpAuthenticator ? hotpAuthenticator.Counter : 0;
+            //var issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
 
             //string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
             //	+ "?secret=" + key

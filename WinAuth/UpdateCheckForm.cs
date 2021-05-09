@@ -19,7 +19,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 using MetroFramework;
 
 namespace WinAuth
@@ -32,7 +31,7 @@ namespace WinAuth
         /// <summary>
         /// Internal item for drop down to hold interval information
         /// </summary>
-        class UpdateIntervalItem
+        private class UpdateIntervalItem
         {
             /// <summary>
             /// Display name
@@ -193,7 +192,7 @@ namespace WinAuth
         /// <param name="latestInfo">latest version or null</param>
         /// <param name="cancelled">flag if operation was cancelled</param>
         /// <param name="error">any error exception</param>
-        void Updater_GetLatestVersionCompleted(WinAuthVersionInfo latestInfo, bool cancelled, Exception error)
+        private void Updater_GetLatestVersionCompleted(WinAuthVersionInfo latestInfo, bool cancelled, Exception error)
         {
             if (IsDisposed || !IsHandleCreated)
             {

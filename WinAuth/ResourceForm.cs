@@ -33,7 +33,7 @@ namespace WinAuth
         /// <summary>
         /// Comparer that checks two types and returns trues if they are the same or one is based on the other
         /// </summary>
-        class BasedOnComparer : IEqualityComparer<Type>
+        private class BasedOnComparer : IEqualityComparer<Type>
         {
             /// <summary>
             /// Check if two types are equal or subclassed
