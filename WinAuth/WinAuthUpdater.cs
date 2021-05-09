@@ -91,16 +91,6 @@ namespace WinAuth
         private TimeSpan? _autocheckInterval;
 
         /// <summary>
-        /// The last known new version
-        /// </summary>
-        private Version _latestVersion;
-
-        /// <summary>
-        /// When we last checked for a new version
-        /// </summary>
-        private DateTime _lastCheck;
-
-        /// <summary>
         /// Current Config
         /// </summary>
         protected WinAuthConfig Config { get; set; }
@@ -120,12 +110,12 @@ namespace WinAuth
 
             if (long.TryParse(Config.ReadSetting(WINAUTHREGKEY_LASTCHECK, null), out var lastCheck))
             {
-                _lastCheck = new DateTime(lastCheck);
+                LastCheck = new DateTime(lastCheck);
             }
 
             if (Version.TryParse(Config.ReadSetting(WINAUTHREGKEY_LATESTVERSION, string.Empty), out var version))
             {
-                _latestVersion = version;
+                LastKnownLatestVersion = version;
             }
         }
 
@@ -134,16 +124,12 @@ namespace WinAuth
         /// <summary>
         /// Get when the last check was done
         /// </summary>
-        public DateTime LastCheck => _lastCheck;
+        public DateTime LastCheck { get; private set; }
 
         /// <summary>
         /// Get the last known latest version or null
         /// </summary>
-        public Version LastKnownLatestVersion
-        {
-            get => _latestVersion;
-            protected set => _latestVersion = value;
-        }
+        public Version LastKnownLatestVersion { get; protected set; }
 
         /// <summary>
         /// Get the current version
@@ -199,12 +185,12 @@ namespace WinAuth
             {
                 // only if autochecking is on, and is due, and we don't already have a later version
                 if (IsAutoCheck
-                    && _autocheckInterval.HasValue && _lastCheck.Add(_autocheckInterval.Value) < DateTime.Now
+                    && _autocheckInterval.HasValue && LastCheck.Add(_autocheckInterval.Value) < DateTime.Now
                     && (LastKnownLatestVersion == null || LastKnownLatestVersion <= CurrentVersion))
                 {
                     // update the last check time
-                    _lastCheck = DateTime.Now;
-                    Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, _lastCheck.Ticks.ToString());
+                    LastCheck = DateTime.Now;
+                    Config.WriteSetting(WINAUTHREGKEY_LASTCHECK, LastCheck.Ticks.ToString());
 
                     // check for latest version
                     try

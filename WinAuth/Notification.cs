@@ -151,27 +151,6 @@ namespace WinAuth
 
             #endregion // Constants
 
-            #region Variables
-
-            /// <summary>
-            /// The form to be animated
-            /// </summary>
-            private readonly Form _form;
-            /// <summary>
-            /// The animation method used to show and hide the form
-            /// </summary>
-            private AnimationMethod _method;
-            /// <summary>
-            /// The direction in which to Roll or Slide the form
-            /// </summary>
-            private AnimationDirection _direction;
-            /// <summary>
-            /// The number of milliseconds over which the animation is played
-            /// </summary>
-            private int _duration;
-
-            #endregion // Variables
-
             #region Properties
 
             /// <summary>
@@ -183,11 +162,7 @@ namespace WinAuth
             /// <remarks>
             /// <b>Roll</b> is used by default if no method is specified
             /// </remarks>
-            public AnimationMethod Method
-            {
-                get => _method;
-                set => _method = value;
-            }
+            public AnimationMethod Method { get; set; }
 
             /// <summary>
             /// Gets or Sets the direction in which the animation is performed
@@ -198,11 +173,7 @@ namespace WinAuth
             /// <remarks>
             /// The direction is only applicable to the <b>Roll</b> and <b>Slide</b> methods
             /// </remarks>
-            public AnimationDirection Direction
-            {
-                get => _direction;
-                set => _direction = value;
-            }
+            public AnimationDirection Direction { get; set; }
 
             /// <summary>
             /// Gets or Sets the number of milliseconds over which the animation is played
@@ -210,11 +181,7 @@ namespace WinAuth
             /// <value>
             /// The number of milliseconds over which the animation is played
             /// </value>
-            public int Duration
-            {
-                get => _duration;
-                set => _duration = value;
-            }
+            public int Duration { get; set; }
 
             /// <summary>
             /// Gets the form to be animated
@@ -222,7 +189,7 @@ namespace WinAuth
             /// <value>
             /// The form to be animated
             /// </value>
-            public Form Form => _form;
+            public Form Form { get; }
 
             #endregion // Properties
 
@@ -239,13 +206,13 @@ namespace WinAuth
             /// </remarks>
             public FormAnimator(Form form)
             {
-                _form = form;
+                Form = form;
 
-                _form.Load += Form_Load;
-                _form.VisibleChanged += Form_VisibleChanged;
-                _form.Closing += Form_Closing;
+                Form.Load += Form_Load;
+                Form.VisibleChanged += Form_VisibleChanged;
+                Form.Closing += Form_Closing;
 
-                _duration = DefaultDuration;
+                Duration = DefaultDuration;
             }
 
             /// <summary>
@@ -265,8 +232,8 @@ namespace WinAuth
             /// </remarks>
             public FormAnimator(Form form, AnimationMethod method, int duration) : this(form)
             {
-                _method = method;
-                _duration = duration;
+                Method = method;
+                Duration = duration;
             }
 
             /// <summary>
@@ -290,7 +257,7 @@ namespace WinAuth
             /// </remarks>
             public FormAnimator(Form form, AnimationMethod method, AnimationDirection direction, int duration) : this(form, method, duration)
             {
-                _direction = direction;
+                Direction = direction;
             }
 
             #endregion // Constructors
@@ -303,9 +270,9 @@ namespace WinAuth
             private void Form_Load(object sender, EventArgs e)
             {
                 // MDI child forms do not support transparency so do not try to use the Fade method
-                if (_form.MdiParent == null || _method != AnimationMethod.Fade)
+                if (Form.MdiParent == null || Method != AnimationMethod.Fade)
                 {
-                    AnimateWindow(_form.Handle, _duration, AwActivate | (int)_method | (int)_direction);
+                    AnimateWindow(Form.Handle, Duration, AwActivate | (int)Method | (int)Direction);
                 }
             }
 
@@ -315,11 +282,11 @@ namespace WinAuth
             private void Form_VisibleChanged(object sender, EventArgs e)
             {
                 // Do not attempt to animate MDI child forms while showing or hiding as they do not behave as expected
-                if (_form.MdiParent == null)
+                if (Form.MdiParent == null)
                 {
-                    var flags = (int)_method | (int)_direction;
+                    var flags = (int)Method | (int)Direction;
 
-                    if (_form.Visible)
+                    if (Form.Visible)
                     {
                         flags = flags | AwActivate;
                     }
@@ -328,7 +295,7 @@ namespace WinAuth
                         flags = flags | AwHide;
                     }
 
-                    AnimateWindow(_form.Handle, _duration, flags);
+                    AnimateWindow(Form.Handle, Duration, flags);
                 }
             }
 
@@ -340,9 +307,9 @@ namespace WinAuth
                 if (!e.Cancel)
                 {
                     // MDI child forms do not support transparency so do not try to use the Fade method.
-                    if (_form.MdiParent == null || _method != AnimationMethod.Fade)
+                    if (Form.MdiParent == null || Method != AnimationMethod.Fade)
                     {
-                        AnimateWindow(_form.Handle, _duration, AwHide | (int)_method | (int)_direction);
+                        AnimateWindow(Form.Handle, Duration, AwHide | (int)Method | (int)Direction);
                     }
                 }
             }

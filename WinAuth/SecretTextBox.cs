@@ -34,11 +34,6 @@ namespace WinAuth
         private string m_text;
 
         /// <summary>
-        /// Number of chars to space out when in secret mode
-        /// </summary>
-        private int m_spaceOut;
-
-        /// <summary>
         /// Flag to draw ourselves
         /// </summary>
         private bool m_secretMode;
@@ -85,11 +80,7 @@ namespace WinAuth
             }
         }
 
-        public int SpaceOut
-        {
-            get => m_spaceOut;
-            set => m_spaceOut = value;
-        }
+        public int SpaceOut { get; set; }
 
         /// <summary>
         /// Value of the textbox, but if in secret mode then will return ***** as value
@@ -122,22 +113,22 @@ namespace WinAuth
                 var text = m_text;
 
                 // if we have spacing, we add a space in between each set of chars
-                if (m_spaceOut != 0 && m_text != null)
+                if (SpaceOut != 0 && m_text != null)
                 {
                     var sb = new StringBuilder();
-                    for (var i = 0; i < m_text.Length; i += m_spaceOut)
+                    for (var i = 0; i < m_text.Length; i += SpaceOut)
                     {
                         if (i >= m_text.Length)
                         {
                             break;
                         }
-                        if (i + m_spaceOut >= m_text.Length)
+                        if (i + SpaceOut >= m_text.Length)
                         {
                             sb.Append(m_text.Substring(i));
                         }
                         else
                         {
-                            sb.Append(m_text.Substring(i, m_spaceOut)).Append(" ");
+                            sb.Append(m_text.Substring(i, SpaceOut)).Append(" ");
                         }
                     }
                     text = sb.ToString().Trim();
