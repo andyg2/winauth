@@ -112,7 +112,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Authenticator\Authenticator.csproj" />
+    <ProjectReference Include="..\WinAuth.Authenticator\WinAuth.Authenticator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

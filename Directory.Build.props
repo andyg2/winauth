@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <RootNamespace>WinAuth</RootNamespace>
-    <Product>WinAuth</Product>
     <Description>WinAuth - The Windows Authenticator</Description>
     <Copyright>Copyright © 2016. Colin Mackie. All rights reserved.</Copyright>
     <Version>3.7.0</Version>

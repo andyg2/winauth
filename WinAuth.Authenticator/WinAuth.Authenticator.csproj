@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootNamespace>WinAuth</RootNamespace>
     <Description>Authenticator implementation</Description>
   </PropertyGroup>
 
