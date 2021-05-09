@@ -641,10 +641,7 @@ namespace WinAuth
             NotifyAction = NotifyActions.Notification;
         }
 
-        public void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e)
-        {
-            OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Authenticator", sender, e));
-        }
+        public void OnWinAuthAuthenticatorChanged(WinAuthAuthenticator sender, WinAuthAuthenticatorChangedEventArgs e) => OnConfigChanged?.Invoke(this, new ConfigChangedEventArgs("Authenticator", sender, e));
 
         #region ICloneable
 

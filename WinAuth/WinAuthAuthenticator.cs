@@ -101,10 +101,7 @@ namespace WinAuth
         /// <summary>
         /// Mark this authenticator as having changed
         /// </summary>
-        public void MarkChanged()
-        {
-            OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs());
-        }
+        public void MarkChanged() => OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs());
 
         /// <summary>
         /// Get/set the name of this authenticator
