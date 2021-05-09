@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -103,6 +103,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="HtmlRenderer.WinForms" Version="1.5.0.6" />
+    <PackageReference Include="InputSimulator" Version="1.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="SharpZipLib" Version="1.3.2" />
@@ -111,7 +112,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Authenticator\Authenticator.csproj" />
-    <ProjectReference Include="..\Third Party\InputSimulator\InputSimulator.csproj" />
     <ProjectReference Include="..\Third Party\MetroFramework\MetroFramework.Design\MetroFramework.Design.csproj" />
     <ProjectReference Include="..\Third Party\MetroFramework\MetroFramework\MetroFramework.csproj" />
   </ItemGroup>

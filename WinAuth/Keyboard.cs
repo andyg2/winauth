@@ -173,6 +173,8 @@ namespace WinAuth
     /// </summary>
     public class KeyboardSender
     {
+        private readonly InputSimulator m_inputSimulator = new InputSimulator();
+
         /// <summary>
         /// Hold the handle to the destination window
         /// </summary>
@@ -318,7 +320,7 @@ namespace WinAuth
             for (; repeat > 0; repeat--)
             {
                 // Issue#100: change to use InputSimulator as SendKeys does not work for internation keyboards
-                InputSimulator.SimulateTextEntry(key);
+                m_inputSimulator.Keyboard.TextEntry(key);
                 System.Threading.Thread.Sleep(delay != 0 ? delay : 50);
             }
         }
