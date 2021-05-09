@@ -53,7 +53,7 @@
 			this.passwordField.MaxLength = 32767;
 			this.passwordField.Name = "passwordField";
 			this.passwordField.PasswordChar = '●';
-			this.passwordField.PromptText = "strings.passwordField";
+			this.passwordField.WaterMark = "strings.passwordField";
 			this.passwordField.ScrollBars = System.Windows.Forms.ScrollBars.None;
 			this.passwordField.SelectedText = "";
 			this.passwordField.Size = new System.Drawing.Size(277, 23);
@@ -67,7 +67,7 @@
 			this.verifyField.MaxLength = 32767;
 			this.verifyField.Name = "verifyField";
 			this.verifyField.PasswordChar = '●';
-			this.verifyField.PromptText = "strings.verifyField";
+			this.verifyField.WaterMark = "strings.verifyField";
 			this.verifyField.ScrollBars = System.Windows.Forms.ScrollBars.None;
 			this.verifyField.SelectedText = "";
 			this.verifyField.Size = new System.Drawing.Size(277, 23);

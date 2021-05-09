@@ -1,6 +1,6 @@
 ﻿namespace WinAuth
 {
-	partial class UnprotectPasswordForm
+	partial class GetPasswordForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -42,7 +42,7 @@
 			this.passwordField.MaxLength = 32767;
 			this.passwordField.Name = "passwordField";
 			this.passwordField.PasswordChar = '●';
-			this.passwordField.PromptText = "Password";
+			this.passwordField.WaterMark = "Password";
 			this.passwordField.ScrollBars = System.Windows.Forms.ScrollBars.None;
 			this.passwordField.SelectedText = "";
 			this.passwordField.Size = new System.Drawing.Size(277, 23);
@@ -90,7 +90,7 @@
 			this.invalidPasswordTimer.Interval = 2000;
 			this.invalidPasswordTimer.Tick += new System.EventHandler(this.invalidPasswordTimer_Tick);
 			// 
-			// UnprotectPasswordForm
+			// GetPasswordForm
 			// 
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -104,10 +104,10 @@
 			this.Controls.Add(this.passwordField);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "UnprotectPasswordForm";
+			this.Name = "GetPasswordForm";
 			this.Resizable = false;
-			this.Text = "_UnprotectPasswordForm_";
-			this.Load += new System.EventHandler(this.UnprotectPasswordForm_Load);
+			this.Text = "_GetPasswordForm_";
+			this.Load += new System.EventHandler(this.GetPasswordForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

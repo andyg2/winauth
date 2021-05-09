@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2013 Colin Mackie.
  * This software is distributed under the terms of the GNU General Public License.
  *
@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -28,7 +27,6 @@ namespace WinAuth
     /// <summary>
     /// Subclass of the MetroForm that replaces Text properties of any matching controls from the resource file
     /// </summary>
-    [Designer("MetroFramework.Design.Controls.MetroLabelDesigner, " + MetroFramework.AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(Form))]
     public class ResourceForm : MetroFramework.Forms.MetroForm
     {
@@ -85,7 +83,7 @@ namespace WinAuth
                 {
                     if (c is MetroFramework.Controls.MetroTextBox)
                     {
-                        ((MetroFramework.Controls.MetroTextBox)c).PromptText = text;
+                        ((MetroFramework.Controls.MetroTextBox)c).WaterMark = text;
                     }
                     else
                     {
