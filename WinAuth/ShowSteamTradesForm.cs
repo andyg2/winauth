@@ -453,7 +453,7 @@ namespace WinAuth
                         var delay = SteamClient.CONFIRMATION_EVENT_DELAY + rand.Next(SteamClient.CONFIRMATION_EVENT_DELAY / 2); // delay is 100%-150% of CONFIRMATION_EVENT_DELAY
                         if (delay > duration)
                         {
-                            await Task.Run(() => { Thread.Sleep(delay - duration); }, cancelComfirmAll.Token);
+                            await Task.Run(() => Thread.Sleep(delay - duration), cancelComfirmAll.Token);
                         }
                     }
                 }
@@ -530,7 +530,7 @@ namespace WinAuth
                         var delay = SteamClient.CONFIRMATION_EVENT_DELAY + rand.Next(SteamClient.CONFIRMATION_EVENT_DELAY / 2); // delay is 100%-150% of CONFIRMATION_EVENT_DELAY
                         if (delay > duration)
                         {
-                            await Task.Run(() => { Thread.Sleep(delay - duration); }, cancelCancelAll.Token);
+                            await Task.Run(() => Thread.Sleep(delay - duration), cancelCancelAll.Token);
                         }
                     }
                 }
@@ -860,10 +860,7 @@ namespace WinAuth
                     throw new ApplicationException("Invalid trade");
                 }
 
-                var result = await Task.Factory.StartNew<bool>((t) =>
-                {
-                    return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true);
-                }, trade);
+                var result = await Task.Factory.StartNew((t) => AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, true), trade);
                 if (!result)
                 {
                     throw new ApplicationException("Trade cannot be confirmed");
@@ -907,10 +904,7 @@ namespace WinAuth
                     throw new ApplicationException("Invalid trade");
                 }
 
-                var result = await Task.Factory.StartNew<bool>((t) =>
-                {
-                    return AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false);
-                }, trade);
+                var result = await Task.Factory.StartNew((t) => AuthenticatorData.GetClient().ConfirmTrade(((SteamClient.Confirmation)t).Id, ((SteamClient.Confirmation)t).Key, false), trade);
                 if (!result)
                 {
                     throw new ApplicationException("Trade cannot be cancelled");
