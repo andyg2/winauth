@@ -270,8 +270,7 @@ namespace WinAuth
         private void GetLatestVersionDownloadCompleted(object sender, DownloadStringCompletedEventArgs args)
         {
             // no point if e have no callback
-            var callback = args.UserState as Action<WinAuthVersionInfo, bool, Exception>;
-            if (callback == null)
+            if (!(args.UserState is Action<WinAuthVersionInfo, bool, Exception> callback))
             {
                 return;
             }

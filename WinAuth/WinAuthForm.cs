@@ -872,9 +872,9 @@ namespace WinAuth
 
             foreach (var auth in Config)
             {
-                if (auth.AuthenticatorData != null && auth.AuthenticatorData is SteamAuthenticator && ((SteamAuthenticator)auth.AuthenticatorData).Client != null)
+                if (auth.AuthenticatorData != null && auth.AuthenticatorData is SteamAuthenticator steamAuthenticator && steamAuthenticator.Client != null)
                 {
-                    var client = ((SteamAuthenticator)auth.AuthenticatorData).GetClient();
+                    var client = steamAuthenticator.GetClient();
                     client.ConfirmationEvent -= SteamClient_ConfirmationEvent;
                     client.ConfirmationErrorEvent -= SteamClient_ConfirmationErrorEvent;
                 }
@@ -897,9 +897,9 @@ namespace WinAuth
             {
                 foreach (var auth in Config)
                 {
-                    if (auth.AuthenticatorData != null && auth.AuthenticatorData is SteamAuthenticator)
+                    if (auth.AuthenticatorData != null && auth.AuthenticatorData is SteamAuthenticator authenticator)
                     {
-                        var client = ((SteamAuthenticator)auth.AuthenticatorData).GetClient();
+                        var client = authenticator.GetClient();
                         client.ConfirmationEvent += SteamClient_ConfirmationEvent;
                         client.ConfirmationErrorEvent += SteamClient_ConfirmationErrorEvent;
                     }
@@ -916,7 +916,7 @@ namespace WinAuth
         private void SteamClient_ConfirmationErrorEvent(object sender, string message, SteamClient.PollerAction action, Exception ex)
         {
             var steam = sender as SteamClient;
-            var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator && ((SteamAuthenticator)a.AuthenticatorData).Serial == steam.Authenticator.Serial).FirstOrDefault();
+            var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator steamAuthenticator && steamAuthenticator.Serial == steam.Authenticator.Serial).FirstOrDefault();
 
             WinAuthMain.LogException(ex, true);
 
@@ -999,7 +999,7 @@ namespace WinAuth
         {
             var steam = sender as SteamClient;
 
-            var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator && ((SteamAuthenticator)a.AuthenticatorData).Serial == steam.Authenticator.Serial).FirstOrDefault();
+            var auth = Config.Cast<WinAuthAuthenticator>().Where(a => a.AuthenticatorData is SteamAuthenticator steamAuthenticator && steamAuthenticator.Serial == steam.Authenticator.Serial).FirstOrDefault();
 
             string title = null;
             string message = null;
@@ -1509,8 +1509,7 @@ namespace WinAuth
         void addAuthenticatorMenu_Click(object sender, EventArgs e)
         {
             var menuitem = (ToolStripItem)sender;
-            var registeredauth = menuitem.Tag as RegisteredAuthenticator;
-            if (registeredauth != null)
+            if (menuitem.Tag is RegisteredAuthenticator registeredauth)
             {
                 // add the new authenticator
                 var winauthauthenticator = new WinAuthAuthenticator();

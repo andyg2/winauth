@@ -511,8 +511,7 @@ namespace WinAuth
         private static bool EnumWindow(IntPtr handle, IntPtr pointer)
         {
             var gch = GCHandle.FromIntPtr(pointer);
-            var list = gch.Target as List<IntPtr>;
-            if (list == null)
+            if (!(gch.Target is List<IntPtr> list))
             {
                 throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");
             }

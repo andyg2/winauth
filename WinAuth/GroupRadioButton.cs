@@ -74,9 +74,9 @@ namespace WinAuth
             var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
-                if (c is T)
+                if (c is T t)
                 {
-                    controls.Add((T)c);
+                    controls.Add(t);
                     if (c.Controls != null && c.Controls.Count != 0)
                     {
                         controls.AddRange(FindAllControls<T>(c));
@@ -140,9 +140,9 @@ namespace WinAuth
             var controls = new List<T>();
             foreach (Control c in parent.Controls)
             {
-                if (c is T)
+                if (c is T t)
                 {
-                    controls.Add((T)c);
+                    controls.Add(t);
                     if (c.Controls != null && c.Controls.Count != 0)
                     {
                         controls.AddRange(FindAllControls<T>(c));

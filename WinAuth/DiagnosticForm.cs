@@ -138,18 +138,18 @@ namespace WinAuth
                     diag.Append("Stack: ").Append(ex.Message).Append(Environment.NewLine).Append(new System.Diagnostics.StackTrace(ex).ToString()).Append(Environment.NewLine);
                     ex = ex.InnerException;
                 }
-                if (ErrorException is InvalidEncryptionException)
+                if (ErrorException is InvalidEncryptionException invalidEncryptionException)
                 {
-                    diag.Append("Plain: " + ((InvalidEncryptionException)ErrorException).Plain).Append(Environment.NewLine);
-                    diag.Append("Password: " + ((InvalidEncryptionException)ErrorException).Password).Append(Environment.NewLine);
-                    diag.Append("Encrypted: " + ((InvalidEncryptionException)ErrorException).Encrypted).Append(Environment.NewLine);
-                    diag.Append("Decrypted: " + ((InvalidEncryptionException)ErrorException).Decrypted).Append(Environment.NewLine);
+                    diag.Append("Plain: " + invalidEncryptionException.Plain).Append(Environment.NewLine);
+                    diag.Append("Password: " + invalidEncryptionException.Password).Append(Environment.NewLine);
+                    diag.Append("Encrypted: " + invalidEncryptionException.Encrypted).Append(Environment.NewLine);
+                    diag.Append("Decrypted: " + invalidEncryptionException.Decrypted).Append(Environment.NewLine);
                 }
-                else if (ErrorException is InvalidSecretDataException)
+                else if (ErrorException is InvalidSecretDataException exception)
                 {
-                    diag.Append("EncType: " + ((InvalidSecretDataException)ErrorException).EncType).Append(Environment.NewLine);
-                    diag.Append("Password: " + ((InvalidSecretDataException)ErrorException).Password).Append(Environment.NewLine);
-                    foreach (var data in ((InvalidSecretDataException)ErrorException).Decrypted)
+                    diag.Append("EncType: " + exception.EncType).Append(Environment.NewLine);
+                    diag.Append("Password: " + exception.Password).Append(Environment.NewLine);
+                    foreach (var data in exception.Decrypted)
                     {
                         diag.Append("Data: " + data).Append(Environment.NewLine);
                     }

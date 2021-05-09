@@ -248,9 +248,8 @@ namespace WinAuth
             {
                 using (var key = Registry.CurrentUser.OpenSubKey(WINAUTH2REGKEY, false))
                 {
-                    string lastfile;
                     if (key != null
-                        && (lastfile = key.GetValue(string.Format(CultureInfo.InvariantCulture, WINAUTHREGKEY_LASTFILE, 1), null) as string) != null
+                        && key.GetValue(string.Format(CultureInfo.InvariantCulture, WINAUTHREGKEY_LASTFILE, 1), null) is string lastfile
                         && File.Exists(lastfile))
                     {
                         return lastfile;
@@ -1332,21 +1331,21 @@ namespace WinAuth
                     using (var ais = new ArmoredInputStream(inputStream))
                     {
                         var message = new PgpObjectFactory(ais).NextPgpObject();
-                        if (message is PgpEncryptedDataList)
+                        if (message is PgpEncryptedDataList pgpEncryptedDataList)
                         {
-                            foreach (PgpPublicKeyEncryptedData pked in ((PgpEncryptedDataList)message).GetEncryptedDataObjects())
+                            foreach (PgpPublicKeyEncryptedData pked in pgpEncryptedDataList.GetEncryptedDataObjects())
                             {
                                 message = new PgpObjectFactory(pked.GetDataStream(privateKeys[pked.KeyId])).NextPgpObject();
                             }
                         }
-                        if (message is PgpCompressedData)
+                        if (message is PgpCompressedData data)
                         {
-                            message = new PgpObjectFactory(((PgpCompressedData)message).GetDataStream()).NextPgpObject();
+                            message = new PgpObjectFactory(data.GetDataStream()).NextPgpObject();
                         }
-                        if (message is PgpLiteralData)
+                        if (message is PgpLiteralData pgpLiteralData)
                         {
                             var buffer = new byte[4096];
-                            using (var stream = ((PgpLiteralData)message).GetInputStream())
+                            using (var stream = pgpLiteralData.GetInputStream())
                             {
                                 int read;
                                 while ((read = stream.Read(buffer, 0, 4096)) > 0)

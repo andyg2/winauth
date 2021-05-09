@@ -326,7 +326,7 @@ namespace WinAuth
             {
                 LogException(method, url, cookies, data, ex);
 
-                if (ex is WebException && ((WebException)ex).Response != null && ((HttpWebResponse)((WebException)ex).Response).StatusCode == HttpStatusCode.Forbidden)
+                if (ex is WebException webException && webException.Response != null && ((HttpWebResponse)webException.Response).StatusCode == HttpStatusCode.Forbidden)
                 {
                     throw new UnauthorisedRequestException(ex);
                 }

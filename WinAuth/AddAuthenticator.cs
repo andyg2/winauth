@@ -152,9 +152,9 @@ namespace WinAuth
             }
 
             // if this is a htop we reduce the counter because we are going to immediate get the code and increment
-            if (Authenticator.AuthenticatorData is HOTPAuthenticator)
+            if (Authenticator.AuthenticatorData is HOTPAuthenticator hotpAuthenticator)
             {
-                ((HOTPAuthenticator)Authenticator.AuthenticatorData).Counter--;
+                hotpAuthenticator.Counter--;
             }
         }
 

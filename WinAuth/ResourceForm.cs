@@ -81,9 +81,9 @@ namespace WinAuth
                 text = WinAuthMain.StringResources.GetString(controlname, System.Threading.Thread.CurrentThread.CurrentCulture);
                 if (text != null)
                 {
-                    if (c is MetroFramework.Controls.MetroTextBox)
+                    if (c is MetroFramework.Controls.MetroTextBox metroTextBox)
                     {
-                        ((MetroFramework.Controls.MetroTextBox)c).WaterMark = text;
+                        metroTextBox.WaterMark = text;
                     }
                     else
                     {

@@ -654,22 +654,22 @@ namespace WinAuth
                 extraparams += "&algorithm=" + AuthenticatorData.HMACType.ToString();
             }
 
-            if (AuthenticatorData is BattleNetAuthenticator)
+            if (AuthenticatorData is BattleNetAuthenticator battleNetAuthenticator)
             {
-                extraparams += "&serial=" + HttpUtility.UrlEncode(((BattleNetAuthenticator)AuthenticatorData).Serial.Replace("-", ""));
+                extraparams += "&serial=" + HttpUtility.UrlEncode(battleNetAuthenticator.Serial.Replace("-", ""));
             }
-            else if (AuthenticatorData is SteamAuthenticator)
+            else if (AuthenticatorData is SteamAuthenticator steamAuthenticator)
             {
                 if (!compat)
                 {
-                    extraparams += "&deviceid=" + HttpUtility.UrlEncode(((SteamAuthenticator)AuthenticatorData).DeviceId);
-                    extraparams += "&data=" + HttpUtility.UrlEncode(((SteamAuthenticator)AuthenticatorData).SteamData);
+                    extraparams += "&deviceid=" + HttpUtility.UrlEncode(steamAuthenticator.DeviceId);
+                    extraparams += "&data=" + HttpUtility.UrlEncode(steamAuthenticator.SteamData);
                 }
             }
-            else if (AuthenticatorData is HOTPAuthenticator)
+            else if (AuthenticatorData is HOTPAuthenticator hotpAuthenticator)
             {
                 type = "hotp";
-                extraparams += "&counter=" + ((HOTPAuthenticator)AuthenticatorData).Counter;
+                extraparams += "&counter=" + hotpAuthenticator.Counter;
             }
 
             var secret = HttpUtility.UrlEncode(Base32.getInstance().Encode(AuthenticatorData.SecretKey));

@@ -529,8 +529,7 @@ namespace WinAuth
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var button = button1.Tag as NotificationButton;
-            if (button != null && button.OnPressed != null)
+            if (button1.Tag is NotificationButton button && button.OnPressed != null)
             {
                 button.OnPressed(this);
             }
@@ -538,8 +537,7 @@ namespace WinAuth
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var button = button2.Tag as NotificationButton;
-            if (button != null && button.OnPressed != null)
+            if (button2.Tag is NotificationButton button && button.OnPressed != null)
             {
                 button.OnPressed(this);
             }
@@ -547,8 +545,7 @@ namespace WinAuth
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var button = button3.Tag as NotificationButton;
-            if (button != null && button.OnPressed != null)
+            if (button3.Tag is NotificationButton button && button.OnPressed != null)
             {
                 button.OnPressed(this);
             }

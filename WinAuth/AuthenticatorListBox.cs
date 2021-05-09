@@ -619,8 +619,7 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnDragDrop(DragEventArgs e)
         {
-            var item = e.Data.GetData(typeof(AuthenticatorListitem)) as AuthenticatorListitem;
-            if (item != null)
+            if (e.Data.GetData(typeof(AuthenticatorListitem)) is AuthenticatorListitem item)
             {
                 // stop paiting as we reorder to reduce flicker
                 WinAPI.SendMessage(Handle, WinAPI.WM_SETREDRAW, 0, IntPtr.Zero);
@@ -717,8 +716,7 @@ namespace WinAuth
         {
             if (_renameTextbox != null && _renameTextbox.Visible)
             {
-                var item = _renameTextbox.Tag as AuthenticatorListitem;
-                if (item != null)
+                if (_renameTextbox.Tag is AuthenticatorListitem item)
                 {
                     var y = (ItemHeight * item.Index) - (TopIndex * ItemHeight) + MARGIN_TOP;
                     if (RenameTextbox.Location.Y != y)
@@ -814,8 +812,7 @@ namespace WinAuth
         void RenameTextbox_Leave(object sender, EventArgs e)
         {
             RenameTextbox.Visible = false;
-            var item = RenameTextbox.Tag as AuthenticatorListitem;
-            if (item != null)
+            if (RenameTextbox.Tag is AuthenticatorListitem item)
             {
                 var newname = RenameTextbox.Text.Trim();
                 if (newname.Length != 0)
@@ -1222,14 +1219,14 @@ namespace WinAuth
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
-            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData);
+            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator steamSecretAuthenticator && !string.IsNullOrEmpty(steamSecretAuthenticator.SteamData);
             //
             sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault();
             sepitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamTradesMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
-            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData);
+            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator steamTradesAuthenticator && !string.IsNullOrEmpty(steamTradesAuthenticator.SteamData);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "autoRefreshMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
@@ -1244,9 +1241,8 @@ namespace WinAuth
             subitem.CheckState = CheckState.Checked;
             foreach (ToolStripItem iconitem in menuitem.DropDownItems)
             {
-                if (iconitem is ToolStripMenuItem && iconitem.Tag is string)
+                if (iconitem is ToolStripMenuItem iconmenuitem && iconitem.Tag is string)
                 {
-                    var iconmenuitem = (ToolStripMenuItem)iconitem;
                     if (string.IsNullOrEmpty((string)iconmenuitem.Tag) && string.IsNullOrEmpty(auth.Skin))
                     {
                         iconmenuitem.CheckState = CheckState.Checked;
@@ -1638,7 +1634,7 @@ namespace WinAuth
             }
             else if (menuitem.Name.StartsWith("iconMenuItem_"))
             {
-                if (menuitem.Tag is string && string.Compare((string)menuitem.Tag, "OTHER") == 0)
+                if (menuitem.Tag is string tag && string.Compare(tag, "OTHER") == 0)
                 {
                     do
                     {

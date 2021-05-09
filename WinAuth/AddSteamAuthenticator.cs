@@ -510,8 +510,7 @@ namespace WinAuth
         /// <returns>true if successful</returns>
         private bool ImportSDA()
         {
-            var entry = importSDAList.SelectedItem as ImportedSDAEntry;
-            if (entry == null)
+            if (!(importSDAList.SelectedItem is ImportedSDAEntry entry))
             {
                 WinAuthForm.ErrorDialog(this, "Please load and select a Steam account");
                 return false;
@@ -585,8 +584,7 @@ namespace WinAuth
                         throw new ApplicationException("Please enter your password");
                     }
 
-                    var entries = manifest["entries"] as JArray;
-                    if (entries == null || entries.Count == 0)
+                    if (!(manifest["entries"] is JArray entries) || entries.Count == 0)
                     {
                         throw new ApplicationException("SteamDesktopAuthenticator has no SteamGuard authenticators");
                     }

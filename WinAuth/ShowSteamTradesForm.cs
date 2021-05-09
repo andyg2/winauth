@@ -560,8 +560,8 @@ namespace WinAuth
             // display autoconfirm warning
             if (m_loaded
                 && pollAction.SelectedValue != null
-                && pollAction.SelectedValue is SteamClient.PollerAction
-                && ((SteamClient.PollerAction)pollAction.SelectedValue == SteamClient.PollerAction.AutoConfirm || (SteamClient.PollerAction)pollAction.SelectedValue == SteamClient.PollerAction.SilentAutoConfirm)
+                && pollAction.SelectedValue is SteamClient.PollerAction pollerAction
+                && (pollerAction == SteamClient.PollerAction.AutoConfirm || pollerAction == SteamClient.PollerAction.SilentAutoConfirm)
                 && !AutoWarned)
             {
                 if (WinAuthForm.ConfirmDialog(this, "WARNING: Using auto-confirm will automatically confirm all new Confirmations on your "
@@ -803,8 +803,7 @@ namespace WinAuth
                             var selected = 0;
                             for (var i = 0; i < pollAction.Items.Count; i++)
                             {
-                                var item = pollAction.Items[i] as PollerActionItem;
-                                if (item != null && item.Value == steam.Session.Confirmations.Action)
+                                if (pollAction.Items[i] is PollerActionItem item && item.Value == steam.Session.Confirmations.Action)
                                 {
                                     selected = i;
 
@@ -942,9 +941,9 @@ namespace WinAuth
         /// <returns>Control or null</returns>
         private T FindControl<T>(Control control, string name) where T : Control
         {
-            if (control.Name.StartsWith(name) && control is T)
+            if (control.Name.StartsWith(name) && control is T t)
             {
-                return (T)control;
+                return t;
             }
 
             foreach (Control child in control.Controls)
@@ -972,9 +971,9 @@ namespace WinAuth
             clone.Name = control.Name + (string.IsNullOrEmpty(suffix) ? string.Empty : suffix);
 
             clone.SuspendLayout();
-            if (clone is ISupportInitialize)
+            if (clone is ISupportInitialize supportInitialize1)
             {
-                ((ISupportInitialize)clone).BeginInit();
+                supportInitialize1.BeginInit();
             }
 
             // copy public properties
@@ -992,9 +991,9 @@ namespace WinAuth
                 var value = pi.GetValue(control, null);
                 if (value != null && !value.GetType().IsValueType)
                 {
-                    if (value is ICloneable)
+                    if (value is ICloneable cloneable)
                     {
-                        value = ((ICloneable)value).Clone();
+                        value = cloneable.Clone();
                     }
                     else if (value is ISerializable)
                     {
@@ -1018,9 +1017,9 @@ namespace WinAuth
             }
 
             clone.ResumeLayout();
-            if (clone is ISupportInitialize)
+            if (clone is ISupportInitialize supportInitialize2)
             {
-                ((ISupportInitialize)clone).EndInit();
+                supportInitialize2.EndInit();
             }
 
             return clone;
