@@ -139,7 +139,7 @@ namespace WinAuth
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
             }
-            var first = (Authenticator.AuthenticatorData == null);
+            var first = Authenticator.AuthenticatorData == null;
             if (!verifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
@@ -334,7 +334,7 @@ namespace WinAuth
 
             Authenticator.Name = nameField.Text;
 
-            var digits = (Authenticator.AuthenticatorData != null ? Authenticator.AuthenticatorData.CodeDigits : GoogleAuthenticator.DEFAULT_CODE_DIGITS);
+            var digits = Authenticator.AuthenticatorData != null ? Authenticator.AuthenticatorData.CodeDigits : GoogleAuthenticator.DEFAULT_CODE_DIGITS;
             if (string.IsNullOrEmpty(digitsField.Text) || !int.TryParse(digitsField.Text, out digits) || digits <= 0)
             {
                 return false;

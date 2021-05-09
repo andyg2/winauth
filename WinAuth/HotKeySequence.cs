@@ -85,7 +85,7 @@ namespace WinAuth
                     Modifiers = (WinAPI.KeyModifiers)BitConverter.ToInt32(Authenticator.StringToByteArray(match.Groups[1].Value), 0);
                     HotKey = (WinAPI.VirtualKeyCode)BitConverter.ToUInt16(Authenticator.StringToByteArray(match.Groups[2].Value), 0);
                     WindowTitle = match.Groups[3].Value;
-                    Advanced = (match.Groups[4].Value == "Y");
+                    Advanced = match.Groups[4].Value == "Y";
                     if (Advanced)
                     {
                         AdvancedScript = match.Groups[5].Value;
@@ -168,7 +168,7 @@ namespace WinAuth
                                 {
                                     throw new EncryptedSecretDataException();
                                 }
-                                data = Authenticator.Decrypt(data, password, (version >= (decimal)1.7)); // changed encrypted in 1.7
+                                data = Authenticator.Decrypt(data, password, version >= (decimal)1.7); // changed encrypted in 1.7
                                 var plain = Authenticator.StringToByteArray(data);
                                 data = Encoding.UTF8.GetString(plain, 0, plain.Length);
                                 break;

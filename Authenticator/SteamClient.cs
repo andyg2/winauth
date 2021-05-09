@@ -155,7 +155,7 @@ namespace WinAuth
                     return null;
                 }
                 var poller = FromJSON(JObject.Parse(json));
-                return (poller.Duration != 0 ? poller : null);
+                return poller.Duration != 0 ? poller : null;
             }
 
             /// <summary>
@@ -188,7 +188,7 @@ namespace WinAuth
                     poller.Ids = token.ToObject<List<string>>();
                 }
 
-                return (poller.Duration != 0 ? poller : null);
+                return poller.Duration != 0 ? poller : null;
             }
         }
 
@@ -458,7 +458,7 @@ namespace WinAuth
         /// Check if user is logged in
         /// </summary>
         /// <returns></returns>
-        public bool IsLoggedIn() => (Session != null && !string.IsNullOrEmpty(Session.OAuthToken));
+        public bool IsLoggedIn() => Session != null && !string.IsNullOrEmpty(Session.OAuthToken);
 
         /// <summary>
         /// Login to Steam using credentials and optional captcha
@@ -917,7 +917,7 @@ namespace WinAuth
             var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
-            var ids = (jids != null ? jids.Value<string>() : string.Empty);
+            var ids = jids != null ? jids.Value<string>() : string.Empty;
 
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
@@ -1060,7 +1060,7 @@ namespace WinAuth
             var servertime = (SteamAuthenticator.CurrentTime + Authenticator.ServerTimeDiff) / 1000L;
 
             var jids = JObject.Parse(Authenticator.SteamData).SelectToken("identity_secret");
-            var ids = (jids != null ? jids.Value<string>() : string.Empty);
+            var ids = jids != null ? jids.Value<string>() : string.Empty;
             var timehash = CreateTimeHash(servertime, "conf", ids);
 
             var data = new NameValueCollection
@@ -1199,7 +1199,7 @@ namespace WinAuth
             lock (this)
             {
                 // create form-encoded data for query or body
-                var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+                var query = data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key]))));
                 if (string.Compare(method, "GET", true) == 0)
                 {
                     url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
@@ -1366,7 +1366,7 @@ namespace WinAuth
                 data.Append(" ");
             }
 
-            Logger.Info("{0}\t{1}\t{2}\t{3}", method, url, data.ToString(), (response != null ? response.Replace("\n", "\\n").Replace("\r", "") : string.Empty));
+            Logger.Info("{0}\t{1}\t{2}\t{3}", method, url, data.ToString(), response != null ? response.Replace("\n", "\\n").Replace("\r", "") : string.Empty);
         }
 
         #endregion

@@ -180,13 +180,13 @@ namespace WinAuth
                     {
                         // secret|script|serial
                         base.SecretData = value;
-                        Serial = (parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null);
+                        Serial = parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null;
                     }
                     else
                     {
                         // secret|serial
                         base.SecretData = value;
-                        Serial = (parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null);
+                        Serial = parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null;
                     }
                 }
                 else
@@ -859,7 +859,7 @@ namespace WinAuth
             }
             else
             {
-                index = (index + 65) - 10;
+                index = index + 65 - 10;
                 if (index >= 73)
                 {
                     index++;

@@ -127,8 +127,8 @@ namespace WinAuth
         /// <param name="e"></param>
         private void passwordCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            passwordField.Enabled = (passwordCheckbox.Checked);
-            verifyField.Enabled = (passwordCheckbox.Checked);
+            passwordField.Enabled = passwordCheckbox.Checked;
+            verifyField.Enabled = passwordCheckbox.Checked;
             if (passwordCheckbox.Checked)
             {
                 passwordField.Focus();

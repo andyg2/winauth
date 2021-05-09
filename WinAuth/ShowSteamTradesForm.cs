@@ -639,7 +639,7 @@ namespace WinAuth
 
                             if (steam.RequiresCaptcha)
                             {
-                                WinAuthForm.ErrorDialog(this, (string.IsNullOrEmpty(steam.Error) ? "Please enter the captcha" : steam.Error), null, MessageBoxButtons.OK);
+                                WinAuthForm.ErrorDialog(this, string.IsNullOrEmpty(steam.Error) ? "Please enter the captcha" : steam.Error, null, MessageBoxButtons.OK);
 
                                 using (var web = new WebClient())
                                 {
@@ -677,7 +677,7 @@ namespace WinAuth
                             return;
                         }
 
-                        AuthenticatorData.SessionData = (rememberBox.Checked ? steam.Session.ToString() : null);
+                        AuthenticatorData.SessionData = rememberBox.Checked ? steam.Session.ToString() : null;
                         //AuthenticatorData.PermSession = (rememberBox.Checked && rememberPermBox.Checked);
                         Authenticator.MarkChanged();
                     }
@@ -782,10 +782,10 @@ namespace WinAuth
 
                         tradesContainer.Controls.Add(tradePanel);
                     }
-                    tradesEmptyLabel.Visible = (m_trades.Count == 0);
+                    tradesEmptyLabel.Visible = m_trades.Count == 0;
 
-                    confirmAllButton.Visible = (m_trades.Count != 0);
-                    cancelAllButton.Visible = (m_trades.Count != 0);
+                    confirmAllButton.Visible = m_trades.Count != 0;
+                    cancelAllButton.Visible = m_trades.Count != 0;
 
                     tab.ResumeLayout();
 
@@ -981,7 +981,7 @@ namespace WinAuth
             clone.SuspendLayout();
             if (clone is ISupportInitialize)
             {
-                ((ISupportInitialize)(clone)).BeginInit();
+                ((ISupportInitialize)clone).BeginInit();
             }
 
             // copy public properties
@@ -1027,7 +1027,7 @@ namespace WinAuth
             clone.ResumeLayout();
             if (clone is ISupportInitialize)
             {
-                ((ISupportInitialize)(clone)).EndInit();
+                ((ISupportInitialize)clone).EndInit();
             }
 
             return clone;
@@ -1073,11 +1073,11 @@ namespace WinAuth
             }
 
             var steam = AuthenticatorData.GetClient();
-            var timeInMins = (pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0);
+            var timeInMins = pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0;
 
             var p = new SteamClient.ConfirmationPoller
             {
-                Duration = (pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0),
+                Duration = pollCheckbox.Checked && steam.IsLoggedIn() ? (int)pollNumeric.Value : 0,
                 Action = ((PollerActionItem)pollAction.SelectedValue).Value
             };
             if (p.Duration != 0)

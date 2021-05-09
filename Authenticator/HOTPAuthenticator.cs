@@ -69,7 +69,7 @@ namespace WinAuth
                 {
                     var parts = value.Split('|');
                     base.SecretData = value;
-                    Counter = (parts.Length > 1 ? long.Parse(parts[1]) : 0);
+                    Counter = parts.Length > 1 ? long.Parse(parts[1]) : 0;
                 }
                 else
                 {

@@ -61,7 +61,7 @@ namespace WinAuth
             secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
 
             var type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
-            var counter = (CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0);
+            var counter = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? ((HOTPAuthenticator)CurrentAuthenticator.AuthenticatorData).Counter : 0;
             var issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
 
             //string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)

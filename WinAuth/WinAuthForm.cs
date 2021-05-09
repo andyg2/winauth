@@ -196,7 +196,7 @@ namespace WinAuth
                     if (!string.IsNullOrEmpty(uri.UserInfo))
                     {
                         var auth = uri.UserInfo.Split(':');
-                        webproxy.Credentials = new NetworkCredential(auth[0], (auth.Length > 1 ? auth[1] : string.Empty));
+                        webproxy.Credentials = new NetworkCredential(auth[0], auth.Length > 1 ? auth[1] : string.Empty);
                     }
                     WebRequest.DefaultWebProxy = webproxy;
                 }
@@ -392,7 +392,7 @@ namespace WinAuth
 
             // reset UI
             setAutoSize();
-            introLabel.Visible = (Config.Count == 0);
+            introLabel.Visible = Config.Count == 0;
 
             // reset hotkeys
             HookHotkeys();
@@ -472,7 +472,7 @@ namespace WinAuth
 
                     // reset UI
                     setAutoSize();
-                    introLabel.Visible = (Config.Count == 0);
+                    introLabel.Visible = Config.Count == 0;
 
                     // reset hotkeys
                     HookHotkeys();
@@ -580,8 +580,8 @@ namespace WinAuth
             passwordPanel.Visible = false;
             commandPanel.Visible = true;
             ActiveControl = searchTextbox;
-            introLabel.Visible = (Config.Count == 0);
-            authenticatorList.Visible = (Config.Count != 0);
+            introLabel.Visible = Config.Count == 0;
+            authenticatorList.Visible = Config.Count != 0;
             addAuthenticatorButton.Visible = !Config.IsReadOnly;
 
             // set title
@@ -595,7 +595,7 @@ namespace WinAuth
             //HookSteam();
 
             // save the position of the list within the form else starting as minimized breaks the size
-            _listoffset = new Rectangle(authenticatorList.Left, authenticatorList.Top, (Width - authenticatorList.Width), (Height - authenticatorList.Height));
+            _listoffset = new Rectangle(authenticatorList.Left, authenticatorList.Top, Width - authenticatorList.Width, Height - authenticatorList.Height);
 
             // set the shadow type (change in config for compatibility)
             try
@@ -626,7 +626,7 @@ namespace WinAuth
                 var bottom = Top + Height;
                 if (bottom > lowesty)
                 {
-                    Top -= (bottom - lowesty);
+                    Top -= bottom - lowesty;
                     if (Top < 0)
                     {
                         Height += Top;
@@ -705,7 +705,7 @@ namespace WinAuth
                 noticeLabel.Text = "Not found";
             }
 
-            authenticatorList.Visible = (authenticatorList.Items.Count != 0);
+            authenticatorList.Visible = authenticatorList.Items.Count != 0;
         }
 
         /// <summary>
@@ -1293,9 +1293,9 @@ namespace WinAuth
                 catch (ExternalException)
                 {
                     // only show an error the first time
-                    clipRetry = (MessageBox.Show(this, strings.ClipboardInUse,
+                    clipRetry = MessageBox.Show(this, strings.ClipboardInUse,
                         WinAuthMain.APPLICATION_NAME,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes);
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
                 }
             }
             while (clipRetry);
@@ -1314,14 +1314,14 @@ namespace WinAuth
                 try
                 {
                     var clipdata = Clipboard.GetDataObject();
-                    return (clipdata != null ? clipdata.GetData(format) : null);
+                    return clipdata != null ? clipdata.GetData(format) : null;
                 }
                 catch (ExternalException)
                 {
                     // only show an error the first time
-                    clipRetry = (MessageBox.Show(this, strings.ClipboardInUse,
+                    clipRetry = MessageBox.Show(this, strings.ClipboardInUse,
                         WinAuthMain.APPLICATION_NAME,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes);
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
                 }
             }
             while (clipRetry);
@@ -1347,7 +1347,7 @@ namespace WinAuth
 
                 // Issue#175; take the smallest of full height or 62% screen height
                 var height = Height - authenticatorList.Height;
-                height += (Config.Count * authenticatorList.ItemHeight);
+                height += Config.Count * authenticatorList.ItemHeight;
                 Height = Math.Min(Screen.GetWorkingArea(this).Height * 62 / 100, height);
 
                 Resizable = false;
@@ -1535,7 +1535,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Steam)
                 {
@@ -1555,7 +1555,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Google)
                 {
@@ -1575,7 +1575,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.Microsoft)
                 {
@@ -1594,7 +1594,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.RFC6238_TIME)
                 {
@@ -1615,7 +1615,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else if (registeredauth.AuthenticatorType == RegisteredAuthenticator.AuthenticatorTypes.OktaVerify)
                 {
@@ -1634,7 +1634,7 @@ namespace WinAuth
                     {
                         Authenticator = winauthauthenticator
                     };
-                    added = (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK);
+                    added = form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK;
                 }
                 else
                 {
@@ -1669,7 +1669,7 @@ namespace WinAuth
 
                     // reset UI
                     setAutoSize();
-                    introLabel.Visible = (Config.Count == 0);
+                    introLabel.Visible = Config.Count == 0;
 
                     // reset hotkeeys
                     HookHotkeys();
@@ -2111,7 +2111,7 @@ namespace WinAuth
                     {
                         Name = "authenticatorOptionsMenuItem_" + index,
                         Tag = auth,
-                        ShortcutKeyDisplayString = (auth.HotKey != null ? auth.HotKey.ToString() : null)
+                        ShortcutKeyDisplayString = auth.HotKey != null ? auth.HotKey.ToString() : null
                     };
                     menuitem.Click += authenticatorOptionsMenuItem_Click;
                     menu.Items.Add(menuitem);
@@ -2215,18 +2215,18 @@ namespace WinAuth
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "changePasswordOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             if (menuitem != null)
             {
-                menuitem.Enabled = (Config != null && Config.Count != 0);
+                menuitem.Enabled = Config != null && Config.Count != 0;
             }
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "openOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             if (menuitem != null)
             {
-                menuitem.Visible = (Config.UseTrayIcon && !Visible);
+                menuitem.Visible = Config.UseTrayIcon && !Visible;
             }
             item = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "openOptionsSeparatorItem").FirstOrDefault();
             if (item != null)
             {
-                item.Visible = (Config.UseTrayIcon && !Visible);
+                item.Visible = Config.UseTrayIcon && !Visible;
             }
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "startWithWindowsOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
@@ -2291,31 +2291,31 @@ namespace WinAuth
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "changePasswordOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             if (menuitem != null)
             {
-                menuitem.Enabled = (Config != null && Config.Count != 0);
+                menuitem.Enabled = Config != null && Config.Count != 0;
             }
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "openOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             if (menuitem != null)
             {
-                menuitem.Visible = (Config.UseTrayIcon && !Visible);
+                menuitem.Visible = Config.UseTrayIcon && !Visible;
             }
             item = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "openOptionsSeparatorItem").FirstOrDefault();
             if (item != null)
             {
-                item.Visible = (Config.UseTrayIcon && !Visible);
+                item.Visible = Config.UseTrayIcon && !Visible;
             }
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "defaultActionOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             if (menuitem != null)
             {
                 var subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(t => t.Name == "defaultActionNotificationOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
-                subitem.Checked = (Config.NotifyAction == WinAuthConfig.NotifyActions.Notification);
+                subitem.Checked = Config.NotifyAction == WinAuthConfig.NotifyActions.Notification;
 
                 subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(t => t.Name == "defaultActionCopyToClipboardOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
-                subitem.Checked = (Config.NotifyAction == WinAuthConfig.NotifyActions.CopyToClipboard);
+                subitem.Checked = Config.NotifyAction == WinAuthConfig.NotifyActions.CopyToClipboard;
 
                 subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(t => t.Name == "defaultActionHotkeyOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
-                subitem.Checked = (Config.NotifyAction == WinAuthConfig.NotifyActions.HotKey);
+                subitem.Checked = Config.NotifyAction == WinAuthConfig.NotifyActions.HotKey;
             }
 
             //menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "useSystemTrayIconOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
@@ -2358,7 +2358,7 @@ namespace WinAuth
             var form = new ChangePasswordForm
             {
                 PasswordType = Config.PasswordType,
-                HasPassword = ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
+                HasPassword = (Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0
             };
             if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {

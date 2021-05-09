@@ -260,7 +260,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * (Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * Period * 1000L) - CurrentTime;
                 }
                 else
                 {

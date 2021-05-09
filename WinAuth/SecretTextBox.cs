@@ -96,11 +96,11 @@ namespace WinAuth
         /// </summary>
         public override string Text
         {
-            get => (SecretMode ? m_text : base.Text);
+            get => SecretMode ? m_text : base.Text;
             set
             {
                 m_text = value;
-                base.Text = (SecretMode ? (string.IsNullOrEmpty(value) ? value : new string('*', value.Length)) : value);
+                base.Text = SecretMode ? (string.IsNullOrEmpty(value) ? value : new string('*', value.Length)) : value;
                 Invalidate();
             }
         }
@@ -144,7 +144,7 @@ namespace WinAuth
                 }
 
                 // draw the whole string
-                g.DrawString((text != null ? text : string.Empty), base.Font, brush, new RectangleF(0, 0, base.Width, base.Height), sf);
+                g.DrawString(text != null ? text : string.Empty, base.Font, brush, new RectangleF(0, 0, base.Width, base.Height), sf);
             }
         }
 

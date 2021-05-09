@@ -204,16 +204,16 @@ namespace WinAuth
                 {
                     var parts = value.Split('|');
                     base.SecretData = value;
-                    Serial = (parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null);
-                    DeviceId = (parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null);
-                    SteamData = (parts.Length > 3 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[3])) : string.Empty);
+                    Serial = parts.Length > 1 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[1])) : null;
+                    DeviceId = parts.Length > 2 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[2])) : null;
+                    SteamData = parts.Length > 3 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[3])) : string.Empty;
 
                     if (!string.IsNullOrEmpty(SteamData) && SteamData[0] != '{')
                     {
                         // convert old recovation code into SteamData json
                         SteamData = "{\"revocation_code\":\"" + SteamData + "\"}";
                     }
-                    var session = (parts.Length > 4 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[4])) : null);
+                    var session = parts.Length > 4 ? Encoding.UTF8.GetString(Authenticator.StringToByteArray(parts[4])) : null;
 
                     //if (Logger != null)
                     //{
@@ -264,7 +264,7 @@ namespace WinAuth
         private string Request(string url, string method, NameValueCollection data = null, CookieContainer cookies = null, NameValueCollection headers = null, int timeout = 0)
         {
             // create form-encoded data for query or body
-            var query = (data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key])))));
+            var query = data == null ? string.Empty : string.Join("&", Array.ConvertAll(data.AllKeys, key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(data[key]))));
             if (string.Compare(method, "GET", true) == 0)
             {
                 url += (url.IndexOf("?") == -1 ? "?" : "&") + query;
@@ -401,11 +401,11 @@ namespace WinAuth
                         { "password", Convert.ToBase64String(encryptedPassword) },
                         { "username", state.Username },
                         { "twofactorcode", "" },
-                        { "emailauth", (state.EmailAuthText != null ? state.EmailAuthText : string.Empty) },
+                        { "emailauth", state.EmailAuthText != null ? state.EmailAuthText : string.Empty },
                         { "loginfriendlyname", "#login_emailauth_friendlyname_mobile" },
-                        { "captchagid", (state.CaptchaId != null ? state.CaptchaId : "-1") },
-                        { "captcha_text", (state.CaptchaText != null ? state.CaptchaText : "enter above characters") },
-                        { "emailsteamid", (state.EmailAuthText != null ? state.SteamId ?? string.Empty : string.Empty) },
+                        { "captchagid", state.CaptchaId != null ? state.CaptchaId : "-1" },
+                        { "captcha_text", state.CaptchaText != null ? state.CaptchaText : "enter above characters" },
+                        { "emailsteamid", state.EmailAuthText != null ? state.SteamId ?? string.Empty : string.Empty },
                         { "rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>() },
                         { "remember_login", "false" },
                         { "oauth_client_id", "DE45CD61" },
@@ -607,7 +607,7 @@ namespace WinAuth
                     {
                         if (response.IndexOf("want_more") != -1 && finalizeresponse.SelectToken("response.want_more").Value<bool>())
                         {
-                            ServerTimeDiff += (Period * 1000L);
+                            ServerTimeDiff += Period * 1000L;
                             retries++;
                             continue;
                         }
@@ -615,7 +615,7 @@ namespace WinAuth
                         break;
                     }
 
-                    ServerTimeDiff += (Period * 1000L);
+                    ServerTimeDiff += Period * 1000L;
                     retries++;
                 }
                 if (state.RequiresActivation)
@@ -701,7 +701,7 @@ namespace WinAuth
             {
                 if (interval > 0)
                 {
-                    ServerTimeDiff = (interval * (Period * 1000L)) - CurrentTime;
+                    ServerTimeDiff = (interval * Period * 1000L) - CurrentTime;
                 }
                 else
                 {
@@ -844,7 +844,7 @@ namespace WinAuth
                 data.Append(" ");
             }
 
-            Logger.Info("{0}\t{1}\t{2}\t{3}", method, url, data.ToString(), (response != null ? response.Replace("\n", "\\n").Replace("\r", "") : string.Empty));
+            Logger.Info("{0}\t{1}\t{2}\t{3}", method, url, data.ToString(), response != null ? response.Replace("\n", "\\n").Replace("\r", "") : string.Empty);
         }
 
         /// <summary>

@@ -163,7 +163,7 @@ namespace WinAuth
         /// <summary>
         /// Get flag if we have autochecking enabled
         /// </summary>
-        public bool IsAutoCheck => (_autocheckInterval != null);
+        public bool IsAutoCheck => _autocheckInterval != null;
 
         /// <summary>
         /// Get the interval between checks

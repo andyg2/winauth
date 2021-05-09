@@ -53,7 +53,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="alphabet"></param>
         /// <returns></returns>
-        public static Base32 getInstance(string alphabet = null) => (alphabet == null ? _instance : new Base32(alphabet));
+        public static Base32 getInstance(string alphabet = null) => alphabet == null ? _instance : new Base32(alphabet);
 
         /// <summary>
         /// array of alaphabet chars
@@ -181,7 +181,7 @@ namespace WinAuth
                     if (next < data.Length)
                     {
                         buffer <<= 8;
-                        buffer |= (data[next++] & 0xff);
+                        buffer |= data[next++] & 0xff;
                         bitsLeft += 8;
                     }
                     else

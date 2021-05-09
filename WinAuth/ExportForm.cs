@@ -81,8 +81,8 @@ namespace WinAuth
                 pgpCheckbox.Checked = false;
             }
 
-            passwordField.Enabled = (passwordCheckbox.Checked);
-            verifyField.Enabled = (passwordCheckbox.Checked);
+            passwordField.Enabled = passwordCheckbox.Checked;
+            verifyField.Enabled = passwordCheckbox.Checked;
             if (passwordCheckbox.Checked)
             {
                 passwordField.Focus();

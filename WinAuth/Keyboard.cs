@@ -376,7 +376,7 @@ namespace WinAuth
             }
 
             // return first match or zero
-            return (matchingProcesses.Count != 0 ? matchingProcesses[0].MainWindowHandle : IntPtr.Zero);
+            return matchingProcesses.Count != 0 ? matchingProcesses[0].MainWindowHandle : IntPtr.Zero;
 
             /*
                         // if we have a title match it in the window titles

@@ -403,7 +403,7 @@ namespace WinAuth
                 animation = new NotificationAnimation();
             }
 
-            lifeTimer.Interval = (hideInMs > 0 ? hideInMs : int.MaxValue);
+            lifeTimer.Interval = hideInMs > 0 ? hideInMs : int.MaxValue;
 
             // set the title
             labelTitle.Text = title;

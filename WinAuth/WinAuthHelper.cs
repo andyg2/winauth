@@ -590,7 +590,7 @@ namespace WinAuth
 
                         // get the label and optional issuer
                         var issuer = string.Empty;
-                        var label = (string.IsNullOrEmpty(uri.LocalPath) ? string.Empty : uri.LocalPath.Substring(1)); // skip past initial /
+                        var label = string.IsNullOrEmpty(uri.LocalPath) ? string.Empty : uri.LocalPath.Substring(1); // skip past initial /
                         var p = label.IndexOf(":");
                         if (p != -1)
                         {
@@ -696,7 +696,7 @@ namespace WinAuth
                         //
                         if (label.Length != 0)
                         {
-                            importedAuthenticator.Name = (issuer.Length != 0 ? issuer + " (" + label + ")" : label);
+                            importedAuthenticator.Name = issuer.Length != 0 ? issuer + " (" + label + ")" : label;
                         }
                         else if (issuer.Length != 0)
                         {
@@ -913,7 +913,7 @@ namespace WinAuth
             {
                 var keypair = p.Split('=');
                 var key = keypair[0];
-                var v = (keypair.Length >= 2 ? keypair[1] : null);
+                var v = keypair.Length >= 2 ? keypair[1] : null;
                 if (!string.IsNullOrEmpty(v))
                 {
                     // decode (without using System.Web)
@@ -980,7 +980,7 @@ namespace WinAuth
             {
                 using (var key = basekey.OpenSubKey(subkey))
                 {
-                    return (key != null ? key.GetValue(valuekey, defaultValue) : defaultValue);
+                    return key != null ? key.GetValue(valuekey, defaultValue) : defaultValue;
                 }
             }
             catch (System.Security.SecurityException)
@@ -1215,7 +1215,7 @@ namespace WinAuth
               DateTime.Now,
               identifier,
               SymmetricKeyAlgorithmTag.Cast5,
-              (password != null ? password.ToCharArray() : null),
+              password != null ? password.ToCharArray() : null,
               hashedGen.Generate(),
               unhashedGen.Generate(),
               new Org.BouncyCastle.Security.SecureRandom());

@@ -102,25 +102,25 @@ namespace WinAuth
             // set the modifiers
             if (Hotkey != null)
             {
-                shiftToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Shift) != 0);
-                ctrlToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Control) != 0);
-                altToggle.Checked = ((Hotkey.Modifiers & WinAPI.KeyModifiers.Alt) != 0);
+                shiftToggle.Checked = (Hotkey.Modifiers & WinAPI.KeyModifiers.Shift) != 0;
+                ctrlToggle.Checked = (Hotkey.Modifiers & WinAPI.KeyModifiers.Control) != 0;
+                altToggle.Checked = (Hotkey.Modifiers & WinAPI.KeyModifiers.Alt) != 0;
 
                 notifyRadioButton.Enabled = true;
-                notifyRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Notify);
+                notifyRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Notify;
                 //
                 injectRadioButton.Enabled = true;
-                injectRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Inject);
+                injectRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Inject;
                 injectTextbox.Enabled = injectRadioButton.Checked;
-                injectTextbox.Text = (injectRadioButton.Checked ? Hotkey.Window : string.Empty);
+                injectTextbox.Text = injectRadioButton.Checked ? Hotkey.Window : string.Empty;
                 //
                 pasteRadioButton.Enabled = true;
-                pasteRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Copy);
+                pasteRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Copy;
                 //
                 advancedRadioButton.Enabled = true;
-                advancedRadioButton.Checked = (Hotkey.Action == HotKey.HotKeyActions.Advanced);
+                advancedRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Advanced;
                 advancedTextbox.Enabled = advancedRadioButton.Checked;
-                advancedTextbox.Text = (advancedRadioButton.Checked ? Hotkey.Advanced : string.Empty);
+                advancedTextbox.Text = advancedRadioButton.Checked ? Hotkey.Advanced : string.Empty;
             }
 
         }
@@ -132,7 +132,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            var key = (keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode));
+            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode);
             if (key == 0)
             {
                 Hotkey = null;
@@ -204,7 +204,7 @@ namespace WinAuth
         private void keyCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             // clear the modifiers if we have cleared the key
-            var key = (keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode));
+            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode);
             if (key == 0)
             {
                 shiftToggle.Checked = false;

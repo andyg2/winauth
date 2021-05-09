@@ -361,7 +361,7 @@ namespace WinAuth
                 {
                     // for autorefresh we repaint the pie or the code too
                     //int tillUpdate = (int)((auth.AuthenticatorData.ServerTime % ((long)auth.AuthenticatorData.Period * 1000L)) / 1000L);
-                    var tillUpdate = (int)Math.Round((auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L)) / 1000L * (360M / auth.AuthenticatorData.Period));
+                    var tillUpdate = (int)Math.Round(auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L) / 1000L * (360M / auth.AuthenticatorData.Period));
                     if (item.LastUpdate == DateTime.MinValue || tillUpdate == 0)
                     {
                         Invalidate(new Rectangle(0, y, Width, ItemHeight), false);
@@ -428,7 +428,7 @@ namespace WinAuth
                     var item = Items[index] as AuthenticatorListitem;
                     var x = 0;
                     var y = (ItemHeight * index) - (ItemHeight * TopIndex);
-                    var hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var hasvscroll = Height < (Items.Count * ItemHeight);
                     if (!item.Authenticator.AutoRefresh && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(e.Location))
                     {
@@ -484,7 +484,7 @@ namespace WinAuth
                     _draggedItem = CurrentItem;
 
                     // get a snapshot of the current item for the drag
-                    var hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var hasvscroll = Height < (Items.Count * ItemHeight);
                     _draggedBitmap = new Bitmap(Width - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), ItemHeight);
                     _draggedBitmapRect = Rectangle.Empty;
                     using (var g = Graphics.FromImage(_draggedBitmap))
@@ -737,7 +737,7 @@ namespace WinAuth
         {
             get
             {
-                var hasvscroll = (Height < (Items.Count * ItemHeight));
+                var hasvscroll = Height < (Items.Count * ItemHeight);
                 var labelMaxWidth = GetMaxAvailableLabelWidth(Width - Margin.Horizontal - DefaultPadding.Horizontal - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0));
                 if (_renameTextbox == null)
                 {
@@ -771,7 +771,7 @@ namespace WinAuth
         /// <summary>
         /// Get flag is we are renaming
         /// </summary>
-        public bool IsRenaming => (RenameTextbox.Visible);
+        public bool IsRenaming => RenameTextbox.Visible;
 
         /// <summary>
         /// End the renaming and decide to save
@@ -899,7 +899,7 @@ namespace WinAuth
                     var item = Items[index] as AuthenticatorListitem;
                     var x = 0;
                     var y = (ItemHeight * index) - (TopIndex * ItemHeight);
-                    var hasvscroll = (Height < (Items.Count * ItemHeight));
+                    var hasvscroll = Height < (Items.Count * ItemHeight);
                     if (!item.Authenticator.AutoRefresh && item.DisplayUntil < DateTime.Now
                         && new Rectangle(x + Width - (ICON_WIDTH + MARGIN_RIGHT) - (hasvscroll ? SystemInformation.VerticalScrollBarWidth : 0), y + MARGIN_TOP, ICON_WIDTH, ICON_HEIGHT).Contains(mouseLocation))
                     {
@@ -1209,35 +1209,35 @@ namespace WinAuth
 
             ToolStripItem sepitem;
             var menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "setPasswordMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.Text = (item.Authenticator.AuthenticatorData.PasswordType == Authenticator.PasswordTypes.Explicit ? strings.ChangeOrRemovePassword + "..." : strings.SetPassword + "...");
+            menuitem.Text = item.Authenticator.AuthenticatorData.PasswordType == Authenticator.PasswordTypes.Explicit ? strings.ChangeOrRemovePassword + "..." : strings.SetPassword + "...";
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !auth.AutoRefresh;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showRestoreCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.Visible = (auth.AuthenticatorData is BattleNetAuthenticator);
+            menuitem.Visible = auth.AuthenticatorData is BattleNetAuthenticator;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showGoogleSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.Visible = (auth.AuthenticatorData is GoogleAuthenticator || auth.AuthenticatorData is HOTPAuthenticator);
+            menuitem.Visible = auth.AuthenticatorData is GoogleAuthenticator || auth.AuthenticatorData is HOTPAuthenticator;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
-            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData));
+            menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
+            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData);
             //
             sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault();
-            sepitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
+            sepitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamTradesMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.Visible = (auth.AuthenticatorData is SteamAuthenticator);
-            menuitem.Enabled = (auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData));
+            menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
+            menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator && !string.IsNullOrEmpty(((SteamAuthenticator)auth.AuthenticatorData).SteamData);
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "autoRefreshMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
-            menuitem.CheckState = (auth.AutoRefresh ? CheckState.Checked : CheckState.Unchecked);
-            menuitem.Enabled = (!auth.AuthenticatorData.RequiresPassword && auth.AuthenticatorData.PasswordType != Authenticator.PasswordTypes.Explicit);
+            menuitem.CheckState = auth.AutoRefresh ? CheckState.Checked : CheckState.Unchecked;
+            menuitem.Enabled = !auth.AuthenticatorData.RequiresPassword && auth.AuthenticatorData.PasswordType != Authenticator.PasswordTypes.Explicit;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "copyOnCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
-            menuitem.CheckState = (auth.CopyOnCode ? CheckState.Checked : CheckState.Unchecked);
+            menuitem.CheckState = auth.CopyOnCode ? CheckState.Checked : CheckState.Unchecked;
             //
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem").FirstOrDefault() as ToolStripMenuItem;
             var subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem_default").FirstOrDefault() as ToolStripMenuItem;
@@ -1595,7 +1595,7 @@ namespace WinAuth
                     {
                         index = Items.Count - 1;
                     }
-                    CurrentItem = (Items.Count != 0 ? Items[index] as AuthenticatorListitem : null);
+                    CurrentItem = Items.Count != 0 ? Items[index] as AuthenticatorListitem : null;
                     // reset the correct indexes of our items
                     for (var i = 0; i < Items.Count; i++)
                     {
@@ -1701,7 +1701,7 @@ namespace WinAuth
                 }
                 else
                 {
-                    auth.Skin = (((string)menuitem.Tag).Length != 0 ? (string)menuitem.Tag : null);
+                    auth.Skin = ((string)menuitem.Tag).Length != 0 ? (string)menuitem.Tag : null;
                     RefreshCurrentItem();
                 }
             }
@@ -1746,7 +1746,7 @@ namespace WinAuth
         /// </summary>
         private void RefreshItem(AuthenticatorListitem item)
         {
-            var hasvscroll = (Height < (Items.Count * ItemHeight));
+            var hasvscroll = Height < (Items.Count * ItemHeight);
             var y = (ItemHeight * item.Index) - (ItemHeight * TopIndex);
             var rect = new Rectangle(0, y, Width, Height);
             Invalidate(rect, false);
@@ -1892,7 +1892,7 @@ namespace WinAuth
             // draw the requested item
             using (var brush = new SolidBrush(e.ForeColor))
             {
-                var showCode = (auth.AutoRefresh || item.DisplayUntil > DateTime.Now);
+                var showCode = auth.AutoRefresh || item.DisplayUntil > DateTime.Now;
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -1989,7 +1989,7 @@ namespace WinAuth
                             {
                                 //int y = (this.TopIndex * this.ItemHeight) + e.Bounds.y
                                 //int tillUpdate = ((int)((auth.AuthenticatorData.ServerTime % 30000) / 1000L) + 1) * 12;
-                                var tillUpdate = (int)Math.Round((auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L)) / 1000L * (360M / auth.AuthenticatorData.Period));
+                                var tillUpdate = (int)Math.Round(auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L) / 1000L * (360M / auth.AuthenticatorData.Period));
                                 e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                 e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                             }
@@ -2003,7 +2003,7 @@ namespace WinAuth
                             {
                                 using (var piepen = new Pen(SystemColors.ActiveCaption))
                                 {
-                                    var tillUpdate = (int)((item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * 360) / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
+                                    var tillUpdate = (int)(item.DisplayUntil.Subtract(DateTime.Now).TotalSeconds * 360 / item.DisplayUntil.Subtract(item.LastUpdate).TotalSeconds);
                                     e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                     e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);
                                 }

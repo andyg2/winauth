@@ -41,7 +41,7 @@ namespace WinAuth
             /// <param name="t1"></param>
             /// <param name="t2"></param>
             /// <returns>true if equal or subclassed</returns>
-            public bool Equals(Type t1, Type t2) => (t1 == t2 || t2.IsSubclassOf(t1));
+            public bool Equals(Type t1, Type t2) => t1 == t2 || t2.IsSubclassOf(t1);
 
             /// <summary>
             /// Get the hash code for a Type

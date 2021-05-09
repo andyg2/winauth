@@ -406,8 +406,8 @@ namespace WinAuth
         /// <summary>
         /// Return if we are in portable mode, which is when the config filename is in teh same directory as the exe
         /// </summary>
-        public bool IsPortable => (!string.IsNullOrEmpty(Filename)
-                    && string.Compare(Path.GetDirectoryName(Filename), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), true) == 0);
+        public bool IsPortable => !string.IsNullOrEmpty(Filename)
+                    && string.Compare(Path.GetDirectoryName(Filename), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), true) == 0;
 
         /// <summary>
         /// Read a setting value.
@@ -499,7 +499,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool IsPassword(string password) => (string.Compare(password, Password) == 0);
+        public bool IsPassword(string password) => string.Compare(password, Password) == 0;
 
         #endregion
 
@@ -698,7 +698,7 @@ namespace WinAuth
             {
                 clone._authenticators.Add(wa.Clone() as WinAuthAuthenticator);
             }
-            clone.CurrentAuthenticator = (CurrentAuthenticator != null ? clone._authenticators[_authenticators.IndexOf(CurrentAuthenticator)] : null);
+            clone.CurrentAuthenticator = CurrentAuthenticator != null ? clone._authenticators[_authenticators.IndexOf(CurrentAuthenticator)] : null;
             return clone;
         }
 

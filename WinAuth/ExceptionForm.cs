@@ -60,7 +60,7 @@ namespace WinAuth
             errorIcon.Image = SystemIcons.Error.ToBitmap();
             Height = detailsButton.Top + detailsButton.Height + 45;
 
-            errorLabel.Text = string.Format(errorLabel.Text, (ErrorException != null ? ErrorException.Message : strings.UnknownError));
+            errorLabel.Text = string.Format(errorLabel.Text, ErrorException != null ? ErrorException.Message : strings.UnknownError);
 
             // build data
 #if DEBUG

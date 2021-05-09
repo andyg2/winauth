@@ -93,7 +93,7 @@ namespace WinAuth
 
             clone.Id = Guid.NewGuid();
             clone.OnWinAuthAuthenticatorChanged = null;
-            clone.AuthenticatorData = (AuthenticatorData != null ? AuthenticatorData.Clone() as Authenticator : null);
+            clone.AuthenticatorData = AuthenticatorData != null ? AuthenticatorData.Clone() as Authenticator : null;
 
             return clone;
         }
@@ -422,9 +422,9 @@ namespace WinAuth
                 if (failed && showError)
                 {
                     // only show an error the first time
-                    clipRetry = (MessageBox.Show(form, strings.ClipboardInUse,
+                    clipRetry = MessageBox.Show(form, strings.ClipboardInUse,
                         WinAuthMain.APPLICATION_NAME,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes);
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
                 }
             }
             while (clipRetry);
@@ -725,7 +725,7 @@ namespace WinAuth
             }
 
             var url = string.Format("otpauth://" + type + "/{0}?secret={1}&digits={2}{3}",
-              (!string.IsNullOrEmpty(issuer) ? HttpUtility.UrlPathEncode(issuer) + ":" + HttpUtility.UrlPathEncode(label) : HttpUtility.UrlPathEncode(label)),
+              !string.IsNullOrEmpty(issuer) ? HttpUtility.UrlPathEncode(issuer) + ":" + HttpUtility.UrlPathEncode(label) : HttpUtility.UrlPathEncode(label),
               secret,
               AuthenticatorData.CodeDigits,
               extraparams);
