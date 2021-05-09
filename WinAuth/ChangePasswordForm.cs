@@ -60,11 +60,6 @@ namespace WinAuth
         public bool HasPassword { get; set; }
 
         /// <summary>
-        /// List of seedwords
-        /// </summary>
-        private readonly List<string> _seedWords = new List<string>();
-
-        /// <summary>
         /// Load the form and pretick checkboxes
         /// </summary>
         /// <param name="sender"></param>
@@ -176,49 +171,5 @@ namespace WinAuth
                 }
             }
         }
-
-        /// <summary>
-        /// Get a new random seed
-        /// </summary>
-        /// <param name="wordCount">number of words in seed</param>
-        /// <returns></returns>
-        private string GetSeed(int wordCount)
-        {
-            if (_seedWords.Count == 0)
-            {
-                using (var s = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("WinAuth.Resources.SeedWords.txt")))
-                {
-                    string line;
-                    while ((line = s.ReadLine()) != null)
-                    {
-                        if (line.Length != 0)
-                        {
-                            _seedWords.Add(line);
-                        }
-                    }
-                }
-            }
-
-            var words = new List<string>();
-            var random = new RNGCryptoServiceProvider();
-            var buffer = new byte[4];
-            for (var i = 0; i < wordCount; i++)
-            {
-                random.GetBytes(buffer);
-                var pos = (int)(BitConverter.ToUInt32(buffer, 0) % (uint)_seedWords.Count());
-
-                // check for duplicates
-                var word = _seedWords[pos].ToLower();
-                if (words.IndexOf(word) != -1)
-                {
-                    i--;
-                    continue;
-                }
-                words.Add(word);
-            }
-
-            return string.Join(" ", words.ToArray());
-        }
     }
-
 }

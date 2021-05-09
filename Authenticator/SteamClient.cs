@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2015 Colin Mackie.
  * This software is distributed under the terms of the GNU General Public License.
  *
@@ -47,8 +47,7 @@ namespace WinAuth
         private static readonly string WEBAPI_BASE = "https://api.steampowered.com";
         private static readonly string API_GETWGTOKEN = WEBAPI_BASE + "/IMobileAuthService/GetWGToken/v0001";
         private static readonly string API_LOGOFF = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logoff/v0001";
-        private static readonly string API_LOGON = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logon/v0001";
-        private static readonly string API_POLLSTATUS = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/PollStatus/v0001";
+        //private static readonly string API_LOGON = WEBAPI_BASE + "/ISteamWebUserPresenceOAuth/Logon/v0001";
 
         /// <summary>
         /// Default mobile user agent
@@ -706,37 +705,6 @@ namespace WinAuth
         }
 
         /// <summary>
-        /// Perform a UMQ login
-        /// </summary>
-        /// <returns></returns>
-        private bool UmqLogin()
-        {
-            if (!IsLoggedIn())
-            {
-                return false;
-            }
-
-            var data = new NameValueCollection
-            {
-                { "access_token", Session.OAuthToken }
-            };
-            var response = GetString(API_LOGON, "POST", data);
-            var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-            if (loginresponse.ContainsKey("umqid"))
-            {
-                Session.UmqId = (string)loginresponse["umqid"];
-                if (loginresponse.ContainsKey("message"))
-                {
-                    Session.MessageId = Convert.ToInt32(loginresponse["message"]);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Delegate for Confirmation event
         /// </summary>
         /// <param name="sender"></param>
@@ -1379,15 +1347,6 @@ namespace WinAuth
             }
             return bytes;
         }
-
-        /// <summary>
-        /// Convert a byte array into a ascii hex string, e.g. byte[]{0x00,0x1f,0x40,ox6a} -> "001f406a"
-        /// </summary>
-        /// <param name="bytes">byte array to convert</param>
-        /// <returns>string version of byte array</returns>
-        private static string ByteArrayToString(byte[] bytes) =>
-            // Use BitConverter, but it sticks dashes in the string
-            BitConverter.ToString(bytes).Replace("-", string.Empty);
 
         /// <summary>
         /// Our custom exception for the internal Http Request

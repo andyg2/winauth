@@ -104,24 +104,9 @@ namespace WinAuth
         private string _startupConfigFile;
 
         /// <summary>
-        /// Forwarder for mousewheel messages to list control
-        /// </summary>
-        private WinAPI.MessageForwarder _wheelMessageForwarder;
-
-        /// <summary>
         /// First time only initialzation
         /// </summary>
         private bool m_initOnce;
-
-        /// <summary>
-        /// Initial form size so we can reset
-        /// </summary>
-        private Size m_initialSize;
-
-        /// <summary>
-        /// Locker for WM_DEVICECHANGE
-        /// </summary>
-        private readonly object m_deviceArrivalMutex = new object();
 
         #endregion
 
@@ -229,7 +214,7 @@ namespace WinAuth
                 try
                 {
                     // use previous config if we have one
-                    var config = WinAuthHelper.LoadConfig(this, configFile, password);
+                    var config = WinAuthHelper.LoadConfig(configFile, password);
                     return new Tuple<WinAuthConfig, Exception>(config, null);
                 }
                 catch (Exception ex)
@@ -411,7 +396,7 @@ namespace WinAuth
             {
                 try
                 {
-                    var config = WinAuthHelper.LoadConfig(this, authenticatorFile, password);
+                    var config = WinAuthHelper.LoadConfig(authenticatorFile, password);
                     if (config.Count == 0)
                     {
                         return;
@@ -523,12 +508,6 @@ namespace WinAuth
             {
                 // hook into System time change event
                 Microsoft.Win32.SystemEvents.TimeChanged += new EventHandler(SystemEvents_TimeChanged);
-
-                // save the initial form size
-                m_initialSize = Size;
-
-                // redirect mouse wheel events
-                _wheelMessageForwarder = new WinAPI.MessageForwarder(authenticatorList, WinAPI.WM_MOUSEWHEEL);
 
                 m_initOnce = true;
             }
@@ -2172,21 +2151,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OptionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu, e);
+        private void OptionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu);
 
         /// <summary>
         /// Set the state of the items when opening the notify menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NotifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu, e);
+        private void NotifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu);
 
         /// <summary>
         /// Set state of menuitems when opening the Options menu
         /// </summary>
         /// <param name="menu"></param>
-        /// <param name="e"></param>
-        private void OpeningOptionsMenu(ContextMenuStrip menu, CancelEventArgs e)
+        /// 
+        private void OpeningOptionsMenu(ContextMenuStrip menu)
         {
             ToolStripItem item;
             ToolStripMenuItem menuitem;
@@ -2261,8 +2240,8 @@ namespace WinAuth
         /// Set state of menuitemns when opening the notify menu
         /// </summary>
         /// <param name="menu"></param>
-        /// <param name="e"></param>
-        private void OpeningNotifyMenu(ContextMenuStrip menu, CancelEventArgs e)
+        /// 
+        private void OpeningNotifyMenu(ContextMenuStrip menu)
         {
             ToolStripItem item;
             ToolStripMenuItem menuitem;

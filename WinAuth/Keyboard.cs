@@ -38,11 +38,6 @@ namespace WinAuth
         private readonly Form m_form;
 
         /// <summary>
-        /// Our keyboard hook handle
-        /// </summary>
-        private readonly IntPtr m_hook = IntPtr.Zero;
-
-        /// <summary>
         /// Async hook delegate
         /// </summary>
         /// <param name="keyEvent"></param>

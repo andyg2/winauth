@@ -174,8 +174,6 @@ namespace WinAuth
 
         private const int LABEL_MARGIN_BOTTOM = 4;
 
-        private const int LABEL_WIDTH = 250;
-
         private const int FONT_SIZE = 12;
 
         private const int PIE_WIDTH = 46;
@@ -219,11 +217,6 @@ namespace WinAuth
         /// Saved point of mouse down
         /// </summary>
         private Point _mouseDownLocation = Point.Empty;
-
-        /// <summary>
-        /// Saved pont of mouse move
-        /// </summary>
-        private Point _mouseMoveLocation = Point.Empty;
 
         /// <summary>
         /// Bitmap of cloned item we are dragging
@@ -472,8 +465,6 @@ namespace WinAuth
         /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            _mouseMoveLocation = e.Location;
-
             // if we are moving with LeftMouse down and moved more than 2 pixles then we are dragging
             if (e.Button == System.Windows.Forms.MouseButtons.Left && _mouseDownLocation != Point.Empty && Items.Count > 1)
             {
@@ -1739,29 +1730,6 @@ namespace WinAuth
             var y = (ItemHeight * item.Index) - (ItemHeight * TopIndex);
             var rect = new Rectangle(0, y, Width, Height);
             Invalidate(rect, false);
-        }
-
-        /// <summary>
-        /// Convert a Bitmap into grayscale
-        /// http://stackoverflow.com/questions/4669317/how-to-convert-a-bitmap-image-to-black-and-white-in-c
-        /// </summary>
-        /// <param name="bmp">Bitmap to convert</param>
-        /// <returns>Original bitmap but grayscale</returns>
-        private static Bitmap GrayScale(Bitmap bmp)
-        {
-            int rgb;
-            Color c;
-
-            for (var y = 0; y < bmp.Height; y++)
-            {
-                for (var x = 0; x < bmp.Width; x++)
-                {
-                    c = bmp.GetPixel(x, y);
-                    rgb = (int)((c.R * 0.3) + (c.G * 0.59) + (c.B * 0.11));
-                    bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
-                }
-            }
-            return bmp;
         }
 
         /// <summary>

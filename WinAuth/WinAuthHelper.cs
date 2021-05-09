@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) 2013 Colin Mackie.
  * This software is distributed under the terms of the GNU General Public License.
  *
@@ -70,11 +70,6 @@ namespace WinAuth
         private const string WINAUTHREGKEY_CONFIGBACKUP = @"Software\WinAuth3\Backup\Config";
 
         /// <summary>
-        /// Registry data name for errors
-        /// </summary>
-        private const string WINAUTHREGKEY_ERROR = @"Software\WinAuth3\Error";
-
-        /// <summary>
         /// Registry key for starting with windows
         /// </summary>
         private const string RUNKEY = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -116,11 +111,10 @@ namespace WinAuth
         /// <summary>
         /// Load the authenticator and configuration settings
         /// </summary>
-        /// <param name="form">parent winform</param>
         /// <param name="configFile">name of configfile or null for auto</param>
         /// <param name="password">optional supplied password or null to prompt if necessatu</param>
         /// <returns>new WinAuthConfig settings</returns>
-        public static WinAuthConfig LoadConfig(Form form, string configFile, string password = null)
+        public static WinAuthConfig LoadConfig(string configFile, string password = null)
         {
             var config = new WinAuthConfig();
             if (!string.IsNullOrEmpty(password))

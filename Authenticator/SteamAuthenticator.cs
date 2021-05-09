@@ -160,11 +160,6 @@ namespace WinAuth
         #endregion
 
         /// <summary>
-        /// Expanding offsets to retry when creating first code
-        /// </summary>
-        private readonly int[] ENROLL_OFFSETS = new int[] { 0, -30, 30, -60, 60, -90, 90, -120, 120 };
-
-        /// <summary>
         /// Create a new Authenticator object
         /// </summary>
         public SteamAuthenticator()

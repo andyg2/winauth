@@ -66,17 +66,18 @@ namespace WinAuth
 #if DEBUG
             dataText.Text = string.Format("{0}\n\n{1}", ErrorException.Message, new System.Diagnostics.StackTrace(ErrorException).ToString());
 #else
-			try
-			{
-				dataText.Text = WinAuthHelper.PGPEncrypt(BuildDiagnostics(), WinAuthHelper.WINAUTH_PGP_PUBLICKEY);
-			}
-			catch (Exception ex)
-			{
-				dataText.Text = string.Format("{0}\n\n{1}", ex.Message, new System.Diagnostics.StackTrace(ex).ToString());
-			}
+            try
+            {
+                dataText.Text = WinAuthHelper.PGPEncrypt(BuildDiagnostics(), WinAuthHelper.WINAUTH_PGP_PUBLICKEY);
+            }
+            catch (Exception ex)
+            {
+                dataText.Text = string.Format("{0}\n\n{1}", ex.Message, new System.Diagnostics.StackTrace(ex).ToString());
+            }
 #endif
         }
 
+#if !DEBUG
         /// <summary>
         /// Build a diagnostics string for the current Config and any exception that had been thrown
         /// </summary>
@@ -165,6 +166,7 @@ namespace WinAuth
 
             return diag.ToString();
         }
+#endif
 
         /// <summary>
         /// Click the Quit button
