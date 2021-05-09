@@ -77,7 +77,7 @@ namespace WinAuth
 			this.allowCopyButton.TabIndex = 6;
 			this.allowCopyButton.Text = "Allow copy?";
 			this.allowCopyButton.UseSelectable = true;
-			this.allowCopyButton.CheckedChanged += new System.EventHandler(this.allowCopyButton_CheckedChanged);
+			this.allowCopyButton.CheckedChanged += new System.EventHandler(this.AllowCopyButton_CheckedChanged);
 			// 
 			// codeField
 			// 
@@ -98,7 +98,7 @@ namespace WinAuth
 			this.verifyAuthenticatorButton.TabIndex = 5;
 			this.verifyAuthenticatorButton.Text = "Verify Authenticator";
 			this.verifyAuthenticatorButton.UseSelectable = true;
-			this.verifyAuthenticatorButton.Click += new System.EventHandler(this.verifyAuthenticatorButton_Click);
+			this.verifyAuthenticatorButton.Click += new System.EventHandler(this.VerifyAuthenticatorButton_Click);
 			// 
 			// secretCodeField
 			// 
@@ -149,7 +149,7 @@ namespace WinAuth
 			this.okButton.TabIndex = 7;
 			this.okButton.Text = "OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -161,7 +161,7 @@ namespace WinAuth
 			this.cancelButton.TabIndex = 8;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseSelectable = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+			this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// icon3RadioButton
 			// 
@@ -172,7 +172,7 @@ namespace WinAuth
 			this.icon3RadioButton.Size = new System.Drawing.Size(14, 13);
 			this.icon3RadioButton.TabIndex = 3;
 			this.icon3RadioButton.Tag = "Windows7Icon.png";
-			this.icon3RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon3RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon2RadioButton
 			// 
@@ -183,7 +183,7 @@ namespace WinAuth
 			this.icon2RadioButton.Size = new System.Drawing.Size(14, 13);
 			this.icon2RadioButton.TabIndex = 2;
 			this.icon2RadioButton.Tag = "Windows8Icon.png";
-			this.icon2RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon2RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon1RadioButton
 			// 
@@ -196,7 +196,7 @@ namespace WinAuth
 			this.icon1RadioButton.TabIndex = 1;
 			this.icon1RadioButton.TabStop = true;
 			this.icon1RadioButton.Tag = "MicrosoftAuthenticatorIcon.png";
-			this.icon1RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon1RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon3
 			// 
@@ -207,7 +207,7 @@ namespace WinAuth
 			this.icon3.TabIndex = 4;
 			this.icon3.TabStop = false;
 			this.icon3.Tag = "";
-			this.icon3.Click += new System.EventHandler(this.icon3_Click);
+			this.icon3.Click += new System.EventHandler(this.Icon3_Click);
 			// 
 			// icon2
 			// 
@@ -218,7 +218,7 @@ namespace WinAuth
 			this.icon2.TabIndex = 4;
 			this.icon2.TabStop = false;
 			this.icon2.Tag = "";
-			this.icon2.Click += new System.EventHandler(this.icon2_Click);
+			this.icon2.Click += new System.EventHandler(this.Icon2_Click);
 			// 
 			// icon1
 			// 
@@ -229,7 +229,7 @@ namespace WinAuth
 			this.icon1.TabIndex = 4;
 			this.icon1.TabStop = false;
 			this.icon1.Tag = "";
-			this.icon1.Click += new System.EventHandler(this.icon1_Click);
+			this.icon1.Click += new System.EventHandler(this.Icon1_Click);
 			// 
 			// label10
 			// 
@@ -263,7 +263,7 @@ namespace WinAuth
 			// 
 			// newAuthenticatorTimer
 			// 
-			this.newAuthenticatorTimer.Tick += new System.EventHandler(this.newAuthenticatorTimer_Tick);
+			this.newAuthenticatorTimer.Tick += new System.EventHandler(this.NewAuthenticatorTimer_Tick);
 			// 
 			// step8Label
 			// 

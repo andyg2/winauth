@@ -86,7 +86,7 @@
 			this.loginButton.TabIndex = 3;
 			this.loginButton.Text = "Login";
 			this.loginButton.UseSelectable = true;
-			this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+			this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
 			// 
 			// loginTabLabel
 			// 
@@ -104,7 +104,7 @@
 			this.captchaButton.TabIndex = 4;
 			this.captchaButton.Text = "Login";
 			this.captchaButton.UseSelectable = true;
-			this.captchaButton.Click += new System.EventHandler(this.captchaButton_Click);
+			this.captchaButton.Click += new System.EventHandler(this.CaptchaButton_Click);
 			// 
 			// captchacodeField
 			// 
@@ -149,7 +149,7 @@
 			this.cancelButton.TabIndex = 0;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseSelectable = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+			this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// tabs
 			// 
@@ -166,7 +166,7 @@
 			this.tabs.Size = new System.Drawing.Size(464, 406);
 			this.tabs.TabIndex = 0;
 			this.tabs.UseSelectable = true;
-			this.tabs.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
+			this.tabs.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TabControl1_DrawItem);
 			// 
 			// loginTab
 			// 
@@ -306,7 +306,7 @@
 			this.pollAction.Size = new System.Drawing.Size(173, 25);
 			this.pollAction.TabIndex = 8;
 			this.pollAction.UseSelectable = true;
-			this.pollAction.SelectedIndexChanged += new System.EventHandler(this.pollAction_SelectedIndexChanged);
+			this.pollAction.SelectedIndexChanged += new System.EventHandler(this.PollAction_SelectedIndexChanged);
 			// 
 			// pollCheckbox
 			// 
@@ -420,7 +420,7 @@
 			this.tradeReject.TabIndex = 1;
 			this.tradeReject.Text = "Cancel";
 			this.tradeReject.UseSelectable = true;
-			this.tradeReject.Click += new System.EventHandler(this.tradeReject_Click);
+			this.tradeReject.Click += new System.EventHandler(this.TradeReject_Click);
 			// 
 			// tradeAccept
 			// 
@@ -432,7 +432,7 @@
 			this.tradeAccept.TabIndex = 0;
 			this.tradeAccept.Text = "Confirm";
 			this.tradeAccept.UseSelectable = true;
-			this.tradeAccept.Click += new System.EventHandler(this.tradeAccept_Click);
+			this.tradeAccept.Click += new System.EventHandler(this.TradeAccept_Click);
 			// 
 			// tradeStatus
 			// 
@@ -478,7 +478,7 @@
 			this.closeButton.Text = "Close";
 			this.closeButton.UseSelectable = true;
 			this.closeButton.Visible = false;
-			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+			this.closeButton.Click += new System.EventHandler(this.CloseButton_Click);
 			// 
 			// refreshButton
 			// 
@@ -491,7 +491,7 @@
 			this.refreshButton.TabIndex = 4;
 			this.refreshButton.UseSelectable = true;
 			this.refreshButton.Visible = false;
-			this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+			this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
 			// 
 			// logoutButton
 			// 
@@ -503,7 +503,7 @@
 			this.logoutButton.Text = "Forget me";
 			this.logoutButton.UseSelectable = true;
 			this.logoutButton.Visible = false;
-			this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
+			this.logoutButton.Click += new System.EventHandler(this.LogoutButton_Click);
 			// 
 			// confirmAllButton
 			// 
@@ -515,7 +515,7 @@
 			this.confirmAllButton.Text = "Confirm All";
 			this.confirmAllButton.UseSelectable = true;
 			this.confirmAllButton.Visible = false;
-			this.confirmAllButton.Click += new System.EventHandler(this.confirmAllButton_Click);
+			this.confirmAllButton.Click += new System.EventHandler(this.ConfirmAllButton_Click);
 			// 
 			// cancelAllButton
 			// 
@@ -527,7 +527,7 @@
 			this.cancelAllButton.Text = "Cancel All";
 			this.cancelAllButton.UseSelectable = true;
 			this.cancelAllButton.Visible = false;
-			this.cancelAllButton.Click += new System.EventHandler(this.cancelAllButton_Click);
+			this.cancelAllButton.Click += new System.EventHandler(this.CancelAllButton_Click);
 			// 
 			// ShowSteamTradesForm
 			// 

@@ -71,7 +71,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null && codeProgress.Visible)
             {
@@ -89,7 +89,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null)
             {
@@ -115,7 +115,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -125,7 +125,7 @@ namespace WinAuth
                 return;
             }
             var first = !codeProgress.Visible;
-            if (!verifyAuthenticator(privatekey))
+            if (!VerifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -142,7 +142,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void verifyButton_Click(object sender, EventArgs e)
+        private void VerifyButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -150,7 +150,7 @@ namespace WinAuth
                 WinAuthForm.ErrorDialog(Owner, "Please enter the Secret Code");
                 return;
             }
-            verifyAuthenticator(privatekey);
+            VerifyAuthenticator(privatekey);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void IconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {
@@ -171,21 +171,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
+        private void Icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
+        private void Icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon3
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
+        private void Icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
 
         #endregion
 
@@ -213,7 +213,7 @@ namespace WinAuth
         /// Verify and create the authenticator if needed
         /// </summary>
         /// <returns>true is successful</returns>
-        private bool verifyAuthenticator(string privatekey)
+        private bool VerifyAuthenticator(string privatekey)
         {
             if (string.IsNullOrEmpty(privatekey))
             {
@@ -321,7 +321,7 @@ namespace WinAuth
 
                 codeProgress.Visible = true;
 
-                var key = Base32.getInstance().Encode(Authenticator.AuthenticatorData.SecretKey);
+                var key = Base32.GetInstance().Encode(Authenticator.AuthenticatorData.SecretKey);
                 secretCodeField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
                 codeField.Text = auth.CurrentCode;
 

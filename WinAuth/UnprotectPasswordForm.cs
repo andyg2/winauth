@@ -63,7 +63,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             // it isn't empty
             var password = passwordField.Text;
@@ -99,7 +99,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void invalidPasswordTimer_Tick(object sender, EventArgs e)
+        private void InvalidPasswordTimer_Tick(object sender, EventArgs e)
         {
             invalidPasswordTimer.Enabled = false;
             invalidPasswordLabel.Visible = false;

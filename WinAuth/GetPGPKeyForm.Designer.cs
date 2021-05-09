@@ -48,7 +48,7 @@
 			this.okButton.TabIndex = 2;
 			this.okButton.Text = "strings.OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -97,7 +97,7 @@
 			this.browseButton.TabIndex = 2;
 			this.browseButton.Text = "strings.Browse";
 			this.browseButton.UseSelectable = true;
-			this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+			this.browseButton.Click += new System.EventHandler(this.BrowseButton_Click);
 			// 
 			// pgpField
 			// 

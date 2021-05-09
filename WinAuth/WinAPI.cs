@@ -540,10 +540,10 @@ namespace WinAuth
                 _previousParent = control.Parent;
                 _isMouseOverControl = false;
 
-                control.ParentChanged += new EventHandler(control_ParentChanged);
-                control.MouseEnter += new EventHandler(control_MouseEnter);
-                control.MouseLeave += new EventHandler(control_MouseLeave);
-                control.Leave += new EventHandler(control_Leave);
+                control.ParentChanged += new EventHandler(Control_ParentChanged);
+                control.MouseEnter += new EventHandler(Control_MouseEnter);
+                control.MouseLeave += new EventHandler(Control_MouseLeave);
+                control.Leave += new EventHandler(Control_Leave);
 
                 if (control.Parent != null)
                 {
@@ -566,7 +566,7 @@ namespace WinAuth
                 return false;
             }
 
-            void control_ParentChanged(object sender, EventArgs e)
+            void Control_ParentChanged(object sender, EventArgs e)
             {
                 if (_control.Parent == null)
                 {
@@ -579,11 +579,11 @@ namespace WinAuth
                 _previousParent = _control.Parent;
             }
 
-            void control_MouseEnter(object sender, EventArgs e) => _isMouseOverControl = true;
+            void Control_MouseEnter(object sender, EventArgs e) => _isMouseOverControl = true;
 
-            void control_MouseLeave(object sender, EventArgs e) => _isMouseOverControl = false;
+            void Control_MouseLeave(object sender, EventArgs e) => _isMouseOverControl = false;
 
-            void control_Leave(object sender, EventArgs e) => _isMouseOverControl = false;
+            void Control_Leave(object sender, EventArgs e) => _isMouseOverControl = false;
         }
 
     }

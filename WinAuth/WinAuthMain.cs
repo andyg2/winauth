@@ -213,7 +213,7 @@ namespace WinAuth
 
                         try
                         {
-                            main();
+                            MainInternal();
                         }
                         catch (Exception ex)
                         {
@@ -223,7 +223,7 @@ namespace WinAuth
                     }
                     else
                     {
-                        main();
+                        MainInternal();
                     }
                 }
             }
@@ -315,7 +315,7 @@ namespace WinAuth
 
         private static WinAuthForm _form;
 
-        private static void main()
+        private static void MainInternal()
         {
             // Fix #226: set to use TLS1.2
             try

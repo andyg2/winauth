@@ -109,7 +109,7 @@
 			this.loginButton.TabIndex = 2;
 			this.loginButton.Text = "Login";
 			this.loginButton.UseSelectable = true;
-			this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+			this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
 			// 
 			// authoriseTabLabel
 			// 
@@ -137,7 +137,7 @@
 			this.captchaButton.TabIndex = 1;
 			this.captchaButton.Text = "Login";
 			this.captchaButton.UseSelectable = true;
-			this.captchaButton.Click += new System.EventHandler(this.captchaButton_Click);
+			this.captchaButton.Click += new System.EventHandler(this.CaptchaButton_Click);
 			// 
 			// captchacodeField
 			// 
@@ -181,7 +181,7 @@
 			this.confirmButton.TabIndex = 2;
 			this.confirmButton.Text = "Confirm";
 			this.confirmButton.UseSelectable = true;
-			this.confirmButton.Click += new System.EventHandler(this.confirmButton_Click);
+			this.confirmButton.Click += new System.EventHandler(this.ConfirmButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -193,7 +193,7 @@
 			this.cancelButton.TabIndex = 0;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseSelectable = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+			this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// steamIconRadioButton
 			// 
@@ -204,7 +204,7 @@
 			this.steamIconRadioButton.TabIndex = 2;
 			this.steamIconRadioButton.Tag = "SteamIcon.png";
 			this.steamIconRadioButton.UseSelectable = true;
-			this.steamIconRadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.steamIconRadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// steamAuthenticatorIconRadioButton
 			// 
@@ -217,7 +217,7 @@
 			this.steamAuthenticatorIconRadioButton.TabStop = true;
 			this.steamAuthenticatorIconRadioButton.Tag = "SteamAuthenticatorIcon.png";
 			this.steamAuthenticatorIconRadioButton.UseSelectable = true;
-			this.steamAuthenticatorIconRadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.steamAuthenticatorIconRadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// iconLabel
 			// 
@@ -265,8 +265,8 @@
 			this.tabs.Size = new System.Drawing.Size(464, 327);
 			this.tabs.TabIndex = 0;
 			this.tabs.UseSelectable = true;
-			this.tabs.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
-			this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_SelectedIndexChanged);
+			this.tabs.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.TabControl1_DrawItem);
+			this.tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
 			// 
 			// loginTab
 			// 
@@ -378,7 +378,7 @@
 			this.authcodeButton.TabIndex = 1;
 			this.authcodeButton.Text = "Continue";
 			this.authcodeButton.UseSelectable = true;
-			this.authcodeButton.Click += new System.EventHandler(this.authcodeButton_Click);
+			this.authcodeButton.Click += new System.EventHandler(this.AuthcodeButton_Click);
 			// 
 			// authcodeField
 			// 
@@ -425,7 +425,7 @@
 			this.revocationCheckbox.TabIndex = 1;
 			this.revocationCheckbox.Text = "I have written down my revocation code";
 			this.revocationCheckbox.UseSelectable = true;
-			this.revocationCheckbox.CheckedChanged += new System.EventHandler(this.revocationCheckbox_CheckedChanged);
+			this.revocationCheckbox.CheckedChanged += new System.EventHandler(this.RevocationCheckbox_CheckedChanged);
 			// 
 			// revocationcodeCopy
 			// 
@@ -436,7 +436,7 @@
 			this.revocationcodeCopy.TabIndex = 3;
 			this.revocationcodeCopy.Text = "Allow copy?";
 			this.revocationcodeCopy.UseSelectable = true;
-			this.revocationcodeCopy.CheckedChanged += new System.EventHandler(this.revocationcodeCopy_CheckedChanged);
+			this.revocationcodeCopy.CheckedChanged += new System.EventHandler(this.RevocationcodeCopy_CheckedChanged);
 			// 
 			// revocationcodeText
 			// 
@@ -523,7 +523,7 @@
 			this.revocationcode2Copy.TabIndex = 0;
 			this.revocationcode2Copy.Text = "Allow copy?";
 			this.revocationcode2Copy.UseSelectable = true;
-			this.revocationcode2Copy.CheckedChanged += new System.EventHandler(this.revocationcode2Copy_CheckedChanged);
+			this.revocationcode2Copy.CheckedChanged += new System.EventHandler(this.Revocationcode2Copy_CheckedChanged);
 			// 
 			// revocationcode2Label
 			// 
@@ -727,7 +727,7 @@
 			this.importSDALoad.TabIndex = 1;
 			this.importSDALoad.Text = "Load";
 			this.importSDALoad.UseSelectable = true;
-			this.importSDALoad.Click += new System.EventHandler(this.importSDALoad_Click);
+			this.importSDALoad.Click += new System.EventHandler(this.ImportSDALoad_Click);
 			// 
 			// importSDABrowse
 			// 
@@ -737,7 +737,7 @@
 			this.importSDABrowse.TabIndex = 1;
 			this.importSDABrowse.Text = "Browse...";
 			this.importSDABrowse.UseSelectable = true;
-			this.importSDABrowse.Click += new System.EventHandler(this.importSDABrowse_Click);
+			this.importSDABrowse.Click += new System.EventHandler(this.ImportSDABrowse_Click);
 			// 
 			// closeButton
 			// 
@@ -750,7 +750,7 @@
 			this.closeButton.Text = "Close";
 			this.closeButton.UseSelectable = true;
 			this.closeButton.Visible = false;
-			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+			this.closeButton.Click += new System.EventHandler(this.CloseButton_Click);
 			// 
 			// steamIcon
 			// 
@@ -761,7 +761,7 @@
 			this.steamIcon.TabIndex = 4;
 			this.steamIcon.TabStop = false;
 			this.steamIcon.Tag = "SteamIcon.png";
-			this.steamIcon.Click += new System.EventHandler(this.iconRift_Click);
+			this.steamIcon.Click += new System.EventHandler(this.IconRift_Click);
 			// 
 			// steamAuthenticatorIcon
 			// 
@@ -772,7 +772,7 @@
 			this.steamAuthenticatorIcon.TabIndex = 4;
 			this.steamAuthenticatorIcon.TabStop = false;
 			this.steamAuthenticatorIcon.Tag = "SteamAuthenticatorIcon.png";
-			this.steamAuthenticatorIcon.Click += new System.EventHandler(this.iconGlyph_Click);
+			this.steamAuthenticatorIcon.Click += new System.EventHandler(this.IconGlyph_Click);
 			// 
 			// AddSteamAuthenticator
 			// 

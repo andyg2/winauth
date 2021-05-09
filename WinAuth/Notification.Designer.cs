@@ -45,7 +45,7 @@
 			// 
 			// lifeTimer
 			// 
-			this.lifeTimer.Tick += new System.EventHandler(this.lifeTimer_Tick);
+			this.lifeTimer.Tick += new System.EventHandler(this.LifeTimer_Tick);
 			// 
 			// labelBody
 			// 
@@ -97,7 +97,7 @@
 			this.button1.TabIndex = 1;
 			this.button1.Text = "button1";
 			this.button1.UseSelectable = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.button1.Click += new System.EventHandler(this.Button1_Click);
 			// 
 			// buttonPanel
 			// 
@@ -121,7 +121,7 @@
 			this.button3.Text = "button3";
 			this.button3.UseSelectable = true;
 			this.button3.Visible = false;
-			this.button3.Click += new System.EventHandler(this.button1_Click);
+			this.button3.Click += new System.EventHandler(this.Button1_Click);
 			// 
 			// button2
 			// 
@@ -133,7 +133,7 @@
 			this.button2.Text = "button2";
 			this.button2.UseSelectable = true;
 			this.button2.Visible = false;
-			this.button2.Click += new System.EventHandler(this.button1_Click);
+			this.button2.Click += new System.EventHandler(this.Button1_Click);
 			// 
 			// tradeSep
 			// 
@@ -158,7 +158,7 @@
 			this.closeLink.TabIndex = 8;
 			this.closeLink.Text = "X";
 			this.closeLink.UseSelectable = true;
-			this.closeLink.Click += new System.EventHandler(this.closeLink_Click);
+			this.closeLink.Click += new System.EventHandler(this.CloseLink_Click);
 			// 
 			// Notification
 			// 

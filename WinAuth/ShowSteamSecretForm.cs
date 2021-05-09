@@ -45,7 +45,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnOK_Click(object sender, EventArgs e) => Close();
+        private void BtnOK_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Form loaded event
@@ -82,7 +82,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void allowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void AllowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             revocationcodeField.SecretMode = !allowCopyCheckBox.Checked;
             deviceidField.SecretMode = !allowCopyCheckBox.Checked;

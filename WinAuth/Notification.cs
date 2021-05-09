@@ -516,7 +516,7 @@ namespace WinAuth
             openNotifications.Remove(this);
         }
 
-        private void lifeTimer_Tick(object sender, EventArgs e) => Close();
+        private void LifeTimer_Tick(object sender, EventArgs e) => Close();
 
         private void Notification_Click(object sender, EventArgs e)
         {
@@ -527,7 +527,7 @@ namespace WinAuth
 
         #endregion // Event Handlers
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (button1.Tag is NotificationButton button && button.OnPressed != null)
             {
@@ -535,7 +535,7 @@ namespace WinAuth
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             if (button2.Tag is NotificationButton button && button.OnPressed != null)
             {
@@ -543,7 +543,7 @@ namespace WinAuth
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             if (button3.Tag is NotificationButton button && button.OnPressed != null)
             {
@@ -558,6 +558,6 @@ namespace WinAuth
         {
         }
 
-        private void closeLink_Click(object sender, EventArgs e) => Close();
+        private void CloseLink_Click(object sender, EventArgs e) => Close();
     }
 }

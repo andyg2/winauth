@@ -63,7 +63,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
+        private void NewAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible)
             {
@@ -76,14 +76,14 @@ namespace WinAuth
             }
         }
 
-        private void allowCopyButton_CheckedChanged(object sender, EventArgs e) => codeField.SecretMode = !allowCopyButton.Checked;
+        private void AllowCopyButton_CheckedChanged(object sender, EventArgs e) => codeField.SecretMode = !allowCopyButton.Checked;
 
         /// <summary>
         /// Click to add the code
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void verifyAuthenticatorButton_Click(object sender, EventArgs e)
+        private void VerifyAuthenticatorButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (string.IsNullOrEmpty(privatekey))
@@ -92,7 +92,7 @@ namespace WinAuth
                 return;
             }
 
-            verifyAuthenticator(privatekey);
+            VerifyAuthenticator(privatekey);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null)
             {
@@ -126,7 +126,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -137,7 +137,7 @@ namespace WinAuth
             }
 
             var first = !newAuthenticatorProgress.Visible;
-            if (!verifyAuthenticator(privatekey))
+            if (!VerifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -161,7 +161,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void IconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {
@@ -174,21 +174,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
+        private void Icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon2
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
+        private void Icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
 
         /// <summary>
         /// Click the icon3
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
+        private void Icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
 
         #endregion
 
@@ -216,7 +216,7 @@ namespace WinAuth
         /// Verify and create the authenticator if needed
         /// </summary>
         /// <returns>true is successful</returns>
-        private bool verifyAuthenticator(string privatekey)
+        private bool VerifyAuthenticator(string privatekey)
         {
             if (string.IsNullOrEmpty(privatekey))
             {

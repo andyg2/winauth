@@ -167,14 +167,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e) => DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        private void CancelButton_Click(object sender, EventArgs e) => DialogResult = System.Windows.Forms.DialogResult.Cancel;
 
         /// <summary>
         /// Draw the tabs of the tabcontrol so they aren't white
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             var page = tabs.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
@@ -192,7 +192,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void captchaButton_Click(object sender, EventArgs e)
+        private void CaptchaButton_Click(object sender, EventArgs e)
         {
             if (captchacodeField.Text.Trim().Length == 0)
             {
@@ -208,7 +208,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void loginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, EventArgs e)
         {
             if (usernameField.Text.Trim().Length == 0 || passwordField.Text.Trim().Length == 0)
             {
@@ -224,7 +224,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void closeButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
@@ -246,11 +246,11 @@ namespace WinAuth
 
                         if (AuthenticatorData.GetClient().RequiresCaptcha)
                         {
-                            captchaButton_Click(sender, new EventArgs());
+                            CaptchaButton_Click(sender, new EventArgs());
                         }
                         else
                         {
-                            loginButton_Click(sender, new EventArgs());
+                            LoginButton_Click(sender, new EventArgs());
                         }
                         break;
                     case "tradesTab":
@@ -328,7 +328,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void tradeAccept_Click(object sender, EventArgs e)
+        private async void TradeAccept_Click(object sender, EventArgs e)
         {
             var cursor = Cursor.Current;
             try
@@ -351,7 +351,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void tradeReject_Click(object sender, EventArgs e)
+        private async void TradeReject_Click(object sender, EventArgs e)
         {
             var cursor = Cursor.Current;
             try
@@ -374,14 +374,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void refreshButton_Click(object sender, EventArgs e) => Process();
+        private void RefreshButton_Click(object sender, EventArgs e) => Process();
 
         /// <summary>
         /// Logout of session
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void logoutButton_Click(object sender, EventArgs e)
+        private void LogoutButton_Click(object sender, EventArgs e)
         {
             var steam = AuthenticatorData.GetClient();
             steam.Logout();
@@ -401,7 +401,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void confirmAllButton_Click(object sender, EventArgs e)
+        private async void ConfirmAllButton_Click(object sender, EventArgs e)
         {
             if (cancelComfirmAll != null)
             {
@@ -478,7 +478,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void cancelAllButton_Click(object sender, EventArgs e)
+        private async void CancelAllButton_Click(object sender, EventArgs e)
         {
             if (cancelCancelAll != null)
             {
@@ -555,7 +555,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void pollAction_SelectedIndexChanged(object sender, EventArgs e)
+        private void PollAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             // display autoconfirm warning
             if (m_loaded
@@ -769,11 +769,11 @@ namespace WinAuth
 
                         var tradeAcceptButton = FindControl<MetroButton>(tradePanel, "tradeAccept");
                         tradeAcceptButton.Tag = trade.Id;
-                        tradeAcceptButton.Click += tradeAccept_Click;
+                        tradeAcceptButton.Click += TradeAccept_Click;
 
                         var tradeRejectButton = FindControl<MetroButton>(tradePanel, "tradeReject");
                         tradeRejectButton.Tag = trade.Id;
-                        tradeRejectButton.Click += tradeReject_Click;
+                        tradeRejectButton.Click += TradeReject_Click;
 
                         tradePanel.Top = tradePanel.Height * row;
 

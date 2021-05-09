@@ -655,7 +655,7 @@ namespace WinAuth
                 extraparams += "&counter=" + hotpAuthenticator.Counter;
             }
 
-            var secret = HttpUtility.UrlEncode(Base32.getInstance().Encode(AuthenticatorData.SecretKey));
+            var secret = HttpUtility.UrlEncode(Base32.GetInstance().Encode(AuthenticatorData.SecretKey));
 
             // add the skin
             if (!string.IsNullOrEmpty(Skin) && !compat)
@@ -663,7 +663,7 @@ namespace WinAuth
                 if (Skin.StartsWith("base64:"))
                 {
                     var bytes = Convert.FromBase64String(Skin.Substring(7));
-                    var icon32 = Base32.getInstance().Encode(bytes);
+                    var icon32 = Base32.GetInstance().Encode(bytes);
                     extraparams += "&icon=" + HttpUtility.UrlEncode("base64:" + icon32);
                 }
                 else

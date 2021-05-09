@@ -84,7 +84,7 @@
             this.verifyAuthenticatorButton.TabIndex = 2;
             this.verifyAuthenticatorButton.Text = "Verify Authenticator";
             this.verifyAuthenticatorButton.UseSelectable = true;
-            this.verifyAuthenticatorButton.Click += new System.EventHandler(this.verifyAuthenticatorButton_Click);
+            this.verifyAuthenticatorButton.Click += new System.EventHandler(this.VerifyAuthenticatorButton_Click);
             // 
             // secretCodeField
             // 
@@ -119,7 +119,7 @@
             this.okButton.TabIndex = 3;
             this.okButton.Text = "OK";
             this.okButton.UseSelectable = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // cancelButton
             // 
@@ -131,7 +131,7 @@
             this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseSelectable = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // iconRadioButton
             // 
@@ -144,7 +144,7 @@
             this.iconRadioButton.TabIndex = 1;
             this.iconRadioButton.TabStop = true;
             this.iconRadioButton.Tag = "OktaVerifyAuthenticatorIcon.png";
-            this.iconRadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+            this.iconRadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
             // 
             // oktaIcon
             // 
@@ -188,7 +188,7 @@
             // 
             // newAuthenticatorTimer
             // 
-            this.newAuthenticatorTimer.Tick += new System.EventHandler(this.newAuthenticatorTimer_Tick);
+            this.newAuthenticatorTimer.Tick += new System.EventHandler(this.NewAuthenticatorTimer_Tick);
             // 
             // step8Label
             // 
@@ -246,7 +246,7 @@
             this.helpLink.Text = "detailed instructions";
             this.helpLink.UseCustomForeColor = true;
             this.helpLink.UseSelectable = true;
-            this.helpLink.Click += new System.EventHandler(this.helpLink_Click);
+            this.helpLink.Click += new System.EventHandler(this.HelpLink_Click);
             // 
             // AddOktaVerifyAuthenticator
             // 

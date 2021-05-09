@@ -62,7 +62,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void allowCopyNewButton_CheckedChanged(object sender, EventArgs e)
+        private void AllowCopyNewButton_CheckedChanged(object sender, EventArgs e)
         {
             newSerialNumberField.SecretMode = !allowCopyNewButton.Checked;
 
@@ -82,7 +82,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
+        private void NewAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible)
             {
@@ -100,7 +100,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null)
             {
@@ -126,9 +126,9 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
-            if (!verifyAuthenticator())
+            if (!VerifyAuthenticator())
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -140,7 +140,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             var page = tabControl1.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
@@ -156,28 +156,28 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
+        private void Icon1_Click(object sender, EventArgs e) => icon1RadioButton.Checked = true;
 
         /// <summary>
         /// Click one of the icons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
+        private void Icon2_Click(object sender, EventArgs e) => icon2RadioButton.Checked = true;
 
         /// <summary>
         /// Click one of the icons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
+        private void Icon3_Click(object sender, EventArgs e) => icon3RadioButton.Checked = true;
 
         /// <summary>
         /// Select one of the icons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void IconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {
@@ -193,7 +193,7 @@ namespace WinAuth
         /// Verify and create the authenticator if needed
         /// </summary>
         /// <returns>true is successful</returns>
-        private bool verifyAuthenticator()
+        private bool VerifyAuthenticator()
         {
             Authenticator.Name = nameField.Text;
 
@@ -276,7 +276,7 @@ namespace WinAuth
         /// Clear the authenticator and any associated fields
         /// </summary>
         /// <param name="showWarning"></param>
-        private void clearAuthenticator(bool showWarning = true)
+        private void ClearAuthenticator(bool showWarning = true)
         {
             if (Authenticator.AuthenticatorData != null && showWarning)
             {
@@ -313,7 +313,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void enrollAuthenticatorButton_Click(object sender, EventArgs e)
+        private void EnrollAuthenticatorButton_Click(object sender, EventArgs e)
         {
             do
             {
@@ -346,7 +346,7 @@ namespace WinAuth
                 }
             } while (true);
 
-            clearAuthenticator(false);
+            ClearAuthenticator(false);
         }
 
         #endregion

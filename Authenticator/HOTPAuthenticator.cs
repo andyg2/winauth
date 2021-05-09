@@ -84,7 +84,7 @@ namespace WinAuth
         /// <param name="b32key">base32 encoded key</param>
         public void Enroll(string b32key, long counter = 0)
         {
-            SecretKey = Base32.getInstance().Decode(b32key);
+            SecretKey = Base32.GetInstance().Decode(b32key);
             Counter = counter;
         }
 

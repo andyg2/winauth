@@ -61,14 +61,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void closeButton_Click(object sender, EventArgs e) => Close();
+        private void CloseButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click the report button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void reportButton_Click(object sender, EventArgs e)
+        private void ReportButton_Click(object sender, EventArgs e)
         {
             // display the error form, loading it with current authenticator data
             var errorreport = new DiagnosticForm

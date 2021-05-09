@@ -208,7 +208,7 @@ namespace WinAuth
 
             InitializeOnce();
 
-            loadConfig(password);
+            LoadConfig(password);
         }
 
         #region Private Methods
@@ -218,7 +218,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="password">optional password to decrypt config</param>
         /// <param name="configFile">optional explicit config file</param>
-        private void loadConfig(string password)
+        private void LoadConfig(string password)
         {
             var configFile = _startupConfigFile;
 
@@ -274,7 +274,7 @@ namespace WinAuth
                         Close();
                         return;
                     }
-                    loadConfig(password);
+                    LoadConfig(password);
                     return;
                 }
 
@@ -315,12 +315,12 @@ namespace WinAuth
         /// 
         /// </summary>
         /// <param name="authenticatorFile">name import file</param>
-        private void importAuthenticator(string authenticatorFile)
+        private void ImportAuthenticator(string authenticatorFile)
         {
             // call legacy import for v2 xml files
             if (string.Compare(Path.GetExtension(authenticatorFile), ".xml", true) == 0)
             {
-                importAuthenticatorFromV2(authenticatorFile);
+                ImportAuthenticatorFromV2(authenticatorFile);
                 return;
             }
 
@@ -387,10 +387,10 @@ namespace WinAuth
             }
 
             SaveConfig(true);
-            loadAuthenticatorList();
+            LoadAuthenticatorList();
 
             // reset UI
-            setAutoSize();
+            SetAutoSize();
             introLabel.Visible = Config.Count == 0;
 
             // reset hotkeys
@@ -401,7 +401,7 @@ namespace WinAuth
         /// Import a v2 authenticator from an existing file name
         /// </summary>
         /// <param name="authenticatorFile">name of v2 xml file</param>
-        private void importAuthenticatorFromV2(string authenticatorFile)
+        private void ImportAuthenticatorFromV2(string authenticatorFile)
         {
             var retry = false;
             string password = null;
@@ -465,12 +465,12 @@ namespace WinAuth
 
                         // add to main list
                         Config.Add(auth);
-                        loadAuthenticatorList(auth);
+                        LoadAuthenticatorList(auth);
                     }
                     SaveConfig(true);
 
                     // reset UI
-                    setAutoSize();
+                    SetAutoSize();
                     introLabel.Visible = Config.Count == 0;
 
                     // reset hotkeys
@@ -563,18 +563,18 @@ namespace WinAuth
             }
 
             // set up list
-            loadAuthenticatorList();
+            LoadAuthenticatorList();
 
             // set always on top
             TopMost = Config.AlwaysOnTop;
 
             // size the form based on the authenticators
-            setAutoSize();
+            SetAutoSize();
 
             // initialize UI
             LoadAddAuthenticatorTypes();
-            loadOptionsMenu(optionsMenu);
-            loadNotifyMenu(notifyMenu);
+            LoadOptionsMenu(optionsMenu);
+            LoadNotifyMenu(notifyMenu);
             loadingPanel.Visible = false;
             passwordPanel.Visible = false;
             commandPanel.Visible = true;
@@ -666,7 +666,7 @@ namespace WinAuth
         /// Load the authenticators into the display list
         /// </summary>
         /// <param name="added">authenticator we just added</param>
-        private void loadAuthenticatorList(WinAuthAuthenticator added = null)
+        private void LoadAuthenticatorList(WinAuthAuthenticator added = null)
         {
             // set up list
             authenticatorList.Items.Clear();
@@ -802,7 +802,7 @@ namespace WinAuth
                     subitem.ImageAlign = ContentAlignment.MiddleLeft;
                     subitem.ImageScaling = ToolStripItemImageScaling.SizeToFit;
                 }
-                subitem.Click += addAuthenticatorMenu_Click;
+                subitem.Click += AddAuthenticatorMenu_Click;
                 addAuthenticatorMenu.Items.Add(subitem);
             }
             //
@@ -816,7 +816,7 @@ namespace WinAuth
                 ImageAlign = ContentAlignment.MiddleLeft,
                 ImageScaling = ToolStripItemImageScaling.SizeToFit
             };
-            subitem.Click += importTextMenu_Click;
+            subitem.Click += ImportTextMenu_Click;
             addAuthenticatorMenu.Items.Add(subitem);
         }
 
@@ -1105,7 +1105,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void hotkeyTimer_Tick(object sender, EventArgs e)
+        void HotkeyTimer_Tick(object sender, EventArgs e)
         {
             var data = hotkeyTimer.Tag as HotKeyLauncher;
 
@@ -1331,7 +1331,7 @@ namespace WinAuth
         /// <summary>
         /// Set the size of the form based on config AutoSize property
         /// </summary>
-        private void setAutoSize()
+        private void SetAutoSize()
         {
             if (Config.AutoSize)
             {
@@ -1442,7 +1442,7 @@ namespace WinAuth
                     MessageBoxIcon.Question);
                 if (importResult == System.Windows.Forms.DialogResult.Yes)
                 {
-                    importAuthenticatorFromV2(_existingv2Config);
+                    ImportAuthenticatorFromV2(_existingv2Config);
                 }
                 _existingv2Config = null;
             }
@@ -1501,7 +1501,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void addAuthenticatorMenu_Click(object sender, EventArgs e)
+        void AddAuthenticatorMenu_Click(object sender, EventArgs e)
         {
             var menuitem = (ToolStripItem)sender;
             if (menuitem.Tag is RegisteredAuthenticator registeredauth)
@@ -1658,10 +1658,10 @@ namespace WinAuth
 
                     Config.Add(winauthauthenticator);
                     SaveConfig(true);
-                    loadAuthenticatorList(winauthauthenticator);
+                    LoadAuthenticatorList(winauthauthenticator);
 
                     // reset UI
-                    setAutoSize();
+                    SetAutoSize();
                     introLabel.Visible = Config.Count == 0;
 
                     // reset hotkeeys
@@ -1675,7 +1675,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void importTextMenu_Click(object sender, EventArgs e)
+        void ImportTextMenu_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog
             {
@@ -1696,7 +1696,7 @@ namespace WinAuth
             ofd.Title = WinAuthMain.APPLICATION_TITLE;
             if (ofd.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
-                importAuthenticator(ofd.FileName);
+                ImportAuthenticator(ofd.FileName);
             }
         }
 
@@ -1705,7 +1705,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mainTimer_Tick(object sender, EventArgs e)
+        private void MainTimer_Tick(object sender, EventArgs e)
         {
             authenticatorList.Tick(sender, e);
 
@@ -1721,21 +1721,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void addAuthenticatorButton_Click(object sender, EventArgs e) => addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
+        private void AddAuthenticatorButton_Click(object sender, EventArgs e) => addAuthenticatorMenu.Show(addAuthenticatorButton, addAuthenticatorButton.Width, 0);
 
         /// <summary>
         /// Click the Options button to show menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void optionsButton_Click(object sender, EventArgs e) => optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
+        private void OptionsButton_Click(object sender, EventArgs e) => optionsMenu.Show(optionsButton, optionsButton.Width - optionsMenu.Width, optionsButton.Height - 1);
 
         /// <summary>
         /// Double click notify to re-open
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
         {
             BringToFront();
             Show();
@@ -1748,7 +1748,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        private void authenticatorList_ItemRemoved(object source, AuthenticatorListItemRemovedEventArgs args)
+        private void AuthenticatorList_ItemRemoved(object source, AuthenticatorListItemRemovedEventArgs args)
         {
             foreach (var auth in Config)
             {
@@ -1760,7 +1760,7 @@ namespace WinAuth
             }
 
             // update UI
-            setAutoSize();
+            SetAutoSize();
 
             // if no authenticators, show intro text and remove any encryption
             if (Config.Count == 0)
@@ -1780,7 +1780,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        private void authenticatorList_Reordered(object source, AuthenticatorListReorderedEventArgs args)
+        private void AuthenticatorList_Reordered(object source, AuthenticatorListReorderedEventArgs args)
         {
             // set the new order of items in Config from that of the list
             var count = authenticatorList.Items.Count;
@@ -1792,10 +1792,10 @@ namespace WinAuth
             // resort the config list
             Config.Sort();
             // update the notify menu
-            loadNotifyMenu(notifyMenu);
+            LoadNotifyMenu(notifyMenu);
 
             // update UI
-            setAutoSize();
+            SetAutoSize();
 
             // save the current config
             SaveConfig();
@@ -1806,7 +1806,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="source"></param>
         /// <param name="args"></param>
-        private void authenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args) => RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
+        private void AuthenticatorList_DoubleClick(object source, AuthenticatorListDoubleClickEventArgs args) => RunAction(args.Authenticator, WinAuthConfig.NotifyActions.CopyToClipboard);
 
         /// <summary>
         /// Click in the main form
@@ -1820,7 +1820,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void commandPanel_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
+        private void CommandPanel_MouseDown(object sender, MouseEventArgs e) => EndRenaming();
 
         /// <summary>
         /// Resizing the form, we have to manually adjust the width and height of list else starting as minimized borks
@@ -1857,7 +1857,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void passwordButton_Click(object sender, EventArgs e)
+        private void PasswordButton_Click(object sender, EventArgs e)
         {
             if (passwordField.Text.Trim().Length == 0)
             {
@@ -1867,7 +1867,7 @@ namespace WinAuth
                 return;
             }
 
-            loadConfig(passwordField.Text);
+            LoadConfig(passwordField.Text);
             passwordField.Text = string.Empty;
         }
 
@@ -1876,12 +1876,12 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void searchTextbox_changed(object sender, EventArgs e)
+        private void SearchTextbox_changed(object sender, EventArgs e)
         {
             var txt = searchTextbox.Text.Trim();
             searchString = txt != "" ? txt : "";
             noticeLabel.Text = "";
-            loadAuthenticatorList();
+            LoadAuthenticatorList();
         }
         string searchString = "";
 
@@ -1890,7 +1890,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void passwordTimer_Tick(object sender, EventArgs e)
+        private void PasswordTimer_Tick(object sender, EventArgs e)
         {
             if (passwordErrorLabel.Tag != null && (DateTime)passwordErrorLabel.Tag <= DateTime.Now)
             {
@@ -1905,12 +1905,12 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void passwordField_KeyPress(object sender, KeyPressEventArgs e)
+        private void PasswordField_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return)
             {
                 e.Handled = true;
-                passwordButton_Click(sender, null);
+                PasswordButton_Click(sender, null);
             }
         }
         /// <summary>
@@ -1918,14 +1918,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void searchTextbox_KeyUp(object sender, KeyEventArgs e) => searchTextbox_changed(sender, null);
+        private void SearchTextbox_KeyUp(object sender, KeyEventArgs e) => SearchTextbox_changed(sender, null);
 
         /// <summary>
         /// If click the new version status link
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newVersionLink_Click(object sender, EventArgs e)
+        private void NewVersionLink_Click(object sender, EventArgs e)
         {
             if (!System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             {
@@ -1963,7 +1963,7 @@ namespace WinAuth
         /// <summary>
         /// Load the menu items for the options menu
         /// </summary>
-        private void loadOptionsMenu(ContextMenuStrip menu)
+        private void LoadOptionsMenu(ContextMenuStrip menu)
         {
             ToolStripMenuItem menuitem;
 
@@ -1975,7 +1975,7 @@ namespace WinAuth
                 {
                     Name = "changePasswordOptionsMenuItem"
                 };
-                menuitem.Click += changePasswordOptionsMenuItem_Click;
+                menuitem.Click += ChangePasswordOptionsMenuItem_Click;
                 menu.Items.Add(menuitem);
                 menu.Items.Add(new ToolStripSeparator() { Name = "changePasswordOptionsSeparatorItem" });
             }
@@ -1986,7 +1986,7 @@ namespace WinAuth
                 {
                     Name = "startWithWindowsOptionsMenuItem"
                 };
-                menuitem.Click += startWithWindowsOptionsMenuItem_Click;
+                menuitem.Click += StartWithWindowsOptionsMenuItem_Click;
                 menu.Items.Add(menuitem);
             }
 
@@ -1994,35 +1994,35 @@ namespace WinAuth
             {
                 Name = "alwaysOnTopOptionsMenuItem"
             };
-            menuitem.Click += alwaysOnTopOptionsMenuItem_Click;
+            menuitem.Click += AlwaysOnTopOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menuitem = new ToolStripMenuItem(strings.MenuUseSystemTrayIcon)
             {
                 Name = "useSystemTrayIconOptionsMenuItem"
             };
-            menuitem.Click += useSystemTrayIconOptionsMenuItem_Click;
+            menuitem.Click += UseSystemTrayIconOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menuitem = new ToolStripMenuItem(strings.MenuAutoSize)
             {
                 Name = "autoSizeOptionsMenuItem"
             };
-            menuitem.Click += autoSizeOptionsMenuItem_Click;
+            menuitem.Click += AutoSizeOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menuitem = new ToolStripMenuItem(strings.CopySearchedSingle)
             {
                 Name = "copySearchedSingleOptionsMenuItem"
             };
-            menuitem.Click += copySearchedSingleOptionsMenuItem_Click;
+            menuitem.Click += CopySearchedSingleOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menuitem = new ToolStripMenuItem(strings.AutoExitAfterCopy)
             {
                 Name = "autoExitAfterCopyOptionsMenuItem"
             };
-            menuitem.Click += autoExitAfterCopyOptionsMenuItem_Click;
+            menuitem.Click += AutoExitAfterCopyOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
@@ -2031,7 +2031,7 @@ namespace WinAuth
             {
                 Name = "exportOptionsMenuItem"
             };
-            menuitem.Click += exportOptionsMenuItem_Click;
+            menuitem.Click += ExportOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
@@ -2042,7 +2042,7 @@ namespace WinAuth
                 {
                     Name = "aboutUpdatesMenuItem"
                 };
-                menuitem.Click += aboutUpdatesMenuItem_Click;
+                menuitem.Click += AboutUpdatesMenuItem_Click;
                 menu.Items.Add(menuitem);
 
                 menu.Items.Add(new ToolStripSeparator());
@@ -2052,7 +2052,7 @@ namespace WinAuth
             {
                 Name = "aboutOptionsMenuItem"
             };
-            menuitem.Click += aboutOptionMenuItem_Click;
+            menuitem.Click += AboutOptionMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
@@ -2062,14 +2062,14 @@ namespace WinAuth
                 Name = "exitOptionsMenuItem",
                 ShortcutKeys = Keys.F4 | Keys.Alt
             };
-            menuitem.Click += exitOptionMenuItem_Click;
+            menuitem.Click += ExitOptionMenuItem_Click;
             menu.Items.Add(menuitem);
         }
 
         /// <summary>
         /// Load the menu items for the notify menu
         /// </summary>
-        private void loadNotifyMenu(ContextMenuStrip menu)
+        private void LoadNotifyMenu(ContextMenuStrip menu)
         {
             ToolStripMenuItem menuitem;
             ToolStripMenuItem subitem;
@@ -2080,7 +2080,7 @@ namespace WinAuth
             {
                 Name = "openOptionsMenuItem"
             };
-            menuitem.Click += openOptionsMenuItem_Click;
+            menuitem.Click += OpenOptionsMenuItem_Click;
             menu.Items.Add(menuitem);
             menu.Items.Add(new ToolStripSeparator() { Name = "openOptionsSeparatorItem" });
 
@@ -2097,7 +2097,7 @@ namespace WinAuth
                         Tag = auth,
                         ShortcutKeyDisplayString = auth.HotKey?.ToString()
                     };
-                    menuitem.Click += authenticatorOptionsMenuItem_Click;
+                    menuitem.Click += AuthenticatorOptionsMenuItem_Click;
                     menu.Items.Add(menuitem);
                     index++;
                 }
@@ -2116,19 +2116,19 @@ namespace WinAuth
                 {
                     Name = "defaultActionNotificationOptionsMenuItem"
                 };
-                subitem.Click += defaultActionNotificationOptionsMenuItem_Click;
+                subitem.Click += DefaultActionNotificationOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
                 subitem = new ToolStripMenuItem(strings.DefaultActionCopyToClipboard)
                 {
                     Name = "defaultActionCopyToClipboardOptionsMenuItem"
                 };
-                subitem.Click += defaultActionCopyToClipboardOptionsMenuItem_Click;
+                subitem.Click += DefaultActionCopyToClipboardOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
                 subitem = new ToolStripMenuItem(strings.DefaultActionHotkey)
                 {
                     Name = "defaultActionHotkeyOptionsMenuItem"
                 };
-                subitem.Click += defaultActionHotkeyOptionsMenuItem_Click;
+                subitem.Click += DefaultActionHotkeyOptionsMenuItem_Click;
                 menuitem.DropDownItems.Add(subitem);
                 menu.Items.Add(menuitem);
 
@@ -2153,7 +2153,7 @@ namespace WinAuth
             {
                 Name = "aboutOptionsMenuItem"
             };
-            menuitem.Click += aboutOptionMenuItem_Click;
+            menuitem.Click += AboutOptionMenuItem_Click;
             menu.Items.Add(menuitem);
 
             menu.Items.Add(new ToolStripSeparator());
@@ -2163,7 +2163,7 @@ namespace WinAuth
                 Name = "exitOptionsMenuItem",
                 ShortcutKeys = Keys.F4 | Keys.Alt
             };
-            menuitem.Click += exitOptionMenuItem_Click;
+            menuitem.Click += ExitOptionMenuItem_Click;
             menu.Items.Add(menuitem);
         }
 
@@ -2172,14 +2172,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void optionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu, e);
+        private void OptionsMenu_Opening(object sender, CancelEventArgs e) => OpeningOptionsMenu(optionsMenu, e);
 
         /// <summary>
         /// Set the state of the items when opening the notify menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void notifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu, e);
+        private void NotifyMenu_Opening(object sender, CancelEventArgs e) => OpeningNotifyMenu(notifyMenu, e);
 
         /// <summary>
         /// Set state of menuitems when opening the Options menu
@@ -2314,7 +2314,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void changePasswordOptionsMenuItem_Click(object sender, EventArgs e)
+        private void ChangePasswordOptionsMenuItem_Click(object sender, EventArgs e)
         {
             // confirm current password
             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
@@ -2381,7 +2381,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void openOptionsMenuItem_Click(object sender, EventArgs e)
+        private void OpenOptionsMenuItem_Click(object sender, EventArgs e)
         {
             // show the main form
             BringToFront();
@@ -2395,7 +2395,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void authenticatorOptionsMenuItem_Click(object sender, EventArgs e)
+        private void AuthenticatorOptionsMenuItem_Click(object sender, EventArgs e)
         {
             var menuitem = (ToolStripMenuItem)sender;
             var auth = menuitem.Tag as WinAuthAuthenticator;
@@ -2425,70 +2425,70 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void startWithWindowsOptionsMenuItem_Click(object sender, EventArgs e) => Config.StartWithWindows = !Config.StartWithWindows;
+        private void StartWithWindowsOptionsMenuItem_Click(object sender, EventArgs e) => Config.StartWithWindows = !Config.StartWithWindows;
 
         /// <summary>
         /// Click the Always On Top menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void alwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e) => Config.AlwaysOnTop = !Config.AlwaysOnTop;
+        private void AlwaysOnTopOptionsMenuItem_Click(object sender, EventArgs e) => Config.AlwaysOnTop = !Config.AlwaysOnTop;
 
         /// <summary>
         /// Click the Use Tray Icon menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void useSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e) => Config.UseTrayIcon = !Config.UseTrayIcon;
+        private void UseSystemTrayIconOptionsMenuItem_Click(object sender, EventArgs e) => Config.UseTrayIcon = !Config.UseTrayIcon;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
+        private void DefaultActionNotificationOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.Notification;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
+        private void DefaultActionCopyToClipboardOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.CopyToClipboard;
 
         /// <summary>
         /// Click the default action options menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void defaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
+        private void DefaultActionHotkeyOptionsMenuItem_Click(object sender, EventArgs e) => Config.NotifyAction = WinAuthConfig.NotifyActions.HotKey;
 
         /// <summary>
         /// Click the Auto Size menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoSizeOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoSize = !Config.AutoSize;
+        private void AutoSizeOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoSize = !Config.AutoSize;
 
         /// <summary>
         /// Automatically copy the code when search result is only one item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void copySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e) => Config.CopySearchedSingle = !Config.CopySearchedSingle;
+        private void CopySearchedSingleOptionsMenuItem_Click(object sender, EventArgs e) => Config.CopySearchedSingle = !Config.CopySearchedSingle;
 
         /// <summary>
         /// Automatically exit program after code is copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
+        private void AutoExitAfterCopyOptionsMenuItem_Click(object sender, EventArgs e) => Config.AutoExitAfterCopy = !Config.AutoExitAfterCopy;
 
         /// <summary>
         /// Click the Export menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exportOptionsMenuItem_Click(object sender, EventArgs e)
+        private void ExportOptionsMenuItem_Click(object sender, EventArgs e)
         {
             // confirm current password
             if ((Config.PasswordType & Authenticator.PasswordTypes.Explicit) != 0)
@@ -2525,14 +2525,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void aboutUpdatesMenuItem_Click(object sender, EventArgs e) => ShowUpdaterForm();
+        private void AboutUpdatesMenuItem_Click(object sender, EventArgs e) => ShowUpdaterForm();
 
         /// <summary>
         /// Click the About menu item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void aboutOptionMenuItem_Click(object sender, EventArgs e)
+        private void AboutOptionMenuItem_Click(object sender, EventArgs e)
         {
             var form = new AboutForm
             {
@@ -2546,7 +2546,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exitOptionMenuItem_Click(object sender, EventArgs e)
+        private void ExitOptionMenuItem_Click(object sender, EventArgs e)
         {
             m_explictClose = true;
             Close();
@@ -2581,7 +2581,7 @@ namespace WinAuth
             }
             else if (args.PropertyName == "AutoSize" || (args.PropertyName == "Authenticator" && args.AuthenticatorChangedEventArgs.Property == "Name"))
             {
-                setAutoSize();
+                SetAutoSize();
                 Invalidate();
             }
             else if (args.PropertyName == "StartWithWindows")

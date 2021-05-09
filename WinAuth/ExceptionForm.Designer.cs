@@ -77,7 +77,7 @@ namespace WinAuth
       this.quitButton.TabIndex = 0;
       this.quitButton.Text = "Quit";
       this.quitButton.UseVisualStyleBackColor = true;
-      this.quitButton.Click += new System.EventHandler(this.quitButton_Click);
+      this.quitButton.Click += new System.EventHandler(this.QuitButton_Click);
       // 
       // errorIcon
       // 
@@ -99,7 +99,7 @@ namespace WinAuth
       this.continueButton.TabIndex = 0;
       this.continueButton.Text = "Continue";
       this.continueButton.UseVisualStyleBackColor = true;
-      this.continueButton.Click += new System.EventHandler(this.continueButton_Click);
+      this.continueButton.Click += new System.EventHandler(this.ContinueButton_Click);
       // 
       // detailsButton
       // 
@@ -111,7 +111,7 @@ namespace WinAuth
       this.detailsButton.TabIndex = 0;
       this.detailsButton.Text = "Show Details";
       this.detailsButton.UseVisualStyleBackColor = true;
-      this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
+      this.detailsButton.Click += new System.EventHandler(this.DetailsButton_Click);
       // 
       // ExceptionForm
       // 

@@ -124,7 +124,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             if (autoCheckbox.Checked)
             {
@@ -143,7 +143,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void AutoCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (autoCheckbox.Checked && autoDropdown.SelectedIndex < 0)
             {
@@ -156,14 +156,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoLabel_Click(object sender, EventArgs e) => autoCheckbox.Checked = !autoCheckbox.Checked;
+        private void AutoLabel_Click(object sender, EventArgs e) => autoCheckbox.Checked = !autoCheckbox.Checked;
 
         /// <summary>
         /// If interval is set, make sure checkbox is checked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void autoDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void AutoDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (autoDropdown.SelectedIndex >= 0)
             {

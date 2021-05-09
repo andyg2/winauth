@@ -127,7 +127,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             // if we press ESC after adding, make sure we save it
             if (m_enroll.Success)
@@ -141,7 +141,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void confirmButton_Click(object sender, EventArgs e)
+        private void ConfirmButton_Click(object sender, EventArgs e)
         {
             if (activationcodeField.Text.Trim().Length == 0)
             {
@@ -160,21 +160,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRift_Click(object sender, EventArgs e) => steamIconRadioButton.Checked = true;
+        private void IconRift_Click(object sender, EventArgs e) => steamIconRadioButton.Checked = true;
 
         /// <summary>
         /// Select one of the icons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconGlyph_Click(object sender, EventArgs e) => steamAuthenticatorIconRadioButton.Checked = true;
+        private void IconGlyph_Click(object sender, EventArgs e) => steamAuthenticatorIconRadioButton.Checked = true;
 
         /// <summary>
         /// Set the authenticator icon
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void IconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {
@@ -187,7 +187,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             var page = tabs.TabPages[e.Index];
             e.Graphics.FillRectangle(new SolidBrush(page.BackColor), e.Bounds);
@@ -205,7 +205,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void captchaButton_Click(object sender, EventArgs e)
+        private void CaptchaButton_Click(object sender, EventArgs e)
         {
             if (captchacodeField.Text.Trim().Length == 0)
             {
@@ -225,7 +225,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void loginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, EventArgs e)
         {
             if (usernameField.Text.Trim().Length == 0 || passwordField.Text.Trim().Length == 0)
             {
@@ -244,7 +244,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void authcodeButton_Click(object sender, EventArgs e)
+        private void AuthcodeButton_Click(object sender, EventArgs e)
         {
             if (authcodeField.Text.Trim().Length == 0)
             {
@@ -262,7 +262,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void closeButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             Authenticator.Name = nameField.Text;
 
@@ -302,28 +302,28 @@ namespace WinAuth
                         e.Handled = true;
                         if (m_enroll.RequiresCaptcha)
                         {
-                            captchaButton_Click(sender, new EventArgs());
+                            CaptchaButton_Click(sender, new EventArgs());
                         }
                         else
                         {
-                            loginButton_Click(sender, new EventArgs());
+                            LoginButton_Click(sender, new EventArgs());
                         }
                         break;
                     case "authTab":
                         e.Handled = true;
-                        authcodeButton_Click(sender, new EventArgs());
+                        AuthcodeButton_Click(sender, new EventArgs());
                         break;
                     case "confirmTab":
                         e.Handled = true;
-                        confirmButton_Click(sender, new EventArgs());
+                        ConfirmButton_Click(sender, new EventArgs());
                         break;
                     case "importAndroidTab":
                         e.Handled = true;
-                        closeButton_Click(sender, new EventArgs());
+                        CloseButton_Click(sender, new EventArgs());
                         break;
                     case "importSDATab":
                         e.Handled = true;
-                        closeButton_Click(sender, new EventArgs());
+                        CloseButton_Click(sender, new EventArgs());
                         break;
                     default:
                         e.Handled = false;
@@ -341,28 +341,28 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationCheckbox_CheckedChanged(object sender, EventArgs e) => confirmButton.Enabled = revocationCheckbox.Checked;
+        private void RevocationCheckbox_CheckedChanged(object sender, EventArgs e) => confirmButton.Enabled = revocationCheckbox.Checked;
 
         /// <summary>
         /// Allow the field to be copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationcodeCopy_CheckedChanged(object sender, EventArgs e) => revocationcodeField.SecretMode = !revocationcodeCopy.Checked;
+        private void RevocationcodeCopy_CheckedChanged(object sender, EventArgs e) => revocationcodeField.SecretMode = !revocationcodeCopy.Checked;
 
         /// <summary>
         /// Allow the field to be copied
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void revocationcode2Copy_CheckedChanged(object sender, EventArgs e) => revocationcode2Field.SecretMode = !revocationcode2Copy.Checked;
+        private void Revocationcode2Copy_CheckedChanged(object sender, EventArgs e) => revocationcode2Field.SecretMode = !revocationcode2Copy.Checked;
 
         /// <summary>
         /// When changing tabs, set the correct buttons
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tabs_SelectedIndexChanged(object sender, EventArgs e)
+        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabs.SelectedTab != null && (tabs.SelectedTab.Name == "importAndroidTab" || tabs.SelectedTab.Name == "importSDATab"))
             {
@@ -381,7 +381,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void importSDABrowse_Click(object sender, EventArgs e)
+        private void ImportSDABrowse_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog
             {
@@ -406,7 +406,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void importSDALoad_Click(object sender, EventArgs e) => LoadSDA();
+        private void ImportSDALoad_Click(object sender, EventArgs e) => LoadSDA();
 
         #endregion
 

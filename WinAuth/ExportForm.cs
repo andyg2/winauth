@@ -74,7 +74,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void passwordCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void PasswordCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (passwordCheckbox.Checked)
             {
@@ -94,7 +94,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void pgpCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void PgpCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (pgpCheckbox.Checked)
             {
@@ -113,7 +113,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void pgpBrowseButton_Click(object sender, EventArgs e)
+        private void PgpBrowseButton_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog
             {
@@ -133,7 +133,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void browseButton_Click(object sender, EventArgs e)
+        private void BrowseButton_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog
             {
@@ -169,7 +169,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             // check password is set if required
             if (passwordCheckbox.Checked && passwordField.Text.Trim().Length == 0)

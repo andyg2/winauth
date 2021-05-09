@@ -171,21 +171,21 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void quitButton_Click(object sender, EventArgs e) => Close();
+        private void QuitButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click the Continue button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void continueButton_Click(object sender, EventArgs e) => Close();
+        private void ContinueButton_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Click to show the details
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void detailsButton_Click(object sender, EventArgs e)
+        private void DetailsButton_Click(object sender, EventArgs e)
         {
             dataText.Visible = !dataText.Visible;
             if (dataText.Visible)

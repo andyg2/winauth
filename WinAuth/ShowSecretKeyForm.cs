@@ -46,7 +46,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnOK_Click(object sender, EventArgs e) => Close();
+        private void BtnOK_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Form loaded event
@@ -57,7 +57,7 @@ namespace WinAuth
         {
             secretKeyField.SecretMode = true;
 
-            var key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            var key = Base32.GetInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             secretKeyField.Text = Regex.Replace(key, ".{3}", "$0 ").Trim();
 
             var type = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator ? "hotp" : "totp";
@@ -84,11 +84,11 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void allowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void AllowCopyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             secretKeyField.SecretMode = !allowCopyCheckBox.Checked;
 
-            var key = Base32.getInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
+            var key = Base32.GetInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             secretKeyField.Text = secretKeyField.SecretMode ? Regex.Replace(key, ".{3}", "$0 ").Trim() : key;
         }
 

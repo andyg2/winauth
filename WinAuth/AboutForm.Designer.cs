@@ -84,7 +84,7 @@
 			this.reportButton.TabIndex = 7;
 			this.reportButton.Text = "Diagnostics...";
 			this.reportButton.UseSelectable = true;
-			this.reportButton.Click += new System.EventHandler(this.reportButton_Click);
+			this.reportButton.Click += new System.EventHandler(this.ReportButton_Click);
 			// 
 			// closeButton
 			// 
@@ -96,7 +96,7 @@
 			this.closeButton.TabIndex = 8;
 			this.closeButton.Text = "Close";
 			this.closeButton.UseSelectable = true;
-			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+			this.closeButton.Click += new System.EventHandler(this.CloseButton_Click);
 			// 
 			// AboutForm
 			// 

@@ -86,7 +86,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null && !(Authenticator.AuthenticatorData is HOTPAuthenticator) && codeProgress.Visible)
             {
@@ -104,7 +104,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null)
             {
@@ -130,7 +130,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -140,7 +140,7 @@ namespace WinAuth
                 return;
             }
             var first = Authenticator.AuthenticatorData == null;
-            if (!verifyAuthenticator(privatekey))
+            if (!VerifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -163,7 +163,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void verifyButton_Click(object sender, EventArgs e)
+        private void VerifyButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -171,7 +171,7 @@ namespace WinAuth
                 WinAuthForm.ErrorDialog(Owner, "Please enter the Secret Code");
                 return;
             }
-            verifyAuthenticator(privatekey);
+            VerifyAuthenticator(privatekey);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timeBasedRadio_CheckedChanged(object sender, EventArgs e)
+        private void TimeBasedRadio_CheckedChanged(object sender, EventArgs e)
         {
             counterBasedRadio.Checked = !timeBasedRadio.Checked;
             if (timeBasedRadio.Checked)
@@ -194,7 +194,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void counterBasedRadio_CheckedChanged(object sender, EventArgs e)
+        private void CounterBasedRadio_CheckedChanged(object sender, EventArgs e)
         {
             timeBasedRadio.Checked = !counterBasedRadio.Checked;
             if (counterBasedRadio.Checked)
@@ -209,7 +209,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void secretCodeField_Leave(object sender, EventArgs e) => DecodeSecretCode();
+        private void SecretCodeField_Leave(object sender, EventArgs e) => DecodeSecretCode();
 
         #endregion
 
@@ -325,7 +325,7 @@ namespace WinAuth
         /// Verify and create the authenticator if needed
         /// </summary>
         /// <returns>true is successful</returns>
-        private bool verifyAuthenticator(string privatekey)
+        private bool VerifyAuthenticator(string privatekey)
         {
             if (string.IsNullOrEmpty(privatekey))
             {
@@ -487,7 +487,7 @@ namespace WinAuth
                             throw new ApplicationException("Invalid serial for Battle.net Authenticator");
                         }
                         auth = new BattleNetAuthenticator();
-                        ((BattleNetAuthenticator)auth).SecretKey = Base32.getInstance().Decode(privatekey);
+                        ((BattleNetAuthenticator)auth).SecretKey = Base32.GetInstance().Decode(privatekey);
                         ((BattleNetAuthenticator)auth).Serial = serial;
 
                         issuer = string.Empty;
@@ -495,7 +495,7 @@ namespace WinAuth
                     else if (issuer == "Steam")
                     {
                         auth = new SteamAuthenticator();
-                        ((SteamAuthenticator)auth).SecretKey = Base32.getInstance().Decode(privatekey);
+                        ((SteamAuthenticator)auth).SecretKey = Base32.GetInstance().Decode(privatekey);
                         ((SteamAuthenticator)auth).Serial = string.Empty;
                         ((SteamAuthenticator)auth).DeviceId = string.Empty;
                         //((SteamAuthenticator)auth).RevocationCode = string.Empty;
@@ -559,26 +559,26 @@ namespace WinAuth
         }
 
 
-        private void secretCodeField_dragdrop(object sender, DragEventArgs e)
+        private void SecretCodeField_dragdrop(object sender, DragEventArgs e)
         {
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             secretCodeField.Text = files[0];
         }
 
-        private void secretCodeField_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Copy;
+        private void SecretCodeField_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Copy;
 
         private Color initialColor;
 
-        private void dragPanel_DragEnter(object sender, DragEventArgs e)
+        private void DragPanel_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
             initialColor = (sender as Panel).BackColor;
             (sender as Panel).BackColor = Color.LightGreen;
         }
 
-        private void dragImagePanel_DragLeave(object sender, EventArgs e) => (sender as Panel).BackColor = initialColor;
+        private void DragImagePanel_DragLeave(object sender, EventArgs e) => (sender as Panel).BackColor = initialColor;
 
-        private void dragPanel_DragDrop(object sender, DragEventArgs e)
+        private void DragPanel_DragDrop(object sender, DragEventArgs e)
         {
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             var filePath = files[0];
@@ -586,7 +586,7 @@ namespace WinAuth
             var imageArray = System.IO.File.ReadAllBytes(filePath);
             var base64ImageRepresentation = Convert.ToBase64String(imageArray);
             secretCodeField.Text = @"data:image/" + ext + ";base64," + base64ImageRepresentation;
-            verifyButton_Click(null, null);
+            VerifyButton_Click(null, null);
         }
 
         #endregion

@@ -85,7 +85,7 @@ namespace WinAuth
 			this.okButton.TabIndex = 6;
 			this.okButton.Text = "OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// cancelButton
 			// 
@@ -97,7 +97,7 @@ namespace WinAuth
 			this.cancelButton.TabIndex = 7;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseSelectable = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+			this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// icon3RadioButton
 			// 
@@ -108,7 +108,7 @@ namespace WinAuth
 			this.icon3RadioButton.TabIndex = 3;
 			this.icon3RadioButton.Tag = "ChromeIcon.png";
 			this.icon3RadioButton.UseSelectable = true;
-			this.icon3RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon3RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon2RadioButton
 			// 
@@ -119,7 +119,7 @@ namespace WinAuth
 			this.icon2RadioButton.TabIndex = 2;
 			this.icon2RadioButton.Tag = "GoogleIcon.png";
 			this.icon2RadioButton.UseSelectable = true;
-			this.icon2RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon2RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon1RadioButton
 			// 
@@ -132,7 +132,7 @@ namespace WinAuth
 			this.icon1RadioButton.TabStop = true;
 			this.icon1RadioButton.Tag = "GoogleAuthenticatorIcon.png";
 			this.icon1RadioButton.UseSelectable = true;
-			this.icon1RadioButton.CheckedChanged += new System.EventHandler(this.iconRadioButton_CheckedChanged);
+			this.icon1RadioButton.CheckedChanged += new System.EventHandler(this.IconRadioButton_CheckedChanged);
 			// 
 			// icon3
 			// 
@@ -143,7 +143,7 @@ namespace WinAuth
 			this.icon3.TabIndex = 4;
 			this.icon3.TabStop = false;
 			this.icon3.Tag = "";
-			this.icon3.Click += new System.EventHandler(this.icon3_Click);
+			this.icon3.Click += new System.EventHandler(this.Icon3_Click);
 			// 
 			// icon2
 			// 
@@ -154,7 +154,7 @@ namespace WinAuth
 			this.icon2.TabIndex = 4;
 			this.icon2.TabStop = false;
 			this.icon2.Tag = "";
-			this.icon2.Click += new System.EventHandler(this.icon2_Click);
+			this.icon2.Click += new System.EventHandler(this.Icon2_Click);
 			// 
 			// icon1
 			// 
@@ -165,7 +165,7 @@ namespace WinAuth
 			this.icon1.TabIndex = 4;
 			this.icon1.TabStop = false;
 			this.icon1.Tag = "";
-			this.icon1.Click += new System.EventHandler(this.icon1_Click);
+			this.icon1.Click += new System.EventHandler(this.Icon1_Click);
 			// 
 			// iconLabel
 			// 
@@ -213,7 +213,7 @@ namespace WinAuth
 			this.verifyButton.TabIndex = 5;
 			this.verifyButton.Text = "Verify Authenticator";
 			this.verifyButton.UseSelectable = true;
-			this.verifyButton.Click += new System.EventHandler(this.verifyButton_Click);
+			this.verifyButton.Click += new System.EventHandler(this.VerifyButton_Click);
 			// 
 			// codeProgress
 			// 
@@ -251,7 +251,7 @@ namespace WinAuth
 			// 
 			this.timer.Enabled = true;
 			this.timer.Interval = 500;
-			this.timer.Tick += new System.EventHandler(this.timer_Tick);
+			this.timer.Tick += new System.EventHandler(this.Timer_Tick);
 			// 
 			// AddGoogleAuthenticator
 			// 

@@ -130,7 +130,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default;
             if (key == 0)
@@ -201,7 +201,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void keyCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private void KeyCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             // clear the modifiers if we have cleared the key
             var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default;
@@ -230,20 +230,20 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void injectRadioButton_CheckedChanged(object sender, EventArgs e) => injectTextbox.Enabled = injectRadioButton.Checked;
+        private void InjectRadioButton_CheckedChanged(object sender, EventArgs e) => injectTextbox.Enabled = injectRadioButton.Checked;
 
         /// <summary>
         /// Click the Advanced radio
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void advancedRadioButton_CheckedChanged(object sender, EventArgs e) => advancedTextbox.Enabled = advancedRadioButton.Checked;
+        private void AdvancedRadioButton_CheckedChanged(object sender, EventArgs e) => advancedTextbox.Enabled = advancedRadioButton.Checked;
 
         /// <summary>
         /// Click to manually show the Advanced tooltip
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void advancedLink_Click(object sender, EventArgs e) => tooltip.Show(tooltip.GetToolTip(advancedTextbox), advancedTextbox);
+        private void AdvancedLink_Click(object sender, EventArgs e) => tooltip.Show(tooltip.GetToolTip(advancedTextbox), advancedTextbox);
     }
 }

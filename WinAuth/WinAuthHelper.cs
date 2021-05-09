@@ -635,7 +635,7 @@ namespace WinAuth
                             //string hex = new string(decoded);
                             //((BattleNetAuthenticator)auth).SecretKey = Authenticator.StringToByteArray(hex);
 
-                            ((BattleNetAuthenticator)auth).SecretKey = Base32.getInstance().Decode(secret);
+                            ((BattleNetAuthenticator)auth).SecretKey = Base32.GetInstance().Decode(secret);
 
                             ((BattleNetAuthenticator)auth).Serial = serial;
 
@@ -644,7 +644,7 @@ namespace WinAuth
                         else if (string.Compare(issuer, "Steam", true) == 0)
                         {
                             auth = new SteamAuthenticator();
-                            ((SteamAuthenticator)auth).SecretKey = Base32.getInstance().Decode(secret);
+                            ((SteamAuthenticator)auth).SecretKey = Base32.GetInstance().Decode(secret);
                             ((SteamAuthenticator)auth).Serial = string.Empty;
                             ((SteamAuthenticator)auth).DeviceId = query["deviceid"] ?? string.Empty;
                             ((SteamAuthenticator)auth).SteamData = query["data"] ?? string.Empty;
@@ -653,7 +653,7 @@ namespace WinAuth
                         else if (uri.Host == "hotp")
                         {
                             auth = new HOTPAuthenticator();
-                            ((HOTPAuthenticator)auth).SecretKey = Base32.getInstance().Decode(secret);
+                            ((HOTPAuthenticator)auth).SecretKey = Base32.GetInstance().Decode(secret);
                             ((HOTPAuthenticator)auth).Counter = int.Parse(counter);
 
                             if (!string.IsNullOrEmpty(issuer))
@@ -714,7 +714,7 @@ namespace WinAuth
                         {
                             if (icon.StartsWith("base64:"))
                             {
-                                var b64 = Convert.ToBase64String(Base32.getInstance().Decode(icon.Substring(7)));
+                                var b64 = Convert.ToBase64String(Base32.GetInstance().Decode(icon.Substring(7)));
                                 importedAuthenticator.Skin = "base64:" + b64;
                             }
                             else

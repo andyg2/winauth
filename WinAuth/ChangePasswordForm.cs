@@ -111,7 +111,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void machineCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void MachineCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (!machineCheckbox.Checked)
             {
@@ -125,7 +125,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void passwordCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void PasswordCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             passwordField.Enabled = passwordCheckbox.Checked;
             verifyField.Enabled = passwordCheckbox.Checked;
@@ -140,7 +140,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             // check password is set if requried
             if (passwordCheckbox.Checked && passwordField.Text.Trim().Length == 0)

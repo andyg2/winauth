@@ -69,7 +69,7 @@
 			this.passwordCheckbox.TabIndex = 0;
 			this.passwordCheckbox.Text = "Protect with a password (zip file only)";
 			this.passwordCheckbox.UseSelectable = true;
-			this.passwordCheckbox.CheckedChanged += new System.EventHandler(this.passwordCheckbox_CheckedChanged);
+			this.passwordCheckbox.CheckedChanged += new System.EventHandler(this.PasswordCheckbox_CheckedChanged);
 			// 
 			// pictureBox2
 			// 
@@ -105,7 +105,7 @@
 			this.okButton.TabIndex = 5;
 			this.okButton.Text = "OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// passwordField
 			// 
@@ -163,7 +163,7 @@
 			this.pgpCheckbox.TabIndex = 0;
 			this.pgpCheckbox.Text = "Protect with a PGP Public key";
 			this.pgpCheckbox.UseSelectable = true;
-			this.pgpCheckbox.CheckedChanged += new System.EventHandler(this.pgpCheckbox_CheckedChanged);
+			this.pgpCheckbox.CheckedChanged += new System.EventHandler(this.PgpCheckbox_CheckedChanged);
 			// 
 			// pgpBrowse
 			// 
@@ -174,7 +174,7 @@
 			this.pgpBrowse.TabIndex = 8;
 			this.pgpBrowse.Text = "Browse for the PGP key file...";
 			this.pgpBrowse.UseSelectable = true;
-			this.pgpBrowse.Click += new System.EventHandler(this.pgpBrowseButton_Click);
+			this.pgpBrowse.Click += new System.EventHandler(this.PgpBrowseButton_Click);
 			// 
 			// pgpField
 			// 
@@ -233,7 +233,7 @@
 			this.browseButton.TabIndex = 8;
 			this.browseButton.Text = "Browse...";
 			this.browseButton.UseSelectable = true;
-			this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+			this.browseButton.Click += new System.EventHandler(this.BrowseButton_Click);
 			// 
 			// metroLabel2
 			// 

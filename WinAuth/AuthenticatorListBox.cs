@@ -275,7 +275,7 @@ namespace WinAuth
             ContextMenuStrip.Opening += ContextMenuStrip_Opening;
 
             // preload the content menu
-            loadContextMenuStrip();
+            LoadContextMenuStrip();
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace WinAuth
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            setRenameTextboxLocation();
+            SetRenameTextboxLocation();
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace WinAuth
         {
             if (e.Type == ScrollEventType.EndScroll || e.Type == ScrollEventType.ThumbPosition)
             {
-                setRenameTextboxLocation();
+                SetRenameTextboxLocation();
             }
         }
 
@@ -712,7 +712,7 @@ namespace WinAuth
         /// <summary>
         /// Set the position of the rename textbox
         /// </summary>
-        private void setRenameTextboxLocation()
+        private void SetRenameTextboxLocation()
         {
             if (_renameTextbox != null && _renameTextbox.Visible)
             {
@@ -753,7 +753,7 @@ namespace WinAuth
                     _renameTextbox.TabIndex = 0;
                     _renameTextbox.Visible = false;
                     _renameTextbox.Leave += RenameTextbox_Leave;
-                    _renameTextbox.KeyPress += _renameTextbox_KeyPress;
+                    _renameTextbox.KeyPress += RenameTextbox_KeyPress;
 
                     Controls.Add(_renameTextbox);
                 }
@@ -789,7 +789,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void _renameTextbox_KeyPress(object sender, KeyPressEventArgs e)
+        void RenameTextbox_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 27)
             {
@@ -981,7 +981,7 @@ namespace WinAuth
         /// <summary>
         /// Preload the context menu items
         /// </summary>
-        private void loadContextMenuStrip()
+        private void LoadContextMenuStrip()
         {
             ContextMenuStrip.Items.Clear();
 

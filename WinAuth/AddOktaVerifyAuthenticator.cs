@@ -63,7 +63,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newAuthenticatorTimer_Tick(object sender, EventArgs e)
+        private void NewAuthenticatorTimer_Tick(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null && newAuthenticatorProgress.Visible)
             {
@@ -82,7 +82,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void verifyAuthenticatorButton_Click(object sender, EventArgs e)
+        private void VerifyAuthenticatorButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (string.IsNullOrEmpty(privatekey))
@@ -91,7 +91,7 @@ namespace WinAuth
                 return;
             }
 
-            verifyAuthenticator(privatekey);
+            VerifyAuthenticator(privatekey);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (Authenticator.AuthenticatorData != null)
             {
@@ -125,7 +125,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var privatekey = secretCodeField.Text.Trim();
             if (privatekey.Length == 0)
@@ -136,7 +136,7 @@ namespace WinAuth
             }
 
             var first = !newAuthenticatorProgress.Visible;
-            if (!verifyAuthenticator(privatekey))
+            if (!VerifyAuthenticator(privatekey))
             {
                 DialogResult = System.Windows.Forms.DialogResult.None;
                 return;
@@ -160,7 +160,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void iconRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void IconRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {
@@ -168,7 +168,7 @@ namespace WinAuth
             }
         }
 
-        private void helpLink_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start("https://support.okta.com/help/Documentation/Knowledge_Article/How-to-Configure-WinAuth-for-Okta-MFA");
+        private void HelpLink_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start("https://support.okta.com/help/Documentation/Knowledge_Article/How-to-Configure-WinAuth-for-Okta-MFA");
 
         #endregion
 
@@ -196,7 +196,7 @@ namespace WinAuth
         /// Verify and create the authenticator if needed
         /// </summary>
         /// <returns>true is successful</returns>
-        private bool verifyAuthenticator(string privatekey)
+        private bool VerifyAuthenticator(string privatekey)
         {
             if (string.IsNullOrEmpty(privatekey))
             {

@@ -48,7 +48,7 @@ namespace WinAuth
 
         #region Authenticator data
 
-        public string Serial => Base32.getInstance().Encode(SecretKey);
+        public string Serial => Base32.GetInstance().Encode(SecretKey);
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace WinAuth
         /// Enroll the authenticator with the server.
         public void Enroll(string b32key)
         {
-            SecretKey = Base32.getInstance().Decode(b32key);
+            SecretKey = Base32.GetInstance().Decode(b32key);
             Sync();
         }
 

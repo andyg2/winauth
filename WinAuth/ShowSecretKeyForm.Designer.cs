@@ -64,7 +64,7 @@ namespace WinAuth
 			this.allowCopyCheckBox.TabIndex = 5;
 			this.allowCopyCheckBox.Text = "Allow copy";
 			this.allowCopyCheckBox.UseSelectable = true;
-			this.allowCopyCheckBox.CheckedChanged += new System.EventHandler(this.allowCopyCheckBox_CheckedChanged);
+			this.allowCopyCheckBox.CheckedChanged += new System.EventHandler(this.AllowCopyCheckBox_CheckedChanged);
 			// 
 			// secretKeyField
 			// 

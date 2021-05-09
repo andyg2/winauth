@@ -184,7 +184,7 @@ namespace WinAuth
         /// Class used to serialize the settings inside the Xml config file
         /// </summary>
         [XmlRoot(ElementName = "settings")]
-        public class setting
+        public class Setting
         {
             /// <summary>
             /// Name of dictionary entry
@@ -854,8 +854,8 @@ namespace WinAuth
                             break;
 
                         case "settings":
-                            var serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
-                            _settings = ((setting[])serializer.Deserialize(reader)).ToDictionary(e => e.Key, e => e.Value);
+                            var serializer = new XmlSerializer(typeof(Setting[]), new XmlRootAttribute() { ElementName = "settings" });
+                            _settings = ((Setting[])serializer.Deserialize(reader)).ToDictionary(e => e.Key, e => e.Value);
                             break;
 
                         // previous setting used as defaults for new
@@ -1090,8 +1090,8 @@ namespace WinAuth
             {
                 var ns = new XmlSerializerNamespaces();
                 ns.Add(string.Empty, string.Empty);
-                var serializer = new XmlSerializer(typeof(setting[]), new XmlRootAttribute() { ElementName = "settings" });
-                serializer.Serialize(writer, _settings.Select(e => new setting { Key = e.Key, Value = e.Value }).ToArray(), ns);
+                var serializer = new XmlSerializer(typeof(Setting[]), new XmlRootAttribute() { ElementName = "settings" });
+                serializer.Serialize(writer, _settings.Select(e => new Setting { Key = e.Key, Value = e.Value }).ToArray(), ns);
             }
 
             // close WinAuth

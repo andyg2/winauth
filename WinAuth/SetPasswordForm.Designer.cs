@@ -96,7 +96,7 @@
 			this.okButton.TabIndex = 3;
 			this.okButton.Text = "strings.OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// showCheckbox
 			// 
@@ -107,7 +107,7 @@
 			this.showCheckbox.TabIndex = 2;
 			this.showCheckbox.Text = "strings.showCheckbox";
 			this.showCheckbox.UseSelectable = true;
-			this.showCheckbox.CheckedChanged += new System.EventHandler(this.showCheckbox_CheckedChanged);
+			this.showCheckbox.CheckedChanged += new System.EventHandler(this.ShowCheckbox_CheckedChanged);
 			// 
 			// errorLabel
 			// 
@@ -124,7 +124,7 @@
 			// errorTimer
 			// 
 			this.errorTimer.Interval = 2000;
-			this.errorTimer.Tick += new System.EventHandler(this.errorTimer_Tick);
+			this.errorTimer.Tick += new System.EventHandler(this.ErrorTimer_Tick);
 			// 
 			// SetPasswordForm
 			// 

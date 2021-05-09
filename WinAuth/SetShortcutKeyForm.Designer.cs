@@ -169,7 +169,7 @@
 			this.keyCombo.Size = new System.Drawing.Size(144, 29);
 			this.keyCombo.TabIndex = 3;
 			this.keyCombo.UseSelectable = true;
-			this.keyCombo.SelectedIndexChanged += new System.EventHandler(this.keyCombo_SelectedIndexChanged);
+			this.keyCombo.SelectedIndexChanged += new System.EventHandler(this.KeyCombo_SelectedIndexChanged);
 			// 
 			// keyLabel
 			// 
@@ -201,7 +201,7 @@
 			this.okButton.TabIndex = 10;
 			this.okButton.Text = "OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// injectRadioButton
 			// 
@@ -214,7 +214,7 @@
 			this.injectRadioButton.TabIndex = 5;
 			this.injectRadioButton.Text = "Enter code into current window or one called...";
 			this.injectRadioButton.UseSelectable = true;
-			this.injectRadioButton.CheckedChanged += new System.EventHandler(this.injectRadioButton_CheckedChanged);
+			this.injectRadioButton.CheckedChanged += new System.EventHandler(this.InjectRadioButton_CheckedChanged);
 			// 
 			// pasteRadioButton
 			// 
@@ -239,7 +239,7 @@
 			this.advancedRadioButton.TabIndex = 8;
 			this.advancedRadioButton.Text = "Advanced...";
 			this.advancedRadioButton.UseSelectable = true;
-			this.advancedRadioButton.CheckedChanged += new System.EventHandler(this.advancedRadioButton_CheckedChanged);
+			this.advancedRadioButton.CheckedChanged += new System.EventHandler(this.AdvancedRadioButton_CheckedChanged);
 			// 
 			// advancedTextbox
 			// 
@@ -284,7 +284,7 @@
 			this.advancedLink.Text = "more info";
 			this.advancedLink.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.advancedLink.UseSelectable = true;
-			this.advancedLink.Click += new System.EventHandler(this.advancedLink_Click);
+			this.advancedLink.Click += new System.EventHandler(this.AdvancedLink_Click);
 			// 
 			// notifyRadioButton
 			// 
@@ -299,7 +299,7 @@
 			this.notifyRadioButton.TabStop = true;
 			this.notifyRadioButton.Text = "Show a notification";
 			this.notifyRadioButton.UseSelectable = true;
-			this.notifyRadioButton.CheckedChanged += new System.EventHandler(this.injectRadioButton_CheckedChanged);
+			this.notifyRadioButton.CheckedChanged += new System.EventHandler(this.InjectRadioButton_CheckedChanged);
 			// 
 			// SetShortcutKeyForm
 			// 

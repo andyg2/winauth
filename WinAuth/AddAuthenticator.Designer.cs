@@ -78,9 +78,9 @@ namespace WinAuth
             this.secretCodeField.Size = new System.Drawing.Size(229, 22);
             this.secretCodeField.TabIndex = 1;
             this.secretCodeField.UseSelectable = true;
-            this.secretCodeField.DragDrop += new System.Windows.Forms.DragEventHandler(this.secretCodeField_dragdrop);
-            this.secretCodeField.DragEnter += new System.Windows.Forms.DragEventHandler(this.secretCodeField_DragEnter);
-            this.secretCodeField.Leave += new System.EventHandler(this.secretCodeField_Leave);
+            this.secretCodeField.DragDrop += new System.Windows.Forms.DragEventHandler(this.SecretCodeField_dragdrop);
+            this.secretCodeField.DragEnter += new System.Windows.Forms.DragEventHandler(this.SecretCodeField_DragEnter);
+            this.secretCodeField.Leave += new System.EventHandler(this.SecretCodeField_Leave);
             // 
             // step1Label
             // 
@@ -101,7 +101,7 @@ namespace WinAuth
             this.okButton.TabIndex = 3;
             this.okButton.Text = "OK";
             this.okButton.UseSelectable = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // cancelButton
             // 
@@ -113,7 +113,7 @@ namespace WinAuth
             this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseSelectable = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // nameLabel
             // 
@@ -153,7 +153,7 @@ namespace WinAuth
             this.verifyButton.TabIndex = 2;
             this.verifyButton.Text = "Verify Authenticator";
             this.verifyButton.UseSelectable = true;
-            this.verifyButton.Click += new System.EventHandler(this.verifyButton_Click);
+            this.verifyButton.Click += new System.EventHandler(this.VerifyButton_Click);
             // 
             // codeProgress
             // 
@@ -191,7 +191,7 @@ namespace WinAuth
             // 
             this.timer.Enabled = true;
             this.timer.Interval = 500;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // step4TimerLabel
             // 
@@ -212,7 +212,7 @@ namespace WinAuth
             this.timeBasedRadio.TabStop = true;
             this.timeBasedRadio.Text = "Time-based";
             this.timeBasedRadio.UseSelectable = true;
-            this.timeBasedRadio.CheckedChanged += new System.EventHandler(this.timeBasedRadio_CheckedChanged);
+            this.timeBasedRadio.CheckedChanged += new System.EventHandler(this.TimeBasedRadio_CheckedChanged);
             // 
             // counterBasedRadio
             // 
@@ -223,7 +223,7 @@ namespace WinAuth
             this.counterBasedRadio.TabIndex = 6;
             this.counterBasedRadio.Text = "Counter-based";
             this.counterBasedRadio.UseSelectable = true;
-            this.counterBasedRadio.CheckedChanged += new System.EventHandler(this.counterBasedRadio_CheckedChanged);
+            this.counterBasedRadio.CheckedChanged += new System.EventHandler(this.CounterBasedRadio_CheckedChanged);
             // 
             // timeBasedPanel
             // 
@@ -257,7 +257,7 @@ namespace WinAuth
             this.verifyCounterButton.TabIndex = 2;
             this.verifyCounterButton.Text = "Verify Authenticator";
             this.verifyCounterButton.UseSelectable = true;
-            this.verifyCounterButton.Click += new System.EventHandler(this.verifyButton_Click);
+            this.verifyCounterButton.Click += new System.EventHandler(this.VerifyButton_Click);
             // 
             // counterField
             // 
@@ -373,9 +373,9 @@ namespace WinAuth
             this.dragImagePanel.Name = "dragImagePanel";
             this.dragImagePanel.Size = new System.Drawing.Size(116, 34);
             this.dragImagePanel.TabIndex = 17;
-            this.dragImagePanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dragPanel_DragDrop);
-            this.dragImagePanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dragPanel_DragEnter);
-            this.dragImagePanel.DragLeave += new System.EventHandler(this.dragImagePanel_DragLeave);
+            this.dragImagePanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragPanel_DragDrop);
+            this.dragImagePanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragPanel_DragEnter);
+            this.dragImagePanel.DragLeave += new System.EventHandler(this.DragImagePanel_DragLeave);
             // 
             // label_dragimage
             // 

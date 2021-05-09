@@ -71,7 +71,7 @@
 			this.okButton.TabIndex = 2;
 			this.okButton.Text = "strings.OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// invalidPasswordLabel
 			// 
@@ -88,7 +88,7 @@
 			// invalidPasswordTimer
 			// 
 			this.invalidPasswordTimer.Interval = 2000;
-			this.invalidPasswordTimer.Tick += new System.EventHandler(this.invalidPasswordTimer_Tick);
+			this.invalidPasswordTimer.Tick += new System.EventHandler(this.InvalidPasswordTimer_Tick);
 			// 
 			// UnprotectPasswordForm
 			// 

@@ -45,7 +45,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void showCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void ShowCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (showCheckbox.Checked)
             {
@@ -68,7 +68,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             var password = passwordField.Text.Trim();
             var verify = verifyField.Text.Trim();
@@ -90,7 +90,7 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void errorTimer_Tick(object sender, EventArgs e)
+        private void ErrorTimer_Tick(object sender, EventArgs e)
         {
             errorTimer.Enabled = false;
             errorLabel.Text = string.Empty;

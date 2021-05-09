@@ -68,7 +68,7 @@
 			this.autoCheckbox.Size = new System.Drawing.Size(254, 26);
 			this.autoCheckbox.TabIndex = 4;
 			this.autoCheckbox.UseSelectable = true;
-			this.autoCheckbox.CheckedChanged += new System.EventHandler(this.autoCheckbox_CheckedChanged);
+			this.autoCheckbox.CheckedChanged += new System.EventHandler(this.AutoCheckbox_CheckedChanged);
 			// 
 			// autoDropdown
 			// 
@@ -85,7 +85,7 @@
 			this.autoDropdown.Size = new System.Drawing.Size(117, 29);
 			this.autoDropdown.TabIndex = 5;
 			this.autoDropdown.UseSelectable = true;
-			this.autoDropdown.SelectedIndexChanged += new System.EventHandler(this.autoDropdown_SelectedIndexChanged);
+			this.autoDropdown.SelectedIndexChanged += new System.EventHandler(this.AutoDropdown_SelectedIndexChanged);
 			// 
 			// okButton
 			// 
@@ -97,7 +97,7 @@
 			this.okButton.TabIndex = 2;
 			this.okButton.Text = "OK";
 			this.okButton.UseSelectable = true;
-			this.okButton.Click += new System.EventHandler(this.okButton_Click);
+			this.okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// autoLabel
 			// 
@@ -106,7 +106,7 @@
 			this.autoLabel.Size = new System.Drawing.Size(235, 45);
 			this.autoLabel.TabIndex = 6;
 			this.autoLabel.Text = "Automatically check for updates when WinAuth is started";
-			this.autoLabel.Click += new System.EventHandler(this.autoLabel_Click);
+			this.autoLabel.Click += new System.EventHandler(this.AutoLabel_Click);
 			// 
 			// UpdateCheckForm
 			// 

@@ -63,7 +63,7 @@ namespace WinAuth
 			this.allowCopyCheckBox.Size = new System.Drawing.Size(77, 17);
 			this.allowCopyCheckBox.TabIndex = 4;
 			this.allowCopyCheckBox.Text = "Allow copy";
-			this.allowCopyCheckBox.CheckedChanged += new System.EventHandler(this.allowCopyCheckBox_CheckedChanged);
+			this.allowCopyCheckBox.CheckedChanged += new System.EventHandler(this.AllowCopyCheckBox_CheckedChanged);
 			// 
 			// serialNumberField
 			// 

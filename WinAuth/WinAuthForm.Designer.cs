@@ -72,7 +72,7 @@
             // 
 			this.mainTimer.Enabled = true;
 			this.mainTimer.Interval = 500;
-			this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+			this.mainTimer.Tick += new System.EventHandler(this.MainTimer_Tick);
             // 
             // authenticatorMenu
             // 
@@ -96,7 +96,7 @@
             // 
 			this.optionsMenu.Name = "addMenu";
 			this.optionsMenu.Size = new System.Drawing.Size(61, 4);
-			this.optionsMenu.Opening += new System.ComponentModel.CancelEventHandler(this.optionsMenu_Opening);
+			this.optionsMenu.Opening += new System.ComponentModel.CancelEventHandler(this.OptionsMenu_Opening);
             // 
             // notifyIcon
             // 
@@ -104,23 +104,23 @@
 			this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
 			this.notifyIcon.Text = "WinAuth";
 			this.notifyIcon.Visible = true;
-			this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+			this.notifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_DoubleClick);
             // 
             // notifyMenu
             // 
 			this.notifyMenu.Name = "notifyMenu";
 			this.notifyMenu.Size = new System.Drawing.Size(61, 4);
-			this.notifyMenu.Opening += new System.ComponentModel.CancelEventHandler(this.notifyMenu_Opening);
+			this.notifyMenu.Opening += new System.ComponentModel.CancelEventHandler(this.NotifyMenu_Opening);
             // 
             // passwordTimer
             // 
 			this.passwordTimer.Interval = 500;
-			this.passwordTimer.Tick += new System.EventHandler(this.passwordTimer_Tick);
+			this.passwordTimer.Tick += new System.EventHandler(this.PasswordTimer_Tick);
             // 
             // hotkeyTimer
             // 
 			this.hotkeyTimer.Interval = 250;
-			this.hotkeyTimer.Tick += new System.EventHandler(this.hotkeyTimer_Tick);
+			this.hotkeyTimer.Tick += new System.EventHandler(this.HotkeyTimer_Tick);
             // 
             // passwordPanel
             // 
@@ -147,7 +147,7 @@
 			this.passwordButton.TabIndex = 1;
 			this.passwordButton.Text = "OK";
 			this.passwordButton.UseSelectable = true;
-			this.passwordButton.Click += new System.EventHandler(this.passwordButton_Click);
+			this.passwordButton.Click += new System.EventHandler(this.PasswordButton_Click);
             // 
             // passwordErrorLabel
             // 
@@ -179,7 +179,7 @@
 			this.passwordField.TabIndex = 0;
 			this.passwordField.UseSelectable = true;
 			this.passwordField.UseSystemPasswordChar = true;
-			this.passwordField.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.passwordField_KeyPress);
+			this.passwordField.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PasswordField_KeyPress);
 			// 
 			// introLabel
 			// 
@@ -210,7 +210,7 @@
 			this.commandPanel.VerticalScrollbarHighlightOnWheel = false;
 			this.commandPanel.VerticalScrollbarSize = 10;
 			this.commandPanel.Visible = false;
-			this.commandPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.commandPanel_MouseDown);
+			this.commandPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CommandPanel_MouseDown);
             // 
             // newVersionLink
             // 
@@ -222,7 +222,7 @@
 			this.newVersionLink.Text = "New version is available";
 			this.newVersionLink.UseSelectable = true;
 			this.newVersionLink.Visible = false;
-			this.newVersionLink.Click += new System.EventHandler(this.newVersionLink_Click);
+			this.newVersionLink.Click += new System.EventHandler(this.NewVersionLink_Click);
             // 
             // optionsButton
             // 
@@ -235,7 +235,7 @@
 			this.optionsButton.Size = new System.Drawing.Size(28, 23);
 			this.optionsButton.TabIndex = 0;
 			this.optionsButton.UseSelectable = true;
-			this.optionsButton.Click += new System.EventHandler(this.optionsButton_Click);
+			this.optionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
 			// 
 			// searchLabel
 			// 
@@ -254,7 +254,7 @@
 			this.searchTextbox.Size = new System.Drawing.Size(100, 20);
 			this.searchTextbox.TabIndex = 0;
 			this.searchTextbox.UseSelectable = true;
-			this.searchTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchTextbox_KeyUp);
+			this.searchTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SearchTextbox_KeyUp);
 			// 
 			// noticeLabel
 			// 
@@ -272,7 +272,7 @@
 			this.addAuthenticatorButton.TabIndex = 0;
 			this.addAuthenticatorButton.Text = "Add";
 			this.addAuthenticatorButton.UseSelectable = true;
-			this.addAuthenticatorButton.Click += new System.EventHandler(this.addAuthenticatorButton_Click);
+			this.addAuthenticatorButton.Click += new System.EventHandler(this.AddAuthenticatorButton_Click);
             // 
             // authenticatorList
             // 
@@ -294,9 +294,9 @@
 			this.authenticatorList.TabIndex = 0;
 			this.authenticatorList.TabStop = false;
 			this.authenticatorList.Visible = false;
-			this.authenticatorList.ItemRemoved += new WinAuth.AuthenticatorListItemRemovedHandler(this.authenticatorList_ItemRemoved);
-			this.authenticatorList.Reordered += new WinAuth.AuthenticatorListReorderedHandler(this.authenticatorList_Reordered);
-			this.authenticatorList.DoubleClick += new WinAuth.AuthenticatorListDoubleClickHandler(this.authenticatorList_DoubleClick);
+			this.authenticatorList.ItemRemoved += new WinAuth.AuthenticatorListItemRemovedHandler(this.AuthenticatorList_ItemRemoved);
+			this.authenticatorList.Reordered += new WinAuth.AuthenticatorListReorderedHandler(this.AuthenticatorList_Reordered);
+			this.authenticatorList.DoubleClick += new WinAuth.AuthenticatorListDoubleClickHandler(this.AuthenticatorList_DoubleClick);
             // 
             // metroStyleManager
             // 
