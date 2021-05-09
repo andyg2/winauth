@@ -69,14 +69,9 @@ namespace WinAuth
             if (Authenticator != null && Authenticator.AuthenticatorData != null)
             {
                 // Issue#122: remove dashes if copyable so can be pasted into Battle.net form
-                if (allowCopyNewButton.Checked)
-                {
-                    newSerialNumberField.Text = ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial.Replace("-", "");
-                }
-                else
-                {
-                    newSerialNumberField.Text = ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial;
-                }
+                newSerialNumberField.Text = allowCopyNewButton.Checked
+                    ? ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial.Replace("-", "")
+                    : ((BattleNetAuthenticator)Authenticator.AuthenticatorData).Serial;
             }
             newLoginCodeField.SecretMode = !allowCopyNewButton.Checked;
             newRestoreCodeField.SecretMode = !allowCopyNewButton.Checked;

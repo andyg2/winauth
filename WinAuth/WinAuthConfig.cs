@@ -387,14 +387,7 @@ namespace WinAuth
             if (IsPortable)
             {
                 // read setting from _settings
-                if (_settings.TryGetValue(name, out var value))
-                {
-                    return value;
-                }
-                else
-                {
-                    return defaultValue;
-                }
+                return _settings.TryGetValue(name, out var value) ? value : defaultValue;
             }
             else
             {

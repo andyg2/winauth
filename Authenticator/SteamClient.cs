@@ -1175,14 +1175,7 @@ namespace WinAuth
         public string GetString(string url, string method = null, NameValueCollection formdata = null, NameValueCollection headers = null)
         {
             var data = Request(url, method ?? "GET", formdata, headers);
-            if (data == null || data.Length == 0)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return Encoding.UTF8.GetString(data);
-            }
+            return data != null && data.Length != 0 ? Encoding.UTF8.GetString(data) : string.Empty;
         }
 
         /// <summary>

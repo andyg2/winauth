@@ -905,7 +905,6 @@ namespace WinAuth
             }
 
             // extract salt and hash
-            //using (var sha = new SHA256Managed())
             using (var sha = SafeHasher("SHA256"))
             {
                 // jump header
@@ -948,28 +947,14 @@ namespace WinAuth
                     // we are going to decrypt with the Windows local machine key
                     var cipher = Authenticator.StringToByteArray(data);
                     var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
-                    if (decode)
-                    {
-                        data = Encoding.UTF8.GetString(plain, 0, plain.Length);
-                    }
-                    else
-                    {
-                        data = ByteArrayToString(plain);
-                    }
+                    data = decode ? Encoding.UTF8.GetString(plain, 0, plain.Length) : ByteArrayToString(plain);
                 }
                 if ((encryptedTypes & PasswordTypes.User) != 0)
                 {
                     // we are going to decrypt with the Windows User account key
                     var cipher = StringToByteArray(data);
                     var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
-                    if (decode)
-                    {
-                        data = Encoding.UTF8.GetString(plain, 0, plain.Length);
-                    }
-                    else
-                    {
-                        data = ByteArrayToString(plain);
-                    }
+                    data = decode ? Encoding.UTF8.GetString(plain, 0, plain.Length) : ByteArrayToString(plain);
                 }
                 if ((encryptedTypes & PasswordTypes.Explicit) != 0)
                 {
@@ -1004,23 +989,18 @@ namespace WinAuth
         public static HashAlgorithm SafeHasher(string name)
         {
             try
-
             {
-
-                if (name == "SHA512")
+                switch (name)
                 {
-                    return SHA512.Create();
+                    case "SHA512":
+                        return SHA512.Create();
+                    case "SHA256":
+                        return SHA256.Create();
+                    case "MD5":
+                        return MD5.Create();
+                    default:
+                        return SHA1.Create();
                 }
-                if (name == "SHA256")
-                {
-                    return SHA256.Create();
-                }
-                if (name == "MD5")
-                {
-                    return MD5.Create();
-                }
-
-                return SHA1.Create();
             }
             catch (Exception)
             {
@@ -1038,7 +1018,6 @@ namespace WinAuth
             var salt = ByteArrayToString(saltbytes);
 
             string hash;
-            //using (var sha = new SHA256Managed())
             using (var sha = SafeHasher("SHA256"))
             {
                 var plain = StringToByteArray(salt + data);

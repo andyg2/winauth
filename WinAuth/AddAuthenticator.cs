@@ -536,14 +536,7 @@ namespace WinAuth
                 auth.Period = period;
                 Authenticator.AuthenticatorData = auth;
 
-                if (digits > 5)
-                {
-                    codeField.SpaceOut = digits / 2;
-                }
-                else
-                {
-                    codeField.SpaceOut = 0;
-                }
+                codeField.SpaceOut = digits > 5 ? digits / 2 : 0;
 
                 //string key = Base32.getInstance().Encode(this.Authenticator.AuthenticatorData.SecretKey);
                 codeField.Text = auth.CurrentCode;

@@ -870,14 +870,7 @@ namespace WinAuth
                 index = Items.Count - 1;
             }
 
-            if (index >= Items.Count)
-            {
-                CurrentItem = null;
-            }
-            else
-            {
-                CurrentItem = Items[index] as AuthenticatorListitem;
-            }
+            CurrentItem = index >= Items.Count ? null : Items[index] as AuthenticatorListitem;
         }
 
         /// <summary>
@@ -1932,14 +1925,7 @@ namespace WinAuth
                             // we we aren't autorefresh we just keep the same code up for the 10 seconds so it doesn't change even crossing the 30s boundary
                             if (!auth.AutoRefresh)
                             {
-                                if (item.LastCode == null)
-                                {
-                                    code = auth.CurrentCode;
-                                }
-                                else
-                                {
-                                    code = item.LastCode;
-                                }
+                                code = item.LastCode ?? auth.CurrentCode;
                             }
                             else
                             {

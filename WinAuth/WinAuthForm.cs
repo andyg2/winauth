@@ -1335,14 +1335,9 @@ namespace WinAuth
         {
             if (Config.AutoSize)
             {
-                if (Config.Count != 0)
-                {
-                    Width = Math.Max(420, authenticatorList.Margin.Horizontal + authenticatorList.GetMaxItemWidth() + (Width - authenticatorList.Width));
-                }
-                else
-                {
-                    Width = 420;
-                }
+                Width = Config.Count != 0
+                    ? Math.Max(420, authenticatorList.Margin.Horizontal + authenticatorList.GetMaxItemWidth() + (Width - authenticatorList.Width))
+                    : 420;
 
                 // Issue#175; take the smallest of full height or 62% screen height
                 var height = Height - authenticatorList.Height;
@@ -1884,14 +1879,7 @@ namespace WinAuth
         private void searchTextbox_changed(object sender, EventArgs e)
         {
             var txt = searchTextbox.Text.Trim();
-            if (txt != "")
-            {
-                searchString = txt;
-            }
-            else
-            {
-                searchString = "";
-            }
+            searchString = txt != "" ? txt : "";
             noticeLabel.Text = "";
             loadAuthenticatorList();
         }

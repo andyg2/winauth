@@ -578,7 +578,7 @@ namespace WinAuth
                 {
                     var manifest = JObject.Parse(File.ReadAllText(manifestfile));
                     var token = manifest.SelectToken("encrypted");
-                    var encrypted = token != null ? token.Value<bool>() : false;
+                    var encrypted = token != null && token.Value<bool>();
                     if (encrypted && password.Length == 0)
                     {
                         throw new ApplicationException("Please enter your password");

@@ -455,14 +455,7 @@ namespace WinAuth
                     }
 
                     // require email auth
-                    if (loginresponse.ContainsKey("requires_twofactor") && (bool)loginresponse["requires_twofactor"])
-                    {
-                        state.Requires2FA = true;
-                    }
-                    else
-                    {
-                        state.Requires2FA = false;
-                    }
+                    state.Requires2FA = loginresponse.ContainsKey("requires_twofactor") && (bool)loginresponse["requires_twofactor"];
 
                     // if we didn't login, return the result
                     if (!loginresponse.ContainsKey("login_complete") || !(bool)loginresponse["login_complete"] || !loginresponse.ContainsKey("oauth"))

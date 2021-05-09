@@ -678,14 +678,9 @@ namespace WinAuth
 
             // set the authenticator data
             SecretKey = secretKey;
-            if (serial.Length == 14)
-            {
-                Serial = serial.Substring(0, 2).ToUpper() + "-" + serial.Substring(2, 4) + "-" + serial.Substring(6, 4) + "-" + serial.Substring(10, 4);
-            }
-            else
-            {
-                Serial = serial.ToUpper();
-            }
+            Serial = serial.Length == 14
+                ? serial.Substring(0, 2).ToUpper() + "-" + serial.Substring(2, 4) + "-" + serial.Substring(6, 4) + "-" + serial.Substring(10, 4)
+                : serial.ToUpper();
             // restore code is ok
             RestoreCodeVerified = true;
             // sync the time
@@ -737,14 +732,7 @@ namespace WinAuth
             {
                 upperregion = upperregion.Substring(0, 2);
             }
-            if (MOBILE_URLS.ContainsKey(upperregion))
-            {
-                return MOBILE_URLS[upperregion];
-            }
-            else
-            {
-                return MOBILE_URLS[REGION_US];
-            }
+            return MOBILE_URLS.ContainsKey(upperregion) ? MOBILE_URLS[upperregion] : MOBILE_URLS[REGION_US];
         }
 
         /// <summary>

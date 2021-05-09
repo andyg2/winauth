@@ -134,28 +134,11 @@ namespace WinAuth
         /// </summary>
         public bool AutoRefresh
         {
-            get
-            {
-                if (AuthenticatorData != null && AuthenticatorData is HOTPAuthenticator)
-                {
-                    return false;
-                }
-                else
-                {
-                    return _autoRefresh;
-                }
-            }
+            get => (AuthenticatorData == null || !(AuthenticatorData is HOTPAuthenticator)) && _autoRefresh;
             set
             {
                 // HTOP must always be false
-                if (AuthenticatorData != null && AuthenticatorData is HOTPAuthenticator)
-                {
-                    _autoRefresh = false;
-                }
-                else
-                {
-                    _autoRefresh = value;
-                }
+                _autoRefresh = (AuthenticatorData == null || !(AuthenticatorData is HOTPAuthenticator)) && value;
                 OnWinAuthAuthenticatorChanged?.Invoke(this, new WinAuthAuthenticatorChangedEventArgs("AutoRefresh"));
             }
         }
