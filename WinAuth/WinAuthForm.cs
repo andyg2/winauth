@@ -1684,8 +1684,6 @@ namespace WinAuth
         /// <param name="e"></param>
         void importTextMenu_Click(object sender, EventArgs e)
         {
-            var menuitem = (ToolStripItem)sender;
-
             var ofd = new OpenFileDialog
             {
                 AddExtension = true,

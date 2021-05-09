@@ -222,8 +222,6 @@ namespace WinAuth
 
             Authenticator.Name = nameField.Text;
 
-            var authtype = "totp";
-
             // if this is a URL, pull it down
             Match match;
             if (Regex.IsMatch(privatekey, "https?://.*") && Uri.TryCreate(privatekey, UriKind.Absolute, out var uri))
@@ -290,7 +288,7 @@ namespace WinAuth
             match = Regex.Match(privatekey, @"otpauth://([^/]+)/([^?]+)\?(.*)", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                authtype = match.Groups[1].Value; // @todo we only handle totp (not hotp)
+                var authtype = match.Groups[1].Value; // @todo we only handle totp (not hotp)
                 if (string.Compare(authtype, "totp", true) != 0)
                 {
                     WinAuthForm.ErrorDialog(Owner, "Only time-based (TOTP) authenticators are supported when adding a Google Authenticator. Use the general \"Add Authenticator\" for counter-based (HOTP) authenticators.");

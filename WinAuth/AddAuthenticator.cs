@@ -334,14 +334,12 @@ namespace WinAuth
 
             Authenticator.Name = nameField.Text;
 
-            var digits = Authenticator.AuthenticatorData != null ? Authenticator.AuthenticatorData.CodeDigits : GoogleAuthenticator.DEFAULT_CODE_DIGITS;
-            if (string.IsNullOrEmpty(digitsField.Text) || !int.TryParse(digitsField.Text, out digits) || digits <= 0)
+            if (string.IsNullOrEmpty(digitsField.Text) || !int.TryParse(digitsField.Text, out var digits) || digits <= 0)
             {
                 return false;
             }
 
-            var hmac = WinAuth.Authenticator.HMACTypes.SHA1;
-            Enum.TryParse<WinAuth.Authenticator.HMACTypes>((string)hashField.SelectedItem, out hmac);
+            Enum.TryParse<Authenticator.HMACTypes>((string)hashField.SelectedItem, out var hmac);
 
             var authtype = timeBasedRadio.Checked ? TOTP : HOTP;
 
@@ -427,7 +425,6 @@ namespace WinAuth
                 var p = label.IndexOf(":");
                 if (p != -1)
                 {
-                    issuer = label.Substring(0, p);
                     label = label.Substring(p + 1);
                 }
 
