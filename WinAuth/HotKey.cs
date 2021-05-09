@@ -132,22 +132,22 @@ namespace WinAuth
             writer.WriteStartElement("modifiers");
             writer.WriteString(Authenticator.ByteArrayToString(BitConverter.GetBytes((int)Modifiers)));
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("key");
             writer.WriteString(Authenticator.ByteArrayToString(BitConverter.GetBytes((ushort)Key)));
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("action");
             writer.WriteString(Enum.GetName(typeof(HotKeyActions), Action));
             writer.WriteEndElement();
-            //
+
             if (!string.IsNullOrEmpty(Window))
             {
                 writer.WriteStartElement("window");
                 writer.WriteString(Window);
                 writer.WriteEndElement();
             }
-            //
+
             if (!string.IsNullOrEmpty(Advanced))
             {
                 writer.WriteStartElement("advanced");
@@ -181,5 +181,4 @@ namespace WinAuth
             return shortcut;
         }
     }
-
 }

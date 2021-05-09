@@ -214,7 +214,7 @@ namespace WinAuth
             {
                 try
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(uri);
+                    var request = WebRequest.CreateHttp(uri);
                     request.AllowAutoRedirect = true;
                     request.Timeout = 20000;
                     request.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)";
@@ -224,7 +224,7 @@ namespace WinAuth
                         {
                             using (var bitmap = (Bitmap)Image.FromStream(response.GetResponseStream()))
                             {
-                                IBarcodeReader reader = new BarcodeReader();
+                                var reader = new BarcodeReader();
                                 var result = reader.Decode(bitmap);
                                 if (result != null)
                                 {
@@ -247,7 +247,7 @@ namespace WinAuth
                 {
                     using (var bitmap = (Bitmap)Image.FromStream(ms))
                     {
-                        IBarcodeReader reader = new BarcodeReader();
+                        var reader = new BarcodeReader();
                         var result = reader.Decode(bitmap);
                         if (result != null)
                         {
@@ -261,7 +261,7 @@ namespace WinAuth
                 // assume this is the image file
                 using (var bitmap = (Bitmap)Image.FromFile(privatekey))
                 {
-                    IBarcodeReader reader = new BarcodeReader();
+                    var reader = new BarcodeReader();
                     var result = reader.Decode(bitmap);
                     if (result != null)
                     {

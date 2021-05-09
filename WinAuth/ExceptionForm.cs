@@ -205,6 +205,5 @@ namespace WinAuth
                 Height -= 160;
             }
         }
-
     }
 }

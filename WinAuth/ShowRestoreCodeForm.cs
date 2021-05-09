@@ -106,7 +106,7 @@ namespace WinAuth
             catch (InvalidRestoreCodeException)
             {
                 e.Result = "This authenticator was created before the restore capability existed and so the restore code will not work.\n\n"
-                        + "You will need to remove this authenticator from your Battle.net account and create a new one.";
+                         + "You will need to remove this authenticator from your Battle.net account and create a new one.";
             }
             catch (InvalidRestoreResponseException)
             {
@@ -115,7 +115,7 @@ namespace WinAuth
             catch (Exception ex2)
             {
                 e.Result = "Oops. An error (" + ex2.Message + ") occured whilst validating your restore code."
-                        + "Please log a ticket at https://github.com/winauth/winauth/issues so we can fix this.";
+                         + "Please log a ticket at https://github.com/winauth/winauth/issues so we can fix this.";
             }
         }
 
@@ -129,6 +129,5 @@ namespace WinAuth
             serialNumberField.SecretMode = !allowCopyCheckBox.Checked;
             restoreCodeField.SecretMode = !allowCopyCheckBox.Checked;
         }
-
     }
 }

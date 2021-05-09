@@ -148,7 +148,7 @@ namespace WinAuth
         public string SessionData { get; set; }
 
         /// <summary>
-        /// 
+        /// Poll data
         /// </summary>
         public string PollData { get; set; }
 
@@ -182,7 +182,7 @@ namespace WinAuth
 
                 //if (Logger != null)
                 //{
-                //	Logger.Debug("Get Steam data: {0}, Session:{1}", (SteamData ?? string.Empty).Replace("\n"," ").Replace("\r",""), (SessionData ?? string.Empty).Replace("\n", " ").Replace("\r", ""));
+                //    Logger.Debug("Get Steam data: {0}, Session:{1}", (SteamData ?? string.Empty).Replace("\n"," ").Replace("\r",""), (SessionData ?? string.Empty).Replace("\n", " ").Replace("\r", ""));
                 //}
 
                 // this is the key |  serial | deviceid
@@ -212,7 +212,7 @@ namespace WinAuth
 
                     //if (Logger != null)
                     //{
-                    //	Logger.Debug("Set Steam data: {0}, Session:{1}", (SteamData ?? string.Empty).Replace("\n", " ").Replace("\r", ""), (SessionData ?? string.Empty).Replace("\n", " ").Replace("\r", ""));
+                    //    Logger.Debug("Set Steam data: {0}, Session:{1}", (SteamData ?? string.Empty).Replace("\n", " ").Replace("\r", ""), (SessionData ?? string.Empty).Replace("\n", " ").Replace("\r", ""));
                     //}
 
                     if (!string.IsNullOrEmpty(session))
@@ -266,7 +266,7 @@ namespace WinAuth
             }
 
             // call the server
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
             request.ServicePoint.Expect100Continue = false;
@@ -323,7 +323,7 @@ namespace WinAuth
 
                 if (ex is WebException webException && webException.Response != null && ((HttpWebResponse)webException.Response).StatusCode == HttpStatusCode.Forbidden)
                 {
-                    throw new UnauthorisedRequestException(ex);
+                    throw new UnauthorizedRequestException(ex);
                 }
 
                 throw new InvalidRequestException(ex.Message, ex);
@@ -568,7 +568,7 @@ namespace WinAuth
                 data.Add("steamid", state.SteamId);
                 data.Add("activation_code", state.ActivationCode);
 
-                // try and authorise
+                // try and authorize
                 var retries = 0;
                 while (state.RequiresActivation && retries < ENROLL_ACTIVATE_RETRIES)
                 {
@@ -625,7 +625,7 @@ namespace WinAuth
 
                 return true;
             }
-            catch (UnauthorisedRequestException ex)
+            catch (UnauthorizedRequestException ex)
             {
                 throw new InvalidEnrollResponseException("You are not allowed to add an authenticator. Have you enabled 'community-generated content' in Family View?", ex);
             }
@@ -847,8 +847,8 @@ namespace WinAuth
     /// <summary>
     /// 403 forbidden responses
     /// </summary>
-    public class UnauthorisedRequestException : InvalidRequestException
+    public class UnauthorizedRequestException : InvalidRequestException
     {
-        public UnauthorisedRequestException(Exception ex = null) : base("Unauthorised", ex) { }
+        public UnauthorizedRequestException(Exception ex = null) : base("Unauthorized", ex) { }
     }
 }

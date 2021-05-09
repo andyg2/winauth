@@ -56,18 +56,14 @@ namespace WinAuth
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ExportForm_Load(object sender, EventArgs e)
-        {
-        }
+        private void ExportForm_Load(object sender, EventArgs e) { }
 
         /// <summary>
         /// Form has been shown
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ExportForm_Shown(object sender, EventArgs e)
-        {
-        }
+        private void ExportForm_Shown(object sender, EventArgs e) { }
 
         /// <summary>
         /// Password encryption is ticked
@@ -210,7 +206,5 @@ namespace WinAuth
                 PGPKey = pgpField.Text;
             }
         }
-
     }
-
 }

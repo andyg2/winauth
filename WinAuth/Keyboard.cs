@@ -509,5 +509,4 @@ namespace WinAuth
             catch (Exception) { }
         }
     }
-
 }

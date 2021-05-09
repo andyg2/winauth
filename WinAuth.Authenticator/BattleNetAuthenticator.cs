@@ -230,7 +230,7 @@ namespace WinAuth
 
             // Battle.net does a GEO IP lookup anyway so there is no need to pass the region
             // however China has its own URL so we must still do our own GEO IP lookup to find the country
-            var georequest = (HttpWebRequest)WebRequest.Create(GEOIPURL);
+            var georequest = WebRequest.CreateHttp(GEOIPURL);
             georequest.Method = "GET";
             georequest.ContentType = "application/json";
             georequest.Timeout = 10000;
@@ -315,7 +315,7 @@ namespace WinAuth
             //  00 byte[20] one-time key used to decrypt data when returned;
             //  20 byte[2] country code, e.g. US, GB, FR, KR, etc
             //  22 byte[16] model string for this device;
-            //	38 END
+            //  38 END
             var data = new byte[38];
             var oneTimePad = CreateOneTimePad(20);
             Array.Copy(oneTimePad, data, oneTimePad.Length);
@@ -335,7 +335,7 @@ namespace WinAuth
             byte[] responseData = null;
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(region) + ENROLL_PATH);
+                var request = WebRequest.CreateHttp(GetMobileUrl(region) + ENROLL_PATH);
                 request.Method = "POST";
                 request.ContentType = "application/octet-stream";
                 request.ContentLength = encrypted.Length;
@@ -449,7 +449,7 @@ namespace WinAuth
             try
             {
                 // create a connection to time sync server
-                var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(Region) + SYNC_PATH);
+                var request = WebRequest.CreateHttp(GetMobileUrl(Region) + SYNC_PATH);
                 request.Method = "GET";
                 request.Timeout = 5000;
 
@@ -525,7 +525,7 @@ namespace WinAuth
             var serialBytes = Encoding.UTF8.GetBytes(serial.ToUpper().Replace("-", string.Empty));
 
             // send the request to the server to get our challenge
-            var request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(serial) + RESTORE_PATH);
+            var request = WebRequest.CreateHttp(GetMobileUrl(serial) + RESTORE_PATH);
             request.Method = "POST";
             request.ContentType = "application/octet-stream";
             request.ContentLength = serialBytes.Length;
@@ -615,7 +615,7 @@ namespace WinAuth
             Array.Copy(encrypted, 0, postbytes, serialBytes.Length, encrypted.Length);
 
             // send the challenge response back to the server
-            request = (HttpWebRequest)WebRequest.Create(GetMobileUrl(serial) + RESTOREVALIDATE_PATH);
+            request = WebRequest.CreateHttp(GetMobileUrl(serial) + RESTOREVALIDATE_PATH);
             request.Method = "POST";
             request.ContentType = "application/octet-stream";
             request.ContentLength = postbytes.Length;

@@ -65,11 +65,9 @@ namespace WinAuth
         public string ProcessName;
 
         /// <summary>
-        /// Create a new blank HotKeySequcen
+        /// Create a new blank HotKeySequence
         /// </summary>
-        public HoyKeySequence()
-        {
-        }
+        public HoyKeySequence() { }
 
         /// <summary>
         /// Create a new HotKeySequence from a loaded string
@@ -231,50 +229,48 @@ namespace WinAuth
                             {
                                 var passwordType = Authenticator.DecodePasswordTypes(encrypted);
                                 data = Authenticator.DecryptSequence(data, passwordType, password, true);
-                                //byte[] plain = Authenticator.StringToByteArray(data);
+                                //var plain = Authenticator.StringToByteArray(data);
                                 //data = Encoding.UTF8.GetString(plain, 0, plain.Length);
 
-                                /*
-                                                char[] encTypes = encrypted.ToCharArray();
-                                                // we read the string in reverse order (the order they were encrypted)
-                                                for (int i = encTypes.Length - 1; i >= 0; i--)
-                                                {
-                                                  char encryptedType = encTypes[i];
-                                                  switch (encryptedType)
-                                                  {
-                                                    case 'u':
-                                                      {
-                                                        // we are going to decrypt with the Windows User account key
-                                                        byte[] cipher = Authenticator.StringToByteArray(data);
-                                                        byte[] plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
-                                                        data = Encoding.UTF8.GetString(plain, 0, plain.Length);
-                                                        break;
-                                                      }
-                                                    case 'm':
-                                                      {
-                                                        // we are going to decrypt with the Windows local machine key
-                                                        byte[] cipher = Authenticator.StringToByteArray(data);
-                                                        byte[] plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
-                                                        data = Encoding.UTF8.GetString(plain, 0, plain.Length);
-                                                        break;
-                                                      }
-                                                    case 'y':
-                                                      {
-                                                        // we use an explicit password to encrypt data
-                                                        if (string.IsNullOrEmpty(password))
-                                                        {
-                                                          throw new EncryptedSecretDataException();
-                                                        }
-                                                        data = Authenticator.Decrypt(data, password, true);
-                                                        byte[] plain = Authenticator.StringToByteArray(data);
-                                                        data = Encoding.UTF8.GetString(plain, 0, plain.Length);
-                                                        break;
-                                                      }
-                                                    default:
-                                                      break;
-                                                  }
-                                                }
-                                */
+                                //var encTypes = encrypted.ToCharArray();
+                                //// we read the string in reverse order (the order they were encrypted)
+                                //for (var i = encTypes.Length - 1; i >= 0; i--)
+                                //{
+                                //    var encryptedType = encTypes[i];
+                                //    switch (encryptedType)
+                                //    {
+                                //        case 'u':
+                                //        {
+                                //            // we are going to decrypt with the Windows User account key
+                                //            var cipher = Authenticator.StringToByteArray(data);
+                                //            var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
+                                //            data = Encoding.UTF8.GetString(plain, 0, plain.Length);
+                                //            break;
+                                //        }
+                                //        case 'm':
+                                //        {
+                                //            // we are going to decrypt with the Windows local machine key
+                                //            var cipher = Authenticator.StringToByteArray(data);
+                                //            var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.LocalMachine);
+                                //            data = Encoding.UTF8.GetString(plain, 0, plain.Length);
+                                //            break;
+                                //        }
+                                //        case 'y':
+                                //        {
+                                //            // we use an explicit password to encrypt data
+                                //            if (string.IsNullOrEmpty(password))
+                                //            {
+                                //                throw new EncryptedSecretDataException();
+                                //            }
+                                //            data = Authenticator.Decrypt(data, password, true);
+                                //            var plain = Authenticator.StringToByteArray(data);
+                                //            data = Encoding.UTF8.GetString(plain, 0, plain.Length);
+                                //            break;
+                                //        }
+                                //        default:
+                                //            break;
+                                //    }
+                                //}
                             }
 
                             AdvancedScript = data;
@@ -305,27 +301,27 @@ namespace WinAuth
             writer.WriteStartElement("modifiers");
             writer.WriteString(Authenticator.ByteArrayToString(BitConverter.GetBytes((int)Modifiers)));
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("hotkey");
             writer.WriteString(Authenticator.ByteArrayToString(BitConverter.GetBytes((ushort)HotKey)));
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("windowtitle");
             writer.WriteCData(WindowTitle ?? string.Empty);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("processname");
             writer.WriteCData(ProcessName ?? string.Empty);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("windowtitleregex");
             writer.WriteValue(WindowTitleRegex);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("advanced");
             writer.WriteValue(Advanced);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("script");
             var script = AdvancedScript.Replace("\n", string.Empty);
             writer.WriteCData(script);
@@ -340,17 +336,16 @@ namespace WinAuth
         /// <returns>string representation</returns>
         //public override string ToString()
         //{
-        //	StringBuilder sb = new StringBuilder();
-        //	sb.Append("<modifiers>").Append(Authenticator.ByteArrayToString(BitConverter.GetBytes((int)Modifiers))).Append("</modifiers>");
-        //	sb.Append("<hotkey>").Append(Authenticator.ByteArrayToString(BitConverter.GetBytes((ushort)HotKey))).Append("</hotkey>");
-        //	sb.Append("<windowtitle><![CDATA[").Append(WindowTitle ?? string.Empty).Append("]]></windowtitle>");
-        //	sb.Append("<processname><![CDATA[").Append(ProcessName ?? string.Empty).Append("]]></processname>");
-        //	sb.Append("<windowtitleregex>").Append(WindowTitleRegex.ToString()).Append("</windowtitleregex>");
-        //	sb.Append("<advanced>").Append(Advanced.ToString()).Append("</advanced>");
-        //	sb.Append("<script><![CDATA[").Append(AdvancedScript.Replace("\n", string.Empty)).Append("]]></script>");
+        //    var sb = new StringBuilder();
+        //    sb.Append("<modifiers>").Append(Authenticator.ByteArrayToString(BitConverter.GetBytes((int)Modifiers))).Append("</modifiers>");
+        //    sb.Append("<hotkey>").Append(Authenticator.ByteArrayToString(BitConverter.GetBytes((ushort)HotKey))).Append("</hotkey>");
+        //    sb.Append("<windowtitle><![CDATA[").Append(WindowTitle ?? string.Empty).Append("]]></windowtitle>");
+        //    sb.Append("<processname><![CDATA[").Append(ProcessName ?? string.Empty).Append("]]></processname>");
+        //    sb.Append("<windowtitleregex>").Append(WindowTitleRegex.ToString()).Append("</windowtitleregex>");
+        //    sb.Append("<advanced>").Append(Advanced.ToString()).Append("</advanced>");
+        //    sb.Append("<script><![CDATA[").Append(AdvancedScript.Replace("\n", string.Empty)).Append("]]></script>");
 
-        //	return sb.ToString();
+        //    return sb.ToString();
         //}
     }
-
 }

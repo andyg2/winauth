@@ -294,12 +294,11 @@ namespace WinAuth
 
         /// <summary>
         /// Import authenticators from a file
-        /// 
+        ///
         /// *.xml = WinAuth v2
         /// *.txt = plain text with KeyUriFormat per line (https://code.google.com/p/google-authenticator/wiki/KeyUriFormat)
         /// *.zip = encrypted zip, containing import file
         /// *.pgp = PGP encrypted, containing import file
-        /// 
         /// </summary>
         /// <param name="authenticatorFile">name import file</param>
         private void ImportAuthenticator(string authenticatorFile)
@@ -789,9 +788,9 @@ namespace WinAuth
                 subitem.Click += AddAuthenticatorMenu_Click;
                 addAuthenticatorMenu.Items.Add(subitem);
             }
-            //
+
             addAuthenticatorMenu.Items.Add(new ToolStripSeparator());
-            //
+
             subitem = new ToolStripMenuItem
             {
                 Text = strings.MenuImportText,
@@ -1240,7 +1239,7 @@ namespace WinAuth
                 {
                     command = auth.HotKey?.Advanced;
                 }
-                else // if (this.Config.NotifyAction == WinAuthConfig.NotifyActions.Notification)
+                else //if (Config.NotifyAction == WinAuthConfig.NotifyActions.Notification)
                 {
                     if (code.Length > 5)
                     {
@@ -1440,7 +1439,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void WinAuthForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // keep in the tray when closing Form 
+            // keep in the tray when closing Form
             if (Config != null && Config.UseTrayIcon && Visible && !m_explictClose)
             {
                 e.Cancel = true;
@@ -1469,7 +1468,7 @@ namespace WinAuth
                 Config.Width = Width;
                 Config.Height = Height;
             }
-            if (Config != null /* && !this.Config.Position.IsEmpty */)
+            if (Config != null /* && !Config.Position.IsEmpty */)
             {
                 Config.Position = new Point(Left, Top);
             }
@@ -1668,14 +1667,14 @@ namespace WinAuth
                 CheckFileExists = true,
                 CheckPathExists = true
             };
-            //
+
             var lastv2file = WinAuthHelper.GetLastV2Config();
             if (!string.IsNullOrEmpty(lastv2file))
             {
                 ofd.InitialDirectory = Path.GetDirectoryName(lastv2file);
                 ofd.FileName = Path.GetFileName(lastv2file);
             }
-            //
+
             ofd.Filter = "WinAuth Files (*.xml)|*.xml|Text Files (*.txt)|*.txt|Zip Files (*.zip)|*.zip|PGP Files (*.pgp)|*.pgp|All Files (*.*)|*.*";
             ofd.RestoreDirectory = true;
             ofd.Title = WinAuthMain.APPLICATION_TITLE;
@@ -2143,14 +2142,14 @@ namespace WinAuth
                 menu.Items.Add(separator);
             }
 
-            //if (this.Config != null)
+            //if (Config != null)
             //{
-            //	menuitem = new ToolStripMenuItem(strings.MenuUseSystemTrayIcon);
-            //	menuitem.Name = "useSystemTrayIconOptionsMenuItem";
-            //	menuitem.Click += useSystemTrayIconOptionsMenuItem_Click;
-            //	menu.Items.Add(menuitem);
+            //    menuitem = new ToolStripMenuItem(strings.MenuUseSystemTrayIcon);
+            //    menuitem.Name = "useSystemTrayIconOptionsMenuItem";
+            //    menuitem.Click += UseSystemTrayIconOptionsMenuItem_Click;
+            //    menu.Items.Add(menuitem);
 
-            //	menu.Items.Add(new ToolStripSeparator());
+            //    menu.Items.Add(new ToolStripSeparator());
             //}
 
             menuitem = new ToolStripMenuItem(strings.MenuAbout + "...")
@@ -2195,7 +2194,6 @@ namespace WinAuth
         /// Set state of menuitems when opening the Options menu
         /// </summary>
         /// <param name="menu"></param>
-        /// 
         private void OpeningOptionsMenu(ContextMenuStrip menu)
         {
             ToolStripItem item;
@@ -2271,7 +2269,6 @@ namespace WinAuth
         /// Set state of menuitemns when opening the notify menu
         /// </summary>
         /// <param name="menu"></param>
-        /// 
         private void OpeningNotifyMenu(ContextMenuStrip menu)
         {
             ToolStripItem item;
@@ -2315,7 +2312,7 @@ namespace WinAuth
             //menuitem = menu.Items.Cast<ToolStripItem>().Where(t => t.Name == "useSystemTrayIconOptionsMenuItem").FirstOrDefault() as ToolStripMenuItem;
             //if (menuitem != null)
             //{
-            //	menuitem.Checked = this.Config.UseTrayIcon;
+            //    menuitem.Checked = Config.UseTrayIcon;
             //}
         }
 
@@ -2414,18 +2411,18 @@ namespace WinAuth
             {
                 RunAction(auth, Config.NotifyAction);
 
-                //string code = authenticatorList.GetItemCode(item);
+                //var code = authenticatorList.GetItemCode(item);
                 //if (code != null)
                 //{
-                //	if (auth.CopyOnCode)
-                //	{
-                //		auth.CopyCodeToClipboard(this, code);
-                //	}
-                //	if (code.Length > 5)
-                //	{
-                //		code = code.Insert(code.Length / 2, " ");
-                //	}
-                //	notifyIcon.ShowBalloonTip(10000, auth.Name, code, ToolTipIcon.Info);
+                //    if (auth.CopyOnCode)
+                //    {
+                //        auth.CopyCodeToClipboard(this, code);
+                //    }
+                //    if (code.Length > 5)
+                //    {
+                //        code = code.Insert(code.Length / 2, " ");
+                //    }
+                //    notifyIcon.ShowBalloonTip(10000, auth.Name, code, ToolTipIcon.Info);
                 //}
             }
         }

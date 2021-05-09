@@ -139,7 +139,7 @@ namespace WinAuth
                 }
             }
             // We'll ignore leftover bits for now.
-            //
+
             // if (next != outLength || bitsLeft >= SHIFT) {
             //  throw new DecodingException("Bits left: " + bitsLeft);
             // }
@@ -202,10 +202,6 @@ namespace WinAuth
 
     public class Base32DecodingException : ApplicationException
     {
-        public Base32DecodingException(string msg)
-            : base(msg)
-        {
-        }
+        public Base32DecodingException(string msg) : base(msg) { }
     }
-
 }

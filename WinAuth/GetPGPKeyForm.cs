@@ -30,8 +30,7 @@ namespace WinAuth
         /// <summary>
         /// Create new form
         /// </summary>
-        public GetPGPKeyForm()
-            : base()
+        public GetPGPKeyForm() : base()
         {
             InitializeComponent();
         }
@@ -98,6 +97,5 @@ namespace WinAuth
             PGPKey = pgpField.Text;
             Password = passwordField.Text;
         }
-
     }
 }

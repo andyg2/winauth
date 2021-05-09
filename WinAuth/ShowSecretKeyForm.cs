@@ -64,11 +64,11 @@ namespace WinAuth
             //var counter = CurrentAuthenticator.AuthenticatorData is HOTPAuthenticator hotpAuthenticator ? hotpAuthenticator.Counter : 0;
             //var issuer = CurrentAuthenticator.AuthenticatorData.Issuer;
 
-            //string url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
-            //	+ "?secret=" + key
-            //	+ "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
-            //	+ (counter != 0 ? "&counter=" + counter : string.Empty)
-            //	+ (string.IsNullOrEmpty(issuer) ? string.Empty : "&issuer=" + WinAuthHelper.HtmlEncode(issuer));
+            //var url = "otpauth://" + type + "/" + WinAuthHelper.HtmlEncode(CurrentAuthenticator.Name)
+            //    + "?secret=" + key
+            //    + "&digits=" + CurrentAuthenticator.AuthenticatorData.CodeDigits
+            //    + (counter != 0 ? "&counter=" + counter : string.Empty)
+            //    + (string.IsNullOrEmpty(issuer) ? string.Empty : "&issuer=" + WinAuthHelper.HtmlEncode(issuer));
             var url = CurrentAuthenticator.ToUrl(true);
 
             var writer = new BarcodeWriter
@@ -91,6 +91,5 @@ namespace WinAuth
             var key = Base32.GetInstance().Encode(CurrentAuthenticator.AuthenticatorData.SecretKey);
             secretKeyField.Text = secretKeyField.SecretMode ? Regex.Replace(key, ".{3}", "$0 ").Trim() : key;
         }
-
     }
 }

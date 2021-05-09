@@ -54,10 +54,7 @@ namespace WinAuth
         /// <summary>
         /// Create the new form
         /// </summary>
-        public ResourceForm()
-            : base()
-        {
-        }
+        public ResourceForm() : base() { }
 
         /// <summary>
         /// Search the resources for any _FORMNAME_CONTROLNAME_ strings and replace the text
@@ -123,6 +120,5 @@ namespace WinAuth
 
             return controls;
         }
-
     }
 }

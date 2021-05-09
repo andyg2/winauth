@@ -47,10 +47,7 @@ namespace WinAuth
         /// <summary>
         /// Create a new SecretTextBox
         /// </summary>
-        public SecretTextBox()
-            : base()
-        {
-        }
+        public SecretTextBox() : base() { }
 
         /// <summary>
         /// Get/set the flag to draw as a bitmap
@@ -61,10 +58,10 @@ namespace WinAuth
             set
             {
                 m_secretMode = value;
-                Enabled = !value; // we disable so cannot select/copy 
+                Enabled = !value; // we disable so cannot select/copy
                 SetStyle(ControlStyles.UserPaint, value);
                 Text = m_text;
-                //
+
                 // when we disable secret mode we need to reset the font else sometimes it doesn't show corretly
                 if (m_fontFamily == null)
                 {
@@ -75,7 +72,7 @@ namespace WinAuth
                 {
                     Font = new Font(m_fontFamily, m_fontSize);
                 }
-                //
+
                 Invalidate(); // force it to redraw
             }
         }
@@ -138,6 +135,5 @@ namespace WinAuth
                 g.DrawString(text ?? string.Empty, base.Font, brush, new RectangleF(0, 0, Width, Height), sf);
             }
         }
-
     }
 }

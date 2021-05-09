@@ -158,6 +158,5 @@ namespace WinAuth
 
             return diag.ToString();
         }
-
     }
 }

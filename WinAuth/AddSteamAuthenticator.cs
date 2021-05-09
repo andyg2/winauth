@@ -763,12 +763,12 @@ namespace WinAuth
 
                         if (m_enroll.RequiresEmailAuth)
                         {
-                            if (authoriseTabLabel.Tag == null || string.IsNullOrEmpty((string)authoriseTabLabel.Tag))
+                            if (authorizeTabLabel.Tag == null || string.IsNullOrEmpty((string)authorizeTabLabel.Tag))
                             {
-                                authoriseTabLabel.Tag = authoriseTabLabel.Text;
+                                authorizeTabLabel.Tag = authorizeTabLabel.Text;
                             }
                             var email = string.IsNullOrEmpty(m_enroll.EmailDomain) ? string.Empty : "***@" + m_enroll.EmailDomain;
-                            authoriseTabLabel.Text = string.Format((string)authoriseTabLabel.Tag, email);
+                            authorizeTabLabel.Text = string.Format((string)authorizeTabLabel.Tag, email);
                             authcodeField.Text = "";
                             ShowTab("authTab");
                             authcodeField.Focus();

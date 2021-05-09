@@ -88,6 +88,5 @@ namespace WinAuth
             deviceidField.SecretMode = !allowCopyCheckBox.Checked;
             steamdataField.SecretMode = !allowCopyCheckBox.Checked;
         }
-
     }
 }

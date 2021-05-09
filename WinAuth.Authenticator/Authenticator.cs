@@ -207,8 +207,8 @@ namespace WinAuth
         /// Calculate the code interval based on the calculated server time
         /// </summary>
         public long CodeInterval =>
-                // calculate the code interval; the server's time div 30,000
-                (CurrentTime + ServerTimeDiff) / (Period * 1000L);
+            // calculate the code interval; the server's time div 30,000
+            (CurrentTime + ServerTimeDiff) / (Period * 1000L);
 
         /// <summary>
         /// Get the current code for the authenticator.
@@ -345,8 +345,8 @@ namespace WinAuth
                             break;
 
                         //case "restorecodeverified":
-                        //	authenticator.RestoreCodeVerified = reader.ReadElementContentAsBoolean();
-                        //	break;
+                        //    authenticator.RestoreCodeVerified = reader.ReadElementContentAsBoolean();
+                        //    break;
 
                         case "secretdata":
                             var encrypted = reader.GetAttribute("encrypted");
@@ -511,17 +511,17 @@ namespace WinAuth
             if (PasswordType != PasswordTypes.None)
             {
                 // check if the data has changed
-                //if (this.SecretData != null)
+                //if (SecretData != null)
                 //{
-                //	using (SHA1 sha1 = SHA1.Create())
-                //	{
-                //		byte[] secretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(this.SecretData));
-                //		if (this.SecretHash == null || !secretHash.SequenceEqual(this.SecretHash))
-                //		{
-                //			// we need to encrypt changed secret data
-                //			SetEncryption(this.PasswordType, this.Password);
-                //		}
-                //	}
+                //    using (var sha1 = SHA1.Create())
+                //    {
+                //        var secretHash = sha1.ComputeHash(Encoding.UTF8.GetBytes(SecretData));
+                //        if (SecretHash == null || !secretHash.SequenceEqual(SecretHash))
+                //        {
+                //            // we need to encrypt changed secret data
+                //            SetEncryption(PasswordType, Password);
+                //        }
+                //    }
                 //}
 
                 SecretData = null;
@@ -614,21 +614,21 @@ namespace WinAuth
                 //// decrypt
                 //try
                 //{
-                //	string data = Authenticator.DecryptSequence(this.EncryptedData, passwordType, password);
-                //	using (MemoryStream ms = new MemoryStream(Authenticator.StringToByteArray(data)))
-                //	{
-                //		reader = XmlReader.Create(ms);
-                //		this.ReadXml(reader, password);
-                //	}
+                //    var data = DecryptSequence(EncryptedData, passwordType, password);
+                //    using (var ms = new MemoryStream(StringToByteArray(data)))
+                //    {
+                //        reader = XmlReader.Create(ms);
+                //        ReadXml(reader, password);
+                //    }
                 //}
                 //catch (EncryptedSecretDataException)
                 //{
-                //	this.RequiresPassword = true;
-                //	throw;
+                //    RequiresPassword = true;
+                //    throw;
                 //}
                 //finally
                 //{
-                //	this.PasswordType = passwordType;
+                //    PasswordType = passwordType;
                 //}
             }
 
@@ -697,7 +697,7 @@ namespace WinAuth
         public void WriteToWriter(XmlWriter writer)
         {
             writer.WriteStartElement("authenticatordata");
-            //writer.WriteAttributeString("type", this.GetType().FullName);
+            //writer.WriteAttributeString("type", GetType().FullName);
             var encrypted = EncodePasswordTypes(PasswordType);
             if (!string.IsNullOrEmpty(encrypted))
             {
@@ -713,11 +713,11 @@ namespace WinAuth
                 writer.WriteStartElement("servertimediff");
                 writer.WriteString(ServerTimeDiff.ToString());
                 writer.WriteEndElement();
-                //
+
                 writer.WriteStartElement("lastservertime");
                 writer.WriteString(LastServerTime.ToString());
                 writer.WriteEndElement();
-                //
+
                 writer.WriteStartElement("secretdata");
                 writer.WriteString(SecretData);
                 writer.WriteEndElement();
@@ -725,87 +725,82 @@ namespace WinAuth
                 WriteExtraXml(writer);
             }
 
-            /*
-                  if (passwordType != Authenticator.PasswordTypes.None)
-                  {
-                    //string data = this.EncryptedData;
-                    //if (data == null)
-                    //{
-                    //	using (MemoryStream ms = new MemoryStream())
-                    //	{
-                    //		XmlWriterSettings settings = new XmlWriterSettings();
-                    //		settings.Indent = true;
-                    //		settings.Encoding = Encoding.UTF8;
-                    //		using (XmlWriter encryptedwriter = XmlWriter.Create(ms, settings))
-                    //		{
-                    //			Authenticator.PasswordTypes savedpasswordType = PasswordType;
-                    //			PasswordType = Authenticator.PasswordTypes.None;
-                    //			WriteToWriter(encryptedwriter);
-                    //			PasswordType = savedpasswordType;
-                    //		}
-                    //		data = Authenticator.ByteArrayToString(ms.ToArray());
-                    //	}
+            //if (PasswordType != PasswordTypes.None)
+            //{
+            //    //var data = EncryptedData;
+            //    //if (data == null)
+            //    //{
+            //    //    using (var ms = new MemoryStream())
+            //    //    {
+            //    //        var settings = new XmlWriterSettings
+            //    //        {
+            //    //            Indent = true,
+            //    //            Encoding = Encoding.UTF8
+            //    //        };
+            //    //        using (var encryptedwriter = XmlWriter.Create(ms, settings))
+            //    //        {
+            //    //            var savedpasswordType = PasswordType;
+            //    //            PasswordType = PasswordTypes.None;
+            //    //            WriteToWriter(encryptedwriter);
+            //    //            PasswordType = savedpasswordType;
+            //    //        }
+            //    //        data = ByteArrayToString(ms.ToArray());
+            //    //    }
 
-                    //	data = Authenticator.EncryptSequence(data, PasswordType, Password);
-                    //}
+            //    //    data = EncryptSequence(data, PasswordType, Password);
+            //    //}
 
-                    writer.WriteString(this.EncryptedData);
-                    writer.WriteEndElement();
+            //    writer.WriteString(EncryptedData);
+            //    writer.WriteEndElement();
 
-                    return;
-                  }
+            //    return;
+            //}
 
-                  //
-                  writer.WriteStartElement("servertimediff");
-                  writer.WriteString(ServerTimeDiff.ToString());
-                  writer.WriteEndElement();
-                  //
-                  writer.WriteStartElement("secretdata");
-                  writer.WriteString(SecretData);
-                  writer.WriteEndElement();
+            //writer.WriteStartElement("servertimediff");
+            //writer.WriteString(ServerTimeDiff.ToString());
+            //writer.WriteEndElement();
 
-                  WriteExtraXml(writer);
-            */
+            //writer.WriteStartElement("secretdata");
+            //writer.WriteString(SecretData);
+            //writer.WriteEndElement();
+
+            //WriteExtraXml(writer);
 
             writer.WriteEndElement();
         }
 
-        /*
-            /// <summary>
-            /// Write this authenticator into an XmlWriter
-            /// </summary>
-            /// <param name="writer">XmlWriter to receive authenticator</param>
-            protected void WriteToWriter(XmlWriter writer, PasswordTypes passwordType)
-            {
-              if (passwordType != Authenticator.PasswordTypes.None)
-              {
-                writer.WriteStartElement("authenticatordata");
-                writer.WriteAttributeString("encrypted", EncodePasswordTypes(this.PasswordType));
-                writer.WriteString(this.EncryptedData);
-                writer.WriteEndElement();
-              }
-              else
-              {
-                writer.WriteStartElement("servertimediff");
-                writer.WriteString(ServerTimeDiff.ToString());
-                writer.WriteEndElement();
-                //
-                writer.WriteStartElement("secretdata");
-                writer.WriteString(SecretData);
-                writer.WriteEndElement();
+        ///// <summary>
+        ///// Write this authenticator into an XmlWriter
+        ///// </summary>
+        ///// <param name="writer">XmlWriter to receive authenticator</param>
+        //protected void WriteToWriter(XmlWriter writer, PasswordTypes passwordType)
+        //{
+        //    if (passwordType != PasswordTypes.None)
+        //    {
+        //        writer.WriteStartElement("authenticatordata");
+        //        writer.WriteAttributeString("encrypted", EncodePasswordTypes(PasswordType));
+        //        writer.WriteString(EncryptedData);
+        //        writer.WriteEndElement();
+        //    }
+        //    else
+        //    {
+        //        writer.WriteStartElement("servertimediff");
+        //        writer.WriteString(ServerTimeDiff.ToString());
+        //        writer.WriteEndElement();
+        //        //
+        //        writer.WriteStartElement("secretdata");
+        //        writer.WriteString(SecretData);
+        //        writer.WriteEndElement();
 
-                WriteExtraXml(writer);
-              }
-            }
-        */
+        //        WriteExtraXml(writer);
+        //    }
+        //}
 
         /// <summary>
         /// Virtual function to write any class specific xml nodes into the writer
         /// </summary>
         /// <param name="writer">XmlWriter to write data</param>
-        protected virtual void WriteExtraXml(XmlWriter writer)
-        {
-        }
+        protected virtual void WriteExtraXml(XmlWriter writer) { }
 
         #endregion
 

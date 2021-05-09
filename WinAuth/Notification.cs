@@ -360,7 +360,8 @@ namespace WinAuth
         /// <param name="body">main body, as text or HTML</param>
         /// <param name="buttons">optional list of buttons</param>
         /// <param name="animation">optional animation overrides</param>
-        public Notification(string title, string body, int hideInMs = 0, List<NotificationButton> buttons = null, NotificationAnimation animation = null) : base()
+        public Notification(string title, string body, int hideInMs = 0, List<NotificationButton> buttons = null, NotificationAnimation animation = null)
+            : base()
         {
             InitializeComponent();
 
@@ -556,13 +557,11 @@ namespace WinAuth
             base.OnPaint(e);
             //using (var pen = new Pen(Color.FromArgb(32, 32, 32), 1))
             //{
-            //    e.Graphics.DrawRectangle(pen, 0, 0, this.Width, this.Height);
+            //    e.Graphics.DrawRectangle(pen, 0, 0, Width, Height);
             //}
         }
 
-        private void Notification_Paint(object sender, PaintEventArgs e)
-        {
-        }
+        private void Notification_Paint(object sender, PaintEventArgs e) { }
 
         private void CloseLink_Click(object sender, EventArgs e) => Close();
     }

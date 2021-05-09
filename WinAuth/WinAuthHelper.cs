@@ -88,24 +88,24 @@ namespace WinAuth
         /// The WinAuth PGP public key
         /// </summary>
         public const string WINAUTH_PGP_PUBLICKEY =
-          @"-----BEGIN PGP PUBLIC KEY BLOCK-----
-			Version: BCPG C# v1.7.4114.6375
-			
-			mQEMBFA8sxQBCAC5EWjbGHDgyo4e9rcwse1mWbCOyeTwGZH2malJreF2v81KwBZa
-			eCAPX6cP6EWJPlMOgkJpBQOgh+AezkYEidrW4+NXCGv+Z03U1YBc7e/nYnABZrJx
-			XsqWVyM3d3iLSpKsMfk2OAIAIvoCvzcdx0ljm2IXGKRHGnc0nU7hSFXh5S/sJErN
-			Cgrll6lD2CPNIPuUiMSWptgO1RAjerk0rwLh1DSChicPMJZfxJWn7JD1VVQLmAon
-			EJ4x0MUIbff7ZmEna4O2rF9mrCjwfANkcz8N6WFp3PrfhxArXkvOBPYF9iEigFRS
-			QVt6XAF6sjGhSYxZRaRj0tE4PyajE/HfNk0DAAkBAbQbV2luQXV0aCA8d2luYXV0
-			aEBnbWFpbC5jb20+iQE0BBABAgASBQJQPRWEApsPAhYBAhUCAgsDABYJEJ3DDyNp
-			qwwqApsPAhYBAhUCAgsDqb8IAKJRlRu5ne2BuHrMlKW/BI6I/hpkGQ8BzmO7LatM
-			YYj//XKkbQ2BSvbDNI1al5HSo1iseokIZqD07iMwsp9GvLXSOVCROK9HYJ4dHsdP
-			l68KgNDWu8ZDhPRGerf4+pn1jRfXW4NdFT8W1TX3RArpdVSd5Q2tV2tZrANErBYa
-			UTDodsNKwikcgk89a2NI+Lh17lFGCFdAdZ07gRwu6cOm4SqP2TjWjDreXqlE9fHd
-			0dwmYeS1QlGYK3ETNS1KvVTNaKdht231jGwlxy09Rxtx1EBLqFNsc+BW5rjYEPN2
-			EAlelUJsVidUjZNB1ySm9uW8xurSEXWPZxWITl+LYmgwtn0=
-			=dvwu
-			-----END PGP PUBLIC KEY BLOCK-----";
+            @"-----BEGIN PGP PUBLIC KEY BLOCK-----
+              Version: BCPG C# v1.7.4114.6375
+
+              mQEMBFA8sxQBCAC5EWjbGHDgyo4e9rcwse1mWbCOyeTwGZH2malJreF2v81KwBZa
+              eCAPX6cP6EWJPlMOgkJpBQOgh+AezkYEidrW4+NXCGv+Z03U1YBc7e/nYnABZrJx
+              XsqWVyM3d3iLSpKsMfk2OAIAIvoCvzcdx0ljm2IXGKRHGnc0nU7hSFXh5S/sJErN
+              Cgrll6lD2CPNIPuUiMSWptgO1RAjerk0rwLh1DSChicPMJZfxJWn7JD1VVQLmAon
+              EJ4x0MUIbff7ZmEna4O2rF9mrCjwfANkcz8N6WFp3PrfhxArXkvOBPYF9iEigFRS
+              QVt6XAF6sjGhSYxZRaRj0tE4PyajE/HfNk0DAAkBAbQbV2luQXV0aCA8d2luYXV0
+              aEBnbWFpbC5jb20+iQE0BBABAgASBQJQPRWEApsPAhYBAhUCAgsDABYJEJ3DDyNp
+              qwwqApsPAhYBAhUCAgsDqb8IAKJRlRu5ne2BuHrMlKW/BI6I/hpkGQ8BzmO7LatM
+              YYj//XKkbQ2BSvbDNI1al5HSo1iseokIZqD07iMwsp9GvLXSOVCROK9HYJ4dHsdP
+              l68KgNDWu8ZDhPRGerf4+pn1jRfXW4NdFT8W1TX3RArpdVSd5Q2tV2tZrANErBYa
+              UTDodsNKwikcgk89a2NI+Lh17lFGCFdAdZ07gRwu6cOm4SqP2TjWjDreXqlE9fHd
+              0dwmYeS1QlGYK3ETNS1KvVTNaKdht231jGwlxy09Rxtx1EBLqFNsc+BW5rjYEPN2
+              EAlelUJsVidUjZNB1ySm9uW8xurSEXWPZxWITl+LYmgwtn0=
+              =dvwu
+              -----END PGP PUBLIC KEY BLOCK-----";
 
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace WinAuth
 
         /// <summary>
         /// Save a PGP encrypted version of the config into the registry for recovery
-        /// 
+        ///
         /// Issue#133: this just compounds each time we load, and is really pointless so we are removing it
         /// but in the meantime we have to clear it out
         /// </summary>
@@ -610,7 +610,7 @@ namespace WinAuth
                         {
                             AutoRefresh = false
                         };
-                        //
+
                         Authenticator auth;
                         if (string.Compare(issuer, "BattleNet", true) == 0)
                         {
@@ -686,7 +686,7 @@ namespace WinAuth
                         {
                             auth.HMACType = hmactype;
                         }
-                        //
+
 #pragma warning disable IDE0045 // Convert to conditional expression
                         if (label.Length != 0)
                         {
@@ -697,7 +697,7 @@ namespace WinAuth
                             importedAuthenticator.Name = issuer.Length != 0 ? issuer : "Imported";
                         }
 #pragma warning restore IDE0045 // Convert to conditional expression
-                        //
+
                         importedAuthenticator.AuthenticatorData = auth;
 
                         // set the icon
@@ -927,7 +927,7 @@ namespace WinAuth
         /// <summary>
         /// Read a value from a registry key, e.g. Software\WinAuth3\BetValue. Return defaultValue
         /// if key does not exist or there is a security exception
-        /// 
+        ///
         /// The key name can conjtain the explicit root, e.g. "HKEY_LOCAL_MACHINE\Software..." otherwise
         /// HKEY_CURRENT_USER is assumed.
         /// </summary>
@@ -1183,7 +1183,7 @@ namespace WinAuth
         /// <param name="publicKey">returned ascii public key</param>
         public static void PGPGenerateKey(int bits, string identifier, string password, out string privateKey, out string publicKey)
         {
-            // generate a new RSA keypair 
+            // generate a new RSA keypair
             var gen = new RsaKeyPairGenerator();
             gen.Init(new RsaKeyGenerationParameters(BigInteger.ValueOf(0x101), new Org.BouncyCastle.Security.SecureRandom(), bits, 80));
             var pair = gen.GenerateKeyPair();
@@ -1199,17 +1199,17 @@ namespace WinAuth
 
             // create the PGP key
             var secretKey = new PgpSecretKey(
-              PgpSignature.DefaultCertification,
-              PublicKeyAlgorithmTag.RsaGeneral,
-              pair.Public,
-              pair.Private,
-              DateTime.Now,
-              identifier,
-              SymmetricKeyAlgorithmTag.Cast5,
-              password?.ToCharArray(),
-              hashedGen.Generate(),
-              unhashedGen.Generate(),
-              new Org.BouncyCastle.Security.SecureRandom());
+                PgpSignature.DefaultCertification,
+                PublicKeyAlgorithmTag.RsaGeneral,
+                pair.Public,
+                pair.Private,
+                DateTime.Now,
+                identifier,
+                SymmetricKeyAlgorithmTag.Cast5,
+                password?.ToCharArray(),
+                hashedGen.Generate(),
+                unhashedGen.Generate(),
+                new Org.BouncyCastle.Security.SecureRandom());
 
             // extract the keys
             using (var ms = new MemoryStream())

@@ -124,7 +124,7 @@ namespace WinAuth
 
             pollAction.DataSource = items;
             pollAction.DisplayMember = "Text";
-            //this.pollAction.ValueMember = "Value";
+            //pollAction.ValueMember = "Value";
             pollAction.SelectedIndex = 0;
 
             m_tabPages.Clear();
@@ -452,7 +452,6 @@ namespace WinAuth
                         }
                     }
                 }
-
             }
             finally
             {
@@ -529,7 +528,6 @@ namespace WinAuth
                         }
                     }
                 }
-
             }
             finally
             {
@@ -687,7 +685,7 @@ namespace WinAuth
                             Authenticator.MarkChanged();
                         }
                     }
-                    catch (SteamClient.UnauthorisedSteamRequestException)
+                    catch (SteamClient.UnauthorizedSteamRequestException)
                     {
                         // Family view is probably on
                         WinAuthForm.ErrorDialog(this, "You are not allowed to view confirmations. Have you enabled 'community-generated content' in Family View?", null, MessageBoxButtons.OK);

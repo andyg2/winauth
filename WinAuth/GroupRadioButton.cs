@@ -24,13 +24,9 @@ namespace WinAuth
 {
     public class GroupMetroRadioButton : MetroFramework.Controls.MetroRadioButton
     {
-        public GroupMetroRadioButton()
-            : base()
-        {
-        }
+        public GroupMetroRadioButton() : base() { }
 
-        public GroupMetroRadioButton(string group)
-            : base()
+        public GroupMetroRadioButton(string group) : base()
         {
             Group = group;
         }
@@ -90,13 +86,9 @@ namespace WinAuth
 
     public class GroupRadioButton : RadioButton
     {
-        public GroupRadioButton()
-            : base()
-        {
-        }
+        public GroupRadioButton() : base() { }
 
-        public GroupRadioButton(string group)
-            : base()
+        public GroupRadioButton(string group) : base()
         {
             Group = group;
         }

@@ -755,7 +755,7 @@ namespace WinAuth
                             changed = ReadXmlInternal(reader, password) || changed;
                             break;
 
-                        // 3.2 has new layout 
+                        // 3.2 has new layout
                         case "data":
                             encrypted = reader.GetAttribute("encrypted");
                             PasswordType = Authenticator.DecodePasswordTypes(encrypted);
@@ -960,43 +960,43 @@ namespace WinAuth
         public void WriteXmlString(XmlWriter writer, bool includeFilename = false, bool includeSettings = true)
         {
             writer.WriteStartDocument(true);
-            //
+
             if (includeFilename && !string.IsNullOrEmpty(Filename))
             {
                 writer.WriteComment(Filename);
             }
-            //
+
             writer.WriteStartElement("WinAuth");
             writer.WriteAttributeString("version", Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
-            //
+
             writer.WriteStartElement("alwaysontop");
             writer.WriteValue(AlwaysOnTop);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("copysearchedsingle");
             writer.WriteValue(CopySearchedSingle);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("autoexitaftercopy");
             writer.WriteValue(AutoExitAfterCopy);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("usetrayicon");
             writer.WriteValue(UseTrayIcon);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("notifyaction");
             writer.WriteValue(Enum.GetName(typeof(NotifyActions), NotifyAction));
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("startwithwindows");
             writer.WriteValue(StartWithWindows);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("autosize");
             writer.WriteValue(AutoSize);
             writer.WriteEndElement();
-            //
+
             if (!Position.IsEmpty)
             {
                 writer.WriteStartElement("left");
@@ -1006,22 +1006,22 @@ namespace WinAuth
                 writer.WriteValue(Position.Y);
                 writer.WriteEndElement();
             }
-            //
+
             writer.WriteStartElement("width");
             writer.WriteValue(Width);
             writer.WriteEndElement();
-            //
+
             writer.WriteStartElement("height");
             writer.WriteValue(Height);
             writer.WriteEndElement();
-            //
+
             if (!string.IsNullOrEmpty(ShadowType))
             {
                 writer.WriteStartElement("shadowtype");
                 writer.WriteValue(ShadowType);
                 writer.WriteEndElement();
             }
-            //
+
             if (!string.IsNullOrEmpty(PGPKey))
             {
                 writer.WriteStartElement("pgpkey");
@@ -1130,24 +1130,16 @@ namespace WinAuth
 
     public class WinAuthInvalidConfigException : ApplicationException
     {
-        public WinAuthInvalidConfigException(string msg, Exception ex)
-          : base(msg, ex)
-        {
-        }
-    }
-    public class WinAuthConfigRequirePasswordException : ApplicationException
-    {
-        public WinAuthConfigRequirePasswordException()
-          : base()
-        {
-        }
-    }
-    public class WinAuthInvalidNewerConfigException : ApplicationException
-    {
-        public WinAuthInvalidNewerConfigException(string msg)
-            : base(msg)
-        {
-        }
+        public WinAuthInvalidConfigException(string msg, Exception ex) : base(msg, ex) { }
     }
 
+    public class WinAuthConfigRequirePasswordException : ApplicationException
+    {
+        public WinAuthConfigRequirePasswordException() : base() { }
+    }
+
+    public class WinAuthInvalidNewerConfigException : ApplicationException
+    {
+        public WinAuthInvalidNewerConfigException(string msg) : base(msg) { }
+    }
 }

@@ -26,20 +26,11 @@ namespace WinAuth
     /// </summary>
     public class AuthenticatorException : ApplicationException
     {
-        public AuthenticatorException()
-          : base()
-        {
-        }
+        public AuthenticatorException() : base() { }
 
-        public AuthenticatorException(string msg)
-          : base(msg)
-        {
-        }
+        public AuthenticatorException(string msg) : base(msg) { }
 
-        public AuthenticatorException(string msg, Exception ex)
-          : base(msg, ex)
-        {
-        }
+        public AuthenticatorException(string msg, Exception ex) : base(msg, ex) { }
     }
 
     /// <summary>
@@ -129,7 +120,8 @@ namespace WinAuth
     /// </summary>
     public class InvalidEncryptionException : AuthenticatorException
     {
-        public InvalidEncryptionException(string plain, string password, string encrypted, string decrypted) : base()
+        public InvalidEncryptionException(string plain, string password, string encrypted, string decrypted)
+            : base()
         {
             Plain = plain;
             Password = password;
@@ -149,7 +141,7 @@ namespace WinAuth
     public class InvalidSecretDataException : AuthenticatorException
     {
         public InvalidSecretDataException(Exception inner, string password, string encType, List<string> decrypted)
-          : base("Error decoding Secret Data", inner)
+            : base("Error decoding Secret Data", inner)
         {
             Password = password;
             EncType = encType;

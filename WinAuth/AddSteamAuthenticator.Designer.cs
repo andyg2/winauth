@@ -30,7 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSteamAuthenticator));
 			this.loginButton = new MetroFramework.Controls.MetroButton();
-			this.authoriseTabLabel = new MetroFramework.Controls.MetroLabel();
+			this.authorizeTabLabel = new MetroFramework.Controls.MetroLabel();
 			this.loginTabLabel = new MetroFramework.Controls.MetroLabel();
 			this.captchaButton = new MetroFramework.Controls.MetroButton();
 			this.captchacodeField = new MetroFramework.Controls.MetroTextBox();
@@ -111,13 +111,13 @@
 			this.loginButton.UseSelectable = true;
 			this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
 			// 
-			// authoriseTabLabel
+			// authorizeTabLabel
 			// 
-			this.authoriseTabLabel.Location = new System.Drawing.Point(4, 12);
-			this.authoriseTabLabel.Name = "authoriseTabLabel";
-			this.authoriseTabLabel.Size = new System.Drawing.Size(449, 45);
-			this.authoriseTabLabel.TabIndex = 1;
-			this.authoriseTabLabel.Text = "Please enter the code sent to your {0} email address approving access from a new " +
+			this.authorizeTabLabel.Location = new System.Drawing.Point(4, 12);
+			this.authorizeTabLabel.Name = "authorizeTabLabel";
+			this.authorizeTabLabel.Size = new System.Drawing.Size(449, 45);
+			this.authorizeTabLabel.TabIndex = 1;
+			this.authorizeTabLabel.Text = "Please enter the code sent to your {0} email address approving access from a new " +
     "device.";
 			// 
 			// loginTabLabel
@@ -348,7 +348,7 @@
 			this.authTab.Controls.Add(this.authcodeLabel);
 			this.authTab.Controls.Add(this.authcodeButton);
 			this.authTab.Controls.Add(this.authcodeField);
-			this.authTab.Controls.Add(this.authoriseTabLabel);
+			this.authTab.Controls.Add(this.authorizeTabLabel);
 			this.authTab.HorizontalScrollbarBarColor = true;
 			this.authTab.HorizontalScrollbarHighlightOnWheel = false;
 			this.authTab.HorizontalScrollbarSize = 10;
@@ -357,7 +357,7 @@
 			this.authTab.Size = new System.Drawing.Size(456, 301);
 			this.authTab.TabIndex = 2;
 			this.authTab.Tag = "";
-			this.authTab.Text = "Authorise";
+			this.authTab.Text = "Authorize";
 			this.authTab.VerticalScrollbarBarColor = true;
 			this.authTab.VerticalScrollbarHighlightOnWheel = false;
 			this.authTab.VerticalScrollbarSize = 10;
@@ -823,7 +823,7 @@
 
 		private MetroFramework.Controls.MetroLabel loginTabLabel;
 		private MetroFramework.Controls.MetroButton loginButton;
-		private MetroFramework.Controls.MetroLabel authoriseTabLabel;
+		private MetroFramework.Controls.MetroLabel authorizeTabLabel;
 		private MetroFramework.Controls.MetroLabel captchaTabLabel;
 		private MetroFramework.Controls.MetroButton confirmButton;
 		private MetroFramework.Controls.MetroButton cancelButton;

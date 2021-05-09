@@ -104,6 +104,5 @@ namespace WinAuth
             invalidPasswordTimer.Enabled = false;
             invalidPasswordLabel.Visible = false;
         }
-
     }
 }

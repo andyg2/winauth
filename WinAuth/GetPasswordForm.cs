@@ -30,8 +30,7 @@ namespace WinAuth
         /// <summary>
         /// Create new form
         /// </summary>
-        public GetPasswordForm()
-            : base()
+        public GetPasswordForm() : base()
         {
             InitializeComponent();
         }
@@ -96,6 +95,5 @@ namespace WinAuth
             invalidPasswordTimer.Enabled = false;
             invalidPasswordLabel.Visible = false;
         }
-
     }
 }

@@ -184,7 +184,7 @@ namespace WinAuth
             {
                 // configure Logger
                 var config = new LoggingConfiguration();
-                //
+
                 var fileTarget = new FileTarget();
                 var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), APPLICATION_NAME);
                 if (!Directory.Exists(dir))
@@ -196,10 +196,10 @@ namespace WinAuth
                 fileTarget.DeleteOldFileOnStartup = false;
                 fileTarget.AutoFlush = true;
                 config.AddTarget("file", fileTarget);
-                //
+
                 var rule = new LoggingRule("*", LogLevel.Error, fileTarget);
                 config.LoggingRules.Add(rule);
-                //
+
                 LogManager.Configuration = config;
                 Logger = LogManager.GetLogger(APPLICATION_NAME);
 
@@ -260,18 +260,18 @@ namespace WinAuth
         public static void LogException(Exception ex, bool silently = false)
         {
             // add catch for unknown application exceptions to try and get closer to bug
-            //StringBuilder capture = new StringBuilder(DateTime.Now.ToString("u") + " ");
+            //var capture = new StringBuilder(DateTime.Now.ToString("u") + " ");
             //try
             //{
-            //	Exception e = ex;
-            //	capture.Append(e.Message).Append(Environment.NewLine);
-            //	while (e != null)
-            //	{
-            //		capture.Append(new StackTrace(e, true).ToString()).Append(Environment.NewLine);
-            //		e = e.InnerException;
-            //	}
-            //	//
-            //	LogMessage(capture.ToString());
+            //    var e = ex;
+            //    capture.Append(e.Message).Append(Environment.NewLine);
+            //    while (e != null)
+            //    {
+            //        capture.Append(new StackTrace(e, true).ToString()).Append(Environment.NewLine);
+            //        e = e.InnerException;
+            //    }
+            //    //
+            //    LogMessage(capture.ToString());
             //}
             //catch (Exception) { }
 

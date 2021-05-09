@@ -115,8 +115,7 @@ namespace WinAuth
         /// <summary>
         /// Default constructor
         /// </summary>
-        public AuthenticatorListItemRemovedEventArgs(AuthenticatorListitem item)
-            : base()
+        public AuthenticatorListItemRemovedEventArgs(AuthenticatorListitem item) : base()
         {
             Item = item;
         }
@@ -130,10 +129,7 @@ namespace WinAuth
         /// <summary>
         /// Default constructor
         /// </summary>
-        public AuthenticatorListReorderedEventArgs()
-            : base()
-        {
-        }
+        public AuthenticatorListReorderedEventArgs() : base() { }
     }
 
     /// <summary>
@@ -153,8 +149,7 @@ namespace WinAuth
         /// <summary>
         /// Default constructor
         /// </summary>
-        public AuthenticatorListDoubleClickEventArgs(WinAuthAuthenticator auth)
-            : base()
+        public AuthenticatorListDoubleClickEventArgs(WinAuthAuthenticator auth) : base()
         {
             Authenticator = auth;
         }
@@ -982,12 +977,12 @@ namespace WinAuth
             };
             ContextMenuStrip.Items.Add(label);
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             var onclick = new EventHandler(ContextMenu_Click);
-            //
+
             ToolStripMenuItem menuitem;
             ToolStripMenuItem subitem;
-            //
+
             menuitem = new ToolStripMenuItem(strings.SetPassword + "...")
             {
                 Name = "setPasswordMenuItem"
@@ -995,85 +990,85 @@ namespace WinAuth
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             menuitem = new ToolStripMenuItem(strings.ShowCode)
             {
                 Name = "showCodeMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.CopyCode)
             {
                 Name = "copyCodeMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             menuitem = new ToolStripMenuItem(strings.ShowSerialAndRestoreCode + "...")
             {
                 Name = "showRestoreCodeMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.ShowSecretKey + "...")
             {
                 Name = "showGoogleSecretMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.ShowRevocation + "...")
             {
                 Name = "showSteamSecretMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "steamSeperator" });
-            //
+
             menuitem = new ToolStripMenuItem(strings.ConfirmTrades + "...")
             {
                 Name = "showSteamTradesMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             menuitem = new ToolStripMenuItem(strings.Delete)
             {
                 Name = "deleteMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.Rename)
             {
                 Name = "renameMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             menuitem = new ToolStripMenuItem(strings.AutoRefresh)
             {
                 Name = "autoRefreshMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.CopyOnNewCode)
             {
                 Name = "copyOnCodeMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.Icon)
             {
                 Name = "iconMenuItem"
@@ -1143,22 +1138,22 @@ namespace WinAuth
             subitem.Click += ContextMenu_Click;
             menuitem.DropDownItems.Add(subitem);
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            //
+
             menuitem = new ToolStripMenuItem(strings.ShortcutKey + "...")
             {
                 Name = "shortcutKeyMenuItem"
             };
             menuitem.Click += ContextMenu_Click;
             ContextMenuStrip.Items.Add(menuitem);
-            //
+
             var sepitem = new ToolStripSeparator
             {
                 Name = "syncMenuSep"
             };
             ContextMenuStrip.Items.Add(sepitem);
-            //
+
             menuitem = new ToolStripMenuItem(strings.SyncTime)
             {
                 Name = "syncMenuItem"
@@ -1193,32 +1188,32 @@ namespace WinAuth
 
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !auth.AutoRefresh;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showRestoreCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is BattleNetAuthenticator;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showGoogleSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is GoogleAuthenticator || auth.AuthenticatorData is HOTPAuthenticator;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamSecretMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
             menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator steamSecretAuthenticator && !string.IsNullOrEmpty(steamSecretAuthenticator.SteamData);
-            //
+
             sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "steamSeperator").FirstOrDefault();
             sepitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "showSteamTradesMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = auth.AuthenticatorData is SteamAuthenticator;
             menuitem.Enabled = auth.AuthenticatorData is SteamAuthenticator steamTradesAuthenticator && !string.IsNullOrEmpty(steamTradesAuthenticator.SteamData);
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "autoRefreshMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
             menuitem.CheckState = auth.AutoRefresh ? CheckState.Checked : CheckState.Unchecked;
             menuitem.Enabled = !auth.AuthenticatorData.RequiresPassword && auth.AuthenticatorData.PasswordType != Authenticator.PasswordTypes.Explicit;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "copyOnCodeMenuItem").FirstOrDefault() as ToolStripMenuItem;
             menuitem.CheckState = auth.CopyOnCode ? CheckState.Checked : CheckState.Unchecked;
-            //
+
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem").FirstOrDefault() as ToolStripMenuItem;
             var subitem = menuitem.DropDownItems.Cast<ToolStripItem>().Where(i => i.Name == "iconMenuItem_default").FirstOrDefault() as ToolStripMenuItem;
             subitem.CheckState = CheckState.Checked;
@@ -1242,7 +1237,7 @@ namespace WinAuth
 #pragma warning restore IDE0045 // Convert to conditional expression
                 }
             }
-            //
+
             sepitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "syncMenuSep").FirstOrDefault();
             sepitem.Visible = !(auth.AuthenticatorData is HOTPAuthenticator);
             menuitem = menu.Items.Cast<ToolStripItem>().Where(i => i.Name == "syncMenuItem").FirstOrDefault() as ToolStripMenuItem;
@@ -1419,7 +1414,7 @@ namespace WinAuth
                         }
                     }
 
-                    // show the serial and restore code for Battle.net authenticator				
+                    // show the serial and restore code for Battle.net authenticator
                     var form = new ShowRestoreCodeForm
                     {
                         CurrentAuthenticator = auth
@@ -1471,7 +1466,7 @@ namespace WinAuth
                         }
                     }
 
-                    // show the secret key for Google authenticator				
+                    // show the secret key for Google authenticator
                     var form = new ShowSecretKeyForm
                     {
                         CurrentAuthenticator = auth
@@ -1524,7 +1519,7 @@ namespace WinAuth
                         }
                     }
 
-                    // show the secret key for Google authenticator				
+                    // show the secret key for Google authenticator
                     var form = new ShowSteamSecretForm
                     {
                         CurrentAuthenticator = auth
@@ -1940,8 +1935,8 @@ namespace WinAuth
                         {
                             using (var piepen = new Pen(SystemColors.ActiveCaption))
                             {
-                                //int y = (this.TopIndex * this.ItemHeight) + e.Bounds.y
-                                //int tillUpdate = ((int)((auth.AuthenticatorData.ServerTime % 30000) / 1000L) + 1) * 12;
+                                //var y = (TopIndex * ItemHeight) + e.Bounds.Y;
+                                //var tillUpdate = ((int)(auth.AuthenticatorData.ServerTime % 30000 / 1000L) + 1) * 12;
                                 var tillUpdate = (int)Math.Round(auth.AuthenticatorData.ServerTime % (auth.AuthenticatorData.Period * 1000L) / 1000L * (360M / auth.AuthenticatorData.Period));
                                 e.Graphics.DrawPie(piepen, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, PIE_SWEEPANGLE);
                                 e.Graphics.FillPie(piebrush, e.Bounds.X + e.Bounds.Width - (MARGIN_RIGHT + ICON_WIDTH), e.Bounds.Y + MARGIN_TOP + PIE_MARGIN, PIE_WIDTH, PIE_HEIGHT, PIE_STARTANGLE, tillUpdate);

@@ -39,7 +39,7 @@ namespace WinAuth
         /// <summary>
         /// URL used to sync time
         /// </summary>
-        private const string TIME_SYNC_URL = "http://www.google.com";
+        private const string TIME_SYNC_URL = "https://www.google.com";
 
         /// <summary>
         /// Time of last Sync error
@@ -55,10 +55,7 @@ namespace WinAuth
         /// <summary>
         /// Create a new Authenticator object
         /// </summary>
-        public GoogleAuthenticator()
-          : base(CODE_DIGITS)
-        {
-        }
+        public GoogleAuthenticator() : base(CODE_DIGITS) { }
 
         /// <summary>
         /// Enroll the authenticator with the server.
@@ -88,7 +85,7 @@ namespace WinAuth
             try
             {
                 // we use the Header response field from a request to www.google.come
-                var request = (HttpWebRequest)WebRequest.Create(TIME_SYNC_URL);
+                var request = WebRequest.CreateHttp(TIME_SYNC_URL);
                 request.Method = "GET";
                 request.ContentType = "text/html";
                 request.Timeout = 5000;
@@ -131,6 +128,5 @@ namespace WinAuth
                 ServerTimeDiff = 0;
             }
         }
-
     }
 }

@@ -112,9 +112,7 @@ namespace WinAuth
             /// <summary>
             /// Create new ConfirmationPoller object
             /// </summary>
-            public ConfirmationPoller()
-            {
-            }
+            public ConfirmationPoller() { }
 
             /// <summary>
             /// Create a JSON string of the object
@@ -286,12 +284,12 @@ namespace WinAuth
             public override string ToString() => "{\"steamid\":\"" + (SteamId ?? string.Empty) + "\","
                 + "\"cookies\":\"" + Cookies.GetCookieHeader(new Uri(COMMUNITY_BASE + "/")) + "\","
                 + "\"oauthtoken\":\"" + (OAuthToken ?? string.Empty) + "\","
-                // + "\"umqid\":\"" + (this.UmqId ?? string.Empty) + "\","
+                // + "\"umqid\":\"" + (UmqId ?? string.Empty) + "\","
                 + "\"confs\":" + (Confirmations != null ? Confirmations.ToString() : "null")
                 + "}";
 
             /// <summary>
-            /// Convert json data into session 
+            /// Convert json data into session
             /// </summary>
             /// <param name="json"></param>
             private void FromJson(string json)
@@ -324,7 +322,7 @@ namespace WinAuth
                 //token = tokens.SelectToken("umqid");
                 //if (token != null)
                 //{
-                //	this.UmqId = token.Value<string>();
+                //    UmqId = token.Value<string>();
                 //}
                 token = tokens.SelectToken("confs");
                 if (token != null)
@@ -538,7 +536,7 @@ namespace WinAuth
                     { "loginfriendlyname", "#login_emailauth_friendlyname_mobile" },
                     { "captchagid", string.IsNullOrEmpty(captchaId) ? "-1" : captchaId },
                     { "captcha_text", string.IsNullOrEmpty(captchaText) ? "enter above characters" : captchaText },
-                    //data.Add("emailsteamid", string.IsNullOrEmpty(emailcode) ? string.Empty : this.SteamId ?? string.Empty);
+                    //data.Add("emailsteamid", string.IsNullOrEmpty(emailcode) ? string.Empty : SteamId ?? string.Empty);
                     { "rsatimestamp", rsaresponse.SelectToken("timestamp").Value<string>() },
                     { "remember_login", "false" },
                     { "oauth_client_id", "DE45CD61" },
@@ -612,16 +610,16 @@ namespace WinAuth
 
                 //// perform UMQ login
                 //data.Clear();
-                //data.Add("access_token", this.Session.OAuthToken);
+                //data.Add("access_token", Session.OAuthToken);
                 //response = GetString(API_LOGON, "POST", data);
                 //loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
                 //if (loginresponse.ContainsKey("umqid"))
                 //{
-                //	this.Session.UmqId = (string)loginresponse["umqid"];
-                //	if (loginresponse.ContainsKey("message"))
-                //	{
-                //		this.Session.MessageId = Convert.ToInt32(loginresponse["message"]);
-                //	}
+                //    Session.UmqId = (string)loginresponse["umqid"];
+                //    if (loginresponse.ContainsKey("message"))
+                //    {
+                //        Session.MessageId = Convert.ToInt32(loginresponse["message"]);
+                //    }
                 //}
             }
 
@@ -691,11 +689,11 @@ namespace WinAuth
                 //var loginresponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
                 //if (loginresponse.ContainsKey("umqid"))
                 //{
-                //	this.Session.UmqId = (string)loginresponse["umqid"];
-                //	if (loginresponse.ContainsKey("message"))
-                //	{
-                //		this.Session.MessageId = Convert.ToInt32(loginresponse["message"]);
-                //	}
+                //    Session.UmqId = (string)loginresponse["umqid"];
+                //    if (loginresponse.ContainsKey("message"))
+                //    {
+                //        Session.MessageId = Convert.ToInt32(loginresponse["message"]);
+                //    }
                 //}
 
                 return true;
@@ -776,20 +774,20 @@ namespace WinAuth
         /// <param name="cancel"></param>
         public async void PollConfirmations(CancellationToken cancel)
         {
-            //lock (this.Session.Confirmations)
+            //lock (Session.Confirmations)
             //{
-            //	if (this.Session.Confirmations.Ids == null)
-            //	{
-            //		try
-            //		{
-            //			// this will update the session
-            //			GetConfirmations();
-            //		}
-            //		catch (InvalidSteamRequestException)
-            //		{
-            //			// ignore in case of Steam timeout
-            //		}
-            //	}
+            //    if (Session.Confirmations.Ids == null)
+            //    {
+            //        try
+            //        {
+            //            // this will update the session
+            //            GetConfirmations();
+            //        }
+            //        catch (InvalidSteamRequestException)
+            //        {
+            //            // ignore in case of Steam timeout
+            //        }
+            //    }
             //}
 
             try
@@ -800,23 +798,15 @@ namespace WinAuth
                     try
                     {
                         //List<string> currentIds;
-                        //lock (this.Session.Confirmations)
+                        //lock (Session.Confirmations)
                         //{
-                        //	currentIds = this.Session.Confirmations.Ids;
+                        //    currentIds = Session.Confirmations.Ids;
                         //}
 
                         var confs = GetConfirmations();
 
                         // check for new ids
-                        //List<string> newIds;
-                        //if (currentIds == null)
-                        //{
-                        //	newIds = confs.Select(t => t.Id).ToList();
-                        //}
-                        //else
-                        //{
-                        //	newIds = confs.Select(t => t.Id).Except(currentIds).ToList();
-                        //}
+                        //var newIds = currentIds == null ? confs.Select(t => t.Id).ToList() : confs.Select(t => t.Id).Except(currentIds).ToList();
 
                         // fire events if subscriber
                         if (ConfirmationEvent != null /* && newIds.Count() != 0 */)
@@ -873,9 +863,7 @@ namespace WinAuth
                     }
                 }
             }
-            catch (TaskCanceledException)
-            {
-            }
+            catch (TaskCanceledException) { }
         }
 
         /// <summary>
@@ -1042,7 +1030,7 @@ namespace WinAuth
                 { "t", servertime.ToString() },
                 { "m", "android" },
                 { "tag", "conf" },
-                //
+
                 { "cid", id },
                 { "ck", key }
             };
@@ -1172,7 +1160,7 @@ namespace WinAuth
                 }
 
                 // call the server
-                var request = (HttpWebRequest)WebRequest.Create(url);
+                var request = WebRequest.CreateHttp(url);
                 request.Method = method;
                 request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
                 request.ServicePoint.Expect100Continue = false;
@@ -1232,7 +1220,7 @@ namespace WinAuth
 
                     if (ex is WebException webException && webException.Response != null && ((HttpWebResponse)webException.Response).StatusCode == HttpStatusCode.Forbidden)
                     {
-                        throw new UnauthorisedSteamRequestException(ex);
+                        throw new UnauthorizedSteamRequestException(ex);
                     }
                     throw new InvalidSteamRequestException(ex.Message, ex);
                 }
@@ -1361,12 +1349,9 @@ namespace WinAuth
             public InvalidSteamRequestException(string msg = null, Exception ex = null) : base(msg, ex) { }
         }
 
-        public class UnauthorisedSteamRequestException : InvalidSteamRequestException
+        public class UnauthorizedSteamRequestException : InvalidSteamRequestException
         {
-            public UnauthorisedSteamRequestException(Exception ex = null) : base("Unauthorised", ex) { }
+            public UnauthorizedSteamRequestException(Exception ex = null) : base("Unauthorized", ex) { }
         }
-
     }
-
-
 }

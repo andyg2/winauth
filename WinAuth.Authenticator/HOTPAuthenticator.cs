@@ -40,18 +40,12 @@ namespace WinAuth
         /// <summary>
         /// Create a new Authenticator object optionally with a specified number of digits
         /// </summary>
-        public HOTPAuthenticator()
-            : base(DEFAULT_CODE_DIGITS)
-        {
-        }
+        public HOTPAuthenticator() : base(DEFAULT_CODE_DIGITS) { }
 
         /// <summary>
         /// Create a new Authenticator object optionally with a specified number of digits
         /// </summary>
-        public HOTPAuthenticator(int digits)
-            : base(digits)
-        {
-        }
+        public HOTPAuthenticator(int digits) : base(digits) { }
 
         /// <summary>
         /// Get/set the combined secret data value
@@ -91,9 +85,7 @@ namespace WinAuth
         /// <summary>
         /// Synchronise this authenticator
         /// </summary>
-        public override void Sync()
-        {
-        }
+        public override void Sync() { }
 
         /// <summary>
         /// Calculate the current code for the authenticator.
@@ -147,8 +139,5 @@ namespace WinAuth
 
             return code;
         }
-
     }
-
-
 }

@@ -108,21 +108,20 @@ namespace WinAuth
 
                 notifyRadioButton.Enabled = true;
                 notifyRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Notify;
-                //
+
                 injectRadioButton.Enabled = true;
                 injectRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Inject;
                 injectTextbox.Enabled = injectRadioButton.Checked;
                 injectTextbox.Text = injectRadioButton.Checked ? Hotkey.Window : string.Empty;
-                //
+
                 pasteRadioButton.Enabled = true;
                 pasteRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Copy;
-                //
+
                 advancedRadioButton.Enabled = true;
                 advancedRadioButton.Checked = Hotkey.Action == HotKey.HotKeyActions.Advanced;
                 advancedTextbox.Enabled = advancedRadioButton.Checked;
                 advancedTextbox.Text = advancedRadioButton.Checked ? Hotkey.Advanced : string.Empty;
             }
-
         }
 
         /// <summary>
