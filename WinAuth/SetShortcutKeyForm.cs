@@ -132,7 +132,7 @@ namespace WinAuth
         /// <param name="e"></param>
         private void okButton_Click(object sender, EventArgs e)
         {
-            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode);
+            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default;
             if (key == 0)
             {
                 Hotkey = null;
@@ -204,7 +204,7 @@ namespace WinAuth
         private void keyCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             // clear the modifiers if we have cleared the key
-            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default(WinAPI.VirtualKeyCode);
+            var key = keyCombo.SelectedItem as KeyItem != null ? ((KeyItem)keyCombo.SelectedItem).Key : default;
             if (key == 0)
             {
                 shiftToggle.Checked = false;
